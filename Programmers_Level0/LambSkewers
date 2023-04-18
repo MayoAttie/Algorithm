@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+int solution(int n, int k) {
+    int answer = 0;
+    int yangGochi = 0;
+    int drink = 0;
+
+
+    for(int i=1; i<=n; i++)
+    {
+        yangGochi = i * 12000;
+    }
+    k = k-(n / 10);
+
+    for (int j=1; j <= k; j++)
+    {
+        drink = j * 2000;
+    }
+
+    answer = yangGochi + drink;
+
+
+
+    return answer;
+}
