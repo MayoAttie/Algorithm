@@ -1,0 +1,16 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+int solution(vector<vector<int>> sizes) {
+    int wMax = 0;
+    int hMax = 0;
+    for (auto& size : sizes) {
+        sort(size.begin(), size.end());
+        wMax = max(wMax, size[0]);
+        hMax = max(hMax, size[1]);
+    }
+    return wMax * hMax;
+}
