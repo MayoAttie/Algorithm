@@ -1,0 +1,38 @@
+#include <string>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int solution(int a, int b, int c) {
+    int answer = 0;
+    int nCount =0;
+    int doubleNum = pow(a, 2) + pow(b, 2) + pow(c, 2);
+    int tripleNum = pow(a, 3) + pow(b, 3) + pow(c, 3);
+    if(a==b||a==c||b==c)
+    {
+        int nCompareNum = a;
+        if(b == nCompareNum) nCount++;
+        if(c == nCompareNum) nCount++;
+        nCompareNum = b;
+        if(a == nCompareNum) nCount++;
+        if(c == nCompareNum) nCount++;
+        nCompareNum = c;
+        if(a == nCompareNum) nCount++;
+        if(b == nCompareNum) nCount++;
+    }
+    
+    switch(nCount)
+    {
+        case 6:
+            answer = (a+b+c)*doubleNum*tripleNum;
+            break;
+        case 2:
+            answer = (a+b+c)*doubleNum;
+            break;
+        default:
+            answer = a+b+c;
+            break;
+    }
+    return answer;
+}
