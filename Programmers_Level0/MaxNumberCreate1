@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#define SWAP(a,b)  {int tmp; tmp = a; a=b; b=tmp;}
+
+// numbers_len은 배열 numbers의 길이입니다.
+int solution(int numbers[], size_t numbers_len) {
+    int answer = 0;
+    
+    for(int i= numbers_len; i > 1; i--)
+    {
+        for(int j = 1; j < i; j++)
+        {
+            if(numbers[j-1] > numbers[j])
+                SWAP(numbers[j-1], numbers[j]);
+        }
+    }
+    
+    answer = numbers[numbers_len-1] * numbers[numbers_len-2];
+    
+    return answer;
+}
