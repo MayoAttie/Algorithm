@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+public class Solution {
+    public bool solution(string s)
+    {
+        Stack<char> stackArr = new Stack<char>();
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(')
+                stackArr.Push(s[i]);
+            else if (!StackNullCheek(stackArr) && stackArr.Peek() == '(')
+                stackArr.Pop();
+            else
+                return false;
+
+        }
+        return StackNullCheek(stackArr);
+    }
+
+    bool StackNullCheek(Stack<char> st)
+    {
+        if (st.Count == 0)
+            return true;
+        else
+            return false;
+    }
+}
