@@ -1,0 +1,34 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <set>
+
+using namespace std;
+
+int solution(int k, vector<int> tangerine) {
+    if(tangerine.size() == 1) return 1;
+    int answer = 0;
+    vector<int> vNumbers;
+    set<int> s;
+    for(int i=0; i<tangerine.size(); i++)
+    {
+        s.insert(tangerine[i]);
+    }
+    for(auto it=s.begin(); it!=s.end(); it++)
+    {
+        vNumbers.push_back(count(tangerine.begin(), tangerine.end(), *it));
+    }
+    sort(vNumbers.begin(), vNumbers.end(), greater<int>());
+    
+    for(int i=0; i<vNumbers.size(); i++)
+    {
+        answer++;
+        k -= vNumbers[i];
+        if(k<=0)
+        {
+            break;
+        }
+    }
+    
+    return answer;
+}
