@@ -1,0 +1,47 @@
+#include <string>
+#include <vector>
+#include <cstdlib>
+
+using namespace std;
+
+int solution(int n) {
+    int fectorials[10];
+    int nNum = 1;
+    int nMin = 3628800;
+    int answer = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        nNum = 1;
+        for (int j = 0; j < i + 1; j++)
+        {
+            nNum *= (j + 1);
+        }
+        fectorials[i] = nNum;
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (fectorials[i] == n)
+            return (i + 1);
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        if (i != 9)
+        {
+            if (nMin > abs(fectorials[i + 1] - n))
+            {
+                nMin = abs(fectorials[i + 1] - n);
+                answer = i + 2;
+            }
+            else if(nMin == 0)
+                nMin = abs(fectorials[i] - n);
+        }
+
+    }
+    
+    if(fectorials[answer-1] > n)
+        answer--;
+    
+    
+    return answer;
+}
