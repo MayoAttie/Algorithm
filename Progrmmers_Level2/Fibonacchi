@@ -1,0 +1,21 @@
+#include <string>
+#include <vector>
+#include <iostream> 
+using namespace std;
+
+int solution(int n) {
+    int answer = 0;
+    int max = n + 1;
+    int* fibNum = new int[max];
+    fibNum[0] = 0;
+    if (n > 0)
+    {
+        fibNum[1] = 1;
+        for (int i = 2; i < max; i++)
+        {
+            fibNum[i] = (fibNum[i - 1] + fibNum[i - 2]) % 1234567;
+        }
+    }
+    answer = fibNum[n];
+    return answer;
+}

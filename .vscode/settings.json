@@ -1,6 +1,7 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
-        "dicegame2": "cpp"
+        "dicegame2": "cpp",
+        "fibonacchi": "cpp"
     }
 }
