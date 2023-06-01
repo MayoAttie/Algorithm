@@ -1,0 +1,32 @@
+#include <vector>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+vector<int> solution(vector<int> arr) 
+{
+    vector<int> answer;
+    stack<int> stk;
+
+    for(int i = 0; i < arr.size(); i++)
+    {
+        bool found = false;
+        while(!stk.empty())
+        {
+            if(stk.top() == arr[i])
+            {
+                found = true;
+                break;
+            }
+            stk.pop();
+        }
+        
+        if(!found)
+        {
+            stk.push(arr[i]);
+            answer.push_back(arr[i]);
+        }
+    }
+    
+    return answer;
+}
