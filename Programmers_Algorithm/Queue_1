@@ -1,0 +1,43 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <iostream>
+using namespace std;
+
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
+    vector<int> answer;
+    queue<int> que;
+    for(int i=0; i<progresses.size(); i++)
+    {
+        int num = progresses[i];
+        int day = 0;
+        while(num <100)
+        {
+            num += speeds[i];
+            day++;
+        }
+        que.push(day);
+    }
+    int maxDay = que.front();
+    int count = 0; 
+    
+    while(!que.empty())
+    {
+        if(que.front() <= maxDay) 
+        {
+            count++; 
+            que.pop();
+        }
+        else
+        {
+            answer.push_back(count);
+            count = 0;
+            maxDay = que.front();
+        }
+    }
+    
+    if(count > 0)
+        answer.push_back(count);
+    
+    return answer;
+}
