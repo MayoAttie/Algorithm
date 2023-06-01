@@ -2,6 +2,15 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "dicegame2": "cpp",
-        "fibonacchi": "cpp"
+        "fibonacchi": "cpp",
+        "compare": "cpp",
+        "memory": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "xmemory": "cpp",
+        "xstring": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp"
     }
 }

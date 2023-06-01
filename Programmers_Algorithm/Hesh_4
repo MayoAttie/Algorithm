@@ -1,0 +1,23 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <iostream>
+using namespace std;
+
+int solution(vector<vector<string>> clothes) {
+    int answer = 1;
+    unordered_map<string, int> stringMap;
+
+    for(const auto& strVec : clothes)
+    {
+        string type = strVec[1];
+        stringMap[type]++;
+    }
+
+    for(const auto& pair : stringMap)
+    {
+        answer *= (pair.second + 1);
+    }
+    
+    return answer - 1;
+}
