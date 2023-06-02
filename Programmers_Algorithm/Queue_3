@@ -1,0 +1,33 @@
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int solution(int bridge_length, int weight, vector<int> truck_weights) {
+    int answer = 0;
+    queue<pair<int, int>> que;
+    int total_weight = 0;
+    int time = 0;
+    int index = 0;
+
+    while (true) 
+    {
+        time++;
+        if (!que.empty() && time - que.front().second >= bridge_length) 
+        {
+            total_weight -= que.front().first;
+            que.pop();
+        }
+        if (index < truck_weights.size() && total_weight + truck_weights[index] <= weight) 
+        {
+            total_weight += truck_weights[index];
+            que.push(make_pair(truck_weights[index], time));
+            index++;
+        }
+        if (que.empty() && index >= truck_weights.size())
+            break;
+    }
+
+    answer = time;
+    return answer;
+}
