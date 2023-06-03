@@ -1,0 +1,36 @@
+#include <string>
+#include <vector>
+#include <stack>
+using namespace std;
+
+vector<int> solution(vector<int> prices) {
+    int n = prices.size();
+    vector<int> answer(n, 0);
+    stack<int> duration;
+    
+    for(int i = 0; i < n; i++) {
+        while(!duration.empty() && prices[i] < prices[duration.top()]) {
+            int index = duration.top();
+            duration.pop();
+            
+            if (index >= n)
+                break;
+                
+            answer[index] = i - index;
+        }
+        duration.push(i);
+    }
+    
+    while(!duration.empty())
+    {
+        int index = duration.top();
+        duration.pop();
+        
+        if (index >= n)
+            break;
+            
+        answer[index] = n - index - 1;
+    }
+    
+    return answer;
+}
