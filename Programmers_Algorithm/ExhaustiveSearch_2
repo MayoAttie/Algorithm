@@ -1,0 +1,60 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <cmath>
+
+using namespace std;
+
+bool isPrime(int number) {
+    if (number <= 1)
+        return false;
+    int sqrtNum = sqrt(number);
+    for (int i = 2; i <= sqrtNum; i++) 
+    {
+        if (number % i == 0)
+            return false;
+    }
+    return true;
+}
+
+void NumberCombination(const string& numbers, string& current, vector<bool>& used, set<int>& combination)
+{
+    if (!current.empty())
+    {
+        int number = stoi(current);
+        if (isPrime(number))
+            combination.insert(number);
+    }
+    
+    for (int i = 0; i < numbers.size(); i++) 
+    {
+        if (!used[i]) 
+        {
+            used[i] = true;
+            current.push_back(numbers[i]);
+            NumberCombination(numbers, current, used, combination);
+            current.pop_back();
+            used[i] = false;
+        }
+    }
+}
+
+int solution(string numbers) {
+    int answer = 0;
+    
+    sort(numbers.begin(), numbers.end());
+    
+    set<int> combination;
+    vector<bool> used(numbers.size(), false);
+    
+    for (int len = 1; len <= numbers.size(); len++) 
+    {
+        string current;
+        NumberCombination(numbers, current, used, combination);
+    }
+    
+    answer = combination.size();
+    
+    return answer;
+}
