@@ -1,0 +1,21 @@
+int solution(string name) {
+    int answer = 0;
+    int index = name.size() - 1;
+    int len = name.size();
+    for (int i = 0; i < len; i++)
+    {
+        if (name[i] - 'A' <= 13) 
+            answer += (name[i] - 'A');
+        else
+            answer += 26 - (name[i] - 'A');
+
+        int next = i + 1;
+        while (next < name.size() && name[next] == 'A')
+            next++;
+        index = min(index, i + len - next + min(i, len - next));
+
+    }
+
+    answer += index;
+    return answer;
+}
