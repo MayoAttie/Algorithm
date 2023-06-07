@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int findParent(vector<int>& parent, int x) 
+{
+    while (parent[x] != x) 
+        x = parent[x];
+    return x;
+}
+
+void unionSet(vector<int>& parent, int a, int b) 
+{
+    a = findParent(parent, a);
+    b = findParent(parent, b);
+    
+    if (a < b) 
+        parent[b] = a;
+    else 
+        parent[a] = b;
+}
+
+bool compareCost(const vector<int>& a, const vector<int>& b) {return a[2] < b[2];}
+
+int solution(int n, vector<vector<int>> costs) {
+    sort(costs.begin(), costs.end(), compareCost);
+
+    vector<int> parent(n);
+    for (int i = 0; i < n; ++i)
+        parent[i] = i;
+
+    int answer = 0;
+
+    for (const auto& edge : costs) 
+    {
+        int a = edge[0];
+        int b = edge[1];
+        int cost = edge[2];
+        if (findParent(parent, a) != findParent(parent, b)) 
+        {
+            unionSet(parent, a, b);
+            answer += cost;
+        }
+    }
+
+    return answer;
+}
