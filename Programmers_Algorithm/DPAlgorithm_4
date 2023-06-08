@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(vector<int> money) {
+    int answer = 0;
+    vector<int> dp1(money.size()-1); // 첫 번째 집을 털 경우
+    vector<int> dp2(money.size()); // 첫 번째 집을 털지 않을 경우
+
+    // 첫 번째 집을 털 경우
+    dp1[0] = money[0];
+    dp1[1] = max(money[0], money[1]);
+    for(int i=2; i<dp1.size(); i++)
+    {
+        dp1[i] = max(dp1[i-2] + money[i], dp1[i-1]);
+    }
+    
+    // 첫 번째 집을 털지 않을 경우
+    dp2[0] = 0;
+    dp2[1] = money[1];
+    for(int i=2; i<dp2.size(); i++)
+    {
+        dp2[i] = max(dp2[i-2] + money[i], dp2[i-1]);
+    }
+    
+    answer = max(dp1.back(), dp2.back());
+    return answer;
+}
