@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int solution(vector<int> numbers, int target) {
+    int answer = 0;
+    stack<pair<int, int>> stk;
+    stk.push(make_pair(0, 0));
+    
+    while (!stk.empty()) {
+        int sum = stk.top().first;
+        int index = stk.top().second;
+        stk.pop();
+        
+        if (index == numbers.size())
+        {
+            if (sum == target) 
+                answer++;
+        } 
+        else 
+        {
+            stk.push(make_pair(sum + numbers[index], index + 1));
+            stk.push(make_pair(sum - numbers[index], index + 1));
+        }
+    }
+    
+    return answer;
+}
