@@ -1,0 +1,53 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+vector<string> answer;
+vector<string> temp;
+
+bool dfs(string currAirport, int ticketCount, unordered_map<string, vector<string>>& graph) 
+{
+    temp.push_back(currAirport);
+
+    if (ticketCount == 0) 
+    {
+        answer = temp;
+        return true;
+    }
+
+    if (graph.find(currAirport) != graph.end()) 
+    {
+        vector<string>& destinations = graph[currAirport];
+        for (int i = 0; i < destinations.size(); i++) 
+        {
+            string nextAirport = destinations[i];
+            destinations.erase(destinations.begin() + i);
+            if (dfs(nextAirport, ticketCount - 1, graph))
+                return true;
+            destinations.insert(destinations.begin() + i, nextAirport);
+        }
+    }
+
+    temp.pop_back();
+    return false;
+}
+
+vector<string> solution(vector<vector<string>> tickets) {
+    unordered_map<string, vector<string>> graph;
+    for (const auto& ticket : tickets) 
+    {
+        graph[ticket[0]].push_back(ticket[1]);
+    }
+
+    for (auto& entry : graph) 
+    {
+        sort(entry.second.begin(), entry.second.end());
+    }
+
+    dfs("ICN", tickets.size(), graph);
+
+    return answer;
+}
