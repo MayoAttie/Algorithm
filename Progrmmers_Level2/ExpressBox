@@ -1,0 +1,28 @@
+#include <queue>
+#include <stack>
+#include <vector>
+
+using namespace std;
+
+int solution(vector<int> order) {
+    int index = 0;
+    stack<int> stk;
+
+    for (int i = 0; i < order.size(); ++i) 
+    {
+        int box = i + 1;
+
+        if (box == order[index])
+            ++index;
+        else
+            stk.push(box);
+
+        while (!stk.empty() && stk.top() == order[index]) 
+        {
+            stk.pop();
+            ++index;
+        }
+    }
+
+    return index;
+}
