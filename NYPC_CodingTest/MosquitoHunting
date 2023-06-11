@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+/// <summary>
+/// 물폭탄을 설치하여, 최대한 많은 양의 모기를 제거하는 함수.
+/// </summary>
+/// <param name="N">맵의 넓이</param>
+/// <param name="M">물폭탄 물줄기 범위</param>
+/// <param name="field">2차원 모기 수량 벡터</param>
+/// <returns></returns>
+int solution(int N, int M, vector<vector<int>> field)
+{
+	int killCount = 0;
+
+	// map 벡터의 크기를 조정하여 초기화
+	vector<vector<int>> map(N + 2 * M, vector<int>(N + 2 * M, 0));
+	vector<vector<int>> kills(N, vector<int>(N, 0));
+
+	// 안쪽 부분을 field 벡터의 값으로 초기화
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			map[i + M][j + M] = field[i][j];
+		}
+	}
+
+	for (int i = M; i < N + M; i++)
+	{
+		for (int j = M; j < N + M; j++)
+		{
+			vector<int> killsData(2, 0);  // 각 좌표에서 얻은 데이터를 저장하는 벡터 [십자, 엑스]
+
+			// 현재 좌표의 모기 수
+			killsData[0] += map[i][j];
+			killsData[1] += map[i][j];
+
+			// 십자형 폭탄 설치
+			for (int k = 1; k <= M; k++)
+			{
+				killsData[0] += map[i - k][j];
+				killsData[0] += map[i][j - k];
+				killsData[0] += map[i + k][j];
+				killsData[0] += map[i][j + k];
+			}
+
+			// 대각선 폭탄 설치
+			for (int k = 1; k <= M; k++)
+			{
+				killsData[1] += map[i - k][j - k];
+				killsData[1] += map[i - k][j + k];
+				killsData[1] += map[i + k][j - k];
+				killsData[1] += map[i + k][j + k];
+			}
+
+			// 가장 많은 모기를 퇴치한 수를 구함
+			int maxKill = max(killsData[0], killsData[1]);
+
+			kills[i - M][j - M] = maxKill;  // kills 벡터에 데이터 저장
+			killCount = max(killCount, maxKill);  // 전체 퇴치 수 갱신
+		}
+	}
+
+
+	return killCount;
+
+}
+
+int main()
+{
+	vector<vector<int>> map1 =
+	{
+		{1,2,1},
+		{2,2,2},
+		{1,2,1}
+	};
+	vector<vector<int>> map2 =
+	{
+		{2, 18, 6, 2, 3},
+		{5, 11, 9, 12, 5},
+		{7, 21, 13, 19, 6},
+		{8, 4, 1, 24, 1},
+		{7, 3, 5, 7, 3}
+	};
+
+	cout << "field 1 is " << solution(3, 1, map1) << endl;
+	cout << "field 2 is " << solution(5, 2, map2) << endl;
+
+}
