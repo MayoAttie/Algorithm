@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+vector<vector<int>> grid;  // 입력 그리드
+vector<vector<int>> colored;  // 색이 칠해진 그리드
+vector<vector<string>> operations;  // 수행한 작업 목록
+
+void dfs(int y, int x, int color, int last)
+{
+    if (last == 0)
+    {
+        // 가로 방향으로 색을 칠하는 경우
+
+        operations.push_back({ "V", to_string(x + 1), to_string(color) });  // 연산 목록에 추가: V x color
+
+        for (int i = 0; i < grid.size(); i++)
+            colored[i][x] = color;  // 해당 열의 모든 행에 color 색을 칠함
+
+        for (int i = 0; i < grid.size(); i++)
+        {
+            // 색이 칠해지지 않았거나 현재 색과 다른 경우이며, 0이 아닌 경우에만 재귀 호출하여 다음 위치를 탐색
+            if (colored[i][x] != grid[i][x] && grid[i][x] != 0)
+                dfs(i, x, grid[i][x], 1);
+        }
+    }
+    else
+    {
+        // 세로 방향으로 색을 칠하는 경우
+
+        operations.push_back({ "H", to_string(y + 1), to_string(color) });  // 연산 목록에 추가: H y color
+
+        for (int i = 0; i < grid[0].size(); i++)
+            colored[y][i] = color;  // 해당 행의 모든 열에 color 색을 칠함
+
+        for (int i = 0; i < grid[0].size(); i++)
+        {
+            // 색이 칠해지지 않았거나 현재 색과 다른 경우이며, 0이 아닌 경우에만 재귀 호출하여 다음 위치를 탐색
+            if (colored[y][i] != grid[y][i] && grid[y][i] != 0)
+                dfs(y, i, grid[y][i], 0);
+        }
+    }
+}
+
+void solution(int numRows, int numCols)
+{
+    // 그리드 l을 순회하며 색을 칠할 위치 탐색
+    for (int i = 0; i < numRows; i++)
+    {
+        for (int j = 0; j < numCols; j++)
+        {
+            if (grid[i][j] != colored[i][j] && grid[i][j] != 0)
+            {
+                int ycnt = 0, xcnt = 0;
+                for (int ii = 0; ii < numCols; ii++)
+                {
+                    if (grid[i][ii] == grid[i][j])
+                        xcnt++;
+                }
+                for (int ii = 0; ii < numRows; ii++)
+                {
+                    if (grid[ii][j] == grid[i][j])
+                        ycnt++;
+                }
+
+                if (ycnt >= xcnt)
+                    dfs(i, j, grid[i][j], 0);  // 가로 방향으로 색을 칠함
+                else
+                    dfs(i, j, grid[i][j], 1);  // 세로 방향으로 색을 칠함
+            }
+        }
+    }
+
+    int ant = operations.size();  // 색을 칠하는 횟수
+
+    cout << ant << '\n';  // 색을 칠하는 횟수 출력
+    for (int i = 0; i < ant; i++)
+        cout << operations[i][0] << ' ' << operations[i][1] << ' ' << operations[i][2] << '\n';  // 연산 목록 출력
+
+
+}
+
+
+int main()
+{
+
+    int numRows, numCols;
+    cin >> numRows >> numCols;
+
+    grid.resize(numRows, vector<int>(numCols));  // 그리드 l을 크기 numRows x numCols로 초기화
+    colored.resize(numRows, vector<int>(numCols));  // 색이 칠해진 그리드를 크기 numRows x numCols로 초기화
+    operations.clear();  // 연산 목록 pr 초기화
+
+    // 그리드 l에 색 정보 입력
+    for (int i = 0; i < numRows; i++)
+    {
+        for (int j = 0; j < numCols; j++)
+            cin >> grid[i][j];
+    }
+
+
+    solution(numRows, numCols);
+    
+
+    return 0;
+}
