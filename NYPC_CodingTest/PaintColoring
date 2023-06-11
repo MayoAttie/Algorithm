@@ -53,14 +53,14 @@ void solution(int numRows, int numCols)
             if (grid[i][j] != colored[i][j] && grid[i][j] != 0)
             {
                 int ycnt = 0, xcnt = 0;
-                for (int ii = 0; ii < numCols; ii++)
+                for (int m = 0; m < numCols; m++)
                 {
-                    if (grid[i][ii] == grid[i][j])
+                    if (grid[i][m] == grid[i][j])
                         xcnt++;
                 }
-                for (int ii = 0; ii < numRows; ii++)
+                for (int m = 0; m < numRows; m++)
                 {
-                    if (grid[ii][j] == grid[i][j])
+                    if (grid[m][j] == grid[i][j])
                         ycnt++;
                 }
 
