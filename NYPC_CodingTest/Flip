@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int solution(int N, vector<int>& scores)
+{
+    vector<int> dp_left(N);
+    vector<int> dp_right(N);
+    dp_left[0] = scores[0];
+    dp_right[N - 1] = scores[N - 1];
+
+    // 왼쪽에서 오른쪽으로 순회하며 dp_left 배열 초기화
+    for (int i = 1; i < N; i++) 
+    {
+        // 현재 선수의 실력과 이전까지의 가장 큰 실력의 합을 비교하여 갱신
+        dp_left[i] = max(scores[i], dp_left[i - 1] + scores[i]);
+    }
+
+    // 오른쪽에서 왼쪽으로 순회하며 dp_right 배열 초기화
+    for (int i = N - 2; i >= 0; i--) 
+    {
+        // 현재 선수의 실력과 이후까지의 가장 큰 실력의 합을 비교하여 갱신
+        dp_right[i] = max(scores[i], dp_right[i + 1] + scores[i]);
+    }
+
+    int maxSum = max(dp_left[N - 2], dp_right[1]);
+
+    // 중간 선수를 선택하여 뒤집은 경우와 선택하지 않은 경우를 비교하여 최대 실력의 합 계산
+    for (int i = 1; i < N - 1; i++)
+    {
+        // 좌우 순서를 뒤집은 경우의 최대 실력의 합
+        int reversedSum = dp_left[i - 1] + dp_right[i + 1];
+        // 일반적인 경우의 최대 실력의 합
+        int normalSum = max(dp_left[i - 1], dp_right[i + 1]);
+        // 두 경우 중 더 큰 값을 선택하여 최대 실력의 합 갱신
+        maxSum = max(maxSum, max(reversedSum, normalSum));
+    }
+
+    return maxSum;
+}
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> scores(N);
+    for (int i = 0; i < N; i++) {
+        cin >> scores[i];
+    }
+
+    int answer = solution(N, scores);
+    cout << answer << endl;
+
+    return 0;
+}
