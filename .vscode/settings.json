@@ -13,6 +13,7 @@
         "xtr1common": "cpp",
         "xutility": "cpp",
         "initializer_list": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "longestpalindrome": "cpp"
     }
 }
