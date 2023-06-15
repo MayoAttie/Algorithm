@@ -1,0 +1,38 @@
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<int> solution(vector<int> sequence, int k) {
+    vector<int> answer;
+    int left =0;
+    int right =0;
+    int sum = sequence[0];
+    int min_length = sequence.size() + 1;
+    
+    while (right < sequence.size()) {
+        if (sum == k) 
+        {
+            int length = right - left + 1;
+            if (length < min_length) 
+            {
+                min_length = length;
+                answer = {left, right};
+            }
+            sum -= sequence[left];
+            left++;
+        }
+        else if (sum < k) 
+        {
+            right++;
+            if (right < sequence.size())
+                sum += sequence[right];
+        }
+        else
+        {
+            sum -= sequence[left];
+            left++;
+        }
+    }
+    return answer;
+}
