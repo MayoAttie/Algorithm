@@ -1,0 +1,46 @@
+#include <string>
+#include <set>
+using namespace std;
+
+int solution(string dirs) {
+    set<pair<pair<int, int>, pair<int, int>>> visited; // 방문한 좌표 쌍을 저장하는 set
+    int x = 0, y = 0; // 캐릭터의 초기 위치
+    int answer = 0;
+    
+    for (char command : dirs) {
+        int prevX = x;
+        int prevY = y;
+        
+        switch (command) {
+            case 'U':
+                if (y + 1 <= 5) 
+                y++; // 범위를 벗어나지 않으면 y 좌표 증가
+                break;
+            case 'D':
+                if (y - 1 >= -5)
+                 y--; // 범위를 벗어나지 않으면 y 좌표 감소
+                break;
+            case 'R':
+                if (x + 1 <= 5)
+                 x++; // 범위를 벗어나지 않으면 x 좌표 증가
+                break;
+            case 'L':
+                if (x - 1 >= -5)
+                 x--; // 범위를 벗어나지 않으면 x 좌표 감소
+                break;
+        }
+        
+        // 이동한 경우에만 처리
+        if (prevX != x || prevY != y) 
+        { 
+            // 이전 위치(prevX, prevY)와 현재 위치(x, y)의 좌표 쌍을 visited에 추가
+            if (visited.insert({{prevX, prevY}, {x, y}}).second) 
+            {
+                visited.insert({{x, y}, {prevX, prevY}});
+                answer++; // 처음 걸어본 길이므로 answer 증가
+            }
+        }
+    }
+    
+    return answer;
+}
