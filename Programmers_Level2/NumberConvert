@@ -7,7 +7,8 @@ int solution(int x, int y, int n) {
     vector<int> dp(y + 1, numeric_limits<int>::max());
     dp[x] = 0; // 시작점의 최소 연산 횟수는 0으로 초기화합니다.
 
-    for (int i = x; i <= y; i++) {
+    for (int i = x; i <= y; i++) 
+    {
         if (dp[i] == numeric_limits<int>::max())
             continue; // 이전에 도달하지 못한 값은 스킵합니다.
 
