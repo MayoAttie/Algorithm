@@ -1,0 +1,90 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <map>
+#include <cmath>
+using namespace std;
+
+// 주차 요금을 계산하는 함수
+int calculateFee(vector<int>& fees, int minSum)
+{
+    int standardTime = fees[0];  // 기본 시간
+    int standardFee = fees[1];   // 기본 요금
+    int unitTime = fees[2];      // 단위 시간
+    int unitFee = fees[3];       // 단위 요금
+
+    int fee = 0;
+    
+    if (minSum <= standardTime) 
+        fee = standardFee;  // 기본 시간 이내 주차일 경우 기본 요금 적용
+    else 
+        fee = standardFee + ceil((minSum - standardTime) / static_cast<double>(unitTime)) * unitFee;  // 초과 시간에 대한 추가 요금 계산
+
+    return fee;
+}
+
+
+vector<int> solution(vector<int> fees, vector<string> records) {
+    unordered_map<string, string> recordMap;  // 차량번호와 입차 시간을 저장하는 맵
+    map<string, int> timeMap;  // 차량번호와 주차 시간의 합을 저장하는 맵
+
+    // 주차 기록을 순회하며 입차와 출차 기록을 처리
+    for (int i = 0; i < records.size(); i++) 
+    {
+        string time, num, status;
+        size_t spacePos = records[i].find(' ');
+        time = records[i].substr(0, spacePos);
+        size_t nextSpacePos = records[i].find(' ', spacePos + 1);
+        num = records[i].substr(spacePos + 1, nextSpacePos - spacePos - 1);
+        status = records[i].substr(nextSpacePos + 1);
+
+        if (status == "IN") 
+            recordMap[num] = time;  // 입차 기록 저장
+        else 
+        {
+            string inTime = recordMap[num];
+            recordMap.erase(num);  // 출차 기록이므로 입차 기록 삭제
+
+            int inMinute = stoi(inTime.substr(0, 2)) * 60 + stoi(inTime.substr(3));  // 입차 시간 분 단위로 변환
+            int outMinute = stoi(time.substr(0, 2)) * 60 + stoi(time.substr(3));  // 출차 시간 분 단위로 변환
+            int parkTime = outMinute - inMinute;  // 주차 시간 계산
+
+            if (timeMap.count(num)) 
+            {
+                int minSum = timeMap[num];
+                timeMap[num] = minSum + parkTime;  // 기존 주차 시간에 현재 주차 시간을 더함
+            } 
+            else 
+                timeMap[num] = parkTime;  // 차량번호와 주차 시간을 맵에 저장
+        }
+    }
+
+    // 아직 출차 기록이 없는 차량들에 대해 23:59 출차 기록을 추가하여 주차 시간 계산
+    for (const auto& pair : recordMap) 
+    {
+        string inTime = pair.second;
+        int inMinute = stoi(inTime.substr(0, 2)) * 60 + stoi(inTime.substr(3));  // 입차 시간 분 단위로 변환
+        int outMinute = 23 * 60 + 59;  // 23시 59분을 출차 시간으로 설정
+        int parkTime = outMinute - inMinute;  // 주차 시간 계산
+
+        if (timeMap.count(pair.first)) 
+        {
+            int minSum = timeMap[pair.first];
+            timeMap[pair.first] = minSum + parkTime;  // 기존 주차 시간에 현재 주차 시간을 더함
+        } 
+        else 
+            timeMap[pair.first] = parkTime;  // 차량번호와 주차 시간을 맵에 저장
+    }
+
+    vector<int> answer(timeMap.size());
+    int index = 0;
+    for (const auto& pair : timeMap) 
+    {
+        int minSum = pair.second;
+        int fee = calculateFee(fees, minSum);  // 주차 요금 계산
+        answer[index] = fee;  // 결과 배열에 요금 저장
+        index++;
+    }
+
+    return answer;  // 결과 배열 반환
+}
