@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+int bfs(int start, int n, vector<vector<int>>& graph) 
+{
+    vector<bool> visited(n + 1, false); // 방문 여부 체크
+    visited[start] = true;
+    queue<int> q;
+    q.push(start);
+    int cnt = 1; // 현재 전력망의 송전탑 개수
+
+    while (!q.empty()) 
+    {
+        int node = q.front();
+        q.pop();
+        for (int neighbor : graph[node])
+         {
+            if (!visited[neighbor]) 
+            {
+                visited[neighbor] = true;
+                q.push(neighbor);
+                cnt++;
+            }
+        }
+    }
+
+    int diff = abs(n - 2 * cnt); // 두 전력망의 송전탑 개수 차이
+    return diff;
+}
+
+int solution(int n, vector<vector<int>> wires)
+ {
+    int answer = INT_MAX; // 최솟값 초기화
+    vector<vector<int>> graph(n + 1); // 그래프 생성 (인접 리스트)
+
+    for (auto wire : wires)
+     {
+        int v1 = wire[0];
+        int v2 = wire[1];
+
+        graph[v1].push_back(v2);
+        graph[v2].push_back(v1);
+    }
+
+    for (auto wire : wires) 
+    {
+        int v1 = wire[0];
+        int v2 = wire[1];
+        // 전선 하나를 끊음
+
+        graph[v1].erase(find(graph[v1].begin(), graph[v1].end(), v2));
+        graph[v2].erase(find(graph[v2].begin(), graph[v2].end(), v1));
+
+        int diff = bfs(v1, n, graph); // bfs 수행
+        answer = min(answer, diff);
+        
+        // 전선 복구
+        graph[v1].push_back(v2);
+        graph[v2].push_back(v1);
+    }
+
+    return answer;
+}
