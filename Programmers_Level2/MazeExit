@@ -1,0 +1,98 @@
+#include <vector>
+#include <string>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+// 특정 문자의 위치를 찾는 함수
+pair<int, int> findPosition(const vector<string>& maps, char target)
+{
+    int y = maps.size();
+    int x = maps[0].length();
+
+    for (int i = 0; i < y; i++) 
+    {
+        for (int j = 0; j < x; j++) 
+        {
+            if (maps[i][j] == target) 
+                return make_pair(i, j); // 해당 문자를 찾으면 위치 반환
+        }
+    }
+
+    return make_pair(-1, -1); // 해당 문자를 찾지 못한 경우 -1을 반환
+}
+
+// BFS를 사용하여 최단 거리 계산
+int bfs(const vector<string>& maps, int startX, int startY, int endX, int endY) 
+{
+    int n = maps.size();
+    int m = maps[0].size();
+    vector<vector<int>> dist(n, vector<int>(m, -1)); // 각 위치까지의 최단 거리를 저장하는 배열
+    queue<pair<int, int>> q; // BFS를 위한 큐
+    vector<int> dx = {-1, 0, 1, 0}; // 상하좌우 이동을 위한 x 방향 배열
+    vector<int> dy = {0, 1, 0, -1}; // 상하좌우 이동을 위한 y 방향 배열
+
+    q.push(make_pair(startX, startY)); // 시작 위치를 큐에 추가
+    dist[startX][startY] = 0; // 시작 위치의 최단 거리를 0으로 초기화
+
+    while (!q.empty()) 
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+
+        if (x == endX && y == endY) 
+            return dist[x][y]; // 목적지에 도착한 경우 해당 위치까지의 최단 거리 반환
+
+        for (int i = 0; i < 4; i++) 
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            // 범위 내에 있고 방문하지 않았으며 벽이 아닌 경우
+            if (nx >= 0 && nx < n && ny >= 0 && ny < m && dist[nx][ny] == -1 && maps[nx][ny] != 'X')
+            {
+                q.push(make_pair(nx, ny)); // 다음 위치를 큐에 추가
+                dist[nx][ny] = dist[x][y] + 1; // 최단 거리 갱신
+            }
+        }
+    }
+
+    return -1; // 목적지에 도달할 수 없는 경우 -1을 반환
+}
+
+int solution(vector<string> maps) {
+    int n = maps.size();
+    int m = maps[0].size();
+
+    // 시작 위치, 레버 위치, 출구 위치를 찾음
+    pair<int, int> startPos = findPosition(maps, 'S');
+    pair<int, int> leverPos = findPosition(maps, 'L');
+    pair<int, int> exitPos = findPosition(maps, 'E');
+
+    // 출발지, 레버, 출구 중 하나라도 발견되지 않은 경우 -1을 반환
+    if (startPos.first == -1 || leverPos.first == -1 || exitPos.first == -1)
+        return -1;
+    
+    // 각 위치의 좌표 저장
+    int startX = startPos.first;
+    int startY = startPos.second;
+    int leverX = leverPos.first;
+    int leverY = leverPos.second;
+    int exitX = exitPos.first;
+    int exitY = exitPos.second;
+
+    // 시작 지점(S)에서 레버(L)까지의 최단 거리 계산
+    int startToLever = bfs(maps, startX, startY, leverX, leverY);
+
+    // 레버(L) 위치에서 출구(E)까지의 최단 거리 계산
+    int leverToExit = bfs(maps, leverX, leverY, exitX, exitY);
+
+    // 출구나 레버에 도달할 수 없는 경우 -1을 반환
+    if (startToLever == -1 || leverToExit == -1)
+        return -1;
+
+    int totalTime = startToLever + leverToExit; // 총 걸리는 시간 계산
+    return totalTime; // 총 걸리는 시간 반환
+}
