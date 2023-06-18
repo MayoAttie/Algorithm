@@ -1,0 +1,58 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+int converter(string str) 
+{
+    // 시간을 분리하는 구분자
+    string delimiter = ":";
+    // 구분자의 위치를 찾음
+    size_t pos = str.find(delimiter);
+     // 구분자 이전의 문자열을 시간(hour)으로 변환
+    int hour = stoi(str.substr(0, pos));
+     // 구분자 이후의 문자열을 분(minutes)으로 변환
+    int minutes = stoi(str.substr(pos + delimiter.length()));
+    // 시간(hour)과 분(minutes)을 합산하여 분 단위의 시간으로 반환
+    return hour * 60 + minutes;
+}
+
+int solution(vector<vector<string>> book_time)
+ {
+    vector<pair<int, int>> timeList;
+    vector<int> roomList;
+    
+    // 문자열 시간을 숫자로 변환하여 timeList에 저장
+    for (int i = 0; i < book_time.size(); ++i) 
+    {
+        int inTime = converter(book_time[i][0]);
+        int outTime = converter(book_time[i][1]);
+        timeList.push_back(make_pair(inTime, outTime));
+    }
+
+    // 입실 시간 기준으로 timeList 정렬
+    sort(timeList.begin(), timeList.end());
+
+    // 각 예약별로 방 배정
+    for (auto time : timeList) 
+    {
+        int room = -1;
+        for (int i = 0; i < roomList.size(); ++i) 
+        {
+            // 현재 방에서의 퇴실 시간과 다음 예약의 입실 시간 비교
+            if (roomList[i] <= time.first - 10)
+            {
+                room = i;
+                break;
+            }
+        }
+
+        if (room == -1)
+            roomList.push_back(time.second); // 새로운 방 배정
+        else
+            roomList[room] = time.second; // 기존 방 재사용
+    }
+
+    return roomList.size(); // 필요한 방의 개수 반환
+}
