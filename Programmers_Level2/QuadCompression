@@ -1,0 +1,54 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+// arr: 2차원 정수 배열
+// n: 현재 영역의 크기
+// x, y: 현재 영역의 좌상단 좌표
+vector<int> compress(vector<vector<int>>& arr, int n, int x, int y) 
+{
+    vector<int> counts(2, 0);  // 0과 1의 개수를 저장할 벡터
+    int target = arr[y][x];  // 현재 영역의 첫 번째 원소 값
+    bool isSame = true;  // 현재 영역 내의 값이 모두 같은지 여부
+    
+    // 현재 영역 내의 값이 모두 같은지 확인
+    for (int i = y; i < y + n; i++) 
+    {
+        for (int j = x; j < x + n; j++) 
+        {
+            if (arr[i][j] != target)
+            {
+                isSame = false;
+                break;
+            }
+        }
+        
+        if (!isSame)
+            break;
+    }
+    
+    if (isSame) 
+        counts[target]++;  // 현재 영역 내의 값이 모두 같다면 해당 값을 카운트
+    
+    else 
+    {
+        int half = n / 2;  // 현재 영역의 절반 크기
+        vector<int> c1 = compress(arr, half, x, y);  // 좌상단 영역
+        vector<int> c2 = compress(arr, half, x + half, y);  // 우상단 영역
+        vector<int> c3 = compress(arr, half, x, y + half);  // 좌하단 영역
+        vector<int> c4 = compress(arr, half, x + half, y + half);  // 우하단 영역
+        
+        // 4개의 작은 영역에서 얻은 값을 합산하여 현재 영역의 결과로 설정
+        for (int i = 0; i < 2; i++)
+        {
+            counts[i] = c1[i] + c2[i] + c3[i] + c4[i];
+        }
+    }
+    
+    return counts;
+}
+
+vector<int> solution(vector<vector<int>> arr) {
+    return compress(arr, arr.size(), 0, 0);  // 처음에는 전체 영역을 압축
+}
