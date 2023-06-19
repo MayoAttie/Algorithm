@@ -1,0 +1,37 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(int storey) {
+    int answer = 0;
+
+    while (storey != 0) {
+        int num = storey % 10;  // storey의 일의 자리 숫자를 가져옵니다.
+
+        if (num > 5) {
+            answer += 10 - num;  // answer에 10과 num의 차이를 더합니다.
+            storey = storey / 10;  // 다음 자릿수로 이동합니다.
+            storey = storey + 1;  // 0에 도달하기 위해 storey를 1 증가시킵니다.
+        }
+        else if (num < 5) {
+            answer = answer + num;  // answer에 num의 값을 더합니다.
+            storey = storey / 10;  // 다음 자릿수로 이동합니다.
+        }
+        else {  // num == 5인 경우
+            int tmp = (storey / 10) % 10;  // 다음 자릿수의 값을 가져옵니다.
+            
+            if (tmp >= 5) {
+                storey = storey / 10;  // 다음 자릿수로 이동합니다.
+                storey = storey + 1;  // 0에 도달하기 위해 storey를 1 증가시킵니다.
+            }
+            else {
+                storey = storey / 10;  // 다음 자릿수로 이동합니다.
+            }
+            
+            answer = answer + 5;  // answer에 5를 더합니다.
+        }
+    }
+    
+    return answer;
+}
