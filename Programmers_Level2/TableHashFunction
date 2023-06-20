@@ -1,0 +1,39 @@
+    
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Compare 
+{
+    int col;
+    Compare(int col) : col(col) {}
+
+    bool operator()(const vector<int>& a, const vector<int>& b) const 
+    {
+        if (a[col - 1] == b[col - 1]) 
+            return a[0] > b[0]; // 내림차순으로 정렬
+        
+        return a[col - 1] < b[col - 1]; // 오름차순으로 정렬
+    }
+};
+
+int solution(vector<vector<int>> data, int col, int row_begin, int row_end) {
+    int answer = 0;
+    // 데이터를 정렬합니다.
+    sort(data.begin(), data.end(), Compare(col));
+
+    // row_begin과 row_end 사이에 해당하는 S_i 값을 누적하여 bitwise XOR 연산을 수행합니다.
+    for (int i = row_begin - 1; i < row_end; ++i) 
+    {
+        vector<int>& tuple_data = data[i]; // 현재 튜플 데이터
+        int s_i = 0; // S_i 계산
+        for (int j = 0; j < tuple_data.size(); ++j)
+        {
+            s_i += tuple_data[j] % (i + 1);
+        }
+        answer ^= s_i; // 해시 값에 XOR 연산 수행
+    }
+
+    return answer;
+}
