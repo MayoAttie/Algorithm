@@ -1,0 +1,55 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+void distributeProfit(unordered_map<string, string>& referralMap, unordered_map<string, int>& profitMap, const string& seller, int amount) 
+{
+    int profit = amount * 100;  // 판매 이익 계산
+    string currentSeller = seller;
+
+    while (profit > 0)
+    {
+        int distributedProfit = profit * 0.1;
+        int remainProfit = profit - distributedProfit;
+
+        profitMap[currentSeller] += remainProfit;  // 모든 이익을 자신이 가짐
+
+        if (distributedProfit >= 1)
+        {
+            profit = distributedProfit;
+            if(referralMap[currentSeller]!= "-")
+                currentSeller = referralMap[currentSeller];  // 추천인으로 이동
+            else
+                profit=0;
+        }
+        else
+            profit=0;
+    }
+
+}
+
+vector<int> solution(vector<string> enroll, vector<string> referral, vector<string> seller, vector<int> amount) 
+{
+    vector<int> answer;
+    unordered_map<string, string> referralMap;  // 판매원과 추천인의 관계를 저장하는 맵
+    unordered_map<string, int> profitMap;  // 판매원의 이익을 저장하는 맵
+
+    for (int i = 0; i < enroll.size(); i++)
+    {
+        referralMap[enroll[i]] = referral[i];
+        profitMap[enroll[i]] = 0;
+    }
+
+    for (int i = 0; i < seller.size(); i++)
+    {
+        distributeProfit(referralMap, profitMap, seller[i], amount[i]);
+    }
+
+    for (const auto& name : enroll)
+    {
+        answer.push_back(profitMap[name]);
+    }
+
+    return answer;
+}
