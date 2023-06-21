@@ -1,0 +1,67 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <cmath>
+
+using namespace std;
+
+// 주어진 좌표 (row, col)에서 출발하여 너비 우선 탐색(BFS)을 수행하는 함수
+bool bfs(int row, int col, const vector<string>& place) 
+{
+    int deltaRow[] = {-1, 1, 0, 0}; // 행 좌표의 변화량 (상, 하, 좌, 우)
+    int deltaCol[] = {0, 0, -1, 1}; // 열 좌표의 변화량 (상, 하, 좌, 우)
+
+    queue<pair<int, int>> queue;
+    queue.push(make_pair(row, col)); // 시작 위치를 큐에 넣습니다.
+
+    while (!queue.empty()) 
+    {
+        pair<int, int> currentPosition = queue.front();
+        queue.pop();
+
+        for (int i = 0; i < 4; i++) 
+        {
+            int newRow = currentPosition.first + deltaRow[i];
+            int newCol = currentPosition.second + deltaCol[i];
+
+            // 새로운 좌표가 유효하고 그리드의 범위 내에 있는지 확인합니다.
+            if (newRow < 0 || newCol < 0 || newRow >= 5 || newCol >= 5 || (newRow == row && newCol == col))
+                continue; // 좌표가 유효하지 않으면 다음 반복으로 넘어갑니다.
+
+            int distance = abs(newRow - row) + abs(newCol - col); // 새 위치와 시작 위치 사이의 맨하탄 거리를 계산합니다.
+
+            if (place[newRow][newCol] == 'P' && distance <= 2)
+                return false; // 만약 새 위치에 사람('P')이 있고, 맨하탄 거리가 2 이하이면 false를 반환합니다. (유효하지 않음)
+            else if (place[newRow][newCol] == 'O' && distance < 2)
+                queue.push(make_pair(newRow, newCol)); // 만약 새 위치에 빈 자리('O')가 있고, 맨하탄 거리가 2 미만이면 큐에 추가합니다.
+        }
+    }
+
+    return true; // 유효한 조건이 없으면 true를 반환합니다. (유효함)
+}
+
+// places를 검사하여 정답을 담은 벡터를 반환하는 함수
+vector<int> solution(vector<vector<string>> places) {
+    vector<int> answer(places.size()); // 정답을 저장할 벡터를 생성합니다.
+
+    for (int i = 0; i < places.size(); i++) 
+    {
+        vector<string> place = places[i]; // 현재 장소를 가져옵니다.
+
+        bool isMht = true; // 현재 장소가 유효한지를 판단하는 플래그입니다.
+        for (int row = 0; row < 5 && isMht; row++) 
+        {
+            for (int col = 0; col < 5 && isMht; col++) 
+            {
+                if (place[row][col] == 'P') 
+                {
+                    if (!bfs(row, col, place))
+                        isMht = false; // 사람('P')이 유효하지 않은 조건을 만족하면 플래그를 false로 설정합니다.
+                }
+            }
+        }
+        answer[i] = isMht ? 1 : 0; // 현재 장소의 정답을 저장합니다. (유효하면 1, 유효하지 않으면 0)
+    }
+
+    return answer; // 정답 벡터를 반환합니다.
+}
