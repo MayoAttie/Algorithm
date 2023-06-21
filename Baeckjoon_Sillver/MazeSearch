@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+
+int bfs(const vector<vector<int>> map, const int N, const int M);
+
+int main()
+{
+	vector<vector<int>> graphMap;
+	int answer;
+	int N, M;
+
+	cin >> N >> M;
+
+	graphMap.resize(N);
+	
+
+	for (int i = 0; i < N; i++)
+	{
+		graphMap[i].resize(M);
+		string row;
+		cin >> row;
+		for (int j = 0; j < M; j++)
+		{
+			graphMap[i][j] = row[j] - '0';
+		}
+	}
+
+
+	answer = bfs(graphMap,N,M);
+	
+	cout <<  answer << endl;
+
+}
+
+int bfs(const vector<vector<int>> map, const int N, const int M)
+{
+	int answer = 0;
+	int x = 0;
+	int y = 0;
+	vector<vector<bool>> visited(N, vector<bool>(M, false));
+	vector<vector<int>> movePointSave(N, vector<int>(M, 0));
+	queue<pair<int, int>> que;
+	que.push(make_pair(x,y));
+
+	vector<int> moverX = { 0, 1, 0, -1};
+	vector<int> movery = { 1, 0, -1, 0};
+
+	while (!que.empty())
+	{
+		pair<int, int> current = que.front();
+		int now[2];
+		now[0] = current.first;
+		now[1] = current.second;
+
+		visited[x][y] = true;
+		que.pop();
+
+		for (int i = 0; i < 4; i++)
+		{
+			int x = now[0] + moverX[i];
+			int y = now[1] + movery[i];
+
+			if (x >= 0 && x  < N && y >= 0 && y < M)
+			{
+				if (!visited[x][y] && map[x][y] != 0)
+				{
+					que.push(make_pair(x, y));
+					visited[x][y] = true;
+					movePointSave[x][y] = movePointSave[now[0]][now[1]] + 1;
+
+					// 도착 지점에 도달한 경우에 대한 처리
+					if (x == N - 1 && y == M - 1)
+					{
+						// 도착 지점까지의 이동 횟수를 정답에 저장하고 종료
+						answer = movePointSave[x][y] +1;  // 1을 더해주어야 올바른 값
+						return answer;
+					}
+				}
+			}
+
+		}
+
+		
+	}
+
+
+	return answer;
+}
