@@ -1,0 +1,51 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+using namespace std;
+
+// 시소 짝꿍을 찾는 함수
+// 시소1/거리2 == 시소2/거리1인 경우를 찾아야 함
+
+long long solution(vector<int> weights) {
+    long long answer = 0;
+    long long sameWeight = 0;
+    // 각 무게의 등장 횟수를 저장하기 위한 unordered_map
+    unordered_map<int, int> dict;
+    unordered_set<int> matchWeight;
+    
+    for (int i : weights) 
+    {
+        dict[i]++;
+    }
+
+    // 매치된 무게를 저장하기 위한 unordered_set
+    for (int i = 0; i < weights.size(); ++i) 
+    {
+        int cur = weights[i];
+        if (cur % 3 == 0) 
+        {
+            if (dict.find(cur * 2 / 3) != dict.end()) 
+                answer += dict[cur * 2 / 3];
+        }
+
+        if (cur % 2 == 0) {
+            if (dict.find(cur / 2) != dict.end()) 
+                answer += dict[cur / 2];
+
+            if (cur % 4 == 0) {
+                if (dict.find(cur * 3 / 4) != dict.end()) 
+                    answer += dict[cur * 3 / 4];
+            }
+        }
+    }
+
+    // 몸무게가 같은 경우는 nC2 개수를 구하여 더해줌
+    for (auto& pair : dict) 
+    {
+        if (pair.second > 1) 
+            sameWeight += (long long)pair.second * (pair.second - 1) / 2;
+    }
+
+    return answer + sameWeight;
+}
