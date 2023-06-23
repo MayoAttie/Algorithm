@@ -1,0 +1,62 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> solution(int rows, int columns, vector<vector<int>> queries) {
+    vector<int> answer;
+    vector<vector<int>> fullNumbers(rows, vector<int>(columns));
+
+    // 2차원 배열 초기화
+    for (int i = 0; i < rows; i++)
+     {
+        for (int j = 0; j < columns; j++)
+         {
+            fullNumbers[i][j] = i * columns + j + 1;
+        }
+    }
+
+    // 회전 쿼리 수행
+    for (int i = 0; i < queries.size(); i++)
+    {
+        int r1 = queries[i][0] - 1;
+        int c1 = queries[i][1] - 1;
+        int r2 = queries[i][2] - 1;
+        int c2 = queries[i][3] - 1;
+
+        int temp = fullNumbers[r1][c1];
+        int minVal = temp;
+
+        // 회전의 1번
+        for (int j = r1; j < r2; j++)
+        {
+            fullNumbers[j][c1] = fullNumbers[j + 1][c1];
+            minVal = min(minVal, fullNumbers[j][c1]);
+        }
+
+        // 회전의 2번
+        for (int j = c1; j < c2; j++) 
+        {
+            fullNumbers[r2][j] = fullNumbers[r2][j + 1];
+            minVal = min(minVal, fullNumbers[r2][j]);
+        }
+
+        // 회전의 3번
+        for (int j = r2; j > r1; j--) 
+        {
+            fullNumbers[j][c2] = fullNumbers[j - 1][c2];
+            minVal = min(minVal, fullNumbers[j][c2]);
+        }
+
+        for (int j = c2; j > c1; j--) 
+        {
+            fullNumbers[r1][j] = fullNumbers[r1][j - 1];
+            minVal = min(minVal, fullNumbers[r1][j]);
+        }
+
+        fullNumbers[r1][c1 + 1] = temp;
+        answer.push_back(minVal);
+    }
+
+    return answer;
+}
