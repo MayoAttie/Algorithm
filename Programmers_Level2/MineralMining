@@ -1,0 +1,79 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool compareMinerals(const vector<int>& a, const vector<int>& b) 
+{
+    if (a[0] != b[0])
+        return a[0] > b[0];
+    else if (a[1] != b[1])
+        return a[1] > b[1];
+    else 
+        return a[2] > b[2];
+}
+
+
+int solution(vector<int> picks, vector<string> minerals) {
+    int answer = 0;
+    int sum = 0;
+    
+    for (int x : picks) 
+    {
+        sum += x;
+    }
+    
+    // 캘 수 있는 광물의 개수
+    int num_min = sum * 5;
+    
+    // 주어진 광물이 캘 수 있는 광물 수보다 크면
+    if (minerals.size() > num_min) 
+        minerals.resize(num_min);
+        
+    // 광물 조사
+    vector<vector<int>> cnt_min(10, vector<int>(3, 0)); // dia, iron, stone
+    for (int i = 0; i < minerals.size(); ++i) 
+    {
+        if (minerals[i] == "diamond")
+            cnt_min[i / 5][0] += 1;
+        else if (minerals[i] == "iron") 
+            cnt_min[i / 5][1] += 1;
+        else 
+            cnt_min[i / 5][2] += 1;
+    }
+
+    // 피로도가 높은 순서대로 광물 정렬
+    sort(cnt_min.begin(), cnt_min.end(),compareMinerals);
+    
+    // 피로도 계산
+    for (const auto& mineral : cnt_min) 
+    {
+        int d = mineral[0], i = mineral[1], s = mineral[2];
+        for (int p = 0; p < picks.size(); ++p) 
+        {
+            // dia 곡괭이
+            if (p == 0 && picks[p] > 0) 
+            { 
+                picks[p] -= 1;
+                answer += d + i + s;
+                break;
+            }
+            // iron 곡괭이
+            else if (p == 1 && picks[p] > 0)
+            { 
+                picks[p] -= 1;
+                answer += 5 * d + i + s;
+                break;
+            } 
+            // stone 곡괭이
+            else if (p == 2 && picks[p] > 0) 
+            { 
+                picks[p] -= 1;
+                answer += 25 * d + 5 * i + s;
+                break;
+            }
+        }
+    }
+                
+    return answer;
+}
