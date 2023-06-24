@@ -1,0 +1,36 @@
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int solution(int n, int k, vector<int> enemy) {
+    int answer = enemy.size(); // 초기화: 최대로 처리할 수 있는 적의 수
+
+    priority_queue<int> pq; // 우선순위 큐 선언 (내림차순)
+
+    int my = n; // 내 체력
+    int skill = k; // 사용 가능한 공격 기술 수
+
+    for (int i = 0; i < enemy.size(); i++) 
+    {
+        my -= enemy[i]; // 현재 적을 처리하고 나서 남은 체력 계산
+        pq.push(enemy[i]); // 현재 적의 강도를 우선순위 큐에 추가
+
+        if (my < 0) // 남은 체력이 0보다 작을 경우
+        {
+            if (skill > 0 && !pq.empty()) // 아직 사용 가능한 공격 기술이 있고, 처리할 수 있는 적이 남아있을 경우
+            {
+                my += pq.top(); // 가장 강력한 적을 처리하고 체력 회복
+                pq.pop(); // 가장 강력한 적을 우선순위 큐에서 제거
+                skill--; // 사용한 공격 기술 수 감소
+            } 
+            else // 더 이상 처리할 수 없는 상황이면
+            {
+                answer = i; // 현재까지 처리한 적의 수를 저장
+                break; // 반복문 종료
+            }
+        }
+    }
+
+    return answer; // 처리한 적의 수 반환
+}
