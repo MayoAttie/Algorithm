@@ -1,0 +1,33 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+long long solution(int r1, int r2) {
+    long long answer = 0;
+    int minY = r1, maxY = r2;
+    
+    for (int x = 0; x < r2; x++) 
+    {
+        // 현재 x에 대해 원점 (0, 0)을 중심으로 한 반지름이 r2인 원의 위쪽 경계를 찾음
+        while (r2*r2 < maxY*maxY + x*x)
+        {
+            maxY -= 1;
+        }
+        
+        // 현재 x에 대해 원점 (0, 0)을 중심으로 한 반지름이 r1인 원의 아래쪽 경계를 찾음
+        while (minY - 1 && r1*r1 <= (minY-1)*(minY-1) + x*x) 
+        {
+            minY -= 1;
+        }
+        
+        // 현재 x에 대한 정수 좌표의 개수를 구함
+        int numIntegerCoords = (maxY - minY) + 1;
+        
+        // 현재 x에 대한 정수 좌표의 개수를 네 사분면에 대해 누적
+        answer += numIntegerCoords;
+    }
+    
+    // 네 사분면에 대한 정수 좌표 개수의 합을 반환
+    return answer * 4;
+}
