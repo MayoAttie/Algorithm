@@ -1,0 +1,106 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Score
+{
+    int work;     // 근무 태도 점수
+    int friends;  // 동료 평가 점수
+};
+
+// 근무 태도 점수를 기준으로 오름차순 정렬하는 비교 함수
+bool workOrder(const Score& a, const Score& b)
+{
+    return a.work < b.work;
+}
+
+// 총합 점수를 기준으로 내림차순 정렬하는 비교 함수
+bool compareScores(const Score& a, const Score& b)
+{
+    int s1 = a.work + a.friends;
+    int s2 = b.work + b.friends;
+    return s1 > s2;
+}
+
+int solution(vector<vector<int>> scores) {
+    vector<Score> list;  // 점수 정보를 담을 벡터
+    Score target;        // 대상 점수
+
+    for (int i = 0; i < scores.size(); i++) 
+    {
+        if (i == 0) 
+            target = {scores[i][0], scores[i][1]};  // 첫 번째 점수를 대상으로 설정
+
+        Score tmp = {scores[i][0], scores[i][1]};    // 점수 정보 생성
+        list.push_back(tmp);                         // 벡터에 추가
+    }
+
+    sort(list.begin(), list.end(), workOrder);        // 근무 태도 점수를 기준으로 오름차순 정렬
+
+    for (int i = 0; i < list.size() - 1; i++) 
+    {
+        bool del = false;  // 삭제 여부 플래그
+
+        for (int j = i + 1; j < list.size(); j++) 
+        {
+            if (list[i].work == list[j].work)  // 근무 태도 점수가 같으면 패스
+                continue;
+
+            if (list[i].friends < list[j].friends)  // 동료 평가 점수가 더 낮으면 삭제
+            {
+                list.erase(list.begin() + i);  // 해당 점수 삭제
+                del = true;                    // 삭제되었음을 표시
+                break;
+            }
+        }
+
+        if (del) 
+            i--;  // 삭제된 경우 인덱스를 재조정하기 위해 감소
+    }
+
+    sort(list.begin(), list.end(), compareScores);  // 총합 점수를 기준으로 내림차순 정렬
+
+    int rank = 1;        // 등수
+    int tmp = 0;         // 동일 등수의 개수
+    bool success = false;  // 대상 점수가 존재하는지 여부
+    int cnt = 0;         // 현재 총합 점수
+
+    for (int i = 0; i < list.size(); i++)
+    {
+        int sum = list[i].work + list[i].friends;  // 총합 점수 계산
+
+        if (target.work == list[i].work && target.friends == list[i].friends) 
+        {
+            if (cnt != sum)
+                rank += tmp;        // 동일 등수의 개수를 반영하여 등수 증가
+            success = true;       // 대상 점수를 찾았음을 표시
+            break;
+        }
+
+        if (cnt == sum) 
+            tmp++;                // 동일한 총합 점수의 개수 증가
+        else 
+        {
+            rank += tmp + 1;      // 동일 등수의 개수를 반영하여 등수 증가
+            tmp = 0;              // 동일 등수의 개수 초기화
+        }
+        cnt = sum;               // 현재 총합 점수 갱신
+    }
+
+    int answer = rank;
+    if (!success) 
+    {
+        answer = -1;           // 대상 점수를 찾지 못한 경우 -1 반환
+    }
+    return answer;
+}
+
+// 테스트를 위한 예시 입력과 결과 출력
+int main() {
+    vector<vector<int>> scores = { {2, 2}, {1, 4}, {3, 2}, {3, 2}, {2, 1} };
+    int result = solution(scores);
+    cout << "Result: " << result << endl;
+
+    return 0;
+}
