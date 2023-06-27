@@ -1,0 +1,54 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<double> solution(int k, vector<vector<int>> ranges) {
+    vector<double> answer(ranges.size()); // 결과를 저장할 벡터
+
+    vector<int> collatzList; // Collatz 수열을 저장할 벡터
+    collatzList.push_back(k); // 초기값 k 추가
+
+    // Collatz 수열 생성
+    while (k != 1) 
+    {
+        if (k % 2 == 0)
+            k /= 2;
+        else
+            k = k * 3 + 1;
+
+        collatzList.push_back(k);
+    }
+
+    vector<double> collatzAverages(collatzList.size() - 1); // Collatz 평균값을 저장할 벡터
+
+    // Collatz 평균값 계산
+    for (int i = 0; i < collatzList.size() - 1; i++) 
+    {
+        collatzAverages[i] = static_cast<double>(collatzList[i] + collatzList[i + 1]) / 2;
+    }
+
+    // 범위에 따라 결과 계산
+    for (int i = 0; i < ranges.size(); i++)
+     {
+        double result = 0;
+        int start = ranges[i][0];
+        int end = collatzList.size() + ranges[i][1] - 1;
+
+        if (start > end) 
+        {
+            answer[i] = -1; // 시작 인덱스가 더 크면 -1 저장
+        } 
+        else
+        {
+            for (int j = start; j < end; j++) 
+            {
+                result += collatzAverages[j]; // 해당 범위의 Collatz 평균값 누적
+            }
+
+            answer[i] = result; // 결과 저장
+        }
+    }
+
+    return answer; // 결과 반환
+}
