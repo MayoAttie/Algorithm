@@ -1,0 +1,82 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+bool isWin(const vector<string>& board, int x, int y)
+{
+    int n = board.size();
+    
+    // 가로로 승리 조건 확인
+    int leftY = (y - 1 + n) % n;
+    int rightY = (y + 1) % n;
+    
+    if (board[x][y] == board[x][leftY] && board[x][y] == board[x][rightY]) 
+        return true;
+    
+    
+    // 세로로 승리 조건 확인
+    int upX = (x - 1 + n) % n;
+    int downX = (x + 1) % n;
+    
+    if (board[x][y] == board[upX][y] && board[x][y] == board[downX][y]) 
+        return true;
+    
+    
+    // 대각선으로 승리 조건 확인
+    if ((board[x][y] == board[upX][leftY] && board[x][y] == board[downX][rightY]) ||
+        (board[x][y] == board[upX][rightY] && board[x][y] == board[downX][leftY]))
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+int solution(vector<string> board)
+{
+    int n = board.size();
+
+    vector<pair<int, int>> oList, xList;
+    for (int x = 0; x < n; x++) 
+    {
+        for (int y = 0; y < n; y++) 
+        {
+            if (board[x][y] == 'O') 
+            {
+                oList.push_back({x, y});
+            } 
+            else if (board[x][y] == 'X') 
+            {
+                xList.push_back({x, y});
+            }
+        }
+    }
+
+    // 게임 상태 검사
+    if (oList.size() < xList.size() || oList.size() >= (xList.size() + 2)) 
+        return 0;
+    
+    // 'O' 기준으로 승리 조건 확인
+    for (auto& pos : oList) 
+    {
+        int x = pos.first;
+        int y = pos.second;
+        
+        if (isWin(board, x, y) && xList.size() != (oList.size() - 1)) 
+            return 0;
+    }
+
+    // 'X' 기준으로 승리 조건 확인
+    for (auto& pos : xList) 
+    {
+        int x = pos.first;
+        int y = pos.second;
+        
+        if (isWin(board, x, y) && xList.size() != oList.size()) 
+            return 0;
+    }
+
+    return 1; // 게임 종료 상태: 승리 조건 충족
+}
