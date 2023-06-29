@@ -1,0 +1,66 @@
+#include <string>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+string change(string s) {
+    stack<char> stk; // 스택을 사용하여 "110" 패턴을 추적
+    int regexCount = 0; // "110" 개수
+
+    for (int i = 0; i < s.length(); i++) 
+    {
+        if (stk.size() < 2)
+            stk.push(s[i]);
+        else 
+        {
+            if (s[i] == '0')
+            {
+                char midRegex = stk.top(); // 스택의 맨 위 문자를 저장
+                stk.pop();
+                if (midRegex == '1' && stk.top() == '1') // "110" 패턴을 발견한 경우
+                {
+                    stk.pop();
+                    regexCount++; // "110" 개수 증가
+                }
+                else 
+                {
+                    stk.push(midRegex); // "110" 패턴이 아니면 다시 스택에 넣어줌
+                    stk.push(s[i]);
+                }
+            }
+            else 
+                stk.push(s[i]);
+        }
+    }
+
+    string result;
+    while (!stk.empty()) 
+    {
+        result += stk.top(); // 스택에 남아있는 문자들을 결과 문자열에 추가
+        stk.pop();
+    }
+
+    reverse(result.begin(), result.end()); // 문자열을 뒤집음
+
+    int lastIndex = result.find_last_of('0'); // 마지막 '0'의 인덱스 찾기
+    for (int i = 0; i < regexCount; i++) 
+    {
+        result.insert(lastIndex + 1, "110"); // "110"을 마지막 '0' 뒤에 추가
+        lastIndex += 3; // 다음 "110" 추가 위치 갱신
+    }
+
+    return result;
+}
+
+
+vector<string> solution(vector<string> s) {
+    vector<string> answer;
+
+    for (string str : s) {
+        string transformed = change(str); // 각 문자열을 변환
+        answer.push_back(transformed); // 변환된 결과를 정답에 추가
+    }
+
+    return answer;
+}
