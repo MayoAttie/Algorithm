@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+
+void bfs(int startingNode, vector<vector<int>>& adjacencyList, vector<bool>& visited, vector<int>& answer);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    long numOfNodes, numOfEdges;
+    vector<int> answer; // 각 노드의 최단 거리를 저장할 벡터
+    vector<vector<int>> adjacencyList; // 인접 리스트로 그래프 표현
+    vector<bool> visited; // 노드의 방문 여부를 저장할 벡터
+
+    cin >> numOfNodes >> numOfEdges;
+    adjacencyList.resize(numOfNodes + 1);
+    answer.resize(numOfNodes + 1);
+    visited.resize(numOfNodes + 1);
+
+    // 그래프의 간선 정보 입력
+    for (int i = 0; i < numOfEdges; i++)
+    {
+        int node, neighbor;
+        cin >> node >> neighbor;
+        adjacencyList[node].push_back(neighbor);
+    }
+
+    // 모든 노드에 대해 최단 거리 계산
+    for (int i = 0; i <= numOfNodes; i++)
+    {
+        fill(visited.begin(), visited.end(), false); // visited 벡터 초기화
+        bfs(i, adjacencyList, visited, answer); // bfs 탐색을 통해 최단 거리 계산
+    }
+
+    int maxDistance = 0;
+    for (int i = 1; i <= numOfNodes; i++)
+    {
+        maxDistance = max(maxDistance, answer[i]); // 최장 거리 값 찾기
+    }
+
+    // 최장 거리에 해당하는 노드 출력
+    for (int i = 1; i <= numOfNodes; i++)
+    {
+        if (answer[i] == maxDistance)
+            cout << i << " ";
+    }
+
+    return 0;
+}
+
+void bfs(int startingNode, vector<vector<int>>& adjacencyList, vector<bool>& visited, vector<int>& answer)
+{
+    queue<int> que;
+    que.push(startingNode);
+    visited[startingNode] = true;
+
+    while (!que.empty())
+    {
+        int currentNode = que.front();
+        que.pop();
+
+        // 현재 노드의 이웃 노드들을 탐색
+        for (int neighbor : adjacencyList[currentNode])
+        {
+            if (!visited[neighbor])
+            {
+                visited[neighbor] = true; // 이웃 노드 방문 처리
+                answer[neighbor]++; // 이웃 노드까지의 최단 거리 증가
+                que.push(neighbor); // 이웃 노드를 큐에 추가
+            }
+        }
+    }
+}
