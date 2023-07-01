@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void unionFunc(vector<int>& parents, int a, int b);
+int find(vector<int>& parents, int a);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int city;
+    int road;
+    vector<vector<int>> cities(201, vector<int>(201, 0));  // 도시 간 연결 정보를 저장하는 2차원 벡터
+    vector<int> tripPlan(1001, 0);  // 여행 계획 정보를 저장하는 벡터
+    vector<int> parents;  // 각 도시의 부모를 저장하는 벡터
+    
+    cin >> city >> road;  // 도시의 수와 도로의 수 입력
+    parents.resize(city+1);  // 부모 벡터 크기 설정
+    
+    // 도시 간 연결 정보 입력
+    for(int i = 1; i <= city; i++)
+    {
+        for(int j = 1; j <= city; j++)
+        {
+            cin >> cities[i][j];
+        }
+    }
+    
+    // 여행 계획 입력
+    for(int i = 1; i <= road; i++)
+    {
+        cin >> tripPlan[i];
+    }
+    
+    // 각 도시의 부모를 자기 자신으로 초기화
+    for(int i = 1; i <= city; i++)
+    {
+        parents[i] = i;
+    }
+    
+    // 도시 간 연결 정보를 바탕으로 union-find 연산 수행
+    for(int i = 1; i <= city; i++)
+    {
+        for(int j = 1; j <= city; j++)
+        {
+            if(cities[i][j] == 1)
+                unionFunc(parents, i, j);
+        }
+    }
+    
+    int index = find(parents, tripPlan[1]);  // 첫 번째 여행 계획 도시의 부모 찾기
+    bool connect = true;
+    
+    // 모든 여행 계획에 대해 부모가 같은지 확인하여 연결 여부 판단
+    for(int i = 2; i <= road; i++)
+    {
+        if(index != find(parents, tripPlan[i]))
+        {
+            cout << "NO" << "\n";  // 연결되지 않은 경우 NO 출력
+            connect = false;
+            break;
+        }
+    }
+    
+    if(connect)
+        cout << "YES" << "\n";  // 모든 여행 계획이 연결된 경우 YES 출력
+}
+
+// union-find 연산을 통해 두 노드의 부모를 합치는 함수
+void unionFunc(vector<int>& parents, int a, int b)
+{
+    a = find(parents, a);
+    b = find(parents, b);
+    
+    if( a != b )
+        parents[b] = a;
+}
+
+// 노드의 부모를 찾는 함수 (경로 압축 기법 적용)
+int find(vector<int>& parents, int a)
+{
+    if(parents[a] == a)
+        return a;
+    else
+        return parents[a] = find(parents, parents[a]);
+}
