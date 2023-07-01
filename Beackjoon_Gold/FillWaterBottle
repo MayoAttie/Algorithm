@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+vector<bool> bfs(vector<int>& bottles, const int sender[], const int receiver[], vector<vector<bool>>& visited);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    vector<bool> answer;
+    vector<int> bottles;
+    vector<vector<bool>> visited(201, vector<bool>(201, false));
+    int sender[] = { 0, 0, 1, 1, 2, 2 };
+    int receiver[] = { 1, 2, 0, 2, 0, 1 };
+
+    // 3개의 병의 초기 상태 입력
+    for (int i = 0; i < 3; i++)
+    {
+        int data;
+        cin >> data;
+        bottles.push_back(data);
+    }
+
+    // BFS 탐색을 통해 답을 계산
+    answer = bfs(bottles, sender, receiver, visited);
+
+    // 결과 출력
+    for (int i = 0; i < answer.size(); i++)
+    {
+        if (answer[i] == true)
+            cout << i << " ";
+    }
+}
+
+// BFS 탐색 함수
+vector<bool> bfs(vector<int>& bottles, const int sender[], const int receiver[], vector<vector<bool>>& visited)
+{
+    vector<bool> result(201);
+    queue<pair<int, int>> que;
+
+    // 초기 상태를 큐에 추가하고 방문 표시
+    que.push(make_pair(0, 0));
+    visited[0][0] = true;
+    result[bottles[2]] = true;
+
+    // BFS 탐색
+    while (!que.empty())
+    {
+        pair<int, int> tmp = que.front();
+        que.pop();
+        int A = tmp.first;
+        int B = tmp.second;
+        int C = bottles[2] - A - B;
+
+        // 현재 상태에서 가능한 모든 이동을 시도
+        for (int i = 0; i < 6; i++)
+        {
+            int next[] = { A, B, C };
+
+            // 물을 이동하고 빈 병은 0으로 처리
+            next[receiver[i]] += next[sender[i]];
+            next[sender[i]] = 0;
+
+            // 물을 받는 병이 용량을 초과하는 경우 조정
+            if (next[receiver[i]] > bottles[receiver[i]])
+            {
+                next[sender[i]] = next[receiver[i]] - bottles[receiver[i]];
+                next[receiver[i]] = bottles[receiver[i]];
+            }
+
+            // 방문하지 않은 상태라면 큐에 추가하고 방문 표시
+            if (!visited[next[0]][next[1]])
+            {
+                visited[next[0]][next[1]] = true;
+                que.push(make_pair(next[0], next[1]));
+                if (next[0] == 0)
+                    result[next[2]] = true;
+            }
+        }
+    }
+
+    return result;
+}
