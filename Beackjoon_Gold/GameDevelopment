@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+
+    int buildingNum;              // 건물 수
+    vector<vector<int>> graph;    // 그래프의 인접 리스트 표현
+    vector<int> indegree;         // 각 정점의 진입 차수를 저장하는 배열
+    vector<int> selfBuild;        // 각 건물의 짓는 시간을 저장하는 배열
+    vector<int> result;           // 건물을 짓는 최소 시간을 저장하는 배열
+    queue<int> que;               // 위상 정렬을 위한 큐
+    
+    cin >> buildingNum;
+    
+    graph.resize(buildingNum+1);    // 그래프, 진입 차수, 자체 건설 시간, 결과 배열의 크기를 'buildingNum' 개수만큼 조정
+    indegree.resize(buildingNum+1);
+    selfBuild.resize(buildingNum+1);
+    result.resize(buildingNum+1);
+    
+    for(int i=1; i<=buildingNum; i++)
+    {
+        cin >> selfBuild[i];     // 각 건물의 짓는 시간 입력
+        
+        while(true)
+        {
+            int data;
+            cin >> data;
+            
+            if(data == -1)
+                break;
+            
+            graph[data].push_back(i);   // 'data' 건물을 가리키는 간선으로 'i' 건물 추가
+            indegree[i]++;               // 'i' 건물의 진입 차수 증가
+        }
+    }
+    
+    
+    for(int i =1; i<=buildingNum; i++)
+    {
+        if(indegree[i] == 0)
+            que.push(i);   // 진입 차수가 0인 건물을 큐에 초기화
+    }
+    
+    // 위상 정렬 수행
+    while(!que.empty())
+    {
+        int data = que.front();
+        que.pop();
+        
+        for(int next : graph[data])
+        {
+            indegree[next]--;
+            result[next] = max(result[next], result[data]+selfBuild[data]);   // 건물을 짓는 최소 시간 갱신
+            if(indegree[next] == 0)
+                que.push(next);
+        }
+    }
+    
+    for(int i=1; i<=buildingNum; i++)
+        cout<<result[i] + selfBuild[i]<<" ";   // 결과 출력
+}
