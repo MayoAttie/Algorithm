@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <tuple>
+#include <limits.h>
+using namespace std;
+
+typedef tuple<int, int, int> edge;
+
+void bellmanFord(int nodeNum, int edgeNum, vector<edge>& edges);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int nodeNum;
+    int edgeNum;
+    vector<edge> edges;
+    
+    // 노드의 개수와 간선의 개수를 입력 받음
+    cin >> nodeNum >> edgeNum;
+    
+    for(int i=0; i<edgeNum; i++)
+    {
+        int start;
+        int end;
+        int time;
+        
+        // 간선 정보를 입력 받음
+        cin >> start >> end >> time;
+        
+        // 간선을 edges 벡터에 추가함
+        edges.push_back(make_tuple(start, end, time));
+    }
+    
+    // 벨만-포드 알고리즘 호출
+    bellmanFord(nodeNum, edgeNum, edges);
+}
+
+void bellmanFord(int nodeNum, int edgeNum, vector<edge>& edges)
+{
+    vector<long> distance(nodeNum+1, LONG_MAX);
+    
+    distance[1] = 0;
+    
+    // 노드의 개수-1번 반복
+    for(int i=1; i<nodeNum; i++)
+    {
+        // 모든 간선에 대해 반복
+        for(int j=0; j<edgeNum; j++)
+        {
+            edge data = edges[j];
+            int start = get<0>(data);
+            int end = get<1>(data);
+            int time = get<2>(data);
+            
+            // 시작 노드까지의 거리가 INF가 아니고, 도착 노드까지의 거리보다 현재 간선을 통해 가는 거리가 더 짧은 경우
+            if(distance[start] != LONG_MAX && distance[end] > distance[start] + time)
+                distance[end] = distance[start] + time;  // 도착 노드까지의 거리를 갱신
+        }
+    }
+    
+    bool isCycle = false;
+    
+    // 음의 사이클 체크
+    for(int i=0; i<edgeNum; i++)
+    {
+        edge data = edges[i];
+        int start = get<0>(data);
+        int end = get<1>(data);
+        int time = get<2>(data);
+        
+        // 시작 노드까지의 거리가 INF가 아니고, 도착 노드까지의 거리보다 현재 간선을 통해 가는 거리가 더 짧은 경우
+        if(distance[start] != LONG_MAX && distance[end] > distance[start] + time)
+            isCycle = true;  // 음의 사이클 존재 여부를 표시
+    }
+    
+    // 음의 사이클이 존재하지 않을 경우
+    if(!isCycle)
+    {
+        // 각 노드까지의 최단 거리 출력
+        for(int i=2; i<=nodeNum; i++)
+        {
+            if(distance[i] == LONG_MAX)
+                cout << -1 << "\n";  // 도달할 수 없는 경우
+            else
+                cout << distance[i] << "\n";  // 최단 거리 출력
+        }
+    }
+    else
+        cout << -1 << "\n";  // 음의 사이클이 존재하는 경우
+}
