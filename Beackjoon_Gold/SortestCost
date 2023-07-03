@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <limits.h>
+
+using namespace std;
+typedef pair<int, int> edge;
+
+// 다익스트라 알고리즘을 수행하는 함수
+// adList: 인접 리스트
+// cities: 도시의 개수
+// start: 시작 도시
+// end: 도착 도시
+int dijkstra(vector<vector<edge>>& adList, int cities, int start, int end);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int cities;  // 도시의 개수
+    int buses;  // 버스의 개수
+    int starting;  // 출발 도시
+    int destination;  // 도착 도시
+    int answer;  // 최단 거리
+    vector<vector<edge>> adList;  // 인접 리스트
+    
+    cin >> cities >> buses;
+    adList.resize(cities+1);
+    
+    for(int i=0; i<buses; i++)
+    {
+        int my;  // 출발 도시
+        int target;  // 도착 도시
+        int data;  // 가중치
+        cin >> my >> target >> data;
+        adList[my].push_back(make_pair(target, data));
+    }
+    
+    cin >> starting >> destination;
+    answer = dijkstra(adList, cities, starting, destination);
+    cout << answer << "\n";
+}
+
+// 다익스트라 알고리즘을 수행하는 함수
+// adList: 인접 리스트
+// cities: 도시의 개수
+// start: 시작 도시
+// end: 도착 도시
+int dijkstra(vector<vector<edge>>& adList, int cities, int start, int end)
+{
+    vector<int> distance(cities+1, INT_MAX);  // 시작 도시부터의 최단 거리를 저장하는 배열
+    vector<bool> visited(cities+1, false);  // 방문 여부를 저장하는 배열
+    
+    priority_queue<edge, vector<edge>, greater<edge>> priQue;  // 우선순위 큐
+    priQue.push(make_pair(0, start));  // 시작 도시를 우선순위 큐에 추가
+    distance[start] = 0;  // 시작 도시부터의 최단 거리를 0으로 설정
+    
+    while(!priQue.empty())
+    {
+        edge current = priQue.top();  // 가장 작은 가중치를 가진 간선을 가져옴
+        int target = current.second;  // 간선의 도착 도시를 가져옴
+        priQue.pop();  // 가져온 간선을 우선순위 큐에서 제거
+        
+        if(!visited[target])
+        {
+            visited[target] = true;  // 도착 도시를 방문한 것으로 표시
+            
+            for(edge data : adList[target])
+            {
+                if(!visited[data.first] && distance[data.first] > distance[target] + data.second)
+                {
+                    distance[data.first] = distance[target] + data.second;  // 최단 거리 갱신
+                    priQue.push(make_pair(distance[data.first], data.first));  // 우선순위 큐에 추가
+                }
+            }
+        }
+    }
+    return distance[end];  // 도착 도시까지의 최단 거리 반환
+}
