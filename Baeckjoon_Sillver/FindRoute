@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    // 입력과 출력의 속도를 향상시키기 위해 동기화를 끄는 설정
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int nodes;
+    vector<vector<long>> distance;
+    
+    // 노드 개수 입력
+    cin >> nodes;
+    // 2차원 distance 벡터 크기 조정
+    distance.resize(nodes, vector<long>(nodes));
+    
+    // 각 노드 간의 거리 입력
+    for(int i=0; i<nodes; i++)
+    {
+        for(int j=0; j<nodes; j++)
+        {
+            int data;
+            cin >> data;
+            distance[i][j] = data;
+        }
+    }
+    
+    // 플로이드-와샬 알고리즘을 사용하여 최단 거리 업데이트
+    for(int i=0; i<nodes; i++)
+    {
+        for(int j=0; j<nodes; j++)
+        {
+            for(int m=0; m<nodes; m++)
+            {
+                if(distance[j][i] == 1 && distance[i][m] == 1)
+                    distance[j][m] = 1;
+            }
+        }
+    }
+    
+    // 최단 거리 출력
+    for(int i=0; i<nodes; i++)
+    {
+        for(int j=0; j<nodes; j++)
+            cout << distance[i][j] << " ";
+        cout << "\n";
+    }
+    
+    return 0;
+}
