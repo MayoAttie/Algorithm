@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void dfs(int a, vector<bool>& visited, vector<vector<int>>& tree, vector<int>& answer);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int nodes;
+    vector<bool> visited;
+    vector<vector<int>> tree;
+    vector<int> answer;
+    
+    cin >> nodes;
+    
+    visited.resize(nodes+1);
+    tree.resize(nodes+1);
+    answer.resize(nodes+1);
+    
+    fill(visited.begin(), visited.end(), false);
+    
+    for(int i=1; i<=nodes; i++)
+    {
+        int myNode;
+        int parentNode;
+        cin >> myNode >> parentNode;
+        tree[myNode].push_back(parentNode);  // 노드 myNode의 부모 노드를 parentNode로 설정
+        tree[parentNode].push_back(myNode);  // 노드 parentNode의 자식 노드로 myNode를 추가
+    }
+    
+    dfs(1, visited, tree, answer);  // 루트 노드인 1부터 DFS 수행
+    
+    for(int i=2; i<=nodes; i++)
+    {
+        cout << answer[i] << "\n";  // 노드 i의 부모 노드 출력
+    }
+}
+
+void dfs(int a, vector<bool>& visited, vector<vector<int>>& tree, vector<int>& answer)
+{
+    visited[a] = true;  // 현재 노드 a를 방문했음을 표시
+    
+    for(int i : tree[a])  // 현재 노드 a의 모든 인접한 노드에 대해서 반복
+    {
+        if(!visited[i])  // 방문하지 않은 인접한 노드라면
+        {
+            answer[i] = a;  // 인접한 노드 i의 부모 노드를 a로 설정
+            dfs(i, visited, tree, answer);  // 인접한 노드 i로 DFS 재귀 호출
+        }
+    }
+}
