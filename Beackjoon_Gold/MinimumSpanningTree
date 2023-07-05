@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+struct Edge
+{
+    int my;
+    int you;
+    int weight;
+};
+
+struct CompareEdges {
+    bool operator()(const Edge& edge1, const Edge& edge2) {
+        return edge1.weight > edge2.weight; // 오름차순으로 정렬
+    }
+};
+
+void unionFunc(int a, int b, vector<int>& parents);
+int find(int a, vector<int>& parents);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int nodes;
+    int edges;
+    int answer = 0;
+    int useEdge = 0;
+    vector<int> parents;
+    priority_queue<Edge, vector<Edge>, CompareEdges> priQue;
+
+    cin >> nodes >> edges; // 노드의 수와 간선의 수를 입력받음
+
+    parents.resize(nodes + 1); // 부모 노드들을 저장할 벡터를 크기 조정하여 초기화
+
+    for (int i = 0; i <= nodes; i++)
+    {
+        parents[i] = i; // 초기에는 각 노드의 부모는 자기 자신으로 설정
+    }
+
+    for (int i = 0; i < edges; i++)
+    {
+        int my;
+        int you;
+        int weight;
+        cin >> my >> you >> weight; // 간선의 출발 노드, 도착 노드, 가중치를 입력받음
+        priQue.push(Edge{ my, you, weight }); // 우선순위 큐에 간선 정보를 삽입하여 가중치 기준으로 정렬
+    }
+
+    while (useEdge < nodes - 1) // 간선을 선택하는 동안 (노드의 수 - 1) 개의 간선을 선택하면 최소 신장 트리 완성
+    {
+        Edge current = priQue.top(); // 가장 작은 가중치를 가진 간선을 선택
+        priQue.pop(); // 선택한 간선은 큐에서 제거
+
+        if (find(current.my, parents) != find(current.you, parents)) // 현재 간선의 출발 노드와 도착 노드의 부모가 다르면 사이클을 형성하지 않으므로 선택
+        {
+            unionFunc(current.my, current.you, parents); // 선택한 간선의 출발 노드와 도착 노드를 연결
+            answer += current.weight; // 선택한 간선의 가중치를 더함
+            useEdge++; // 선택한 간선 수 증가
+        }
+    }
+
+    cout << answer; // 최소 신장 트리의 총 가중치를 출력
+}
+
+void unionFunc(int a, int b, vector<int>& parents)
+{
+    a = find(a, parents); // a의 부모를 찾음
+    b = find(b, parents); // b의 부모를 찾음
+
+    if (a != b) // a와 b의 부모가 다르면 (사이클이 형성되지 않으면)
+        parents[b] = a; // b의 부모를 a로 설정하여 두 집합을 합침
+}
+
+int find(int a, vector<int>& parents)
+{
+    if (a == parents[a]) // a의 부모가 자기 자신이면
+        return a; // a는 루트 노드이므로 반환
+    else
+        return parents[a] = find(parents[a], parents); // 경로 압축을 통해 부모를 갱신하고 반환
+}
