@@ -1,0 +1,105 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+struct Edge
+{
+    int my;
+    int you;
+    int weight;
+};
+
+struct compareEdge
+{
+    bool operator() (const Edge& a, const Edge& b)
+    {
+        return a.weight > b.weight; // 간선의 weight를 기준으로 오름차순 정렬
+    }
+};
+
+void unionFunc(int a, int b, vector<int>& parents);
+int find(int a, vector<int>& parents);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int computers;
+    int lineSum = 0; // 간선들의 weight의 합을 저장할 변수
+    vector<int> parents; // 각 노드의 부모 노드를 저장할 벡터
+    priority_queue<Edge, vector<Edge>, compareEdge> priQue; // 우선순위 큐
+    
+    cin >> computers; // 컴퓨터의 수 입력
+    
+    for(int i=0; i<computers; i++)
+    {
+        for(int j=0; j<computers; j++)
+        {
+            char temp = cin.get(); // 문자 하나 입력 받음
+            
+            if(temp == '\n')
+                temp = cin.get();
+            
+            int data = 0;
+            
+            if(temp >= 'a' && temp <= 'z') // 소문자인 경우
+                data = temp - 'a' + 1; // 1부터 26까지 매핑
+            else if(temp >= 'A' && temp <= 'Z') // 대문자인 경우
+                data = temp - 'A' + 27; // 27부터 52까지 매핑
+            
+            lineSum += data; // 간선의 weight를 누적하여 합산
+            
+            if(i != j && data != 0) // 자기 자신이 아니고 weight가 0이 아닌 경우
+                priQue.push(Edge { i, j, data }); // 우선순위 큐에 간선 추가
+        }
+    }
+    
+    parents.resize(computers); // 부모 노드를 저장할 벡터의 크기 조정
+    
+    for(int i=0; i<parents.size(); i++)
+    {
+        parents[i] = i; // 초기에는 자기 자신을 부모로 가리킴
+    }
+    
+    int useEdge = 0; // 사용한 간선의 개수
+    int answer = 0; // 최소 스패닝 트리의 간선 weight 합
+    
+    while(!priQue.empty())
+    {
+        Edge now = priQue.top(); // 가장 작은 weight를 가진 간선을 가져옴
+        priQue.pop();
+        
+        if(find(now.my, parents) != find(now.you, parents)) // 두 노드의 부모가 다르다면
+        {
+            unionFunc(now.my, now.you, parents); // 두 노드를 합침 (Union)
+            answer += now.weight; // 간선 weight를 누적하여 합산
+            useEdge++; // 사용한 간선 개수 증가
+        }
+    }
+    
+    if(useEdge == computers - 1) // 모든 컴퓨터를 연결하는 최소 스패닝 트리 형성됨
+        cout << lineSum - answer << "\n"; // 모든 간선 weight 합에서 최소 스패닝 트리의 간선 weight 합을 뺀 값 출력
+    else
+        cout << "-1" << "\n"; // 모든 컴퓨터를 연결하는 최소 스패닝 트리 형성이 불가능한 경우 -1 출력
+}
+
+void unionFunc(int a, int b, vector<int>& parents)
+{
+    a = find(a, parents); // a의 부모 노드를 찾음
+    b = find(b, parents); // b의 부모 노드를 찾음
+    
+    if(a != b) // 두 노드의 부모가 다르다면
+        parents[b] = a; // b의 부모를 a로 설정 (Union 연산)
+}
+
+int find(int a, vector<int>& parents)
+{
+    if(a == parents[a]) // a가 자기 자신을 가리키는 경우 (루트 노드인 경우)
+        return a; // a 반환
+    else
+        return parents[a] = find(parents[a], parents); // a의 부모를 찾아서 갱신하고 반환 (Path Compression)
+}
