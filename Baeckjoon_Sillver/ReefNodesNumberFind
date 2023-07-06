@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void dfs(int rot, vector<vector<int>>& tree, vector<bool>& visited, int& answer, const int target);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int nodes;
+    int deleteNode;
+    vector<vector<int>> tree;
+    vector<bool> visited;
+    int answer=0;
+    int root = 0;
+    
+    cin >> nodes; // 노드 수 입력 받기
+    tree.resize(nodes); // 트리 벡터 크기 조정
+    visited.resize(nodes); // 방문 여부 벡터 크기 조정
+    fill(visited.begin(), visited.end(), false); // 방문 여부 벡터 초기화
+    
+    for (int i = 0; i < nodes; i++)
+    {
+        int input;
+        cin >> input; // 부모 노드 입력 받기
+        
+        if (input != -1)
+        {
+            tree[i].push_back(input); // 현재 노드의 부모 노드에 연결
+            tree[input].push_back(i); // 부모 노드의 자식 노드로 현재 노드 연결
+        }
+        else
+            root = i; // 루트 노드 설정
+    }
+    
+    cin >> deleteNode; // 삭제할 노드 입력 받기
+    
+    if (deleteNode == root)
+        cout << 0 << "\n"; // 루트 노드를 삭제하는 경우 0 출력
+    else
+    {
+        dfs(root, tree, visited, answer ,deleteNode); // DFS 탐색 수행
+        cout << answer << "\n"; // 결과 출력
+    }
+}
+
+void dfs(int rot, vector<vector<int>>& tree, vector<bool>& visited, int& answer, const int target)
+{
+    visited[rot] = true; // 현재 노드 방문 처리
+    int childNode = 0; // 자식 노드 수 초기화
+    
+    for (int i : tree[rot])
+    {
+        if (visited[i] == false) // 방문하지 않은 자식 노드인 경우
+        {
+            if (i != target) // 삭제할 노드가 아닌 경우
+            {
+                childNode++; // 자식 노드 수 증가
+                dfs(i, tree, visited, answer ,target); // 재귀적으로 DFS 수행
+            }
+        }
+    }
+    if (childNode == 0)
+        answer++; // 자식 노드가 없는 경우(answer는 잎 노드 개수)
+}
