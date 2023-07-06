@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void preOrder(int node, int tree[][2]); // 전위 순회 함수 선언
+void midOrder(int node, int tree[][2]); // 중위 순회 함수 선언
+void postOrder(int node, int tree[][2]); // 후위 순회 함수 선언
+
+int main()
+{
+    int nodes;
+    int tree[26][2]; // 트리 배열 (노드 번호를 인덱스로 사용하여 자식 노드를 저장)
+    vector<bool> visited;
+    
+    cin >> nodes; // 노드 개수 입력 받기
+    
+    visited.resize(nodes);
+    fill(visited.begin(), visited.end(), false);
+    
+    for(int i=0; i< nodes; i++)
+    {
+        char my;
+        char leftChild;
+        char rightChild;
+        cin >> my >> leftChild >> rightChild;
+        
+        int node = my -'A'; // 노드 번호 계산 (A부터 0부터 시작하도록)
+        
+        if(leftChild == '.')
+            tree[node][0] = -1; // 왼쪽 자식이 없는 경우 -1로 표시
+        else
+            tree[node][0] = leftChild - 'A'; // 왼쪽 자식이 있는 경우 해당 노드 번호 저장
+        
+        if(rightChild == '.')
+            tree[node][1] = -1; // 오른쪽 자식이 없는 경우 -1로 표시
+        else
+            tree[node][1] = rightChild - 'A'; // 오른쪽 자식이 있는 경우 해당 노드 번호 저장
+    }
+    
+    preOrder(0, tree); // 전위 순회 시작
+    cout<<"\n";
+    
+    midOrder(0, tree); // 중위 순회 시작
+    cout<<"\n";
+    
+    postOrder(0, tree); // 후위 순회 시작
+    cout<<"\n";
+}
+
+void preOrder(int node, int tree[][2])
+{
+    if(node == -1) // 노드가 존재하지 않는 경우 (자식이 없는 경우)
+        return;
+    
+    cout << (char)(node + 'A'); // 현재 노드 출력
+    preOrder(tree[node][0], tree); // 왼쪽 자식 노드로 재귀 호출
+    preOrder(tree[node][1], tree); // 오른쪽 자식 노드로 재귀 호출
+}
+
+void midOrder(int node, int tree[][2])
+{
+    if(node == -1) // 노드가 존재하지 않는 경우 (자식이 없는 경우)
+        return;
+    
+    midOrder(tree[node][0], tree); // 왼쪽 자식 노드로 재귀 호출
+    cout << (char)(node + 'A'); // 현재 노드 출력
+    midOrder(tree[node][1], tree); // 오른쪽 자식 노드로 재귀 호출
+}
+
+
+void postOrder(int node, int tree[][2])
+{
+    if(node == -1) // 노드가 존재하지 않는 경우 (자식이 없는 경우)
+        return;
+    
+    postOrder(tree[node][0], tree); // 왼쪽 자식 노드로 재귀 호출
+    postOrder(tree[node][1], tree); // 오른쪽 자식 노드로 재귀 호출
+    cout << (char)(node + 'A'); // 현재 노드 출력
+}
