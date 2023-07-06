@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Node
+{
+public:
+    Node* next[26]; // 다음 노드에 대한 포인터 배열
+    bool isEnd; // 해당 노드가 단어의 끝인지 여부
+    Node() : isEnd(false)
+    {
+        fill(next, next + 26, nullptr); // next 배열을 nullptr로 초기화
+    }
+
+    ~Node()
+    {
+        for (auto& child : next)
+            delete child; // 동적 할당된 자식 노드들을 재귀적으로 삭제
+    }
+
+    void insert(const char* key)
+    {
+        if (*key == 0) // 입력된 문자열의 끝에 도달한 경우
+            isEnd = true; // 해당 노드를 단어의 끝으로 표시
+        else
+        {
+            int nextIndex = *key - 'a'; // 다음 문자의 인덱스 계산 ('a'를 뺀 값)
+            if (next[nextIndex] == nullptr) // 다음 노드가 존재하지 않는 경우
+                next[nextIndex] = new Node(); // 새로운 노드 생성
+            next[nextIndex]->insert(key + 1); // 재귀적으로 다음 문자열 삽입
+        }
+    }
+
+    Node* find(const char* key)
+    {
+        int nextIndex = *key - 'a'; // 다음 문자의 인덱스 계산 ('a'를 뺀 값)
+        if (*key == 0) // 검색할 문자열의 끝에 도달한 경우
+            return this; // 현재 노드 반환
+
+        if (next[nextIndex] == nullptr) // 다음 노드가 존재하지 않는 경우
+            return nullptr; // 검색 실패
+
+        return next[nextIndex]->find(key + 1); // 재귀적으로 다음 문자열 검색
+    }
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int findNum;
+    int totalNum;
+
+    cin >> findNum >> totalNum; // 찾아야 할 단어 수와 전체 단어 수 입력 받기
+    Node* root = new Node(); // 루트 노드 생성
+
+    while (findNum > 0)
+    {
+        char text[501];
+        cin >> text; // 찾아야 할 단어 입력 받기
+        root->insert(text); // 단어를 Trie에 삽입
+        findNum--;
+    }
+
+    int count = 0;
+
+    while (totalNum > 0)
+    {
+        char text[501];
+        cin >> text; // 전체 단어 입력 받기
+
+        Node* result = root->find(text); // 단어가 Trie에 존재하는지 검색
+
+        if (result && result->isEnd) // 단어가 존재하고, 해당 노드가 단어의 끝인 경우
+            count++; // 찾아야 할 단어의 개수 증가
+
+        totalNum--;
+    }
+
+    cout << count << "\n"; // 찾아야 할 단어의 개수 출력
+
+    delete root; // 동적 할당된 노드들을 삭제해준다.
+
+    return 0;
+}
