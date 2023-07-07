@@ -1,0 +1,129 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+static int MOD = 1000000007;
+
+// 세그먼트 트리 초기화
+void setTree(vector<long>& tree, int index);
+
+// 값 변경
+void changeValue(vector<long>& tree, long index, long value);
+
+// 구간 곱 계산
+long getMul(vector<long>& tree, long start, long end);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int nodeNum;
+    int changeNum;
+    int mulNum;
+
+    int treeHeight = 0;
+    int treeSize = 0;
+    int length = 0;
+    int startIndex = 0;
+
+    vector<long> tree;
+
+    // 입력 받기
+    cin >> nodeNum >> changeNum >> mulNum;
+
+    length = nodeNum;
+
+    while (length != 0)
+    {
+        length /= 2;
+        treeHeight++;
+    }
+
+    treeSize = int(pow(2, treeHeight + 1));
+    tree.resize(treeSize + 1);
+    fill(tree.begin(), tree.end(), 1);
+    startIndex = (treeSize / 2) - 1;
+
+    // 노드 값 입력 받기
+    for (int i = startIndex + 1; i <= startIndex + nodeNum; i++)
+    {
+        cin >> tree[i];
+    }
+
+    // 세그먼트 트리 초기화
+    setTree(tree, treeSize - 1);
+
+    // 변경 및 구간 곱 계산
+    for (int i = 0; i < changeNum + mulNum; i++)
+    {
+        long type;
+        long start;
+        long end;
+        cin >> type >> start >> end;
+
+        if (type == 1)
+        {
+            // 값 변경
+            changeValue(tree, startIndex + start, end);
+        }
+        else if (type == 2)
+        {
+            // 구간 곱 계산
+            start += startIndex;
+            end += startIndex;
+            cout << getMul(tree, start, end) << "\n";
+        }
+    }
+}
+
+// 세그먼트 트리 초기화
+void setTree(vector<long>& tree, int index)
+{
+    while (index != 1)
+    {
+        // 부모 노드에 자식 노드들의 값을 곱하여 저장
+        tree[index / 2] = tree[index / 2] * tree[index] % MOD;
+        index--;
+    }
+}
+
+// 값 변경
+void changeValue(vector<long>& tree, long index, long value)
+{
+    tree[index] = value;
+
+    while (index > 1)
+    {
+        // 부모 노드로 올라가면서 자식 노드들의 값을 곱하여 저장
+        index /= 2;
+        tree[index] = tree[index * 2] % MOD * tree[index * 2 + 1] % MOD;
+    }
+}
+
+// 구간 곱 계산
+long getMul(vector<long>& tree, long start, long end)
+{
+    long subMul = 1;
+
+    while (start <= end)
+    {
+        if (start % 2 == 1)
+        {
+            // 시작 인덱스가 홀수인 경우 현재 값을 구간 곱에 곱하여 저장
+            subMul = tree[start] * subMul % MOD;
+            start++;
+        }
+        if (end % 2 == 0)
+        {
+            // 끝 인덱스가 짝수인 경우 현재 값을 구간 곱에 곱하여 저장
+            subMul = tree[end] * subMul % MOD;
+            end--;
+        }
+        start /= 2;
+        end /= 2;
+    }
+    return subMul;
+}
