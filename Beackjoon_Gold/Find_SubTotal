@@ -1,0 +1,106 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+void setTree(vector<long>& tree, int i);
+void changeValue(vector<long>& tree, long index, long value);
+long getSum(vector<long>& tree, long start, long end);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int nodes;          // 노드 수
+    int changes;        // 값 변경 수
+    int segmentSum;     // 구간 합 계산 수
+    int treeSize = 0;   // 트리 크기
+    int treeHeight = 0; // 트리 높이
+    int length = 0;     // 길이
+    vector<long> tree;  // 트리 벡터
+
+    cin >> nodes >> changes >> segmentSum;  // 노드 수, 값 변경 수, 구간 합 계산 수 입력
+    length = nodes;
+
+    while (length != 0)
+    {
+        length /= 2;
+        treeHeight++;
+    }
+
+    treeSize = int(pow(2, treeHeight + 1));  // 트리 크기 계산
+    int startIndex = treeSize / 2 - 1;      // 트리에서 첫 번째 노드의 인덱스 계산
+
+    tree.resize(treeSize + 1);  // 트리 벡터 크기 조정
+
+    for (int i = startIndex + 1; i <= (startIndex + nodes); i++)
+    {
+        cin >> tree[i];  // 트리의 리프 노드에 값 입력
+    }
+
+    setTree(tree, treeSize - 1);  // 트리 구성 함수 호출
+
+    for (int i = 0; i < changes + segmentSum; i++)
+    {
+        int type;   // 연산 타입
+        long start; // 구간 시작 인덱스
+        long end;   // 구간 끝 인덱스
+        cin >> type >> start >> end;  // 연산 타입, 구간 시작 인덱스, 구간 끝 인덱스 입력
+
+        if (type == 1)
+            changeValue(tree, startIndex + start, end);  // 값 변경 연산 호출
+        else if (type == 2)
+        {
+            start = start + startIndex;  // 전체 트리에서의 시작 인덱스로 변환
+            end = end + startIndex;      // 전체 트리에서의 끝 인덱스로 변환
+            cout << getSum(tree, start, end) << endl;  // 구간 합 계산 및 출력
+        }
+    }
+}
+
+// 트리 구성 함수
+void setTree(vector<long>& tree, int i)
+{
+    while (i != 0)
+    {
+        tree[i / 2] += tree[i];  // 부모 노드에 자식 노드 값 더하기
+        i--;
+    }
+}
+
+// 값 변경 함수
+void changeValue(vector<long>& tree, long index, long value)
+{
+    long difference = value - tree[index]; // 변경된 값과 기존 값의 차이 계산
+
+    while (index > 0)
+    {
+        tree[index] = tree[index] + difference;  // 노드 값 업데이트
+        index = index / 2;  // 부모 노드로 이동
+    }
+}
+
+// 구간 합 계산 함수
+long getSum(vector<long>& tree, long start, long end)
+{
+    long subTotal = 0;
+
+    while (start <= end)
+    {
+        if (start % 2 == 1)  // 왼쪽 자식 노드가 포함되는 경우
+        {
+            subTotal += tree[start];
+            start++;
+        }
+        if (end % 2 == 0)  // 오른쪽 자식 노드가 포함되는 경우
+        {
+            subTotal += tree[end];
+            end--;
+        }
+        start /= 2;  // 부모 노드로 이동
+        end /= 2;    // 부모 노드로 이동
+    }
+    return subTotal;
+}
