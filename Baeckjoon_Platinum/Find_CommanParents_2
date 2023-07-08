@@ -1,0 +1,152 @@
+#include <vector>
+#include <iostream>
+#include <queue>
+#include <cmath>
+using namespace std;
+
+static int parents[21][100001];
+
+void bfs(vector<vector<int>>& tree, vector<int>& treeDepth, vector<bool>& visited, int node);
+int lcaFunc(vector<int>& treeDepth, int a, int b, int maxExponent);
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	vector<vector<int>> tree;
+	vector<int> treeDepth;
+	vector<bool> visited;
+	vector<int> answer;
+	int maxExponent = 0;
+	int nodes;
+	int findings;
+
+	cin >> nodes;
+
+	tree.resize(nodes + 1);
+	treeDepth.resize(nodes + 1);
+	visited.resize(nodes + 1);
+
+	// 트리 정보 입력 및 저장
+	for (int i = 0; i < nodes - 1; i++)
+	{
+		int my;
+		int you;
+		cin >> my >> you;
+
+		tree[my].push_back(you);
+		tree[you].push_back(my);
+	}
+
+	// BFS를 통해 트리의 각 노드의 깊이와 부모 노드를 구함
+	bfs(tree, treeDepth, visited, 1);
+
+	int temp = 1;
+
+	// 트리의 높이를 계산하기 위해 2의 지수승으로 증가하는 값을 구함
+	while (temp <= nodes)
+	{
+		temp <<= 1;
+		maxExponent++;
+	}
+
+	// DP(Dynamic Programming)를 사용하여 각 노드의 2^i번째 부모 노드를 미리 저장함
+	for (int i = 1; i <= maxExponent; i++)
+	{
+		for (int j = 1; j <= nodes; j++)
+		{
+			parents[i][j] = parents[i - 1][parents[i - 1][j]];
+		}
+	}
+
+	cin >> findings;
+
+	// LCA를 찾을 두 노드를 입력받고, LCA를 계산하여 answer 벡터에 저장
+	for (int i = 0; i < findings; i++)
+	{
+		int first;
+		int second;
+		cin >> first >> second;
+
+		int lca = lcaFunc(treeDepth, first, second, maxExponent);
+		answer.push_back(lca);
+	}
+
+	// 결과 출력
+	for (int i = 0; i < answer.size(); i++)
+	{
+		cout << answer[i] << "\n";
+	}
+}
+
+// BFS를 통해 트리의 각 노드의 깊이와 부모 노드를 구하는 함수
+void bfs(vector<vector<int>>& tree, vector<int>& treeDepth, vector<bool>& visited, int node)
+{
+	queue<int> que;
+	que.push(node);
+	visited[node] = true;
+	int level = 1;
+	int currnetSize = 1;
+	int count = 0;
+
+	while (!que.empty())
+	{
+		int currentNode = que.front();
+		que.pop();
+
+		for (int next : tree[currentNode])
+		{
+			if (visited[next] == false)
+			{
+				visited[next] = true;
+				que.push(next);
+				parents[0][next] = currentNode;
+				treeDepth[next] = level;
+			}
+		}
+		count++;
+		if (count == currnetSize)
+		{
+			count = 0;
+			currnetSize = que.size();
+			level++;
+		}
+	}
+}
+
+// LCA를 계산하는 함수
+int lcaFunc(vector<int>& treeDepth, int a, int b, int maxExponent)
+{
+	// a의 깊이가 b의 깊이보다 크다면 두 노드의 값을 교환하여 a가 항상 얕은 노드로 설정
+	if (treeDepth[a] > treeDepth[b])
+	{
+		int temp = a;
+		a = b;
+		b = temp;
+	}
+
+	// LCA 계산을 위해 b의 깊이에서 a의 깊이를 뺀 값보다 작거나 같은 가장 큰 2의 지수승을 찾고, 해당 깊이를 가진 b의 부모 노드로 b를 갱신
+	for (int i = maxExponent; i >= 0; i--)
+	{
+		if (pow(2, i) <= treeDepth[b] - treeDepth[a])
+		{
+			if (treeDepth[a] <= treeDepth[parents[i][b]])
+				b = parents[i][b];
+		}
+	}
+
+	// a와 b의 부모 노드를 동시에 올라가며 가장 가까운 공통 조상을 찾음
+	for (int i = maxExponent; i >= 0 && a != b; i--)
+	{
+		if (parents[i][a] != parents[i][b])
+		{
+			a = parents[i][a];
+			b = parents[i][b];
+		}
+	}
+
+	// a와 b가 같지 않다면 a의 부모 노드를 반환하고, 같다면 a 자체를 반환하여 LCA를 구함
+	return (a != b) ? parents[0][a] : a;
+}
