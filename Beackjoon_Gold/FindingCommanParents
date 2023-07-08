@@ -1,0 +1,120 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+// BFS(Breadth-First Search) 함수 선언
+void bfs(vector<vector<int>>& tree, vector<int>& treeDepth, vector<int>& parents, vector<bool>& visited, int node);
+// LCA 함수 선언
+int lcaFunc(vector<int>& treeDepth, vector<int>& parents, int a, int b);
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	vector<vector<int>> tree;
+	vector<int> treeDepth;
+	vector<int> parents;
+	vector<bool> visited;
+	int nodes;
+	int findings;
+
+	cin >> nodes;
+
+	tree.resize(nodes + 1);
+	treeDepth.resize(nodes + 1);
+	parents.resize(nodes + 1);
+	visited.resize(nodes + 1);
+
+	// 트리 정보 입력 및 저장
+	for (int i = 0; i<nodes - 1; i++)
+	{
+		int my;
+		int you;
+		cin >> my >> you;
+
+		tree[my].push_back(you);
+		tree[you].push_back(my);
+	}
+
+	// BFS를 통해 트리의 각 노드의 깊이와 부모 노드를 구함
+	bfs(tree, treeDepth, parents, visited, 1);
+	
+	cin >> findings;
+	
+	// LCA를 찾을 두 노드를 입력받고, LCA를 계산하여 출력
+	for (int i = 0; i < findings; i++)
+	{
+		int first;
+		int second;
+		cin >> first >> second;
+
+		int lca = lcaFunc(treeDepth, parents, first, second);
+		cout << lca << "\n";
+	}
+}
+
+// BFS를 통해 트리의 각 노드의 깊이와 부모 노드를 구하는 함수
+void bfs(vector<vector<int>>& tree, vector<int>& treeDepth, vector<int>& parents, vector<bool>& visited, int node)
+{
+	queue<int> que;
+	que.push(node);
+	visited[node] = true;
+	
+	int level = 1;
+	int currentSize = 1;
+	int count = 0;
+
+	while (!que.empty())
+	{
+		int currentNode = que.front();
+		que.pop();
+		for (int next : tree[currentNode])
+		{
+			if (!visited[next])
+			{
+				visited[next] = true;
+				que.push(next);
+				parents[next] = currentNode;
+				treeDepth[next] = level;
+			}
+		}
+		count++;
+		if (count == currentSize)
+		{
+			count = 0;
+			currentSize = que.size();
+			level++;
+		}
+	}
+}
+
+// lca를 통해 공통 조상을 찾는 함수
+int lcaFunc(vector<int>& treeDepth, vector<int>& parents, int a, int b)
+{
+    // a의 깊이가 b의 깊이보다 작으면 두 노드의 값을 교환하여 a가 항상 깊은 노드로 설정
+    if (treeDepth[a] < treeDepth[b])
+    {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+    
+    // 두 노드의 깊이가 같아질 때까지 a의 부모를 따라 올라감
+    while (treeDepth[a] != treeDepth[b])
+    {
+        a = parents[a];
+    }
+    
+    // 두 노드가 같은 부모를 가질 때까지 a와 b를 동시에 부모로 변경
+    while (a != b)
+    {
+        a = parents[a];
+        b = parents[b];
+    }
+    
+    // 공통 조상 반환
+    return a;
+}
