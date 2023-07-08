@@ -1,0 +1,38 @@
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int tableSize;
+    int select;
+    cin >> tableSize >> select;
+    vector<vector<int>> dpTable(tableSize+1, vector<int>(tableSize+1));
+    
+    // 초기화: dpTable[i][j]를 계산하기 위해 기저 사례를 설정합니다.
+    for(int i=0; i<= tableSize; i++)
+    {
+        dpTable[i][0] = 1; // 모든 n에 대해 nC0은 1입니다.
+        dpTable[i][1] = i; // 모든 n에 대해 nC1은 n입니다.
+        dpTable[i][i] = 1; // 모든 n에 대해 nCn은 1입니다.
+    }
+    
+    // 동적 계획법을 사용하여 이항 계수를 계산합니다.
+    for(int i=2; i<=tableSize; i++)
+    {
+        for(int j=1; j<i; j++)
+        {
+            dpTable[i][j] = dpTable[i-1][j] + dpTable[i-1][j-1];
+            dpTable[i][j] %= 10007; // 나머지 연산을 수행
+        }
+    }
+    
+    cout << dpTable[tableSize][select] << "\n";
+    
+    return 0;
+}
