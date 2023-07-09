@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int questions;
+    int allGems;
+    int gemCount = 0;
+    double answer = 0;
+    vector<int> gemTable(51);
+    vector<double> probability(51);
+
+    // 보석의 개수 입력
+    cin >> allGems;
+    for(int i=0; i<allGems; i++)
+    {
+        cin >> gemTable[i];  // 보석의 개수 입력
+        gemCount += gemTable[i];  // 보석 전체 개수 누적
+    }
+
+    // 질문의 개수 입력
+    cin >> questions;
+
+    // 보석마다 확률 계산
+    for(int i=0; i<allGems; i++)
+    {
+        if(gemTable[i] >= questions)
+        {
+            probability[i] = 1.0;  // 초기 확률 1.0 설정
+            for(int j=0; j<questions; j++)
+            {
+                probability[i] *= (double)(gemTable[i]-j)/(gemCount - j);
+                // 보석 하나를 선택할 때마다 확률을 곱함
+            }
+        }
+        answer += probability[i];  // 모든 보석의 확률 합산
+    }
+    
+    cout << fixed;  // 소수점 표기 방식을 고정된 소수점 표기법으로 설정
+    cout.precision(9);  // 소수점 아래 자릿수를 9자리로 설정
+    cout << answer << "\n";  // 결과 출력
+
+    return 0;
+}
