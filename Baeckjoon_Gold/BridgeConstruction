@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    // 입출력 속도 향상을 위한 코드
+    ios::sync_with_stdio(false);  // C++의 iostream과 C의 stdio를 동기화하지 않음
+    cin.tie(NULL);  // cin과 cout의 묶음을 풀어줌
+    cout.tie(NULL);  // cin과 cout의 묶음을 풀어줌
+
+    int findings;
+    vector<vector<int>> dpTable(31, vector<int>(31));
+
+    // 초기 조건 설정
+    for(int i=0; i<=30; i++)
+    {
+        dpTable[i][1] = i;  // i개 중에서 1개를 선택하는 경우의 수는 i개
+        dpTable[i][i] = 1;  // i개 중에서 i개를 선택하는 경우의 수는 1개
+        dpTable[i][0] = 1;  // i개 중에서 0개를 선택하는 경우의 수는 1개
+    }
+
+    // 동적 계획법을 통한 경우의 수 계산
+    for(int i=2; i<=30; i++)
+    {
+        for(int j=1; j<i; j++)
+        {
+            // i개 중에서 j개를 선택하는 경우의 수는
+            // (i-1)개 중에서 j개를 선택하는 경우의 수와 (i-1)개 중에서 (j-1)개를 선택하는 경우의 수를 합한 값과 같음
+            dpTable[i][j] = dpTable[i-1][j] + dpTable[i-1][j-1];
+        }
+    }
+
+    // 입력 및 결과 출력
+    cin >> findings;  // 테스트 케이스의 개수 입력
+    for(int i=0; i<findings; i++)
+    {
+        int siteA, siteB;
+        cin >> siteA >> siteB;  // siteA, siteB 입력
+        cout << dpTable[siteB][siteA] << "\n";
+        // siteB 개 중에서 siteA 개를 선택하는 경우의 수 출력
+    }
+
+    return 0;
+}
