@@ -1,0 +1,78 @@
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    int rangeNum;                 // 범위 수
+    int qType;                    // 질문 유형
+    vector<long> factorial(21);   // 팩토리얼 값을 저장할 벡터
+    vector<long> permutation(21); // 생성된 순열을 저장할 벡터
+    vector<bool> visited(21, false); // 순열 생성에 사용된 원소를 체크할 벡터
+
+    // 범위 수와 질문 유형 입력
+    cin >> rangeNum >> qType;
+    factorial[0] = 1; // 0!은 1이므로 초기화
+
+    // 팩토리얼 계산
+    for (int i = 1; i <= rangeNum; i++)
+    {
+        factorial[i] = factorial[i - 1] * i;
+    }
+
+    if (qType == 1)
+    {
+        long k;
+        cin >> k; // k번째 순열을 계산하기 위해 k 입력
+
+        // k번째 순열 계산
+        for (int i = 1; i <= rangeNum; i++)
+        {
+            for (int j = 1, cnt = 1; j <= rangeNum; j++)
+            {
+                if (visited[j]) // 이미 선택된 원소라면 건너뛰기
+                    continue;
+
+                if (k <= cnt * factorial[rangeNum - i]) // k번째 순열에 해당하는 원소를 찾았을 때
+                {
+                    k -= ((cnt - 1) * factorial[rangeNum - i]); // 다음 순열을 계산하기 위해 k 갱신
+                    permutation[i] = j; // 순열에 해당하는 원소 저장
+                    visited[j] = true; // 해당 원소를 선택했음을 표시
+                    break;
+                }
+                cnt++;
+            }
+        }
+
+        // 순열 출력
+        for (int i = 1; i <= rangeNum; i++)
+        {
+            cout << permutation[i] << " ";
+        }
+    }
+    else
+    {
+        long k = 1;
+
+        // 입력된 순열에 대한 k 값 계산
+        for (int i = 1; i <= rangeNum; i++)
+        {
+            cin >> permutation[i]; // 입력된 순열 원소를 받음
+
+            int cnt = 0;
+            for (int j = 1; j < permutation[i]; j++)
+            {
+                if (visited[j] == false) // 선택되지 않은 원소라면 카운트
+                    cnt++;
+            }
+            k += cnt * factorial[rangeNum - i]; // k 값을 계산하여 갱신
+            visited[permutation[i]] = true; // 해당 원소를 선택했음을 표시
+        }
+
+        // k 값 출력
+        cout << k << "\n";
+    }
+
+    return 0;
+}
