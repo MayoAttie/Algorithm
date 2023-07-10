@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int aNum;        // 문자 'a'의 개수
+    int zNum;        // 문자 'z'의 개수
+    int finding;     // 찾으려는 순서
+    vector<vector<long>> dpTable(202, vector<long>(202));  // 동적 계획법을 위한 테이블
+    
+    cin >> aNum >> zNum >> finding;  // aNum, zNum, finding 값을 입력 받음
+    
+    // dpTable 초기화
+    for(int i=0; i<=200; i++)
+    {
+        for(int j=0; j<=i; j++)
+        {
+            if(j==0 || j==i)
+                dpTable[i][j] = 1;  // 첫 번째 열과 마지막 열은 항상 1로 초기화
+            else
+            {
+                dpTable[i][j] = dpTable[i-1][j] + dpTable[i-1][j-1];  // 파스칼의 삼각형을 이용한 계산
+                if(dpTable[i][j] > 1000000000)
+                    dpTable[i][j] = 1000000001;  // 값이 너무 커지면 1000000001로 제한
+            }
+        }
+    }
+    
+    // 찾으려는 순서가 가능한 범위를 넘어가면 -1 출력
+    if(dpTable[aNum+zNum][zNum] < finding)
+        cout << "-1";
+    else
+    {
+        // aNum과 zNum이 0이 될 때까지 반복
+        while(!(aNum == 0 && zNum == 0))
+        {
+            if(dpTable[aNum-1+zNum][zNum] >= finding)
+            {
+                cout << "a";    // a를 출력하고 aNum을 1 감소
+                aNum--;
+            }
+            else
+            {
+                cout << "z";    // z를 출력하고 finding 값을 감소시키고 zNum을 1 감소
+                finding -= dpTable[aNum-1+zNum][zNum];
+                zNum--;
+            }
+        }
+    }
+}
