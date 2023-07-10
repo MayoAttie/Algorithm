@@ -1,0 +1,30 @@
+#include <vector>
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false); // 입출력 성능을 향상시키기 위해 사용합니다.
+    cin.tie(NULL); // 입력을 위해 cin과 cout을 연결 해제하여 더 빠른 입력을 가능하게 합니다.
+    cout.tie(NULL); // 출력을 위해 cout과 cin을 연결 해제하여 더 빠른 출력을 가능하게 합니다.
+
+    int N;
+    cin >> N; // N의 값을 입력 받습니다.
+
+    vector<int> dpTable(N + 1); // 크기가 N+1인 동적 계획법 테이블을 생성합니다.
+    dpTable[1] = 0; // 기본 경우: 1에 도달하는 데 필요한 최소 연산 수는 0입니다.
+
+    for (int i = 2; i <= N; i++)
+    {
+        dpTable[i] = dpTable[i - 1] + 1; // 초기에는 i에 도달하는 최소 연산 수를 이전 수에 1을 더해서 설정합니다.
+
+        if (i % 2 == 0)
+            dpTable[i] = min(dpTable[i], dpTable[i / 2] + 1); // i가 2로 나누어 떨어진다면, 2로 나눈 값과 1을 더한 연산 수와 비교하여 더 작은 값을 선택합니다.
+
+        if (i % 3 == 0)
+            dpTable[i] = min(dpTable[i], dpTable[i / 3] + 1); // i가 3으로 나누어 떨어진다면, 3으로 나눈 값과 1을 더한 연산 수와 비교하여 더 작은 값을 선택합니다.
+    }
+
+    cout << dpTable[N]; // N에 도달하는데 필요한 최소 연산 수를 출력합니다.
+}
