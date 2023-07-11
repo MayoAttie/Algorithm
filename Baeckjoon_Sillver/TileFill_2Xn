@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int num;
+    int mod = 10007;
+    cin >> num;
+    
+    // 동적 계획법을 위한 dp 테이블 생성
+    vector<long> dpTable(num+2);
+    
+    dpTable[1] = 1; // 초기 값 설정
+    dpTable[2] = 2;
+    
+    // Bottom-up 방식으로 DP 테이블 채우기
+    for(int i=3; i<=num; i++)
+    {
+        dpTable[i] = long((dpTable[i-1] % mod) + (dpTable[i-2] % mod)) % mod; // 이전 단계의 결과를 이용하여 현재 값을 계산하고 mod 연산 수행
+    }
+    
+    // 결과 출력
+    cout << dpTable[num];
+    
+    return 0;
+}
