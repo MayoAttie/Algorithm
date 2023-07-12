@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    int col;
+    int row;
+    long max = 0;  // 최대 정사각형의 한 변의 길이를 저장할 변수
+    cin >> col >> row;  // 행(row)과 열(col)의 개수 입력
+    
+    vector<vector<int>> dpTable(col, vector<int>(row));  // DP 테이블 생성
+    
+    // 입력받은 행렬을 순회하며 DP 테이블과 최대 정사각형의 한 변의 길이(max)를 계산
+    for(int i=0; i<col; i++)
+    {
+        string line;
+        cin >> line;  // 한 줄씩 입력받음
+        for(int j=0; j<row; j++)
+        {
+            dpTable[i][j] = line[j] - '0';  // 문자열을 숫자로 변환하여 DP 테이블에 저장
+
+            if(dpTable[i][j] == 1 && j>0 && i>0)
+                dpTable[i][j] = min(dpTable[i-1][j-1], min(dpTable[i-1][j], dpTable[i][j-1])) + dpTable[i][j];
+            // 현재 위치가 1이고, 왼쪽 대각선, 왼쪽, 위쪽의 값이 모두 1인 경우, 정사각형이 이어지므로 크기를 1 증가시킴
+            
+            if(max < dpTable[i][j])
+                max = dpTable[i][j];  // 최대 정사각형의 크기 갱신
+        }
+    }
+    
+    cout << max * max << "\n";  // 최대 정사각형의 넓이 출력
+}
