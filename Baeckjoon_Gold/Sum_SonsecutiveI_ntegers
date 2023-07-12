@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    // 입출력 속도 향상을 위한 설정
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int arrSize;
+    int answer;
+    cin >> arrSize;  // 배열 크기 입력
+    vector<int> dpTable(arrSize);  // 입력된 수열을 저장할 벡터
+    vector<int> leftDeleter(arrSize);  // 왼쪽부터 삭제할 때의 최댓값을 저장할 벡터
+    vector<int> rightDeleter(arrSize);  // 오른쪽부터 삭제할 때의 최댓값을 저장할 벡터
+
+    for(int i=0; i<arrSize; i++)
+    {
+        cin >> dpTable[i];  // 수열 입력
+    }
+
+    leftDeleter[0] = dpTable[0];  // 첫 번째 원소로 초기화
+    answer = leftDeleter[0];  // answer에 초기값 저장
+    
+    // 왼쪽부터 삭제할 때의 최댓값 계산
+    for(int i=1; i<arrSize; i++)
+    {
+        leftDeleter[i] = max(dpTable[i], leftDeleter[i-1]+dpTable[i]);
+        answer = max(answer, leftDeleter[i]);  // answer 갱신
+    }
+
+    rightDeleter[arrSize-1] = dpTable[arrSize-1];  // 마지막 원소로 초기화
+    
+    // 오른쪽부터 삭제할 때의 최댓값 계산
+    for(int i=arrSize-2; i>=0; i--)
+    {
+        rightDeleter[i] = max(dpTable[i], rightDeleter[i+1]+dpTable[i]);
+    }
+
+    // 중간 원소를 삭제했을 때의 최댓값 계산
+    for(int i=1; i<arrSize-1; i++)
+    {
+        int temp = leftDeleter[i-1] + rightDeleter[i+1];
+        answer = max(answer, temp);  // answer 갱신
+    }
+
+    cout << answer << "\n";  // 결과 출력
+}
