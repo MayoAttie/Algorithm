@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int total;
+    int left;
+    int right;
+
+    // 입력 받기
+    cin >> total >> left >> right;
+
+    // 3차원 벡터 dpTable 초기화
+    vector<vector<vector<long>>> dpTable(total+1, vector<vector<long>>(total+1, vector<long>(total+1)));
+
+    long mod = 1000000007;
+
+    // 초기 조건 설정
+    dpTable[1][1][1] = 1;
+
+    // 점화식을 이용한 dpTable 계산
+    for(int i=2; i<=total; i++)
+    {
+        for(int j=1; j<=left; j++)
+        {
+            for(int m=1; m<=right; m++)
+            {
+                dpTable[i][j][m] = (dpTable[i-1][j][m] * (i-2) + (dpTable[i-1][j][m-1] + dpTable[i-1][j-1][m])) % mod;
+            }
+        }
+    }
+
+    // 결과 출력
+    cout << dpTable[total][left][right] << "\n";
+}
