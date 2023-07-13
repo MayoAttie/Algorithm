@@ -16,6 +16,7 @@
         "vector": "cpp",
         "longestpalindrome": "cpp",
         "defensegame": "cpp",
-        "longest_commonsubsequence": "cpp"
+        "longest_commonsubsequence": "cpp",
+        "playddr": "cpp"
     }
 }
