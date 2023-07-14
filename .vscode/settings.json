@@ -19,6 +19,7 @@
         "longest_commonsubsequence": "cpp",
         "playddr": "cpp",
         "minimum_matrixmultiplicationoperations": "cpp",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "tsp_algorithm": "cpp"
     }
 }
