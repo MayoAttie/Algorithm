@@ -17,6 +17,8 @@
         "longestpalindrome": "cpp",
         "defensegame": "cpp",
         "longest_commonsubsequence": "cpp",
-        "playddr": "cpp"
+        "playddr": "cpp",
+        "minimum_matrixmultiplicationoperations": "cpp",
+        "xlocale": "cpp"
     }
 }

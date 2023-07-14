@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <climits>
+using namespace std;
+
+int dynamicFun(vector<pair<int,int>>& matrix, vector<vector<long>>& dpTable, int start, int end);
+
+int main()
+{
+    int length;
+    cin >> length;
+    vector<pair<int,int>> matrix(length + 1); // 행렬의 정보를 저장하는 벡터
+    vector<vector<long>> dpTable(length+1, vector<long>(length+1, -1)); // 동적 계획법을 위한 테이블
+
+    for(int i=1; i<=length; i++)
+    {
+        int col;
+        int row;
+        cin >> col >> row;
+        matrix[i] = make_pair(col, row); // 행렬의 크기 정보를 벡터에 저장
+    }
+
+    cout << dynamicFun(matrix, dpTable, 1, length) << "\n"; // 행렬 곱셈 순서 최적화 결과 출력
+}
+
+// 행렬 곱셈 순서 최적화를 위한 동적 계획법 함수
+int dynamicFun(vector<pair<int,int>>& matrix, vector<vector<long>>& dpTable, int start, int end)
+{
+    int result = INT_MAX;
+
+    if(dpTable[start][end] != -1) // 이미 계산한 값이 있는 경우, 메모이제이션된 값을 사용
+        return dpTable[start][end];
+    
+    if(start == end) // 행렬이 하나인 경우, 곱셈 횟수는 0
+        return 0;
+
+    if(start+1 == end) // 두 개의 행렬인 경우, 곱셈 횟수는 두 행렬의 크기에 따라 결정
+        return matrix[start].first * matrix[start].second * matrix[end].second;
+
+    for(int i=start; i<end; i++) // 모든 분할된 부분 문제에 대해 반복
+    {
+        // 현재 분할한 행렬 범위에 대한 곱셈 횟수 계산 + 왼쪽 부분 문제와 오른쪽 부분 문제에 대한 재귀 호출
+        result = min(result, matrix[start].first * matrix[i].second * matrix[end].second + dynamicFun(matrix,dpTable, start, i) + dynamicFun(matrix,dpTable, i+1, end));
+    }
+
+    return dpTable[start][end] = result; // 계산 결과를 저장하고 반환
+}
