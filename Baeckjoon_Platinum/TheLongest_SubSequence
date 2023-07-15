@@ -1,0 +1,91 @@
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+// 이진 탐색을 위한 함수 선언
+int binarysearch(int left, int right, int now, vector<int>& adven_increase);
+
+int main()
+{
+    // 입출력 속도 향상을 위한 설정
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int length;
+    int maxLen = 1; // 가장 긴 증가하는 부분 수열의 길이 초기화
+    int index;
+    cin >> length; // 수열의 길이 입력
+
+    // 벡터 초기화
+    int vecNum = min(length + 2, 1000001);
+    vector<int> adven_increase(vecNum); // 가장 긴 증가하는 부분 수열을 저장할 벡터
+    vector<int> answer; // 부분 수열을 역순으로 저장할 벡터
+    vector<int> datas(vecNum); // 입력받은 수열을 저장할 벡터
+    vector<int> longest_increase(vecNum); // 각 위치에서의 가장 긴 증가하는 부분 수열의 길이를 저장할 벡터
+
+    for (int i = 1; i <= length; i++)
+    {
+        cin >> datas[i]; // 수열 입력 받기
+    }
+
+    adven_increase[maxLen] = datas[1]; // 가장 긴 증가하는 부분 수열의 첫 번째 요소 설정
+    longest_increase[1] = 1; // 첫 번째 위치의 가장 긴 증가하는 부분 수열 길이는 1
+
+    // 수열 순회
+    for (int i = 2; i <= length; i++)
+    {
+        if (adven_increase[maxLen] < datas[i])
+        {
+            maxLen++;
+            adven_increase[maxLen] = datas[i]; // 새로운 요소 추가
+            longest_increase[i] = maxLen; // 현재 위치의 가장 긴 증가하는 부분 수열 길이 업데이트
+        }
+        else
+        {
+            index = binarysearch(1, maxLen, datas[i], adven_increase);
+            adven_increase[index] = datas[i]; // 새로운 요소를 추가할 위치에 값 업데이트
+            longest_increase[i] = index; // 현재 위치의 가장 긴 증가하는 부분 수열 길이 업데이트
+        }
+    }
+
+    cout << maxLen << "\n"; // 가장 긴 증가하는 부분 수열의 길이 출력
+    index = maxLen;
+    int next = adven_increase[maxLen] + 1; // 다음에 추가될 수열의 요소 중 가장 작은 값 초기화
+
+    // 가장 긴 증가하는 부분 수열 구성 요소 역순으로 answer 벡터에 저장
+    for (int i = length; i >= 1; i--)
+    {
+        if (longest_increase[i] == index && datas[i] < next)
+        {
+            answer.push_back(datas[i]); // 요소 추가
+            next = datas[i]; // 다음에 추가될 수열의 요소 중 가장 작은 값 업데이트
+            index--; // 이전 위치로 이동
+        }
+    }
+
+    int answerSize = answer.size() - 1;
+    for (int i = answerSize; i >= 0; i--)
+    {
+        cout << answer[i] << " "; // 가장 긴 증가하는 부분 수열 출력
+    }
+
+    return 0;
+}
+
+// 이진 탐색 함수 구현
+int binarysearch(int left, int right, int now, vector<int>& adven_increase)
+{
+    int mid;
+
+    while (left < right)
+    {
+        mid = (left + right) / 2;
+        if (adven_increase[mid] < now)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}

@@ -20,6 +20,7 @@
         "playddr": "cpp",
         "minimum_matrixmultiplicationoperations": "cpp",
         "xlocale": "cpp",
-        "tsp_algorithm": "cpp"
+        "tsp_algorithm": "cpp",
+        "thelongest_subsequence": "cpp"
     }
 }
