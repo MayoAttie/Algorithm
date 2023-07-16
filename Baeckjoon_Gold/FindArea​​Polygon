@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    double answer = 0; // 다각형의 넓이를 저장할 변수
+    int length; // 다각형의 변의 개수
+    cin >> length; // 다각형의 변의 개수 입력 받기
+
+    vector<long> xPos(length + 1); // 다각형의 각 꼭지점의 x 좌표를 저장할 벡터
+    vector<long> yPos(length + 1); // 다각형의 각 꼭지점의 y 좌표를 저장할 벡터
+
+    for (int i = 0; i < length; i++)
+    {
+        cin >> xPos[i]; // 각 꼭지점의 x 좌표 입력 받기
+        cin >> yPos[i]; // 각 꼭지점의 y 좌표 입력 받기
+    }
+
+    xPos[length] = xPos[0]; // 첫 번째 꼭지점의 x 좌표를 마지막에 추가하여 다각형을 완성
+    yPos[length] = yPos[0]; // 첫 번째 꼭지점의 y 좌표를 마지막에 추가하여 다각형을 완성
+
+    for (int i = 0; i < length; i++)
+    {
+        answer += (xPos[i] * yPos[i + 1]) - (xPos[i + 1] * yPos[i]); // 다각형의 넓이를 계산하는 식에 각 변의 곱을 더함
+    }
+
+    cout << fixed; // 소수점 고정 출력
+    cout.precision(1); // 소수점 아래 한 자리까지 출력
+    cout << abs(answer) / 2.0; // 다각형의 넓이를 절대값으로 계산하고 2로 나누어 출력
+}

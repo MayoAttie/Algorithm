@@ -22,6 +22,7 @@
         "xlocale": "cpp",
         "tsp_algorithm": "cpp",
         "thelongest_subsequence": "cpp",
-        "segment_intersection2": "cpp"
+        "segment_intersection2": "cpp",
+        "findarea​​polygon": "cpp"
     }
 }
