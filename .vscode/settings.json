@@ -21,6 +21,7 @@
         "minimum_matrixmultiplicationoperations": "cpp",
         "xlocale": "cpp",
         "tsp_algorithm": "cpp",
-        "thelongest_subsequence": "cpp"
+        "thelongest_subsequence": "cpp",
+        "segment_intersection2": "cpp"
     }
 }
