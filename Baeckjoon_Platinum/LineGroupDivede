@@ -1,0 +1,122 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+// 선분이 교차하는지 확인하는 함수
+bool CrossChecker(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4);
+
+// CCW 알고리즘을 사용하여 점이 선분의 상대 위치를 나타내는 함수
+int CCW(long x1, long y1, long x2, long y2, long x3, long y3);
+
+// 두 선분이 겹치는지 확인하는 함수
+bool Overlap(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4);
+
+// 두 그룹을 합치는 함수
+void UnionFunc(int i, int j, vector<int>& parents);
+
+// 그룹의 대표를 찾는 함수
+int Find(int i, vector<int>& parents);
+
+int main()
+{
+    int length;
+    cin >> length;
+
+    // 각 선분의 그룹을 저장하는 배열
+    vector<int> parents(length + 1);
+
+    // 선분의 좌표를 저장하는 2차원 벡터
+    vector<vector<int>> graph(length + 1, vector<int>(4));
+
+    for (int i = 1; i <= length; i++)
+    {
+        parents[i] = -1;
+    }
+
+    // 선분의 좌표를 입력받고 교차 여부를 확인하여 그룹을 합치는 과정
+    for (int i = 1; i <= length; i++)
+    {
+        cin >> graph[i][0] >> graph[i][1] >> graph[i][2] >> graph[i][3];
+
+        for (int j = 1; j < i; j++)
+        {
+            if (CrossChecker(graph[i][0], graph[i][1], graph[i][2], graph[i][3], graph[j][0], graph[j][1], graph[j][2], graph[j][3]) == true)
+                UnionFunc(i, j, parents);
+        }
+    }
+
+    // 그룹의 개수와 가장 작은 그룹의 크기를 출력
+    int answer = 0;
+    int result = 0;
+
+    for (int i = 1; i <= length; i++)
+    {
+        if (parents[i] < 0)
+        {
+            answer++;
+            result = min(result, parents[i]);
+        }
+    }
+
+    cout << answer << "\n";
+    cout << -result << "\n";
+}
+
+// 선분이 교차하는지 확인하는 함수
+bool CrossChecker(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4)
+{
+    int abc = CCW(x1, y1, x2, y2, x3, y3);
+    int abd = CCW(x1, y1, x2, y2, x4, y4);
+    int cda = CCW(x3, y3, x4, y4, x1, y1);
+    int cdb = CCW(x3, y3, x4, y4, x2, y2);
+
+    if (abc * abd == 0 && cda * cdb == 0)
+        return Overlap(x1, y1, x2, y2, x3, y3, x4, y4);
+    else if (abc * abd <= 0 && cda * cdb <= 0)
+        return true;
+
+    return false;
+}
+
+// CCW 알고리즘을 사용하여 점이 선분의 상대 위치를 나타내는 함수
+int CCW(long x1, long y1, long x2, long y2, long x3, long y3)
+{
+    long temp = (x1 * y2 + x2 * y3 + x3 * y1) - (x2 * y1 + x3 * y2 + x1 * y3);
+
+    if (temp > 0)
+        return 1;
+    else if (temp < 0)
+        return -1;
+    return 0;
+}
+
+// 두 선분이 겹치는지 확인하는 함수
+bool Overlap(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4)
+{
+    if (min(x1, x2) <= max(x3, x4) && min(x3, x4) <= max(x1, x2) && min(y1, y2) <= max(y3, y4) && min(y3, y4) <= max(y1, y2))
+        return true;
+    return false;
+}
+
+// 두 그룹을 합치는 함수
+void UnionFunc(int i, int j, vector<int>& parents)
+{
+    int p = Find(i, parents);
+    int q = Find(j, parents);
+
+    if (p == q)
+        return;
+
+    parents[p] += parents[q];
+    parents[q] = p;
+}
+
+// 그룹의 대표를 찾는 함수 (Union-Find 알고리즘)
+int Find(int i, vector<int>& parents)
+{
+    if (parents[i] < 0)
+        return i;
+
+    return parents[i] = Find(parents[i], parents);
+}
