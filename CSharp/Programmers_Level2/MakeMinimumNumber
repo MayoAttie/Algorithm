@@ -1,0 +1,18 @@
+using System;
+
+public class Solution {
+    public int solution(int[] A, int[] B) {
+        int answer = 0;
+        int length = A.Length;
+
+        Array.Sort(A); // 배열 A를 오름차순으로 정렬
+        Array.Sort(B); // 배열 B를 오름차순으로 정렬
+
+        for (int i = 0; i < length; i++) {
+            // 배열 A와 배열 B의 요소들을 순서대로 곱하여 결과에 더함
+            answer += A[i] * B[length - 1 - i];
+        }
+
+        return answer;
+    }
+}
