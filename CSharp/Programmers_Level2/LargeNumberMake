@@ -1,0 +1,34 @@
+using System;
+using System.Text;
+
+public class Solution {
+    public string solution(string number, int k) {
+        // StringBuilder를 사용하여 문자열 연산 효율성 향상
+        StringBuilder answer = new StringBuilder();
+        int target = number.Length - k;
+        int start = 0;
+        
+        // 문자열을 문자 배열로 변환하여 접근 성능 향상
+        char[] charArray = number.ToCharArray();
+        
+        for (int i = 0; i < target; i++) {
+            char maxDigit = charArray[start];
+            int maxIndex = start;
+            
+            // 현재 위치부터 k개의 숫자 중에서 가장 큰 숫자 선택
+            for (int j = start; j <= k + i; j++) {
+                // 문자 비교에 CompareTo 메서드 사용하여 비교
+                if (charArray[j].CompareTo(maxDigit) > 0) {
+                    maxDigit = charArray[j];
+                    maxIndex = j;
+                }
+            }
+            
+            // 가장 큰 숫자를 결과 문자열에 추가
+            answer.Append(maxDigit);
+            start = maxIndex + 1;
+        }
+        
+        return answer.ToString();
+    }
+}
