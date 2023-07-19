@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(string s) {
+
+        int cnt = 0;                // 변환 횟수를 카운트하는 변수
+        int zeroNum = 0;            // 0의 개수를 카운트하는 변수
+        int oneNum = 0;             // 1의 개수를 카운트하는 변수
+        string origine = s;         // 원래의 이진 문자열을 저장하는 변수
+
+        // origine이 "1"이 될 때까지 반복
+        while (origine != "1")
+        {
+            oneNum = 0;
+            for (int i = 0; i < origine.Length; i++)
+            {
+                if (origine[i] != '0')
+                    oneNum++;       // origine에서 1의 개수 카운트
+                else
+                    zeroNum++;      // origine에서 0의 개수 카운트
+            }
+
+            int binary_num = Convert.ToInt32(oneNum);
+            origine = Convert.ToString(binary_num, 2);    // origine을 이진수로 변환
+            cnt++;                          // 변환 횟수 증가
+
+            for (int i = 0; i < origine.Length; i++)
+            {
+                if (origine[i] == '1')
+                    break;              // 첫 번째 1을 만나면 루프 종료
+                else
+                {
+                    origine = origine.Remove(i, 1);    // 1을 제외한 나머지 문자 제거
+                    i--;                // 문자를 제거하면서 인덱스 감소
+                }
+            }
+        }
+
+        int[] answer = new int[] {cnt, zeroNum};    // 결과를 배열에 저장
+        
+        return answer;                              // 결과 배열 반환
+    }
+}
