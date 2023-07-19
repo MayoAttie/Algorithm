@@ -1,0 +1,23 @@
+public class Solution {
+    public int solution(int[] arr) {
+        int answer = arr[0]; // 초기값을 배열의 첫 번째 요소로 설정
+        for(int i=0; i<arr.Length; i++)
+        {
+            int gcdMax = GetGcd(answer, arr[i]); // answer와 현재 요소의 최대 공약수 계산
+            answer = answer * arr[i] / gcdMax; // 최소 공배수 갱신
+        }
+        return answer; // 최소 공배수 반환
+    }
+    
+    int GetGcd(int a, int b)
+    {
+        while(b!=0)
+        {
+            int temp = b;
+            b = a%b; // 유클리드 호제법을 사용하여 최대 공약수 계산
+            a = temp;
+        }
+        
+        return a; // 최대 공약수 반환
+    }
+}
