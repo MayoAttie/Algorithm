@@ -1,0 +1,22 @@
+using System.Collections.Generic;
+
+public class Solution {
+    public long solution(int n) {
+        // 피보나치 수열을 저장할 리스트 선언
+        List<long> fiboTable = new List<long>();
+        
+        // 피보나치 수열의 시작 값(0, 1) 추가
+        fiboTable.Add(0);
+        fiboTable.Add(1);
+        
+        // 피보나치 수열 계산 반복문
+        for (int i = 2; i <= n + 1; i++) {
+            // 현재 인덱스의 피보나치 수는 이전 두 수의 합으로 계산됨
+            // 1234567로 나눈 나머지를 구함으로써 오버플로우를 방지
+            fiboTable.Add((fiboTable[i - 1] + fiboTable[i - 2]) % 1234567);
+        }
+        
+        // n+1번째 피보나치 수를 반환 (인덱스가 0부터 시작하기 때문에 n+1을 사용)
+        return fiboTable[n + 1];
+    }
+}
