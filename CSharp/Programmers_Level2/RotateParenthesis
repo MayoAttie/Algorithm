@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution
+{
+    public int solution(string s)
+    {
+        int answer = 0;
+        int length = s.Length;
+        // 괄호의 짝을 저장하는 Dictionary
+        Dictionary<char, char> brackets = new Dictionary<char, char>
+        {
+            { ']', '[' },
+            { ')', '(' },
+            { '}', '{' }
+        };
+
+        for (int start = 0; start < length; start++)
+        {
+            Stack<char> stack = new Stack<char>(); // 괄호를 담을 스택 생성
+            bool isCorrect = true; // 올바른 괄호인지를 판단하는 변수
+
+            for (int i = 0; i < length; i++)
+            {
+                char ch = s[(start + i) % length]; // 회전하여 문자열을 가져옴
+
+                if (brackets.ContainsValue(ch)) // 열린 괄호면 스택에 push
+                {
+                    stack.Push(ch);
+                }
+                else // 닫힌 괄호면 스택과 짝을 비교하여 pop
+                {
+                    if (stack.Count == 0 || stack.Peek() != brackets[ch])
+                    {
+                        isCorrect = false; // 짝이 맞지 않으면 올바른 괄호가 아님
+                        break;
+                    }
+                    stack.Pop();
+                }
+            }
+
+            if (stack.Count != 0) // 스택에 남아있는 괄호가 있다면 올바른 괄호가 아님
+            {
+                isCorrect = false;
+            }
+
+            if (isCorrect) // 올바른 괄호이면 정답으로 인정
+            {
+                answer++;
+            }
+        }
+
+        return answer;
+    }
+}
