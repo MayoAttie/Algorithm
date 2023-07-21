@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int n, long left, long right) {
+        // Dictionary를 사용하여 값과 최대값의 쌍을 저장할 변수를 선언합니다.
+        Dictionary<long, int> answer = new Dictionary<long, int>();
+        
+        // left부터 right까지의 범위를 순회합니다.
+        for (long i = left; i <= right; i++) {
+            // 최대값을 계산합니다. i를 n으로 나눈 몫과 나머지 중 큰 값을 1 증가시킵니다.
+            long maxVal = Math.Max(i / n, i % n) + 1;
+            
+            // 만약 딕셔너리에 현재 값이 없다면, 최대값을 해당 값의 키로 추가합니다.
+            // 딕셔너리는 중복된 키를 허용하지 않으므로 중복 값은 저장되지 않습니다.
+            if (!answer.ContainsKey(i))
+            {
+                answer.Add(i, (int)maxVal);
+            }
+        }
+        
+        // 딕셔너리의 값들만을 배열로 변환하여 반환합니다.
+        return answer.Values.ToArray();
+    }
+}
