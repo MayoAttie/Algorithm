@@ -1,0 +1,49 @@
+using System;
+using System.Text;
+
+public class Solution {
+    public int solution(int n, int k) {
+        int answer = 0;
+        string number = ToK_Decimal(n, k); // n을 k진법으로 변환한 문자열을 얻음
+        int start = 0;
+        while (start <= number.Length) { // 변환된 문자열을 반복해서 부분 수열을 확인
+            int end = number.IndexOf('0', start); // 0의 위치를 찾음
+            if (end == -1)
+                end = number.Length; // 0이 없으면 마지막까지 선택
+            string sub = number.Substring(start, end - start); // 0을 기준으로 부분 수열을 추출
+            if (!string.IsNullOrEmpty(sub) && IsPrime(long.Parse(sub))) // 부분 수열이 비어있지 않고 소수이면
+                answer++; // 정답 개수 증가
+            start = end + 1; // 다음 부분 수열 시작 위치 설정
+        }
+        return answer; // 최종 정답 반환
+    }
+    
+    bool IsPrime(long num)
+    {
+        if(num <= 1)
+            return false; // 1 이하의 수는 소수가 아님
+        
+        for(long i=2; i*i<=num; i++)
+        {
+            if(num % i == 0)
+                return false; // 2부터 sqrt(num)까지 나누어 떨어지면 소수가 아님
+        }
+        return true; // 그 외의 경우는 소수임
+    }
+    
+    string ToK_Decimal(int n, int k)
+    {
+        StringBuilder result = new StringBuilder();
+            
+        while(n>0)
+        {
+            result.Append(n%k); // k로 나눈 나머지를 문자열 끝에 추가하여 k진법으로 변환
+            n/=k; // n을 k로 나누어서 자릿수를 줄임
+        }
+        
+        char[] resultChar = result.ToString().ToCharArray(); // StringBuilder의 문자열을 문자 배열로 변환
+        Array.Reverse(resultChar); // 문자 배열을 역순으로 뒤집음
+        
+        return new string(resultChar); // 역순으로 뒤집힌 문자 배열을 문자열로 변환하여 반환
+    }
+}
