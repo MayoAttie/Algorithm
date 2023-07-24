@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int Solution(string skill, string[] skill_trees) {
+        int answer = 0;
+
+        // 주어진 모든 스킬 트리들을 순회합니다.
+        for (int i = 0; i < skill_trees.Length; i++)
+        {
+            // 현재 스킬 트리를 가져옵니다.
+            string tree = skill_trees[i];
+            // 주어진 스킬 트리와 스킬 문자열을 비교하는 인덱스입니다.
+            int skill_Index = 0;
+            // 현재 스킬 트리가 가능한 스킬 순서인지 확인하는 플래그입니다.
+            bool possible = true;
+
+            // 스킬 트리의 모든 문자를 순회합니다.
+            for (int j = 0; j < tree.Length; j++)
+            {
+                // 스킬 트리에서 현재 스킬을 가져옵니다.
+                char s = tree[j];
+
+                // 스킬 인덱스가 스킬 문자열의 길이를 초과하면 더 이상 확인할 필요가 없습니다.
+                if (skill_Index >= skill.Length)
+                    break;
+
+                // 현재 스킬과 주어진 스킬 문자열의 스킬이 일치하는지 확인합니다.
+                if (skill[skill_Index] == s)
+                {
+                    // 스킬이 일치하면 다음 스킬로 인덱스를 이동합니다.
+                    skill_Index++;
+                }
+                // 현재 스킬이 주어진 스킬 문자열에 포함되지만, 스킬 순서가 잘못된 경우입니다.
+                else if (skill.IndexOf(s) != -1)
+                {
+                    // 스킬 순서가 잘못되었으므로 불가능한 플래그를 설정하고 순회를 중지합니다.
+                    possible = false;
+                    break;
+                }
+            }
+
+            // 가능한 스킬 트리인 경우 정답을 증가시킵니다.
+            if (possible)
+                answer++;
+        }
+
+        // 모든 스킬 트리를 확인한 후, 가능한 스킬 트리들의 개수를 반환합니다.
+        return answer;
+    }
+}
