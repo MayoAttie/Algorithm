@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int[] prices) {
+        int len = prices.Length;
+        int[] answer = new int[len]; // 결과를 저장할 배열. 가격이 유지된 기간을 담습니다.
+        Stack<int> duration = new Stack<int>(); // 인덱스를 기억할 스택
+
+        for (int i = 0; i < len; i++)
+        {
+            // 스택이 비어있지 않고, 현재 가격이 스택의 top에 해당하는 가격보다 작을 때
+            while (duration.Count > 0 && prices[i] < prices[duration.Peek()])
+            {
+                int index = duration.Peek(); // top의 인덱스를 가져옵니다.
+                duration.Pop(); // top의 인덱스를 스택에서 꺼냅니다.
+
+                if (index >= len)
+                    break; // 만약 이미 스택에 저장된 인덱스가 prices 배열 길이보다 크거나 같다면 무시합니다.
+
+                // 가격이 떨어졌으므로, 해당 가격이 유지된 기간을 answer 배열에 저장합니다.
+                answer[index] = i - index;
+            }
+            duration.Push(i); // 현재 인덱스를 스택에 저장합니다.
+        }
+
+        // while 문을 나왔을 때, 스택에는 가격이 떨어지지 않은 가격들의 인덱스들만 남아있습니다.
+        // 이들에 대해 가격이 유지된 기간을 배열에 저장합니다.
+        while (duration.Count > 0)
+        {
+            int index = duration.Peek(); // top의 인덱스를 가져옵니다.
+            duration.Pop(); // top의 인덱스를 스택에서 꺼냅니다.
+
+            if (index >= len)
+                break; // 만약 이미 스택에 저장된 인덱스가 prices 배열 길이보다 크거나 같다면 무시합니다.
+
+            // 가격이 유지된 기간을 배열에 저장합니다.
+            answer[index] = len - index - 1;
+        }
+
+        return answer; // 최종적으로 계산된 결과를 반환합니다.
+    }
+}
