@@ -4,53 +4,45 @@ using System.Collections.Generic;
 public class Solution {
     public int solution(string dirs) {
         int answer = 0;
-        // 방문한 경로를 저장할 HashSet입니다. Tuple을 사용하여 시작점과 끝점을 저장합니다.
-        HashSet<Tuple<Tuple<int, int>, Tuple<int, int>>> visited = new HashSet<Tuple<Tuple<int, int>, Tuple<int, int>>>();
-        int x = 0, y = 0; // 현재 위치를 나타내는 변수 x, y를 초기화합니다.
+        int x = 0;
+        int y = 0;
+        List<string> visit = new List<string>();
+        
+        // dir 길이만큼 for문 반복
+        for (int i = 0; i < dirs.Length; i++) {
+            // 현재 x, y 좌표를 초깃값으로 갖는 변수 선언
+            int prevX = x;
+            int prevY = y;
+            // dirs i번째 문자 가져오기
+            char s = dirs[i];
+            
+            // s와 범위 체크하고 해당하는 좌표 +-
+            if (s == 'U' && y < 5)
+                y++;
+            else if (s == 'D' && y > -5)
+                y--;
+            else if (s == 'R' && x < 5)
+                x++;
+            else if (s == 'L' && x > -5)
+                x--;
 
-        foreach (char command in dirs)
-        {
-            int prevX = x; // 이동 이전의 x 위치를 저장합니다.
-            int prevY = y; // 이동 이전의 y 위치를 저장합니다.
-
-            switch (command)
-            {
-                case 'U':
-                    if (y + 1 <= 5)
-                        y++; // y 값이 5보다 작으면 위로 이동합니다.
-                    break;
-                case 'D':
-                    if (y - 1 >= -5)
-                        y--; // y 값이 -5보다 크면 아래로 이동합니다.
-                    break;
-                case 'R':
-                    if (x + 1 <= 5)
-                        x++; // x 값이 5보다 작으면 오른쪽으로 이동합니다.
-                    break;
-                case 'L':
-                    if (x - 1 >= -5)
-                        x--; // x 값이 -5보다 크면 왼쪽으로 이동합니다.
-                    break;
-            }
-
-            if (prevX != x || prevY != y)
-            {
-                // 이전 위치와 현재 위치가 다르면 새로운 경로가 만들어진 것입니다.
-                // 이전 위치와 현재 위치를 Tuple로 저장합니다.
-                Tuple<int, int> prevPos = new Tuple<int, int>(prevX, prevY);
-                Tuple<int, int> currPos = new Tuple<int, int>(x, y);
-                Tuple<Tuple<int, int>, Tuple<int, int>> path = new Tuple<Tuple<int, int>, Tuple<int, int>>(prevPos, currPos);
-
-                // HashSet에 경로를 삽입합니다.
-                // 중복된 경로가 아니라면 HashSet에 추가하고, answer 값을 증가시킵니다.
-                if (visited.Add(path))
-                {
-                    visited.Add(path);
-                    answer++;
-                }
+            // arrayList에 저장할 변수 선언
+            // st = x + y + prevX + prevY
+            // nd = prevX + prevY + x + y
+            string xy = x.ToString() + y.ToString();
+            string prevXY = prevX.ToString() + prevY.ToString();
+            string st = xy + prevXY;
+            string nd = prevXY + xy;
+            
+            // visit에 존재하지 않고 st와 ed가 같지 않으면 visit에 add
+            if (!visit.Contains(st) && !visit.Contains(nd) && !st.Equals(nd)) {
+                visit.Add(st);
+                visit.Add(nd);
             }
         }
-
-        return answer; // 최종적으로 계산된 결과를 반환합니다.
+        
+        // 이동 한 번에 2개의 값을 저장했으므로 /2한 값 반환
+        answer = visit.Count / 2;
+        return answer;
     }
 }
