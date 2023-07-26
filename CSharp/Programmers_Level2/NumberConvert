@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution
+{
+    public int Solution(int x, int y, int n)
+    {
         // DP 배열을 생성하고 모든 값들을 int의 최대값으로 초기화합니다.
         List<int> dp = new List<int>(y + 1);
         for (int i = 0; i <= y; i++)
@@ -37,3 +44,5 @@
 
         // 목표 위치인 y까지 도달하는데 필요한 최소한의 횟수를 반환합니다.
         return dp[y];
+    }
+}
