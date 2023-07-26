@@ -1,0 +1,39 @@
+        // DP 배열을 생성하고 모든 값들을 int의 최대값으로 초기화합니다.
+        List<int> dp = new List<int>(y + 1);
+        for (int i = 0; i <= y; i++)
+        {
+            dp.Add(int.MaxValue);
+        }
+
+        // 시작 위치인 x의 dp 값은 0으로 설정합니다.
+        dp[x] = 0;
+
+        // x부터 y까지의 모든 위치에 대해서 DP를 계산합니다.
+        for (int i = x; i <= y; i++)
+        {
+            // 만약 현재 위치 i의 dp 값이 int의 최대값이라면 계산을 건너뜁니다.
+            if (dp[i] == int.MaxValue)
+                continue;
+
+            // 현재 위치 i에서 n을 더한 위치에 대해 DP를 갱신합니다.
+            // 단, 이때 y보다 작거나 같은 위치만 갱신합니다.
+            if (i + n <= y)
+                dp[i + n] = Math.Min(dp[i + n], dp[i] + 1);
+
+            // 현재 위치 i를 2배한 위치에 대해 DP를 갱신합니다.
+            // 단, 이때 y보다 작거나 같은 위치만 갱신합니다.
+            if (i * 2 <= y)
+                dp[i * 2] = Math.Min(dp[i * 2], dp[i] + 1);
+
+            // 현재 위치 i를 3배한 위치에 대해 DP를 갱신합니다.
+            // 단, 이때 y보다 작거나 같은 위치만 갱신합니다.
+            if (i * 3 <= y)
+                dp[i * 3] = Math.Min(dp[i * 3], dp[i] + 1);
+        }
+
+        // 최종 목표인 y의 dp 값이 int의 최대값이라면, 목표에 도달할 수 없는 경우이므로 -1을 반환합니다.
+        if (dp[y] == int.MaxValue)
+            return -1;
+
+        // 목표 위치인 y까지 도달하는데 필요한 최소한의 횟수를 반환합니다.
+        return dp[y];
