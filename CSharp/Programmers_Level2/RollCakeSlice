@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution
+{
+    public int solution(int[] topping)
+    {
+        int answer = 0;
+
+        // 형제의 토핑 선택을 기록하는 Dictionary
+        Dictionary<int, int> broArr = new Dictionary<int, int>();
+
+        // 내가 선택한 토핑의 개수를 기록하는 Dictionary
+        Dictionary<int, int> myArr = new Dictionary<int, int>();
+
+        // 내가 선택한 토핑들의 개수를 myArr에 기록합니다.
+        foreach (int i in topping)
+        {
+            // myArr에 해당 토핑이 없다면 새로 추가하고 개수를 0으로 초기화합니다.
+            if (!myArr.ContainsKey(i))
+                myArr[i] = 0;
+            // 해당 토핑의 개수를 1 증가시킵니다.
+            myArr[i]++;
+        }
+
+        // 형제가 토핑을 하나씩 선택하면서 가능한 경우를 체크합니다.
+        // 여기서 형제의 마지막 선택은 체크하지 않기 때문에 topping.Length - 1까지 반복합니다.
+        for (int i = 0; i < topping.Length - 1; i++)
+        {
+            // 현재 토핑을 형제가 선택한 개수를 기록하는 broArr에 추가합니다.
+            // 만약 해당 토핑이 없었다면 새로 추가하고 개수를 0으로 초기화합니다.
+            if (!broArr.ContainsKey(topping[i]))
+                broArr[topping[i]] = 0;
+            broArr[topping[i]]++;
+
+            // 현재 토핑을 내가 선택한 개수를 기록하는 myArr에서 하나 빼줍니다.
+            myArr[topping[i]]--;
+
+            // 내가 선택한 개수가 0이라면 해당 토핑을 myArr에서 제거합니다.
+            if (myArr[topping[i]] == 0)
+                myArr.Remove(topping[i]);
+
+            // 형제가 선택한 토핑 개수와 내가 선택한 토핑 개수가 같다면
+            // 가능한 경우이므로 answer를 증가시킵니다.
+            if (broArr.Count == myArr.Count)
+                answer++;
+        }
+
+        // 최종적으로 형제가 선택한 토핑 개수와 내가 선택한 토핑 개수가 같은 경우의 수를 반환합니다.
+        return answer;
+    }
+}
