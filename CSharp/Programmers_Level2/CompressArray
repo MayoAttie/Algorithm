@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int[,] arr) {
+        int n = arr.GetLength(0); // 2차원 배열의 크기를 얻어옵니다. (n x n 배열이라고 가정합니다.)
+        return Compress(arr, n, 0, 0); // 압축 함수를 호출하여 결과를 반환합니다.
+    }
+    
+    // 배열 압축 함수
+    int[] Compress(int[,] arr, int n, int x, int y)
+    {
+        int[] counts = new int[2]; // 0과 1의 개수를 저장하는 배열
+        int target = arr[y, x]; // 현재 영역의 첫 번째 요소를 기준으로 합니다.
+        bool isSame = true; // 현재 영역의 모든 요소가 같은지 여부를 나타내는 플래그
+        
+        // 현재 영역의 모든 요소가 같은지 확인합니다.
+        for (int i = y; i < y + n; i++) 
+        {
+            for (int j = x; j < x + n; j++) 
+            {
+                if (arr[i, j] != target) 
+                {
+                    isSame = false;
+                    break;
+                }
+            }
+            if (!isSame) 
+                break;
+        }
+        
+        if (isSame) // 현재 영역의 모든 요소가 같으면
+            counts[target]++; // 해당 요소의 개수를 증가시킵니다.
+        else // 현재 영역의 요소가 다르면
+        {
+            int half = n / 2; // 영역을 4개로 분할하기 위해 반으로 나눕니다.
+            
+            // 4개의 영역에 대해 재귀적으로 압축 함수를 호출하여 각 영역의 결과를 얻어옵니다.
+            int[] c1 = Compress(arr, half, x, y);
+            int[] c2 = Compress(arr, half, x + half, y);
+            int[] c3 = Compress(arr, half, x, y + half);
+            int[] c4 = Compress(arr, half, x + half, y + half);
+            
+            // 4개 영역의 결과를 합하여 현재 영역의 0과 1의 개수를 구합니다.
+            for (int i = 0; i < 2; i++) 
+            {
+                counts[i] = c1[i] + c2[i] + c3[i] + c4[i];
+            }
+        }
+        
+        return counts; // 현재 영역의 0과 1의 개수를 반환합니다.
+    }
+}

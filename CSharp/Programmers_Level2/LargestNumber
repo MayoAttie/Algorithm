@@ -27,6 +27,6 @@ public class Solution {
         // 문자열 비교를 사용하여 두 문자열의 크기를 비교합니다.
         // CompareTo() 메서드는 두 문자열이 같으면 0, 첫 번째 문자열이 두 번째 문자열보다 작으면 음수, 크면 양수를 반환합니다.
         // 큰 숫자를 먼저 오도록 하기 위해 ba와 ab를 비교한 결과에 -1을 곱하여 반환합니다.
-        return string.Compare(ba, ab);
+        return ab.CompareTo(ba) * -1;
     }
 }
