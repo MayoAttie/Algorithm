@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int[] sequence, int k) {
+        List<int> answer = new List<int>(); // 결과를 저장할 리스트를 생성합니다.
+        int left = 0; // 구간의 왼쪽 포인터를 초기화합니다.
+        int right = 0; // 구간의 오른쪽 포인터를 초기화합니다.
+        int sum = sequence[0]; // 현재 구간의 합을 초기화합니다.
+        int min_length = sequence.Length + 1; // 최소 길이를 저장할 변수를 초기화합니다.
+
+        while (right < sequence.Length) {
+            if (sum == k) // 현재 구간의 합이 k와 같은 경우
+            {
+                int length = right - left + 1; // 현재 구간의 길이를 계산합니다.
+                if (length < min_length) // 현재 길이가 최소 길이보다 작으면
+                {
+                    min_length = length; // 최소 길이와 구간의 인덱스를 갱신합니다.
+                    answer = new List<int> { left, right };
+                }
+                right++; // 오른쪽 포인터를 오른쪽으로 한 칸 이동합니다.
+                if (right < sequence.Length) // 오른쪽 포인터가 배열 범위를 벗어나지 않도록 체크합니다.
+                    sum += sequence[right]; // 오른쪽 포인터의 값을 합에 더합니다.
+            }
+            else if (sum < k) // 현재 구간의 합이 k보다 작은 경우
+            {
+                right++; // 오른쪽 포인터를 오른쪽으로 한 칸 이동합니다.
+                if (right < sequence.Length) // 오른쪽 포인터가 배열 범위를 벗어나지 않도록 체크합니다.
+                    sum += sequence[right]; // 오른쪽 포인터의 값을 합에 더합니다.
+            }
+            else // 현재 구간의 합이 k보다 큰 경우
+            {
+                sum -= sequence[left]; // 왼쪽 포인터의 값을 합에서 뺍니다.
+                left++; // 왼쪽 포인터를 오른쪽으로 한 칸 이동합니다.
+            }
+        }
+
+        // 리스트를 배열로 변환하여 결과를 반환합니다.
+        return answer.ToArray();
+    }
+}
