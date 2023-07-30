@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Solution {
+    List<bool> visited;
+    List<List<int>> graph;
+    List<int> groupSize;
+
+    public int solution(int[] cards) {
+        int answer = 0;
+        int len = cards.Length;
+
+        // 방문 여부를 저장하는 리스트 초기화
+        visited = new List<bool>(new bool[len + 1]);
+
+        // 그래프 초기화
+        graph = new List<List<int>>(len + 1);
+        for (int i = 0; i <= len; i++)
+        {
+            graph.Add(new List<int>());
+        }
+
+        // 그래프에 카드 정보 추가
+        for (int i = 0; i < len; i++)
+        {
+            // 카드 정보는 1부터 시작하므로, 노드 번호를 i + 1로 설정
+            graph[i + 1].Add(cards[i]);
+        }
+
+        // 그래프 순회하면서 연결된 그룹들의 크기를 구함
+        for (int i = 1; i <= len; i++)
+        {
+            if (!visited[i])
+            {
+                int count = 1; // 현재 그룹 크기
+                DFS(i, ref count); // DFS로 그룹 탐색
+                groupSize.Add(count); // 그룹의 크기를 리스트에 추가
+            }
+        }
+
+        // 그룹의 크기를 내림차순으로 정렬
+        groupSize.Sort((a, b) => b.CompareTo(a));
+
+        // 가장 큰 두 개의 그룹 크기를 곱하여 answer 계산
+        if (groupSize.Count >= 2)
+            answer = groupSize[0] * groupSize[1];
+
+        return answer;
+    }
+
+    // DFS 메서드로 그룹의 크기를 탐색하는 함수
+    void DFS(int node, ref int count)
+    {
+        visited[node] = true;
+        foreach (int neighbor in graph[node])
+        {
+            if (!visited[neighbor])
+            {
+                count++; // 연결된 그룹의 크기 증가
+                DFS(neighbor, ref count); // 인접한 노드를 재귀적으로 방문
+            }
+        }
+    }
+}
