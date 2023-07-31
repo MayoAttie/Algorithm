@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int rows, int columns, int[,] queries) {
+        int[] answer = new int[queries.GetLength(0)]; // 결과를 저장할 배열 선언
+
+        int[,] fullNumbers = new int[rows, columns]; // 주어진 크기의 2차원 배열 생성
+
+        // fullNumbers 배열 초기화
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                fullNumbers[i, j] = i * columns + j + 1;
+            }
+        }
+
+        // queries 배열에 있는 회전 작업 수행
+        for (int i = 0; i < queries.GetLength(0); i++)
+        {
+            int r1 = queries[i, 0] - 1; // 회전 범위 시작 행 인덱스
+            int c1 = queries[i, 1] - 1; // 회전 범위 시작 열 인덱스
+            int r2 = queries[i, 2] - 1; // 회전 범위 끝 행 인덱스
+            int c2 = queries[i, 3] - 1; // 회전 범위 끝 열 인덱스
+
+            int temp = fullNumbers[r1, c1]; // 회전 작업 중 임시로 값을 저장할 변수
+            int minVal = temp; // 회전 작업 중 최솟값을 찾을 변수로 temp 값으로 초기화
+
+            // 회전의 1번: 왼쪽 열 이동
+            for (int j = r1; j < r2; j++)
+            {
+                fullNumbers[j, c1] = fullNumbers[j + 1, c1]; // 아래쪽으로 값 이동
+                minVal = Math.Min(minVal, fullNumbers[j, c1]); // 최솟값 갱신
+            }
+
+            // 회전의 2번: 아래쪽 행 이동
+            for (int j = c1; j < c2; j++)
+            {
+                fullNumbers[r2, j] = fullNumbers[r2, j + 1]; // 오른쪽으로 값 이동
+                minVal = Math.Min(minVal, fullNumbers[r2, j]); // 최솟값 갱신
+            }
+
+            // 회전의 3번: 오른쪽 열 이동
+            for (int j = r2; j > r1; j--)
+            {
+                fullNumbers[j, c2] = fullNumbers[j - 1, c2]; // 위쪽으로 값 이동
+                minVal = Math.Min(minVal, fullNumbers[j, c2]); // 최솟값 갱신
+            }
+
+            // 회전의 4번: 위쪽 행 이동
+            for (int j = c2; j > c1; j--)
+            {
+                fullNumbers[r1, j] = fullNumbers[r1, j - 1]; // 왼쪽으로 값 이동
+                minVal = Math.Min(minVal, fullNumbers[r1, j]); // 최솟값 갱신
+            }
+
+            fullNumbers[r1, c1 + 1] = temp; // 회전 작업 중 저장한 temp 값 다시 복원
+            answer[i] = minVal; // 회전 작업 중 최솟값을 결과 배열에 저장
+        }
+
+        return answer; // 결과 배열 반환
+    }
+}
