@@ -1,0 +1,24 @@
+using System;
+
+public class Solution
+{
+    public long Solution(int k, int d)
+    {
+        long answer = 0;
+
+        // i는 0부터 d까지 k씩 증가하는 값으로 반복합니다.
+        for (int i = 0; i <= d; i += k)
+        {
+            // y는 직각삼각형에서 빗변의 길이로 계산됩니다.
+            // y^2 = d^2 - i^2이므로, y = sqrt(d^2 - i^2) 입니다.
+            long y = (long)Math.Sqrt(Math.Pow(d, 2) - Math.Pow(i, 2));
+
+            // y를 k로 나눈 몫을 구하고 1을 더합니다.
+            // 왜냐하면 y는 정수형이므로 몫에 1을 더해주면 y 이하의 k의 배수의 개수를 구할 수 있습니다.
+            answer += (long)Math.Floor((double)y / k) + 1;
+        }
+
+        // 최종적으로 구해진 answer를 반환합니다.
+        return answer;
+    }
+}
