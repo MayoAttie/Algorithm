@@ -1,0 +1,56 @@
+public class Solution
+{
+    public int solution(int storey)
+    {
+        int answer = 0;
+
+        while (storey != 0)
+        {
+            // storey를 10으로 나눈 나머지를 구하여 num에 저장합니다.
+            int num = storey % 10;
+
+            // num이 5보다 큰 경우
+            if (num > 5)
+            {
+                // answer에 (10 - num)을 더합니다. (반올림을 수행하기 위해)
+                answer += 10 - num;
+
+                // storey를 10으로 나누고, 1을 더하여 storey의 마지막 자릿수를 제거하고, 반올림을 수행합니다.
+                storey = storey / 10;
+                storey = storey + 1;
+            }
+            // num이 5보다 작은 경우
+            else if (num < 5)
+            {
+                // answer에 num을 더합니다. (버림을 수행하기 위해)
+                answer = answer + num;
+
+                // storey를 10으로 나누어 storey의 마지막 자릿수를 제거합니다.
+                storey = storey / 10;
+            }
+            // num이 5와 같은 경우
+            else
+            {
+                // storey를 10으로 나눈 후 10의 자릿수를 구하여 tmp에 저장합니다.
+                int tmp = (storey / 10) % 10;
+
+                // tmp가 5보다 크거나 같은 경우 (반올림을 수행해야 함)
+                if (tmp >= 5)
+                {
+                    // storey를 10으로 나누고, 1을 더하여 storey의 마지막 자릿수를 제거하고, 반올림을 수행합니다.
+                    storey = storey / 10;
+                    storey = storey + 1;
+                }
+                // tmp가 5보다 작은 경우 (버림을 수행함)
+                else
+                    storey = storey / 10;
+
+                // answer에 5를 더합니다. (반올림 또는 버림을 수행하기 위해)
+                answer = answer + 5;
+            }
+        }
+
+        // 최종적으로 구해진 answer를 반환합니다.
+        return answer;
+    }
+}
