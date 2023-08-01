@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution
+{
+    public int Converter(string str)
+    {
+        string delimiter = ":";
+        int pos = str.IndexOf(delimiter);
+        int hour = int.Parse(str.Substring(0, pos));
+        int minutes = int.Parse(str.Substring(pos + delimiter.Length));
+        return hour * 60 + minutes;
+    }
+
+    public int solution(string[,] book_time)
+    {
+        List<(int, int)> timeList = new List<(int, int)>();
+        List<int> roomList = new List<int>();
+
+        // book_time 배열 크기 가져오기
+        int rowCount = book_time.GetLength(0);
+        int colCount = book_time.GetLength(1);
+
+        // book_time 배열 순회
+        for (int i = 0; i < rowCount; i++)
+        {
+            string inTimeStr = book_time[i, 0];
+            string outTimeStr = book_time[i, 1];
+
+            int inTime = Converter(inTimeStr);
+            int outTime = Converter(outTimeStr);
+
+            timeList.Add((inTime, outTime));
+        }
+
+        timeList.Sort();
+
+        // 각 예약 시간에 대해 객실 사용 여부 체크
+        foreach (var time in timeList)
+        {
+            int room = -1;
+            for (int i = 0; i < roomList.Count; i++)
+            {
+                if (roomList[i] <= time.Item1 - 10)
+                {
+                    room = i;
+                    break;
+                }
+            }
+
+            if (room == -1)
+                roomList.Add(time.Item2);
+            else
+                roomList[room] = time.Item2;
+        }
+
+        // 필요한 객실의 개수 반환
+        return roomList.Count;
+    }
+}
