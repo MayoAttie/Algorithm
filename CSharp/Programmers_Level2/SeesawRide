@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public long solution(int[] weights) {
+        long answer = 0;
+        long sameWeight = 0;
+        Dictionary<int, int> dict = new Dictionary<int, int>(); // 무게별 개수를 저장하는 딕셔너리
+        HashSet<int> matchWeight = new HashSet<int>(); // 매칭 가능한 무게를 저장하는 해시셋
+
+        // 무게별 개수를 딕셔너리에 저장
+        foreach (int i in weights) {
+            if (dict.ContainsKey(i))
+                dict[i]++;
+            else
+                dict[i] = 1;
+        }
+
+        // 무게별로 매칭 가능한 무게를 찾아 정답을 구함
+        foreach (int cur in weights) {
+            // cur * 2 / 3 인 무게가 딕셔너리에 존재하면, 매칭 가능한 무게이므로 개수를 더해줌
+            if (cur % 3 == 0) {
+                int target = cur * 2 / 3;
+                if (dict.ContainsKey(target))
+                    answer += dict[target];
+            }
+
+            // cur / 2 인 무게가 딕셔너리에 존재하면, 매칭 가능한 무게이므로 개수를 더해줌
+            if (cur % 2 == 0) {
+                int target1 = cur / 2;
+                if (dict.ContainsKey(target1))
+                    answer += dict[target1];
+
+                // cur * 3 / 4 인 무게가 딕셔너리에 존재하면, 매칭 가능한 무게이므로 개수를 더해줌
+                if (cur % 4 == 0) {
+                    int target2 = cur * 3 / 4;
+                    if (dict.ContainsKey(target2))
+                        answer += dict[target2];
+                }
+            }
+        }
+
+        // 같은 무게끼리 조합하여 가능한 정답을 구함
+        foreach (var pair in dict) {
+            int count = pair.Value;
+            // 무게별로 2개 이상인 경우, 조합 가능한 개수를 구하여 sameWeight에 더해줌
+            if (count > 1)
+                sameWeight += (long)count * (count - 1) / 2;
+        }
+
+        return answer + sameWeight; // 매칭 가능한 무게의 개수와 같은 무게를 조합한 개수를 더한 값을 반환
+    }
+}
