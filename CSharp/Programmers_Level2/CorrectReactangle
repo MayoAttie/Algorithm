@@ -1,0 +1,17 @@
+using System;
+
+public class Solution {
+    // 두 수의 최대 공약수를 계산하는 함수
+    int GetGcd(int a, int b) {
+        if (b == 0)
+            return a;
+        return GetGcd(b, a % b);
+    }
+
+    // 직사각형 내에서 잘린 정사각형의 개수를 계산하는 함수
+    public long solution(int w, int h) {
+        // 정사각형 개수 = 전체 사각형 개수 - (가로 개수 + 세로 개수 - 최대 공약수)
+        long answer = ((long)w * h) - (w + h - GetGcd(w, h));
+        return answer;
+    }
+}
