@@ -1,0 +1,45 @@
+using System;
+
+public class Solution {
+    public int solution(string s) {
+        int len = s.Length;
+        if (len <= 1)
+            return len;
+
+        int start = 0, end = 0;
+
+        // 주어진 문자열 s에서 팰린드롬 문자열의 길이를 확장하는 함수를 이용하여 최대 팰린드롬 문자열의 길이를 찾습니다.
+        for (int i = 0; i < len; i++)
+        {
+            int len1 = ExpandAroundCenter(s, i, i); // 팰린드롬 길이가 홀수일 경우 (i, i)를 중심으로 확장
+            int len2 = ExpandAroundCenter(s, i, i + 1); // 팰린드롬 길이가 짝수일 경우 (i, i + 1)을 중심으로 확장
+            int maxLen = Math.Max(len1, len2); // 두 경우 중 더 큰 길이를 선택
+            if (maxLen > end - start)
+            {
+                // 현재 중심 인덱스 i를 기준으로 가장 긴 팰린드롬 문자열의 시작과 끝 인덱스를 업데이트
+                start = i - (maxLen - 1) / 2;
+                end = i + maxLen / 2;
+            }
+        }
+
+        // 최대 팰린드롬 문자열의 길이를 반환
+        return end - start + 1;
+    }
+    
+    // 주어진 문자열 s에서 특정 인덱스를 중심으로 확장하면서 팰린드롬 문자열의 길이를 구하는 함수
+    public int ExpandAroundCenter(string s, int left, int right)
+    {
+        int len = s.Length;
+
+        // left 인덱스와 right 인덱스를 중심으로 확장하면서 팰린드롬 문자열의 길이를 구합니다.
+        while (left >= 0 && right < len && s[left] == s[right])
+        {
+            left--;
+            right++;
+        }
+
+        // 팰린드롬 문자열의 길이를 반환합니다.
+        // 위 while 루프를 벗어날 때, right - 1 - (left + 1) + 1 = right - left - 1로 팰린드롬 문자열의 길이를 구할 수 있습니다.
+        return right - left - 1;
+    }
+}
