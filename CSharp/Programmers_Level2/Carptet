@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int brown, int yellow) {
+        // 결과를 저장할 리스트 생성
+        List<int> answer = new List<int>();
+
+        // 갈색 타일과 노란색 타일의 총 수를 계산
+        int total = brown + yellow;
+
+        // 가로 길이부터 1까지 반복하며 가능한 직사각형을 찾음
+        for (int width = total; width >= 1; width--) {
+            // 가로 길이로 나누어 떨어지는 경우
+            if (total % width == 0) {
+                // 가로 길이로 나눈 높이 구하기
+                int height = total / width;
+
+                // 노란색 타일의 개수가 (가로 길이 - 2) * (높이 - 2)와 같은 경우
+                if ((width - 2) * (height - 2) == yellow) {
+                    // 가로 길이와 높이를 결과 리스트에 추가하고 반복문 종료
+                    answer.Add(width);
+                    answer.Add(height);
+                    break;
+                }
+            }
+        }
+
+        // 결과 리스트를 배열로 변환하여 반환
+        return answer.ToArray();
+    }
+}
