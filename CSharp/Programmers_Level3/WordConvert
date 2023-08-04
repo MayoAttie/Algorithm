@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int solution(string begin, string target, string[] words) {
+        int answer = 0; // 최종적으로 반환할 결과값 (시작 단어에서 목표 단어로 변환하는 최소 단계 수)
+        Queue<string> que = new Queue<string>(); // BFS 탐색을 위한 큐 선언
+        Dictionary<string, int> visited = new Dictionary<string, int>(); // 방문한 단어들과 그 단계 수를 저장할 딕셔너리 선언
+
+        que.Enqueue(begin); // 시작 단어를 큐에 삽입
+        visited[begin] = 0; // 시작 단어는 0단계로 시작
+
+        while (que.Count > 0) // 큐가 빌 때까지 반복
+        {
+            string current = que.Dequeue(); // 큐에서 현재 단어를 꺼내옴
+
+            if (current == target) // 현재 단어가 목표 단어와 같다면
+            {
+                answer = visited[current]; // 최소 단계 수를 결과값에 저장하고
+                break; // 탐색을 종료 (목표 단어를 찾았으므로 더 이상 탐색할 필요 없음)
+            }
+
+            foreach (string word in words) // words 배열의 모든 단어를 순회하며 가능한 단어를 찾음
+            {
+                int diffCount = 0; // 현재 단어와 word의 차이 개수를 저장하는 변수 초기화
+                for (int i = 0; i < word.Length; i++) // 현재 단어와 word의 각 문자를 비교하며 차이 개수를 계산
+                {
+                    if (current[i] != word[i]) 
+                        diffCount++; // 현재 단어와 word의 해당 문자가 다르다면 차이 개수 증가
+                }
+
+                if (diffCount == 1 && !visited.ContainsKey(word)) // 단어 간 차이가 1이고 아직 방문하지 않은 단어라면
+                {
+                    visited[word] = visited[current] + 1; // 방문한 단어의 단계 수를 현재 단어의 단계 수 + 1로 저장
+                    que.Enqueue(word); // 큐에 해당 단어를 삽입하여 다음 단계의 탐색을 진행
+                }
+            }
+        }
+
+        return answer; // 최소 단계 수를 반환
+    }
+}
