@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    bool[] visited; // 노드의 방문 여부를 저장하는 배열
+
+    public int solution(int n, int[,] computers) {
+        int answer = 0;
+        visited = new bool[n]; // 모든 노드를 방문하지 않은 상태로 초기화
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                answer++; // 새로운 연결 요소(Connected Component)를 찾았으므로 정답을 증가시킴
+                DFS(i, n, computers); // DFS 탐색으로 해당 연결 요소를 탐색
+            }
+        }
+
+        return answer;
+    }
+
+    // 깊이 우선 탐색(DFS) 메서드
+    void DFS(int startNode, int n, int[,] computers) {
+        Stack<int> stk = new Stack<int>(); // DFS를 위한 스택 선언
+        stk.Push(startNode); // 시작 노드를 스택에 삽입
+
+        while (stk.Count > 0) { // 스택이 비어있을 때까지 반복
+            int node = stk.Peek(); // 스택의 맨 위 노드를 확인 (탐색할 노드)
+            stk.Pop(); // 스택에서 노드를 제거
+
+            if (!visited[node]) { // 노드가 방문되지 않았다면
+                visited[node] = true; // 노드를 방문 상태로 변경
+
+                for (int j = 0; j < n; j++) {
+                    // 현재 노드와 연결되어 있고, 아직 방문하지 않은 노드를 스택에 삽입
+                    if (computers[node, j] == 1 && !visited[j]) {
+                        stk.Push(j);
+                    }
+                }
+            }
+        }
+    }
+}
