@@ -1,0 +1,37 @@
+using System;
+
+public class Solution {
+    public int solution(int[] a) {
+        int n = a.Length;
+        if (n <= 2) return n; // 풍선이 2개 이하일 경우, 모두 남을 수 있으므로 그대로 개수 반환
+
+        // 각 위치에서 왼쪽으로 최소값을 저장하는 배열
+        int[] leftMin = new int[n];
+        // 각 위치에서 오른쪽으로 최소값을 저장하는 배열
+        int[] rightMin = new int[n];
+
+        leftMin[0] = a[0]; // 첫 번째 위치의 풍선은 그 자체가 최소값
+        for (int i = 1; i < n; i++)
+        {
+            leftMin[i] = Math.Min(leftMin[i - 1], a[i]); // 이전 위치의 최소값과 현재 위치의 값을 비교하여 더 작은 값 저장
+        }
+
+        rightMin[n - 1] = a[n - 1]; // 마지막 위치의 풍선은 그 자체가 최소값
+        for (int i = n - 2; i >= 0; i--)
+        {
+            rightMin[i] = Math.Min(rightMin[i + 1], a[i]); // 다음 위치의 최소값과 현재 위치의 값을 비교하여 더 작은 값 저장
+        }
+
+        int answer = 2; // 최소한 양 끝의 풍선은 남을 수 있으므로 2로 초기화
+        for (int i = 1; i < n - 1; i++)
+        {
+            if (a[i] < leftMin[i - 1] || a[i] < rightMin[i + 1])
+            {
+                // 현재 위치의 값이 왼쪽 최소값보다 작거나 오른쪽 최소값보다 작으면 해당 풍선은 최후까지 남을 수 있음
+                answer++;
+            }
+        }
+
+        return answer; // 최후까지 남을 수 있는 풍선의 개수 반환
+    }
+}
