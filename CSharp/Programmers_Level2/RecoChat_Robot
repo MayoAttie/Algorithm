@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public struct Node
+    {
+        public int x, y, level;
+    }
+
+    public int solution(string[] board) {
+        int answer = -1;
+        int n = board.Length; // 보드의 행 개수
+        int m = board[0].Length; // 보드의 열 개수
+
+        int sx = 0, sy = 0, tx = 0, ty = 0;
+
+        // 빨간 구슬과 파란 구슬의 시작 위치를 찾기 위한 반복문
+        for (int x = 0; x < n; x++) 
+        {
+            for (int y = 0; y < m; y++) 
+            {
+                if (board[x][y] == 'R') 
+                {
+                    sx = x; // 빨간 구슬의 행 위치
+                    sy = y; // 빨간 구슬의 열 위치
+                } 
+                else if (board[x][y] == 'G') 
+                {
+                    tx = x; // 파란 구슬의 행 위치
+                    ty = y; // 파란 구슬의 열 위치
+                }
+            }
+        }
+
+        int[][] direction = new int[][] {
+            new int[] {0, 1}, // 오른쪽 방향
+            new int[] {0, -1}, // 왼쪽 방향
+            new int[] {1, 0}, // 아래쪽 방향
+            new int[] {-1, 0} // 위쪽 방향
+        };
+
+        bool[][] visited = new bool[n][];
+        for (int i = 0; i < n; i++)
+        {
+            visited[i] = new bool[m];
+        }
+
+        Queue<Node> q = new Queue<Node>();
+        q.Enqueue(new Node { x = sx, y = sy, level = 0 });
+
+        // BFS를 이용하여 최단 경로를 탐색
+        while (q.Count > 0) 
+        {
+            Node node = q.Dequeue();
+            int x = node.x; // 현재 구슬의 행 위치
+            int y = node.y; // 현재 구슬의 열 위치
+            int level = node.level; // 현재까지 이동한 횟수
+
+            if (board[x][y] == 'G')
+            {
+                answer = level; // 파란 구슬에 도달했을 때 이동한 횟수를 저장하고 반복문을 종료
+                break;
+            }
+
+            // 상하좌우 방향으로 이동하는 로직
+            foreach (var dir in direction)
+            {
+                int dx = dir[0]; // x 방향 이동
+                int dy = dir[1]; // y 방향 이동
+                int scope = 1;
+
+                while (true) 
+                {
+                    int nx = x + dx * scope; // 다음 이동할 행 위치
+                    int ny = y + dy * scope; // 다음 이동할 열 위치
+
+                    // 보드를 벗어나거나 벽('D')을 만났을 때
+                    if (nx < 0 || nx >= n || ny < 0 || ny >= m || board[nx][ny] == 'D')
+                    {
+                        // 다음 이동할 위치가 방문하지 않은 곳이면 큐에 추가하여 탐색 진행
+                        if (!visited[nx - dx][ny - dy])
+                        {
+                            visited[nx - dx][ny - dy] = true; // 해당 위치를 방문 처리
+                            q.Enqueue(new Node { x = nx - dx, y = ny - dy, level = level + 1 }); // 다음 위치와 이동 횟수를 큐에 추가
+                        }
+                        break; // 벽에 부딪혀 이동을 멈춤
+                    }
+
+                    scope++; // 이동 가능한 범위를 증가시켜 계속 이동
+                }
+            }
+        }
+
+        return answer;
+    }
+}
