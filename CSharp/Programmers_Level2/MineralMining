@@ -1,0 +1,83 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+public class Solution {
+    public int solution(int[] picks, string[] minerals) {
+        int answer = 0;
+        int sum = picks.Sum();
+
+        // 캘 수 있는 광물의 개수
+        int numMinerals = sum * 5;
+
+        // 주어진 광물이 캘 수 있는 광물 수보다 크면 일부 광물을 제거
+        if (minerals.Length > numMinerals)
+            minerals = minerals.Take(numMinerals).ToArray();
+
+        // 광물 조사
+        List<List<int>> cntMin = new List<List<int>>();
+        for (int i = 0; i < 10; i++)
+        {
+            cntMin.Add(new List<int> { 0, 0, 0 }); // dia, iron, stone
+        }
+
+        for (int i = 0; i < minerals.Length; i++)
+        {
+            if (minerals[i] == "diamond")
+                cntMin[i / 5][0]++;
+            else if (minerals[i] == "iron")
+                cntMin[i / 5][1]++;
+            else
+                cntMin[i / 5][2]++;
+        }
+
+        // 피로도가 높은 순서대로 광물 정렬
+        cntMin.Sort(CompareMinerals);
+
+        // 피로도 계산
+        for (int i = 0; i < cntMin.Count; i++)
+        {
+            int d = cntMin[i][0];
+            int ir = cntMin[i][1];
+            int s = cntMin[i][2];
+
+            for (int p = 0; p < picks.Length; p++)
+            {
+                // dia 곡괭이
+                if (p == 0 && picks[p] > 0)
+                {
+                    picks[p]--;
+                    answer += d + ir + s;
+                    break;
+                }
+                // iron 곡괭이
+                else if (p == 1 && picks[p] > 0)
+                {
+                    picks[p]--;
+                    answer += 5 * d + ir + s;
+                    break;
+                }
+                // stone 곡괭이
+                else if (p == 2 && picks[p] > 0)
+                {
+                    picks[p]--;
+                    answer += 25 * d + 5 * ir + s;
+                    break;
+                }
+            }
+        }
+
+        return answer;
+    }
+    // 광물을 비교하여 피로도가 높은 순서대로 정렬하는 비교 함수
+    private static int CompareMinerals(List<int> a, List<int> b)
+    {
+        if (a[0] != b[0])
+            return a[0] > b[0] ? -1 : 1;
+        else if (a[1] != b[1])
+            return a[1] > b[1] ? -1 : 1;
+        else
+            return a[2] > b[2] ? -1 : 1;
+    }
+
+
+}
