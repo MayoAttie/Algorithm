@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution 
+{
+    public int[] Solution(string[] enroll, string[] referral, string[] seller, int[] amount) 
+    {
+        // 판매원과 추천인의 관계를 저장하는 딕셔너리
+        Dictionary<string, string> referralMap = new Dictionary<string, string>();
+        // 각 판매원의 수익을 저장하는 딕셔너리
+        Dictionary<string, int> profitMap = new Dictionary<string, int>();
+
+        // enroll 배열과 referral 배열을 이용하여 referralMap 초기화
+        for (int i = 0; i < enroll.Length; i++)
+        {
+            referralMap[enroll[i]] = referral[i];
+            profitMap[enroll[i]] = 0; // 각 판매원의 수익을 0으로 초기화
+        }
+
+        // seller 배열과 amount 배열을 이용하여 판매량과 수익을 계산
+        for (int i = 0; i < seller.Length; i++)
+        {
+            // 각 판매원별 수익을 정확히 계산하기 위해 DistributeProfit 메서드 호출
+            DistributeProfit(referralMap, profitMap, seller[i], amount[i] * 100);
+        }
+
+        // 최종 결과를 담을 리스트 생성
+        List<int> answerList = new List<int>();
+        // enroll 배열의 순서대로 수익을 answerList에 추가
+        foreach (var name in enroll)
+        {
+            answerList.Add(profitMap[name]);
+        }
+
+        // List를 배열로 변환하여 반환
+        return answerList.ToArray();
+    }
+
+    // 수익을 추천인과 판매원에게 분배하는 메서드
+    private void DistributeProfit(Dictionary<string, string> referralMap, Dictionary<string, int> profitMap, string seller, int amount)
+    {
+        int profit = amount;
+
+        while (profit > 0)
+        {
+            int distributedProfit = (int)(profit * 0.1); // 10%를 추천인에게 분배
+            int remainProfit = profit - distributedProfit; // 남은 이익은 자신의 수익
+
+            profitMap[seller] += remainProfit; // 현재 판매원의 수익에 남은 이익을 추가
+
+            if (distributedProfit >= 1)
+            {
+                // 추천인이 있고, 추천인의 수익이 최소 1원 이상인 경우, 추천인에게 분배 계속 진행
+                profit = distributedProfit;
+                if (referralMap.TryGetValue(seller, out string referral) && referral != "-")
+                    seller = referral; // 추천인으로 이동
+                else
+                    profit = 0; // 추천인이 없거나 "-"인 경우, 분배 종료
+            }
+            else
+                profit = 0; // 1원 미만인 경우, 분배 종료
+        }
+    }
+}
