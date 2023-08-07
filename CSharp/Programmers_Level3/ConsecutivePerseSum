@@ -1,0 +1,35 @@
+using System;
+
+public class Solution {
+    public long solution(int[] sequence) {
+        long answer = 0;
+        long psum = 0; // 현재 부분합
+        long ret = long.MinValue; // 최대 부분합을 저장할 변수
+        long[] arr = new long[sequence.Length];
+
+        // 주어진 sequence 배열을 변형하여 arr 배열에 저장
+        for (int i = 0; i < sequence.Length; i++)
+        {
+            arr[i] = sequence[i];
+            if (i % 2 == 1)
+                arr[i] *= -1; // 짝수번째 원소의 부호를 변경하여 저장
+        }
+
+        // 배열 arr을 순회하며 최대 부분합을 계산
+        for (int i = 0; i < arr.Length; i++)
+        {
+            psum = Math.Max(psum, 0) + arr[i]; // 현재까지의 부분합과 arr[i]를 더한 값을 psum에 저장
+            ret = Math.Max(ret, psum); // psum과 현재까지의 최대 부분합(ret)을 비교하여 큰 값을 ret에 저장
+        }
+
+        psum = 0; // psum 초기화
+        // 배열 arr을 다시 순회하며 최소 부분합을 계산
+        for (int i = 0; i < arr.Length; i++)
+        {
+            psum = Math.Max(psum, 0) - arr[i]; // 현재까지의 부분합과 arr[i]를 뺀 값을 psum에 저장
+            ret = Math.Max(ret, psum); // psum과 현재까지의 최대 부분합(ret)을 비교하여 큰 값을 ret에 저장
+        }
+
+        return ret; // 최종적으로 구해진 최대 부분합을 반환
+    }
+}
