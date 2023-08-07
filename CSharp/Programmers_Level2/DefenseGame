@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int solution(int n, int k, int[] enemy) {
+        // Queue에 담긴 숫자는 무적권으로 방어할 라운드의 적의 수
+        PriorityQueue<int> queue = new PriorityQueue<int>();
+        for (int round = 0; round < enemy.Length; round++) {
+            // 각 라운드의 적의 수를 Queue에 담는다
+            queue.Enqueue(enemy[round]);
+            // 무적권의 수 보다 방어할 라운드가 많은 경우, 적의 수가 가장 적은 라운드 전투하여 병력 감소
+            if (queue.Count > k)
+                n -= queue.Dequeue();
+            // 병력이 0보다 적어지면 게임이 종료되며 해당 라운드 수를 반환한다(라운드는 0-index이므로 -1 하지 않아도 된다)
+            if (n < 0)
+                return round;
+        }
+        // 게임 클리어 한 경우, 총 라운드 수 반환
+        return enemy.Length;
+    }
+
+    // 우선순위 큐를 구현하기 위한 클래스
+    private class PriorityQueue<T> where T : IComparable<T>
+    {
+        private List<T> list;
+
+        public PriorityQueue()
+        {
+            list = new List<T>();
+        }
+
+        public void Enqueue(T item)
+        {
+            // 우선순위 큐에 요소를 추가한다.
+            list.Add(item);
+            int i = list.Count - 1;
+
+            // 요소를 추가한 후, 요소를 우선순위에 맞게 재배치한다.
+            while (i > 0 && list[i].CompareTo(list[(i - 1) / 2]) < 0)
+            {
+                T temp = list[i];
+                list[i] = list[(i - 1) / 2];
+                list[(i - 1) / 2] = temp;
+                i = (i - 1) / 2;
+            }
+        }
+
+        public T Dequeue()
+        {
+            // 우선순위 큐에서 최상위 요소를 제거하고 반환한다.
+            T ret = list[0];
+            int lastIndex = list.Count - 1;
+            list[0] = list[lastIndex];
+            list.RemoveAt(lastIndex);
+            lastIndex--;
+
+            int parent = 0;
+            while (true)
+            {
+                int left = parent * 2 + 1;
+                if (left > lastIndex)
+                    break;
+
+                int right = left + 1;
+                int next = left;
+                if (right <= lastIndex && list[left].CompareTo(list[right]) > 0)
+                    next = right;
+
+                // 요소를 제거한 후, 다시 요소를 우선순위에 맞게 재배치한다.
+                if (list[parent].CompareTo(list[next]) <= 0)
+                    break;
+
+                T temp = list[parent];
+                list[parent] = list[next];
+                list[next] = temp;
+
+                parent = next;
+            }
+
+            return ret;
+        }
+
+        public int Count
+        {
+            get { return list.Count; }
+        }
+    }
+}
