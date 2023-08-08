@@ -1,0 +1,31 @@
+using System;
+
+public class Solution {
+    public long solution(int r1, int r2) {
+        long answer = 0;
+        int minY = r1, maxY = r2;
+
+        // x좌표를 0부터 r2까지 반복하면서 공간에 포함된 정수 좌표의 개수를 계산
+        for (int x = 0; x < r2; x++) 
+        {
+            // 현재 y좌표의 최대값을 계산
+            while (r2 * r2 < maxY * maxY + x * x)
+            {
+                maxY -= 1;
+            }
+
+            // 현재 y좌표의 최소값을 계산
+            // minY가 1보다 크고, r1 * r1가 (minY - 1)^2 + x^2보다 크거나 같을 때까지 감소
+            while (minY - 1 > 0 && r1 * r1 <= (minY - 1) * (minY - 1) + x * x) 
+            { 
+                minY -= 1;
+            }
+
+            // 현재 x좌표에서 y좌표의 범위에 포함된 정수 좌표 개수를 계산하여 answer에 추가
+            answer += (maxY - minY) + 1;
+        }
+
+        // 공간에 포함된 정수 좌표 개수에 4를 곱해 최종 결과 계산
+        return answer * 4;
+    }
+}
