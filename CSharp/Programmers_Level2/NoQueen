@@ -1,0 +1,45 @@
+using System;
+
+public class Solution {
+    public int solution(int n) {
+        int[] board = new int[n];
+        for (int i = 0; i < n; i++)
+            board[i] = -1;  // 보드 초기화: 퀸의 위치를 -1로 설정
+
+        return Backtrack(board, 0, n);  // 백트래킹 함수 호출 및 결과 반환
+    }
+
+    // 현재 위치가 유효한지 확인하는 함수
+    static bool IsValid(int[] board, int row, int col)
+    {
+        for (int i = 0; i < row; i++)
+        {
+            // 같은 열에 있는 경우나 대각선에 위치한 경우 불가능하다고 판단
+            if (board[i] == col || Math.Abs(board[i] - col) == Math.Abs(row - i))
+                return false;
+        }
+        return true;
+    }
+
+    // 백트래킹 함수: 퀸을 배치하고 가능한 모든 해를 탐색
+    static int Backtrack(int[] board, int row, int n)
+    {
+        int count = 0;
+
+        // 모든 행에 퀸을 배치한 경우 한 가지 해가 완성됐음을 의미
+        if (row == n)
+            return 1;
+
+        for (int col = 0; col < n; col++)
+        {
+            if (IsValid(board, row, col))
+            {
+                board[row] = col;  // 현재 행에 퀸을 col 열에 배치
+                count += Backtrack(board, row + 1, n);  // 다음 행으로 진행
+                board[row] = -1;  // 백트래킹: 다른 해를 위해 현재 행의 퀸 위치 초기화
+            }
+        }
+
+        return count;  // 가능한 해의 수 반환
+    }
+}
