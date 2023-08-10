@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+
+class Solution
+{
+    public int solution(int[,] scores)
+    {
+        int numEmployees = scores.GetLength(0);  // 사원 수
+        int wanhoWork = scores[0, 0], wanhoFriends = scores[0, 1];  // 완호의 근무 태도 점수와 동료 평가 점수
+        int wanhoTotal = wanhoWork + wanhoFriends;  // 완호의 총 점수 (근무 태도 점수 + 동료 평가 점수)
+        var higherRankingIndices = new LinkedList<int>();  // 높은 석차를 가진 사원들의 인덱스를 저장할 연결 리스트
+        
+        for (int i = 1; i < numEmployees; i++)
+        {
+            int employeeWork = scores[i, 0], employeeFriends = scores[i, 1];  // 현재 사원의 근무 태도 점수와 동료 평가 점수
+            
+            // 완호보다 근무 태도 점수와 동료 평가 점수가 둘 다 높으면 인센티브 불가능
+            if (wanhoWork < employeeWork && wanhoFriends < employeeFriends)
+                return -1;
+            
+            // 현재 사원의 총 점수 (근무 태도 점수 + 동료 평가 점수)
+            int employeeTotal = employeeWork + employeeFriends;
+            
+            // 완호의 총 점수보다 현재 사원의 총 점수가 더 높을 때
+            if (wanhoTotal < employeeTotal)
+            {
+                var higherRanking = higherRankingIndices.First;  // 높은 석차 사원들을 순회할 변수
+                
+                // 높은 석차 사원들 중에서 현재 사원보다 더 높은 석차를 가진 사원 찾기
+                while (higherRanking != null)
+                {
+                    int higherWork = scores[higherRanking.Value, 0], higherFriends = scores[higherRanking.Value, 1];
+                    
+                    // 현재 사원보다 근무 태도 점수와 동료 평가 점수가 모두 높은 사원이 있다면 중단
+                    if (employeeWork < higherWork && employeeFriends < higherFriends)
+                        break;
+                    
+                    // 현재 사원보다 근무 태도 점수와 동료 평가 점수가 모두 낮은 사원 제거
+                    if (higherWork < employeeWork && higherFriends < employeeFriends)
+                    {
+                        var prevHigherRanking = higherRanking;
+                        higherRanking = higherRanking.Next;
+                        higherRankingIndices.Remove(prevHigherRanking);
+                    }
+                    else
+                    {
+                        higherRanking = higherRanking.Next;
+                    }
+                }
+                
+                // 높은 석차 사원들 중에서 현재 사원보다 더 높은 석차를 가진 사원이 없으면 현재 사원을 추가
+                if (higherRanking == null)
+                {
+                    higherRankingIndices.AddFirst(i);
+                }
+            }
+        }
+        
+        // 높은 석차 사원의 수에 1을 더하여 완호의 석차를 구함
+        return higherRankingIndices.Count + 1;
+    }
+}
