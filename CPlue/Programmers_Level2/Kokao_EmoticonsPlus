@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <cmath>
+using namespace std;
+
+// 할인율 조합을 저장할 벡터
+vector<vector<int>> discount;
+
+// 가능한 할인율 비율
+vector<int> discountRate = { 10, 20, 30, 40 };
+
+// 할인율 조합을 생성하는 DFS 함수
+void dfs(vector<int>& temp, int depth) {
+    if (depth == temp.size()) {
+        discount.push_back(temp);
+        return;
+    }
+
+    for (int d : discountRate) {
+        temp[depth] += d;
+        dfs(temp, depth + 1);
+        temp[depth] -= d;
+    }
+}
+
+// 실제 문제를 해결하는 함수
+vector<int> solution(vector<vector<int>> users, vector<int> emoticons) {
+    vector<int> answer = { 0, 0 };
+
+    vector<int> temp(emoticons.size(), 0);
+
+    // 할인율 조합 생성
+    dfs(temp, 0);
+
+    // 할인율로 구매 및 가입자 수 계산
+    for (int d = 0; d < discount.size(); d++) {
+        int join = 0;
+        vector<int> price(users.size(), 0);
+
+        for (int e = 0; e < emoticons.size(); e++) {
+            for (int u = 0; u < users.size(); u++) {
+                // 해당 할인율로 구매 가능한 경우
+                if (users[u][0] <= discount[d][e]) {
+                    // 할인된 가격 계산
+                    price[u] += emoticons[e] * (100 - discount[d][e]) / 100;
+                }
+            }
+        }
+
+        for (int u = 0; u < users.size(); u++) {
+            // 가격에 따라 가입자 수 갱신
+            if (price[u] >= users[u][1]) {
+                join++;
+                price[u] = 0;
+            }
+        }
+
+        // 최대 가입자 수 및 가격 갱신
+        if (join >= answer[0]) {
+            if (join == answer[0]) {
+                answer[1] = max(answer[1], accumulate(price.begin(), price.end(), 0));
+            } else {
+                answer[1] = accumulate(price.begin(), price.end(), 0);
+            }
+            answer[0] = join;
+        }
+    }
+
+    return answer;
+}
+
+int main() {
+    vector<vector<int>> users = { {40, 10000}, {25, 10000} };
+    vector<int> emoticons = { 7000, 9000 };
+
+    // 해결 함수 호출 및 결과 출력
+    vector<int> result = solution(users, emoticons);
+
+    cout << "Result: " << result[0] << " " << result[1] << endl;
+
+    return 0;
+}
