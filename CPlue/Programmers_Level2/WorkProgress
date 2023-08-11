@@ -1,0 +1,133 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+struct Task {
+    string type;
+    int time;
+    int period;
+};
+
+// 시작 시간을 비교하는 비교 함수
+bool compareStartTime(const Task& task1, const Task& task2) {
+    return task1.time < task2.time;
+}
+
+// HH:MM 형식의 시간을 분으로 변환하는 함수
+int ToSec(string time) {
+    string delimiter = ":";
+    size_t pos = 0;
+    vector<string> tokens;
+    while ((pos = time.find(delimiter)) != string::npos) {
+        tokens.push_back(time.substr(0, pos));
+        time.erase(0, pos + delimiter.length());
+    }
+    tokens.push_back(time);
+
+    int h = stoi(tokens[0]) * 60;
+    int m = stoi(tokens[1]);
+
+    return h + m;
+}
+
+vector<string> solution(vector<vector<string>> plans) {
+    // 결과를 저장할 벡터
+    vector<string> answer(plans.size());
+
+    // 작업을 멈춰둘 스택
+    stack<pair<string, int>> stop;
+
+    // 작업들을 저장할 구조체 벡터
+    vector<Task> tasks;
+    for (const auto& plan : plans) {
+        tasks.push_back({ plan[0], ToSec(plan[1]), stoi(plan[2]) });
+    }
+
+    // 시작 시간 기준으로 정렬
+    sort(tasks.begin(), tasks.end(), compareStartTime);
+
+    int size = plans.size();
+    int z = 0;
+    int idx = 0;
+    int current = 0;
+    string type = "";
+    int time = 0;
+    int period = 0;
+    int next = 0;
+
+    while (size != idx) {
+        // 현재 작업 정보 얻기
+        type = tasks[idx].type;
+        time = tasks[idx].time;
+        period = tasks[idx].period;
+
+        // 현재 작업이 끝나는 시간 계산
+        current = time + period;
+
+        // 다음 작업이 있을 때
+        if (size - 1 != idx) {
+            next = tasks[idx + 1].time;
+            // 현재 작업이 다음 작업 시간을 겹치게 하는 경우
+            if (current > next) {
+                // 작업을 멈추어야 할 경우, 스택에 추가
+                stop.push({ type, current - next });
+                current = next;
+                idx++;
+                continue;
+            }
+        }
+
+        // 현재 작업을 완료하고 결과에 저장
+        answer[z++] = type;
+
+        // 남은 시간 동안 멈춰둔 작업들 처리
+        while (!stop.empty()) {
+            int remain = next - current;
+            auto work = stop.top();
+            int re_p = work.second;
+
+            // 남은 시간보다 작업 시간이 짧으면 작업 완료
+            if (remain >= re_p) {
+                answer[z++] = work.first;
+                current += re_p;
+                stop.pop();
+            }
+            // 남은 시간보다 작업 시간이 길면 작업을 다시 멈춰둠
+            else {
+                stop.top().second = re_p - remain;
+                break;
+            }
+        }
+
+        idx++;
+    }
+
+    // 모든 작업 탐색 후, 멈춰둔 작업 처리
+    while (!stop.empty()) {
+        answer[z++] = stop.top().first;
+        stop.pop();
+    }
+
+    return answer;
+}
+
+int main() {
+    // 테스트용 입력 데이터
+    vector<vector<string>> plans = {{"korean", "11:40", "30"}, {"english", "12:10", "20"}, {"math", "12:30", "40"}};
+
+    // 솔루션 함수 호출
+    vector<string> result = solution(plans);
+
+    // 결과 출력
+    cout << "Result: ";
+    for (const string& name : result) {
+        cout << name << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
