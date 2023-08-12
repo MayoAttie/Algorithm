@@ -1,0 +1,92 @@
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+vector<int> solution(vector<string> park, vector<string> routes) {
+    vector<int> answer;
+    int col = park.size();  // 공원의 행(row) 개수를 저장
+    int row = park[0].size();  // 공원의 열(col) 개수를 저장
+
+    int xPos;
+    int yPos;
+
+    // 시작 위치(S)를 찾아서 xPos, yPos에 저장
+    for (int i = 0; i < col; i++) {
+        for (int j = 0; j < row; j++) {
+            if (park[i][j] == 'S') {
+                yPos = i;
+                xPos = j;
+                break;
+            }
+        }
+    }
+
+    cout << "y : " << yPos << ", x : " << xPos << endl;
+
+    for (int i = 0; i < routes.size(); i++) {
+        string now = routes[i];
+        char dir = now[0];  // 이동 방향을 추출 ('N', 'S', 'E', 'W')
+        int dist = now[2] - '0';  // 이동 거리를 숫자로 추출
+
+        int currenX = xPos;  // 현재 위치를 저장
+        int currenY = yPos;
+
+        bool canMove = true;  // 이동 가능 여부를 저장하는 변수
+
+        switch (dir) {
+            case 'N':
+                for (int j = 0; j < dist; j++) {
+                    if (yPos > 0 && park[yPos - 1][xPos] != 'X') {
+                        yPos--;  // 북쪽으로 이동 가능한 경우 이동
+                    } else {
+                        canMove = false;  // 이동 불가능한 경우 표시하고 루프 종료
+                        break;
+                    }
+                }
+                break;
+            case 'S':
+                for (int j = 0; j < dist; j++) {
+                    if (yPos < col - 1 && park[yPos + 1][xPos] != 'X') {
+                        yPos++;  // 남쪽으로 이동 가능한 경우 이동
+                    } else {
+                        canMove = false;  // 이동 불가능한 경우 표시하고 루프 종료
+                        break;
+                    }
+                }
+                break;
+            case 'E':
+                for (int j = 0; j < dist; j++) {
+                    if (xPos < row - 1 && park[yPos][xPos + 1] != 'X') {
+                        xPos++;  // 동쪽으로 이동 가능한 경우 이동
+                    } else {
+                        canMove = false;  // 이동 불가능한 경우 표시하고 루프 종료
+                        break;
+                    }
+                }
+                break;
+            case 'W':
+                for (int j = 0; j < dist; j++) {
+                    if (xPos > 0 && park[yPos][xPos - 1] != 'X') {
+                        xPos--;  // 서쪽으로 이동 가능한 경우 이동
+                    } else {
+                        canMove = false;  // 이동 불가능한 경우 표시하고 루프 종료
+                        break;
+                    }
+                }
+                break;
+        }
+
+        // 이동이 불가능한 경우 이전 위치로 복구
+        if (!canMove) {
+            xPos = currenX;
+            yPos = currenY;
+        }
+
+        cout << "y : " << yPos << ", x : " << xPos << endl;
+    }
+
+    answer.push_back(yPos);
+    answer.push_back(xPos);
+    return answer;
+}
