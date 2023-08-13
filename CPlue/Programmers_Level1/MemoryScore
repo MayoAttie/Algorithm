@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+vector<int> solution(vector<string> name, vector<int> yearning, vector<vector<string>> photo) {
+    vector<int> answer; // 최종 결과를 담을 벡터 선언
+    unordered_map<string, int> memory; // 이름과 해당하는 yearning 값을 매핑할 unordered_map 선언
+    
+    // 이름과 yearning 값을 memory에 매핑합니다.
+    for(int i = 0; i < name.size(); i++) {
+        memory[name[i]] = yearning[i];        
+    }
+    
+    // 각 포토에 대해 처리합니다.
+    for(int i = 0; i < photo.size(); i++) {
+        int value = 0; // 포토에 등장하는 이름의 yearning 값을 누적할 변수 초기화
+        
+        // 현재 포토에 등장하는 이름들을 순회합니다.
+        for(int j = 0; j < photo[i].size(); j++) {
+            string currentName = photo[i][j]; // 현재 이름을 가져옵니다.
+            value += memory[currentName]; // 해당 이름의 yearning 값을 누적합니다.
+        }
+        
+        answer.push_back(value); // 누적된 yearning 값을 결과 벡터에 추가합니다.
+    }
+    
+    return answer; // 결과 벡터를 반환합니다.
+}

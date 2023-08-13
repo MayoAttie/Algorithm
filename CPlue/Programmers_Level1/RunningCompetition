@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+vector<string> solution(vector<string> players, vector<string> callings) {
+    vector<string> answer = players;
+    unordered_map<string, int> playerIndex; // 선수 이름을 인덱스로 매핑하는 해시 맵
+
+    // 선수 이름을 해시 맵에 매핑하여 위치 정보를 저장합니다.
+    for (int i = 0; i < players.size(); i++) {
+        playerIndex[players[i]] = i;
+    }
+
+    // 각 호출에 대해 호출된 선수와 그 앞에 있는 선수의 위치를 교환합니다.
+    for (int i = 0; i < callings.size(); i++) {
+        string runner = callings[i];
+        int runnerIndex = playerIndex[runner]; // 호출된 선수의 위치
+
+        if (runnerIndex > 0) { // 선수가 맨 앞이 아닌 경우에만 교환을 수행합니다.
+            swap(answer[runnerIndex], answer[runnerIndex - 1]); // 위치 교환
+            playerIndex[runner]--; // 선수의 위치 정보도 업데이트합니다.
+            playerIndex[answer[runnerIndex]]++; // 앞에 있던 선수의 위치 정보도 업데이트합니다.
+        }
+    }
+
+    return answer;
+}
