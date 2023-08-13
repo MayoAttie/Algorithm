@@ -1,0 +1,107 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+
+// 함수 선언
+int solution(vector<int> info, vector<vector<int>> edges);
+void Dfs(int curIdx, int curWolf, int curSheep, vector<int> nextNode, vector<int> info, vector<vector<int>> graph);
+
+int answer = 1; // 최종 결과를 저장할 변수, 최소한 1마리의 양은 있을 수 있으므로 초기값을 1로 설정
+int main()
+{
+	// 질의 1에 대한 정보와 엣지
+	vector<int> question_1_info =
+	{ 0,0,1,1,1,0,1,0,1,0,1,1 };
+	vector<vector<int>> question_1_edge =
+	{
+		{0,1},
+		{1,2},
+		{1,4},
+		{0,8},
+		{8,7},
+		{9,10},
+		{9,11},
+		{4,3},
+		{6,5},
+		{4,6},
+		{8,9},
+	};
+
+	// 질의 2에 대한 정보와 엣지
+	vector<int> question_2_info =
+	{ 0,1,0,1,1,0,1,0,0,1,0 };
+	vector<vector<int>> question_2_edge =
+	{
+		{0,1},
+		{0,2},
+		{1,3},
+		{1,4},
+		{2,5},
+		{2,6},
+		{3,7},
+		{4,8},
+		{6,9},
+		{9,10}
+	};
+
+	// 질의 1 결과 출력
+	cout << "질의 1 : " << " ";
+	cout << solution(question_1_info, question_1_edge);
+
+	// 질의 2 결과 출력
+	cout << "\n질의 2 : " << " ";
+	cout << solution(question_2_info, question_2_edge);
+}
+
+// 실제 해결 함수
+int solution(vector<int> info, vector<vector<int>> edges)
+{
+	vector<vector<int>> graph(info.size()); // 노드 간 연결 정보를 저장하는 그래프 생성
+
+	// 엣지 정보를 그래프에 저장
+	for (int i = 0; i < edges.size(); i++)
+	{
+		graph[edges[i][0]].push_back(edges[i][1]);
+	}
+
+	vector<int> nextNode;
+	for (int i = 0; i < graph[0].size(); i++)
+	{
+		nextNode.push_back(graph[0][i]); // 0번 노드와 연결된 노드들을 초기 nextNode에 저장
+	}
+
+	Dfs(0, 0, 0, nextNode, info, graph); // DFS 호출
+
+	return answer; // 결과 반환
+}
+
+// DFS 함수
+void Dfs(int curIdx, int curWolf, int curSheep, vector<int> nextNode, vector<int> info, vector<vector<int>> graph)
+{
+	int animal = info[curIdx]; // 현재 노드의 동물 정보 (0: 양, 1: 늑대)
+	if (!animal)
+		curSheep++; // 양인 경우 양 수 증가
+	else
+		curWolf++; // 늑대인 경우 늑대 수 증가
+
+	answer = max(answer, curSheep); // 현재까지 양의 수 중 최대값으로 갱신
+
+	if (curWolf >= curSheep)
+		return; // 늑대의 수가 양의 수보다 크거나 같으면 더 이상 진행하지 않음
+
+	for (int i = 0; i < nextNode.size(); i++)
+	{
+		vector<int> next = nextNode;
+		next.erase(next.begin() + i); // 이미 방문한 노드는 제외하고 다음 노드들을 구성
+
+		for (int j = 0; j < graph[nextNode[i]].size(); j++)
+		{
+			next.push_back(graph[nextNode[i]][j]); // 다음 노드들 추가
+		}
+
+		Dfs(nextNode[i], curWolf, curSheep, next, info, graph); // 재귀적으로 DFS 호출
+	}
+}
