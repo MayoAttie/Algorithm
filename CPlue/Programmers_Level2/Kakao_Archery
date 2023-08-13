@@ -1,0 +1,79 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <map>
+using namespace std;
+
+// 테스트 케이스 8번 18번 에러
+
+// 벡터의 내용을 출력하는 함수
+void VectorPrint(vector<int> data, string tag);
+
+int maxDiff;
+vector<int> answer(1, -1);
+
+// 완전 탐색 함수
+void Exhaustive(int idx, int n, vector<int>& A, vector<int>& B) {
+    if (idx == 11 || n == 0) {
+        A[10] += n;
+
+        int aScore = 0;
+        int bScore = 0;
+        for (int i = 0; i < 11; i++) {
+            if (A[i] > B[i])
+                aScore += 10 - i;
+            else if (B[i] > 0)
+                bScore += 10 - i;
+        }
+
+        int diff = aScore - bScore;
+        if (diff > 0 && diff >= maxDiff) {
+            maxDiff = diff;
+            answer = A; // 최대 점수 차이의 경우의 수를 저장
+        }
+
+        A[10] -= n;
+        return;
+    }
+
+    if (B[idx] < n) {
+        A[idx] += B[idx] + 1; // 라이언이 idx 점수에 화살을 맞히는 경우를 시도
+        Exhaustive(idx + 1, n - B[idx] - 1, A, B); // 다음 경우로 넘어감
+        A[idx] -= B[idx] + 1; // 백트래킹을 위해 선택 해제
+    }
+
+    Exhaustive(idx + 1, n, A, B); // 라이언이 idx 점수에 화살을 맞히지 않는 경우를 시도
+}
+
+vector<int> solution(int n, vector<int> info) {
+    vector<int> A(11, 0);
+    Exhaustive(0, n, A, info); // 완전 탐색 시작
+
+    return answer;
+}
+
+int main() {
+    // 여러 테스트 케이스 실행과 결과 출력
+    vector<int> question_1 = { 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 };
+    vector<int> question_2 = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    vector<int> question_3 = { 0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1 };
+    vector<int> question_4 = { 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3 };
+
+    VectorPrint(solution(5, question_1), "질의1");
+    VectorPrint(solution(1, question_2), "질의2");
+    VectorPrint(solution(9, question_3), "질의3");
+    VectorPrint(solution(10, question_4), "질의4");
+
+    return 0;
+}
+
+void VectorPrint(vector<int> data, string tag) {
+    int i = 1;
+    cout << tag << endl;
+    for (auto tmp : data) {
+        cout << i << "번 데이터 : " << tmp << " ";
+        i++;
+    }
+    cout << "\n" << endl;
+}
