@@ -1,0 +1,108 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+/*
+신종 바이러스인 웜 바이러스는 네트워크를 통해 전파된다.
+한 컴퓨터가 웜 바이러스에 걸리면
+그 컴퓨터와 네트워크 상에서 연결되어 있는 모든 컴퓨터는 웜 바이러스에 걸리게 된다.
+
+예를 들어 7대의 컴퓨터가 <그림 1>과 같이 네트워크 상에서 연결되어 있다고 하자.
+1번 컴퓨터가 웜 바이러스에 걸리면 웜 바이러스는 2번과 5번 컴퓨터를 거쳐
+3번과 6번 컴퓨터까지 전파되어 2, 3, 5, 6 네 대의 컴퓨터는 웜 바이러스에 걸리게 된다.
+하지만 4번과 7번 컴퓨터는 1번 컴퓨터와 네트워크상에서 연결되어 있지 않기 때문에 영향을 받지 않는다.
+
+
+
+어느 날 1번 컴퓨터가 웜 바이러스에 걸렸다.
+컴퓨터의 수와 네트워크 상에서 서로 연결되어 있는 정보가 주어질 때,
+1번 컴퓨터를 통해 웜 바이러스에 걸리게 되는 컴퓨터의 수를 출력하는 프로그램을 작성하시오.
+
+입력
+첫째 줄에는 컴퓨터의 수가 주어진다.
+컴퓨터의 수는 100 이하인 양의 정수이고 각 컴퓨터에는 1번 부터 차례대로 번호가 매겨진다.
+둘째 줄에는 네트워크 상에서 직접 연결되어 있는 컴퓨터 쌍의 수가 주어진다.
+이어서 그 수만큼 한 줄에 한 쌍씩 네트워크 상에서 직접 연결되어 있는 컴퓨터의 번호 쌍이 주어진다.
+
+출력
+1번 컴퓨터가 웜 바이러스에 걸렸을 때,
+1번 컴퓨터를 통해 웜 바이러스에 걸리게 되는 컴퓨터의 수를 첫째 줄에 출력한다.
+
+*/
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+// DFS 함수 선언
+int DFS(vector<vector<int>>& graph, vector<bool>& visited, int start);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int nodes;
+    int edges;
+    vector<vector<int>> graph;
+    vector<bool> visited;
+
+    // 컴퓨터 수와 연결 정보 입력
+    cin >> nodes >> edges;
+
+    // 그래프와 방문 여부를 저장할 벡터 초기화
+    graph = vector<vector<int>>(nodes + 1);
+    visited = vector<bool>(nodes + 1);
+
+    // 연결 정보 입력 및 양방향 간선 추가
+    for (int i = 0; i < edges; i++)
+    {
+        int node, value;
+        cin >> node >> value;
+        graph[node].push_back(value);
+        graph[value].push_back(node); // 양방향 간선 추가
+    }
+
+    int start = 1; // 1번 컴퓨터가 웜 바이러스에 걸렸을 때 시작 노드
+    int answer = DFS(graph, visited, start); // DFS 호출
+
+    cout << answer; // 결과 출력
+
+    return 0;
+}
+
+// DFS 함수 구현
+int DFS(vector<vector<int>>& graph, vector<bool>& visited, int start)
+{
+    int result = 0; // 웜 바이러스에 걸리게 되는 컴퓨터의 수
+    stack<int> stk;
+    stk.push(start); // 시작 노드를 스택에 넣음
+    visited[start] = true; // 시작 노드 방문 표시
+
+    while (!stk.empty())
+    {
+        int current = stk.top(); // 스택에서 현재 노드를 꺼냄
+        stk.pop();
+
+        // 현재 노드에 연결된 모든 노드를 확인
+        for (int i = 0; i < graph[current].size(); i++)
+        {
+            int next = graph[current][i]; // 다음 노드
+            if (!visited[next]) // 다음 노드를 방문하지 않았다면
+            {
+                visited[next] = true; // 다음 노드 방문 표시
+                stk.push(next); // 다음 노드를 스택에 넣음
+                result++; // 웜 바이러스에 걸리는 컴퓨터 수 증가
+            }
+        }
+    }
+
+    return result; // 웜 바이러스에 걸리는 컴퓨터의 수 반환
+}
+
+
+
+
+
