@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+void DFS(vector<vector<int>>& graph, vector<bool>& visited, int node);
+void BFS(vector<vector<int>>& graph, vector<bool>& visited, int node);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int nodes;
+    int edges;
+    int startPos;
+    vector<vector<int>> graph; // 그래프의 인접 리스트
+    vector<bool> visited; // 방문 여부를 저장하는 배열
+    cin >> nodes >> edges >> startPos;
+
+    graph = vector<vector<int>>(nodes + 1);
+    visited = vector<bool>(nodes + 1, false);
+
+    for (int i = 0; i < edges; i++)
+    {
+        int node, value;
+        cin >> node >> value;
+        graph[node].push_back(value);
+        graph[value].push_back(node); // 양방향 간선 추가
+    }
+
+    for (int i = 0; i <= nodes; i++)
+        sort(graph[i].begin(), graph[i].end()); // 인접 리스트 정렬
+
+    DFS(graph, visited, startPos);
+
+    cout << endl;
+
+    fill(visited.begin(), visited.end(), false); // BFS를 위해 visited 배열 초기화
+
+    BFS(graph, visited, startPos);
+
+    return 0;
+}
+
+void DFS(vector<vector<int>>& graph, vector<bool>& visited, int node)
+{
+    if (visited[node])
+        return;
+
+    visited[node] = true;
+
+    cout << node << " "; // 현재 노드 출력
+
+    for (int i = 0; i < graph[node].size(); i++)
+    {
+        int next = graph[node][i];
+        if (visited[next] == false)
+            DFS(graph, visited, next); // 이웃 노드에 대해 재귀적으로 DFS 수행
+    }
+}
+
+void BFS(vector<vector<int>>& graph, vector<bool>& visited, int node)
+{
+    queue<int> que;
+    que.push(node);
+    visited[node] = true;
+
+    while (!que.empty())
+    {
+        int current = que.front();
+        que.pop();
+        cout << current << " "; // 현재 노드 출력
+
+        for (int i = 0; i < graph[current].size(); i++)
+        {
+            int next = graph[current][i];
+            if (visited[next] == false)
+            {
+                que.push(next);
+                visited[next] = true;
+            }
+        }
+    }
+}
