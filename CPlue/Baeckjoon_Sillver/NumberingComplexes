@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+/*
+문제
+<그림 1>과 같이 정사각형 모양의 지도가 있다. 
+1은 집이 있는 곳을, 0은 집이 없는 곳을 나타낸다. 
+철수는 이 지도를 가지고 연결된 집의 모임인 단지를 정의하고, 단지에 번호를 붙이려 한다. 
+여기서 연결되었다는 것은 어떤 집이 좌우, 혹은 아래위로 다른 집이 있는 경우를 말한다. 
+대각선상에 집이 있는 경우는 연결된 것이 아니다. <그림 2>는 <그림 1>을 단지별로 번호를 붙인 것이다. 
+
+지도를 입력하여 단지수를 출력하고, 
+각 단지에 속하는 집의 수를 오름차순으로 정렬하여 출력하는 프로그램을 작성하시오.
+
+
+
+입력
+첫 번째 줄에는 지도의 크기 N(정사각형이므로 가로와 세로의 크기는 같으며 5≤N≤25)이 입력되고, 
+그 다음 N줄에는 각각 N개의 자료(0혹은 1)가 입력된다.
+
+출력
+첫 번째 줄에는 총 단지수를 출력하시오. 
+그리고 각 단지내 집의 수를 오름차순으로 정렬하여 한 줄에 하나씩 출력하시오.
+*/
+
+int N; // 지도 크기
+vector<vector<int>> table; // 입력받은 지도를 저장할 2차원 벡터
+vector<vector<bool>> visited; // 방문 여부를 저장할 2차원 벡터
+vector<int> houseCount; // 각 단지별 집의 수를 저장할 벡터
+
+int dx[4] = { -1, 1, 0, 0 }; // 상하좌우 이동을 위한 배열
+int dy[4] = { 0, 0, -1, 1 };
+
+// DFS 함수 정의
+int DFS(int x, int y);
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    // 지도 크기 입력
+    cin >> N;
+    
+    // 2차원 벡터 초기화
+    table = vector<vector<int>>(N, vector<int>(N, 0));
+    visited = vector<vector<bool>>(N, vector<bool>(N, false));
+
+    // 지도 데이터 입력
+    for (int i = 0; i < N; i++) {
+        string row;
+        cin >> row;
+        for (int j = 0; j < N; j++) {
+            table[i][j] = row[j] - '0'; // 문자를 숫자로 변환하여 저장
+        }
+    }
+
+    // 각 위치에서 DFS를 통해 단지를 찾고 집의 수를 구함
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (!visited[i][j] && table[i][j] == 1) {
+                houseCount.push_back(DFS(i, j));
+            }
+        }
+    }
+
+    // 단지 내 집의 수를 오름차순으로 정렬
+    sort(houseCount.begin(), houseCount.end());
+
+    // 결과 출력
+    cout << houseCount.size() << endl; // 총 단지 수 출력
+    for (auto tmp : houseCount) {
+        cout << tmp << endl; // 각 단지별 집의 수 출력
+    }
+}
+
+// DFS 함수 구현
+int DFS(int x, int y) {
+    visited[x][y] = true; // 방문 표시
+    int count = 1; // 현재 단지의 집 수를 저장할 변수
+
+    // 상하좌우 이동
+    for (int i = 0; i < 4; i++) {
+        int nextX = x + dx[i];
+        int nextY = y + dy[i];
+
+        // 유효한 범위 내에 있고, 방문하지 않았으며, 집이 있는 경우
+        if (nextX >= 0 && nextX < N && nextY >= 0 && nextY < N) {
+            if (!visited[nextX][nextY] && table[nextX][nextY] == 1) {
+                count += DFS(nextX, nextY); // DFS 호출하여 연결된 집 개수 누적
+            }
+        }
+    }
+
+    return count; // 현재 단지의 집 개수 반환
+}

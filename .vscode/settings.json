@@ -25,6 +25,8 @@
         "segment_intersection2": "cpp",
         "findarea​​polygon": "cpp",
         "linegroupdivede": "cpp",
-        "virus": "cpp"
+        "virus": "cpp",
+        "numberingcomplexes": "cpp",
+        "ostream": "cpp"
     }
 }
