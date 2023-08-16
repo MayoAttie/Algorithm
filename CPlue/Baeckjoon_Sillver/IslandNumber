@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+/*
+문제
+정사각형으로 이루어져 있는 섬과 바다 지도가 주어진다. 
+섬의 개수를 세는 프로그램을 작성하시오.
+
+한 정사각형과 가로, 세로 또는 대각선으로 연결되어 있는 사각형은 걸어갈 수 있는 사각형이다. 
+
+두 정사각형이 같은 섬에 있으려면, 
+한 정사각형에서 다른 정사각형으로 걸어서 갈 수 있는 경로가 있어야 한다.
+지도는 바다로 둘러싸여 있으며, 지도 밖으로 나갈 수 없다.
+
+
+입력
+입력은 여러 개의 테스트 케이스로 이루어져 있다. 
+각 테스트 케이스의 첫째 줄에는 지도의 너비 w와 높이 h가 주어진다. 
+w와 h는 50보다 작거나 같은 양의 정수이다.
+
+둘째 줄부터 h개 줄에는 지도가 주어진다. 1은 땅, 0은 바다이다.
+입력의 마지막 줄에는 0이 두 개 주어진다.
+
+
+출력
+각 테스트 케이스에 대해서, 섬의 개수를 출력한다.
+*/
+
+
+// 깊이 우선 탐색 함수 선언
+void DFS(int y, int x);
+
+vector<vector<int>> graph; // 섬과 바다 지도를 저장하는 2차원 배열
+vector<vector<bool>> visited; // 방문 여부를 저장하는 2차원 배열
+
+int drX[8] = {1, 1, 0, -1, -1, -1, 0, 1}; // 이동용 배열 (X좌표)
+int drY[8] = {0, 1, 1, 1, 0, -1, -1, -1}; // 이동용 배열 (Y좌표)
+
+int main()
+{
+    int width, height;
+
+    while (true)
+    {
+        cin >> width >> height;
+        if (width == 0 && height == 0)
+            break;
+
+        int answer = 0; // 섬의 개수를 저장하는 변수
+
+        graph = vector<vector<int>>(height, vector<int>(width, 0)); // 섬과 바다 지도 초기화
+        visited = vector<vector<bool>>(height, vector<bool>(width, false)); // 방문 여부 배열 초기화
+
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+                cin >> graph[i][j]; // 지도 정보 입력
+        }
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (graph[y][x] == 1 && !visited[y][x]) // 땅이면서 방문하지 않은 경우
+                {
+                    answer++; // 새로운 섬 발견
+                    DFS(y, x); // 현재 위치에서 DFS 탐색 시작
+                }
+            }
+        }
+
+        cout << answer << endl; // 섬의 개수 출력
+    }
+
+    return 0;
+}
+
+void DFS(int y, int x)
+{
+    visited[y][x] = true; // 현재 위치 방문 처리
+
+    for (int i = 0; i < 8; i++) // 8방향 탐색 (상하좌우 및 대각선)
+    {
+        int ny = y + drY[i];
+        int nx = x + drX[i];
+
+        if (ny >= 0 && ny < graph.size() && nx >= 0 && nx < graph[0].size() &&
+            graph[ny][nx] == 1 && !visited[ny][nx]) // 인덱스가 범위 내에 있고, 땅이면서 방문하지 않은 경우
+        {
+            DFS(ny, nx); // 다음 위치에서 DFS 탐색
+        }
+    }
+}
+위의 코드에서 주석을 통해 코드의 각 부분이 어떤 역할을 하는지 자세하게 설명하였습니다. 이제 주석을 참고하여 코드의 동작을 이해하실 수 있을 것입니다
+
+

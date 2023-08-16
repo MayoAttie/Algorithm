@@ -27,6 +27,7 @@
         "linegroupdivede": "cpp",
         "virus": "cpp",
         "numberingcomplexes": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "islandnumber": "cpp"
     }
 }
