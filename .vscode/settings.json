@@ -28,6 +28,8 @@
         "virus": "cpp",
         "numberingcomplexes": "cpp",
         "ostream": "cpp",
-        "islandnumber": "cpp"
+        "islandnumber": "cpp",
+        "getarea": "cpp",
+        "algorithm": "cpp"
     }
 }
