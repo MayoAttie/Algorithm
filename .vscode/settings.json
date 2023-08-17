@@ -31,6 +31,7 @@
         "islandnumber": "cpp",
         "getarea": "cpp",
         "algorithm": "cpp",
-        "degreecalculation": "cpp"
+        "degreecalculation": "cpp",
+        "atob": "cpp"
     }
 }
