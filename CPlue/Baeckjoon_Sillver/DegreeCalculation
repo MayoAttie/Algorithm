@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+/*
+문제
+우리 나라는 가족 혹은 친척들 사이의 관계를 촌수라는 단위로 표현하는 독특한 문화를 가지고 있다.
+이러한 촌수는 다음과 같은 방식으로 계산된다.
+기본적으로 부모와 자식 사이를 1촌으로 정의하고 이로부터 사람들 간의 촌수를 계산한다.
+예를 들면 나와 아버지, 아버지와 할아버지는 각각 1촌으로 나와 할아버지는 2촌이 되고, 아버지 형제들과 할아버지는 1촌, 나와 아버지 형제들과는 3촌이 된다.
+
+여러 사람들에 대한 부모 자식들 간의 관계가 주어졌을 때, 주어진 두 사람의 촌수를 계산하는 프로그램을 작성하시오.
+
+
+입력
+사람들은 1, 2, 3, …, n (1 ≤ n ≤ 100)의 연속된 번호로 각각 표시된다.
+입력 파일의 첫째 줄에는 전체 사람의 수 n이 주어지고, 둘째 줄에는 촌수를 계산해야 하는 서로 다른 두 사람의 번호가 주어진다.
+그리고 셋째 줄에는 부모 자식들 간의 관계의 개수 m이 주어진다.
+넷째 줄부터는 부모 자식간의 관계를 나타내는 두 번호 x,y가 각 줄에 나온다.
+이때 앞에 나오는 번호 x는 뒤에 나오는 정수 y의 부모 번호를 나타낸다.
+
+각 사람의 부모는 최대 한 명만 주어진다.
+
+
+출력
+입력에서 요구한 두 사람의 촌수를 나타내는 정수를 출력한다. 어떤 경우에는 두 사람의 친척 관계가 전혀 없어 촌수를 계산할 수 없을 때가 있다. 이때에는 -1을 출력해야 한다.
+*/
+
+vector<vector<int>> graph; // 관계 그래프
+vector<bool> visited; // 방문 여부 저장
+
+int DFS(const int target, int node);
+
+int main()
+{
+    int len, start, target, graphLen;
+    cin >> len >> start >> target >> graphLen; // 전체 사람 수, 출발/도착 노드, 관계 개수 입력 받기
+
+    graph = vector<vector<int>>(len + 1); // 그래프 초기화 (1부터 시작)
+    visited = vector<bool>(len + 1); // 방문 여부 초기화
+
+    // 부모-자식 관계 입력 받아 그래프 구성
+    for (int i = 0; i < graphLen; i++)
+    {
+        int my, relative;
+        cin >> my >> relative;
+
+        graph[my].push_back(relative); // 양방향 연결 (부모->자식, 자식->부모)
+        graph[relative].push_back(my);
+    }
+
+    int answer = DFS(target, start); // DFS를 통해 촌수 계산
+
+    if (answer == -1)
+        cout << "-1" << endl; // 친척 관계가 없을 경우 -1 출력
+    else
+        cout << answer << endl; // 촌수 출력
+
+    return 0;
+}
+
+int DFS(const int target, int node)
+{
+    visited[node] = true;
+    stack<pair<int, int>> stk;
+    stk.push(make_pair(node, 0)); // 시작 노드와 초기 촌수(거리) 0을 스택에 push
+
+    while (!stk.empty())
+    {
+        int current = stk.top().first; // 현재 노드
+        int distance = stk.top().second; // 현재 노드까지의 촌수(거리)
+        stk.pop();
+
+        if (current == target)
+            return distance; // 목표 노드에 도착한 경우 해당 촌수(거리) 반환
+
+        for (size_t i = 0; i < graph[current].size(); i++)
+        {
+            int next = graph[current][i]; // 인접 노드
+
+            if (!visited[next])
+            {
+                stk.push(make_pair(next, distance + 1)); // 다음 노드와 촌수(거리)를 업데이트하여 스택에 push
+                visited[next] = true; // 방문 표시
+            }
+        }
+    }
+    return -1; // 목표 노드에 도달하지 못한 경우 -1 반환
+}

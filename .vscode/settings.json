@@ -30,6 +30,7 @@
         "ostream": "cpp",
         "islandnumber": "cpp",
         "getarea": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "degreecalculation": "cpp"
     }
 }
