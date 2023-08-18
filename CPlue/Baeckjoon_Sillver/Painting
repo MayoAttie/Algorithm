@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+/*
+문제
+어떤 큰 도화지에 그림이 그려져 있을 때, 그 그림의 개수와, 그 그림 중 넓이가 가장 넓은 것의 넓이를 출력하여라. 
+단, 그림이라는 것은 1로 연결된 것을 한 그림이라고 정의하자. 
+가로나 세로로 연결된 것은 연결이 된 것이고 대각선으로 연결이 된 것은 떨어진 그림이다.
+그림의 넓이란 그림에 포함된 1의 개수이다.
+
+입력
+첫째 줄에 도화지의 세로 크기 n(1 ≤ n ≤ 500)과 가로 크기 m(1 ≤ m ≤ 500)이 차례로 주어진다.
+두 번째 줄부터 n+1 줄 까지 그림의 정보가 주어진다.
+(단 그림의 정보는 0과 1이 공백을 두고 주어지며, 0은 색칠이 안된 부분, 1은 색칠이 된 부분을 의미한다)
+
+출력
+첫째 줄에는 그림의 개수, 둘째 줄에는 그 중 가장 넓은 그림의 넓이를 출력하여라.
+단, 그림이 하나도 없는 경우에는 가장 넓은 그림의 넓이는 0이다.
+*/
+
+vector<vector<int>> graph;         // 도화지의 그림 정보를 저장할 2차원 벡터
+vector<vector<bool>> visited;      // 그림의 방문 여부를 저장할 2차원 벡터
+
+int drX[4] = {1, 0, -1, 0};        // 상하좌우 이동을 위한 배열
+int drY[4] = {0, 1, 0, -1};
+
+int DFS(int y, int x);             // DFS 함수 선언
+
+int main()
+{
+    int cnt = 0;                    // 그림의 개수 카운트
+    int nMax = 0;                   // 가장 큰 그림의 넓이
+    int high, width;                // 도화지의 세로와 가로 크기 입력
+    cin >> high >> width;
+
+    graph = vector<vector<int>>(high, vector<int>(width, 0));  // 도화지 정보 초기화
+    visited = vector<vector<bool>>(high, vector<bool>(width, false)); // 방문 정보 초기화
+
+    for (int i = 0; i < high; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            cin >> graph[i][j];   // 도화지 정보 입력
+        }
+    }
+
+    for (int i = 0; i < high; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            if (!visited[i][j] && graph[i][j] == 1) // 방문하지 않았고, 그림이 그려진 부분일 경우
+            {
+                nMax = max(nMax, DFS(i, j)); // 해당 그림의 넓이 계산
+                cnt++; // 그림 개수 카운트
+            }
+        }
+    }
+
+    cout << cnt << endl; // 그림의 개수 출력
+    cout << nMax << endl; // 가장 큰 그림의 넓이 출력
+}
+
+// DFS 함수 구현
+int DFS(int y, int x)
+{
+    int result = 1; // 현재 그림의 넓이 초기화
+    stack<pair<int, int>> stk; // 스택을 활용한 DFS 구현
+    stk.push(make_pair(y, x)); // 시작 지점을 스택에 추가
+    visited[y][x] = true; // 시작 지점 방문 표시
+
+    while (!stk.empty())
+    {
+        pair<int, int> current = stk.top(); // 현재 위치
+        stk.pop();
+
+        for (int i = 0; i < 4; i++) // 상하좌우로 이동
+        {
+            int nY = current.first + drY[i];
+            int nX = current.second + drX[i];
+
+            if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() && !visited[nY][nX] && graph[nY][nX] == 1)
+            {
+                visited[nY][nX] = true; // 이동한 위치 방문 표시
+                result++; // 그림의 넓이 증가
+                stk.push(make_pair(nY, nX)); // 스택에 이동한 위치 추가
+            }
+        }
+    }
+
+    return result; // 현재 그림의 넓이 반환
+}

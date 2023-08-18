@@ -32,6 +32,7 @@
         "getarea": "cpp",
         "algorithm": "cpp",
         "degreecalculation": "cpp",
-        "atob": "cpp"
+        "atob": "cpp",
+        "painting": "cpp"
     }
 }
