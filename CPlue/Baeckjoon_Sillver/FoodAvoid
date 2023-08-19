@@ -1,0 +1,103 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> graph;  // 음식물 쓰레기의 존재 여부를 저장하는 2D 그래프
+vector<vector<bool>> visited;  // 방문 여부를 저장하는 2D 배열
+
+int drX[4] = {1, 0, -1, 0};  // 상하좌우 이동을 위한 배열
+int drY[4] = {0, 1, 0, -1};
+
+int DFS(int y, int x);  // DFS 함수 원형 선언
+
+int main()
+{
+    int high;
+    int width;
+    int foodPosis;
+
+    cin >> high >> width >> foodPosis;  // 그리드의 세로, 가로 길이와 음식물 쓰레기 개수 입력
+
+    graph = vector<vector<int>>(high + 1, vector<int>(width + 1, 0));  // 그래프 초기화
+    visited = vector<vector<bool>>(high + 1, vector<bool>(width + 1, false));  // 방문 여부 초기화
+
+    for (int i = 0; i < foodPosis; i++)
+    {
+        int y;
+        int x;
+        cin >> y >> x;
+        graph[y][x] = 1;  // 음식물이 있는 위치를 표시
+    }
+
+    int answer = 0;  // 가장 큰 음식물 크기를 저장하는 변수
+    for (int i = 0; i <= high; i++)
+    {
+        for (int j = 0; j <= width; j++)
+        {
+            if (!visited[i][j] && graph[i][j] == 1)  // 방문하지 않았고 음식물이 있는 위치라면
+            {
+                answer = max(DFS(i, j), answer);  // 해당 위치에서 DFS 탐색하여 음식물 크기 갱신
+            }
+        }
+    }
+
+    cout << answer << endl;  // 결과 출력
+}
+
+int DFS(int y, int x)
+{
+    int result = 1;  // 현재 클러스터의 크기를 저장하는 변수
+    stack<pair<int, int>> stk;
+    stk.push(make_pair(y, x));
+    visited[y][x] = true;  // 시작 위치 방문 표시
+
+    while (!stk.empty())
+    {
+        pair<int, int> current = stk.top();
+        stk.pop();
+
+        for (int i = 0; i < 4; i++)
+        {
+            int nY = current.first + drY[i];  // 상하좌우 위치 갱신
+            int nX = current.second + drX[i];
+
+            if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() && !visited[nY][nX] && graph[nY][nX] == 1)
+            {
+                result++;  // 음식물 크기 증가
+                visited[nY][nX] = true;  // 방문 표시
+                stk.push(make_pair(nY, nX));  // 스택에 추가하여 다음 위치 탐색
+            }
+        }
+    }
+
+    return result;  // 현재 클러스터의 크기 반환
+}
+
+/**
+ * 문제
+코레스코 콘도미니엄 8층은 학생들이 3끼의 식사를 해결하는 공간이다. 
+그러나 몇몇 비양심적인 학생들의 만행으로 음식물이 통로 중간 중간에 떨어져 있다. 
+이러한 음식물들은 근처에 있는 것끼리 뭉치게 돼서 큰 음식물 쓰레기가 된다. 
+
+이 문제를 출제한 선생님은 개인적으로 이러한 음식물을 실내화에 묻히는 것을 정말 진정으로 싫어한다. 
+참고로 우리가 구해야 할 답은 이 문제를 낸 조교를 맞추는 것이 아니다. 
+
+통로에 떨어진 음식물을 피해가기란 쉬운 일이 아니다. 
+따라서 선생님은 떨어진 음식물 중에 제일 큰 음식물만은 피해 가려고 한다. 
+
+선생님을 도와 제일 큰 음식물의 크기를 구해서 “10ra"를 외치지 않게 도와주자.
+
+입력
+첫째 줄에 통로의 세로 길이 N(1 ≤ N ≤ 100)과 가로 길이 M(1 ≤ M ≤ 100) 그리고 음식물 쓰레기의 개수 K(1 ≤ K ≤ N×M)이 주어진다.  
+그리고 다음 K개의 줄에 음식물이 떨어진 좌표 (r, c)가 주어진다.
+
+좌표 (r, c)의 r은 위에서부터, c는 왼쪽에서부터가 기준이다. 입력으로 주어지는 좌표는 중복되지 않는다.
+
+출력
+첫째 줄에 음식물 중 가장 큰 음식물의 크기를 출력하라.
+ * 
+ * 
+ * 
+*/
