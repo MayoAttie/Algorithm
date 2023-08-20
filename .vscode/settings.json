@@ -39,6 +39,7 @@
         "queue": "cpp",
         "stack": "cpp",
         "xhash": "cpp",
-        "xlocinfo": "cpp"
+        "xlocinfo": "cpp",
+        "algorithmclass_dfs1": "cpp"
     }
 }

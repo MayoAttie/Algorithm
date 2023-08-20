@@ -1,0 +1,64 @@
+#include <vector>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> graph; // 그래프를 나타내는 인접 리스트
+vector<bool> visited;      // 방문 여부를 저장하는 배열
+vector<int> order;         // 정점의 방문 순서를 저장하는 배열
+int cnt = 0;               // 방문한 정점의 개수를 세는 카운터
+
+// 깊이 우선 탐색을 수행하는 함수
+void DFS(int now);
+
+int main()
+{
+    int nodes;
+    int edges;
+    int start;
+    scanf("%d %d %d", &nodes, &edges, &start);
+
+    graph = vector<vector<int>>(nodes + 1);
+    visited = vector<bool>(nodes + 1, false);
+    order = vector<int>(nodes + 1);
+
+    // 간선 정보 입력 및 그래프 구성
+    for (int i = 0; i < edges; i++)
+    {
+        int u, v;
+        scanf("%d %d", &u, &v);
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    // 각 정점의 인접 정점을 오름차순으로 정렬
+    for (int i = 1; i <= nodes; i++)
+    {
+        sort(graph[i].begin(), graph[i].end());
+    }
+
+    // 시작 정점부터 깊이 우선 탐색 수행
+    DFS(start);
+
+    // 각 정점의 방문 순서 출력
+    for (int i = 1; i <= nodes; i++)
+    {
+        printf("%d\n", order[i]);
+    }
+}
+
+void DFS(int now)
+{
+    if (visited[now])
+        return;
+
+    visited[now] = true;   // 현재 정점을 방문했다고 표시
+    cnt++;                 // 방문한 정점 개수 증가
+    order[now] = cnt;      // 현재 정점의 방문 순서 저장
+
+    // 현재 정점의 인접 정점을 모두 탐색
+    for (int i = 0; i < graph[now].size(); i++)
+    {
+        DFS(graph[now][i]); // 인접 정점을 깊이 우선 탐색
+    }
+}
