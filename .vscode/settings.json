@@ -41,6 +41,8 @@
         "xhash": "cpp",
         "xlocinfo": "cpp",
         "algorithmclass_dfs1": "cpp",
-        "redgreen_colorweakness": "cpp"
+        "redgreen_colorweakness": "cpp",
+        "tomato": "cpp",
+        "peoplesize": "cpp"
     }
 }
