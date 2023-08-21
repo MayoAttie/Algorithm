@@ -43,6 +43,7 @@
         "algorithmclass_dfs1": "cpp",
         "redgreen_colorweakness": "cpp",
         "tomato": "cpp",
-        "peoplesize": "cpp"
+        "peoplesize": "cpp",
+        "selfnumber": "cpp"
     }
 }
