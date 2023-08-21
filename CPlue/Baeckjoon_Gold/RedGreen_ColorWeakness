@@ -1,0 +1,141 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<vector<char>> image;
+vector<vector<bool>> visited;
+
+// DFS 함수 선언
+void DFS(int x, int y, char color, bool isRGWeaker);
+
+// 상하좌우 이동을 위한 배열
+int drX[4] = { 1, 0, -1, 0 };
+int drY[4] = { 0, 1, 0, -1 };
+
+int main()
+{
+    int answer = 0;
+    int len;
+    cin >> len;
+
+    // 그림 데이터와 방문 여부 초기화
+    image = vector<vector<char>>(len, vector<char>(len));
+    visited = vector<vector<bool>>(len, vector<bool>(len));
+
+    // 그림 데이터 입력 받기
+    for (int i = 0; i < len; i++)
+    {
+        string data;
+        cin >> data;
+        for (int j = 0; j < len; j++)
+        {
+            if (data[j] == 'R')
+                image[i][j] = 'R';
+            else if (data[j] == 'G')
+                image[i][j] = 'G';
+            else
+                image[i][j] = 'B';
+        }
+    }
+
+    // 색상 구역을 찾아 개수 세기
+    for (int i = 0; i < len; i++)
+    {
+        for (int j = 0; j < len; j++)
+        {
+            if (!visited[i][j])
+            {
+                answer++;
+                DFS(i, j, image[i][j], false); // 일반 시력용 DFS 호출
+            }
+        }
+    }
+
+    // 결과 출력
+    cout << answer << " "; // 일반 시력용 구역 개수 출력
+
+    // 방문 여부 초기화 후, 색상 구역을 찾아 개수 세기 (적록색약 시력)
+    answer = 0;
+    visited = vector<vector<bool>>(len, vector<bool>(len));
+
+    for (int i = 0; i < len; i++)
+    {
+        for (int j = 0; j < len; j++)
+        {
+            if (!visited[i][j])
+            {
+                answer++;
+                DFS(i, j, image[i][j], true); // 적록색약 시력용 DFS 호출
+            }
+        }
+    }
+    cout << answer << endl; // 적록색약 시력용 구역 개수 출력
+
+    return 0;
+}
+
+// DFS 함수 정의
+void DFS(int x, int y, char color, bool isRGWeaker)
+{
+    visited[x][y] = true;
+
+    for (int i = 0; i < 4; i++)
+    {
+        int nX = x + drX[i];
+        int nY = y + drY[i];
+
+        // 인접한 셀이 범위 내에 있고 방문하지 않았을 경우
+        if (nX >= 0 && nX < image.size() && nY >= 0 && nY < image.size() && !visited[nX][nY])
+        {
+            if (isRGWeaker) // 적록색약 시력인 경우
+            {
+                // 현재 색상이 'R' 또는 'G'인 경우, 인접한 색상이 'R' 또는 'G'이면 같은 구역으로 판단
+                if ((color == 'R' || color == 'G') && (image[nX][nY] == 'R' || image[nX][nY] == 'G'))
+                    DFS(nX, nY, image[nX][nY], true);
+                // 현재 색상이 'B'이고 인접한 색상도 'B'인 경우, 같은 구역으로 판단
+                else if (color == 'B' && image[nX][nY] == 'B')
+                    DFS(nX, nY, image[nX][nY], true);
+            }
+            else // 일반 시력인 경우
+            {
+                // 현재 색상과 인접한 색상이 같으면 같은 구역으로 판단
+                if (color == image[nX][nY])
+                    DFS(nX, nY, image[nX][nY], false);
+            }
+        }
+    }
+}
+
+/*
+문제
+적록색약은 빨간색과 초록색의 차이를 거의 느끼지 못한다.
+따라서, 적록색약인 사람이 보는 그림은 아닌 사람이 보는 그림과는 좀 다를 수 있다.
+
+크기가 N×N인 그리드의 각 칸에 R(빨강), G(초록), B(파랑) 중 하나를 색칠한 그림이 있다.
+그림은 몇 개의 구역으로 나뉘어져 있는데, 구역은 같은 색으로 이루어져 있다.
+또, 같은 색상이 상하좌우로 인접해 있는 경우에 두 글자는 같은 구역에 속한다. 
+(색상의 차이를 거의 느끼지 못하는 경우도 같은 색상이라 한다)
+
+예를 들어, 그림이 아래와 같은 경우에
+
+RRRBB
+GGBBB
+BBBRR
+BBRRR
+RRRRR
+
+적록색약이 아닌 사람이 봤을 때 구역의 수는 총 4개이다.
+(빨강 2, 파랑 1, 초록 1) 하지만, 적록색약인 사람은 구역을 3개 볼 수 있다.
+(빨강-초록 2, 파랑 1)
+
+그림이 입력으로 주어졌을 때, 적록색약인 사람이 봤을 때와 아닌 사람이 봤을 때 구역의 수를 구하는 프로그램을 작성하시오.
+
+입력
+첫째 줄에 N이 주어진다. (1 ≤ N ≤ 100)
+
+둘째 줄부터 N개 줄에는 그림이 주어진다.
+
+출력
+적록색약이 아닌 사람이 봤을 때의 구역의 개수와 적록색약인 사람이 봤을 때의 구역의 수를 공백으로 구분해 출력한다.
+
+*/
