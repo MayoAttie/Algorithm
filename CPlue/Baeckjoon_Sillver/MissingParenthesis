@@ -1,0 +1,41 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string expression;
+    cin >> expression; // 식 입력 받기
+
+    int result = 0; // 결과 값 초기화
+    int num = 0; // 숫자를 저장할 변수
+    bool isMinus = false; // 뒤따르는 숫자들을 뺄셈 처리할지 여부를 나타내는 변수
+
+    for (char c : expression) {
+        if (c == '+' || c == '-') { // 연산자를 만날 때마다
+            if (isMinus) {
+                result -= num; // 뺄셈 처리
+            } else {
+                result += num; // 덧셈 처리
+            }
+
+            if (c == '-') {
+                isMinus = true; // '-' 기호가 나왔으므로 뒤따르는 숫자들은 뺄셈 처리
+            }
+
+            num = 0; // 다음 숫자를 위해 num 초기화
+        } else {
+            num = num * 10 + (c - '0'); // 숫자를 누적해서 저장
+        }
+    }
+
+    // 마지막 숫자 처리
+    if (isMinus) {
+        result -= num; // 뺄셈 처리
+    } else {
+        result += num; // 덧셈 처리
+    }
+
+    cout << result << endl; // 결과 출력
+
+    return 0;
+}
