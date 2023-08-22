@@ -44,6 +44,7 @@
         "redgreen_colorweakness": "cpp",
         "tomato": "cpp",
         "peoplesize": "cpp",
-        "selfnumber": "cpp"
+        "selfnumber": "cpp",
+        "laboratory": "cpp"
     }
 }
