@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+vector<vector<vector<int>>> box; // 3차원 토마토 상태를 저장하는 벡터
+vector<vector<vector<bool>>> visited; // 방문 여부를 저장하는 벡터
+
+int drX[6] = { 1, -1, 0, 0, 0, 0 }; // 상하좌우위아래 방향 이동을 위한 배열
+int drY[6] = { 0, 0, 1, -1, 0, 0 };
+int drZ[6] = { 0, 0, 0, 0, 1, -1 };
+
+int bfs(int height, int width, int depth)
+{
+    int answer = -1; // 최소 일수를 저장하는 변수, -1로 초기화
+    queue<pair<pair<int, int>, int>> q; // BFS를 위한 큐
+
+    // 익은 토마토의 위치를 큐에 추가하고 방문 처리
+    for (int i = 0; i < depth; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            for (int k = 0; k < width; k++)
+            {
+                if (box[i][j][k] == 1)
+                {
+                    q.push(make_pair(make_pair(j, k), i));
+                    visited[i][j][k] = true;
+                }
+            }
+        }
+    }
+
+    while (!q.empty())
+    {
+        int size = q.size();
+        for (int i = 0; i < size; i++)
+        {
+            pair<pair<int, int>, int> current = q.front();
+            q.pop();
+
+            // 인접한 위치 확인 (상하좌우위아래)
+            for (int j = 0; j < 6; j++)
+            {
+                int nY = current.first.first + drY[j];
+                int nX = current.first.second + drX[j];
+                int nZ = current.second + drZ[j];
+
+                // 범위 체크 및 익지 않은 토마토인 경우
+                if (nY >= 0 && nY < height && nX >= 0 && nX < width && nZ >= 0 && nZ < depth && box[nZ][nY][nX] == 0 && !visited[nZ][nY][nX])
+                {
+                    q.push(make_pair(make_pair(nY, nX), nZ)); // 인접한 토마토 큐에 추가
+                    visited[nZ][nY][nX] = true; // 방문 처리
+                    box[nZ][nY][nX] = 1; // 토마토 익음으로 표시
+                }
+            }
+        }
+        answer++; // 하루가 지났으므로 일수 증가
+    }
+
+    return answer;
+}
+
+int main()
+{
+    int answer;
+    int width, height, depth;
+    cin >> width >> height >> depth;
+
+    box = vector<vector<vector<int>>>(depth, vector<vector<int>>(height, vector<int>(width, 0)));
+    visited = vector<vector<vector<bool>>>(depth, vector<vector<bool>>(height, vector<bool>(width, false)));
+
+    // 토마토 상태 입력 받기
+    for (int i = 0; i < depth; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            for (int k = 0; k < width; k++)
+            {
+                cin >> box[i][j][k];
+            }
+        }
+    }
+
+    answer = bfs(height, width, depth);
+
+    // 모든 토마토가 익었는지 확인
+    for (int i = 0; i < depth; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            for (int k = 0; k < width; k++)
+            {
+                if (box[i][j][k] == 0)
+                {
+                    cout << -1 << endl;
+                    return 0;
+                }
+            }
+        }
+    }
+
+    cout << answer << endl;
+
+    return 0;
+}
