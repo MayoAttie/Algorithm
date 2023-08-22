@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct meeting
+{
+    int start; // 회의 시작 시간
+    int end;   // 회의 종료 시간
+};
+
+// 회의를 정렬하기 위한 비교 함수
+bool compare(const meeting& a, const meeting& b)
+{
+    if (a.end == b.end) // 종료 시간이 같다면
+        return a.start < b.start; // 시작 시간을 기준으로 오름차순 정렬
+    return a.end < b.end; // 종료 시간을 기준으로 오름차순 정렬
+}
+
+int main()
+{
+    int len; // 회의의 수
+    cin >> len;
+    vector<meeting> meetings(len); // 회의 정보를 저장하는 벡터
+
+    // 회의 정보 입력 받기
+    for (int i = 0; i < len; i++)
+    {
+        cin >> meetings[i].start >> meetings[i].end;
+    }
+
+    // 회의를 종료 시간을 기준으로 오름차순 정렬
+    sort(meetings.begin(), meetings.end(), compare);
+
+    int count = 0; // 최대 사용할 수 있는 회의의 개수
+    int endTime = 0; // 이전 회의의 종료 시간
+
+    // 회의 선택과정
+    for (int i = 0; i < len; i++)
+    {
+        if (meetings[i].start >= endTime)
+        {
+            endTime = meetings[i].end;
+            count++;
+        }
+    }
+
+    // 최대 사용할 수 있는 회의의 개수 출력
+    cout << count << endl;
+}
