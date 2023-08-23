@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> stk;  // 스택을 저장하는 벡터
+    int start = 1;    // 시작 숫자
+    vector<char> oper;  // +, - 연산 기록을 저장하는 벡터
+
+    for (int i = 0; i < N; i++) 
+    {
+        int end;
+        cin >> end;
+        
+        // start부터 end까지 순차적으로 스택에 추가
+        while (start <= end) 
+        {
+            stk.push_back(start);
+            oper.push_back('+');
+            start++;
+        }
+
+        // 스택이 비어있지 않고, 스택의 뒤에서부터 순서대로 확인하여 end와 일치하면 pop
+        if (!stk.empty() && stk.back() == end) 
+        {
+            stk.pop_back();
+            oper.push_back('-');
+        }
+        else 
+        {
+            cout << "NO" << "\n";  // 스택 조작으로 수열을 만들 수 없는 경우
+            return 0;
+        }
+    }
+
+    // 만들어진 수열을 출력
+    for (char op : oper) 
+    {
+        cout << op << "\n";
+    }
+
+    return 0;
+}

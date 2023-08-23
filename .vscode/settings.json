@@ -52,6 +52,7 @@
         "iterator": "cpp",
         "xtree": "cpp",
         "knightmoving": "cpp",
-        "josephuspermutation": "cpp"
+        "josephuspermutation": "cpp",
+        "stacksequence": "cpp"
     }
 }
