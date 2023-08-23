@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <map>
+using namespace std;
+
+vector<vector<char>> table;  // 입력된 표의 정보를 저장할 2차원 벡터
+map<char, bool> visited;  // 이미 방문한 알파벳을 기록하기 위한 맵
+
+int drX[4] = { 1, 0, -1, 0 };  // 우, 하, 좌, 상 순서로 인접한 칸을 표현하는 배열
+int drY[4] = { 0, 1, 0, -1 };
+
+// DFS 함수: y, x는 현재 위치, count는 현재까지 지나온 칸 수
+int DFS(int y, int x, int count) 
+{
+    count++; // 현재 위치 카운트 증가
+    visited[table[y][x]] = true;  // 현재 알파벳을 방문했음을 표시
+
+    int maxCount = count; // 현재 위치에서의 최대 카운트
+
+    for (int i = 0; i < 4; i++) 
+    {
+        unsigned int nY = y + drY[i];
+        unsigned int nX = x + drX[i];
+
+        // 다음 위치가 표 내에 있고, 아직 방문하지 않은 알파벳인 경우
+        if (nY < table.size() && nX < table[0].size() &&
+            !visited[table[nY][nX]]) 
+        {
+            int newCount = DFS(nY, nX, count); // 다음 위치로 DFS 호출
+            maxCount = max(maxCount, newCount); // 최대 카운트 갱신
+        }
+    }
+
+    visited[table[y][x]] = false; // 백트래킹: 현재 위치 방문 기록 해제
+    return maxCount; // 최대 카운트 반환
+}
+
+int main() {
+    int row, col;
+    cin >> col >> row; // 보드의 행과 열 입력 받기
+
+    table = vector<vector<char>>(col, vector<char>(row, ' ')); // 보드 초기화
+
+    for (int i = 0; i < col; i++) 
+    {
+        for (int j = 0; j < row; j++) 
+        {
+            cin >> table[i][j]; // 보드 정보 입력 받기
+        }
+    }
+
+    int answer = DFS(0, 0, 0); // DFS 함수 호출하여 최대 칸 수 계산
+
+    cout << answer << endl; // 최대 칸 수 출력
+
+    return 0;
+}
