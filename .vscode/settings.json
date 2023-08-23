@@ -50,6 +50,7 @@
         "meetingroom_assignment": "cpp",
         "alphabat": "cpp",
         "iterator": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "knightmoving": "cpp"
     }
 }

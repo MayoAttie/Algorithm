@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int drX[8] = { -1, -2, 1, 2, 1, 2, -1, -2 };  // 나이트가 이동할 수 있는 상대적인 x좌표
+int drY[8] = { 2, 1, 2, 1, -2, -1, -2, -1 };  // 나이트가 이동할 수 있는 상대적인 y좌표
+
+// BFS 함수: 현재 위치에서 목표 위치까지의 최소 이동 횟수 계산
+int BFS(pair<int, int> currentPos, pair<int, int> targetPos, int boardLen) 
+{
+    // 방문 여부를 기록할 2차원 벡터 생성 및 초기화
+    vector<vector<bool>> visited(boardLen, vector<bool>(boardLen, false));
+    
+    int count = 0;  // 이동 횟수 초기화
+    queue<pair<int, int>> que;  // BFS를 위한 큐 생성
+    que.push(currentPos);  // 시작 위치 큐에 추가
+
+    while (!que.empty()) 
+    {
+        int queSize = que.size();
+        for (int j = 0; j < queSize; j++) 
+        {
+            pair<int, int> current = que.front();
+            que.pop();
+
+            if (current == targetPos)  // 목표 위치에 도달했다면
+                return count;  // 현재 이동 횟수 반환
+
+            for (int i = 0; i < 8; i++) 
+            {
+                int nY = current.first + drY[i];  // 다음 위치의 y좌표 계산
+                int nX = current.second + drX[i];  // 다음 위치의 x좌표 계산
+                if (nY >= 0 && nY < boardLen && nX >= 0 && nX < boardLen && !visited[nY][nX])
+                {
+                    que.push(make_pair(nY, nX));  // 다음 위치 큐에 추가
+                    visited[nY][nX] = true;  // 다음 위치 방문 기록
+                }
+            }
+        }
+        count++;  // 이동 횟수 증가
+    }
+
+    return -1;  // 도달할 수 없는 경우
+}
+
+int main() {
+    int testCase;
+    cin >> testCase;  // 테스트 케이스 개수 입력
+
+    for (int i = 0; i < testCase; i++) 
+    {
+        int boardLen;
+        pair<int, int> currentPos;
+        pair<int, int> targetPos;
+        cin >> boardLen >> currentPos.first >> currentPos.second >> targetPos.first >> targetPos.second;
+
+        // BFS 함수 호출하여 최소 이동 횟수 계산 및 출력
+        int answer = BFS(currentPos, targetPos, boardLen);
+        cout << answer << endl;
+    }
+
+    return 0;
+}
