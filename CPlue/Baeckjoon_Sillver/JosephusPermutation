@@ -1,0 +1,43 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+// 함수의 원형 선언
+void solution(int len, int cnt);
+
+int main() {
+    int len;
+    int cnt;
+    cin >> len >> cnt;
+
+    cout << "<";
+    solution(len, cnt);
+    cout << ">";
+}
+
+// (N, K)-요세푸스 순열을 구하는 함수
+void solution(int len, int cnt) {
+    queue<int> que;
+
+    // 1부터 len까지의 숫자를 큐에 넣음
+    for (int i = 1; i <= len; i++) {
+        que.push(i);
+    }
+
+    // 큐가 빌 때까지 반복
+    while (!que.empty()) {
+        // K번째 사람을 제거하고 출력
+        for (int i = 0; i < cnt - 1; i++) {
+            int front = que.front(); // 큐의 맨 앞에 있는 원소 저장
+            que.pop(); // 큐의 맨 앞 원소 제거
+            que.push(front); // 제거한 원소를 큐의 맨 뒤에 추가 (K번째 사람을 제거)
+        }
+
+        cout << que.front(); // K번째 사람 출력
+        que.pop(); // K번째 사람 제거
+
+        if (!que.empty()) {
+            cout << ", "; // 큐에 원소가 남아있으면 쉼표 출력
+        }
+    }
+}

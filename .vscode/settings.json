@@ -51,6 +51,7 @@
         "alphabat": "cpp",
         "iterator": "cpp",
         "xtree": "cpp",
-        "knightmoving": "cpp"
+        "knightmoving": "cpp",
+        "josephuspermutation": "cpp"
     }
 }
