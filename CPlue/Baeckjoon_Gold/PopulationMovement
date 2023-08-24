@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> map;
+vector<vector<int>> tmpMap;
+vector<vector<bool>> visited;
+
+int drX[4] = {1,0,-1,0};
+int drY[4] = {0,1,0,-1};
+
+int main()
+{
+    int lowPoint;
+    int maxPoint;
+    int len;
+
+    cin >> len >> lowPoint >> maxPoint;
+
+    
+}
