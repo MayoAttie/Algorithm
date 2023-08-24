@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> table;  // 맵 정보 저장
+vector<vector<vector<bool>>> visited;  // 방문 여부 저장 (벽을 부순 상태와 부수지 않은 상태 각각)
+int crushCnt = 1;  // 벽 부수기 가능 횟수
+
+int drX[4] = {1, 0, -1, 0};  // 상하좌우 이동을 위한 변화량
+int drY[4] = {0, 1, 0, -1};
+int col, row;  // 행과 열의 개수
+
+struct node 
+{
+    int y;
+    int x;
+    int depth;
+    int flag;
+};
+
+int BFS(int y, int x, int targetY, int targetX);
+
+int main() 
+{
+    cin >> col >> row;  // 행과 열 개수 입력
+
+    table = vector<vector<int>>(col, vector<int>(row, 0));  // 맵 초기화
+    visited = vector<vector<vector<bool>>>(col, vector<vector<bool>>(row, vector<bool>(2, false)));  // 방문 여부 초기화 (부수기 가능 여부 각각)
+
+    for (int i = 0; i < col; i++)
+    {
+        string temp;
+        cin >> temp;  // 한 줄씩 맵 정보 입력
+        for (int j = 0; j < row; j++) {
+            table[i][j] = temp[j] - '0';  // 문자열을 숫자로 변환하여 맵에 저장
+        }
+    }
+
+    // BFS로 최단 경로 탐색하고 결과 출력
+    cout << BFS(0, 0, col - 1, row - 1);
+    return 0;
+}
+
+// BFS 함수: 시작점 (y, x)에서 도착점 (targetY, targetX)까지 최단 경로를 탐색하고 결과를 반환
+int BFS(int y, int x, int targetY, int targetX) 
+{
+    queue<node> que;
+    que.push({y, x, 1, false});  // 시작점 정보를 큐에 넣음
+    visited[y][x][0] = true;  // 시작점 방문 표시 (부수지 않은 상태)
+
+    while (!que.empty())
+     {
+        node current = que.front();
+        que.pop();
+
+        if (current.x == targetX && current.y == targetY)
+            return current.depth;  // 도착점에 도달한 경우 최단 경로 길이 반환
+
+        for (int i = 0; i < 4; i++) {
+            int nY = current.y + drY[i];
+            int nX = current.x + drX[i];
+
+            if (nX < 0 || nX >= row || nY < 0 || nY >= col)
+                continue;  // 범위를 벗어난 경우 스킵
+
+            if (table[nY][nX] == 1 && current.flag == 0)
+            {
+                visited[nY][nX][current.flag + 1] = true;  // 벽을 부수는 경우, 부순 상태 표시
+                que.push({nY, nX, current.depth + 1, current.flag + 1});  // 큐에 추가
+            } 
+            else if (table[nY][nX] == 0 && !visited[nY][nX][current.flag])
+             {
+                visited[nY][nX][current.flag] = true;  // 부수지 않은 경우 방문 표시
+                que.push({nY, nX, current.depth + 1, current.flag});  // 큐에 추가
+            }
+        }
+    }
+
+    return -1;  // 도착점에 도달하지 못한 경우 -1 반환
+}

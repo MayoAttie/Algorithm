@@ -53,6 +53,9 @@
         "xtree": "cpp",
         "knightmoving": "cpp",
         "josephuspermutation": "cpp",
-        "stacksequence": "cpp"
+        "stacksequence": "cpp",
+        "crushwallandmove": "cpp",
+        "iostream": "cpp",
+        "map": "cpp"
     }
 }
