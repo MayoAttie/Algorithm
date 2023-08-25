@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+#include <deque>
+using namespace std;
+
+#define MAX 100001
+
+struct node 
+{
+    int pos;   // 현재 위치
+    int time;  // 걸린 시간
+};
+
+int start, _end;
+int visited[MAX];
+deque<node> dq;  // 덱을 이용한 BFS 탐색에 사용되는 큐
+
+int main() 
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> start >> _end;
+
+    dq.push_back({start, 0});  // 시작 위치를 큐에 넣음
+
+    while (!dq.empty()) 
+    {
+        int now = dq.front().pos;     // 큐의 맨 앞의 위치
+        int time = dq.front().time;   // 큐의 맨 앞에서 현재까지 걸린 시간
+        dq.pop_front();               // 큐에서 맨 앞 요소 제거
+
+        visited[now] = true;          // 현재 위치를 방문했음을 표시
+
+        if (now == _end) 
+        {
+            cout << time;             // 목표 위치에 도달한 경우, 걸린 시간 출력 후 탈출
+            break;
+        }
+
+        // 순간이동, 걷기(+1, -1)의 경우를 따져보며 큐에 추가
+        if (2 * now <= MAX && !visited[2 * now])
+            dq.push_front({2 * now, time});         // 순간이동은 큐의 앞에 추가
+        if (now - 1 >= 0 && !visited[now - 1])
+            dq.push_back({now - 1, time + 1});      // 걷기(-1)은 큐의 뒤에 추가
+        if (now + 1 <= MAX && !visited[now + 1])
+            dq.push_back({now + 1, time + 1});      // 걷기(+1)은 큐의 뒤에 추가
+    }
+
+    return 0;
+}

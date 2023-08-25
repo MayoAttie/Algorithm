@@ -57,6 +57,7 @@
         "crushwallandmove": "cpp",
         "iostream": "cpp",
         "map": "cpp",
-        "populationmovement": "cpp"
+        "populationmovement": "cpp",
+        "hidenandrun3": "cpp"
     }
 }
