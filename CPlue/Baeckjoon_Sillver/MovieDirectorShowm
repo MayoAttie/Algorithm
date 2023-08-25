@@ -1,0 +1,26 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> end_nums;  // 종말의 수를 저장할 벡터
+
+    int num = 666;  // 시작 숫자로 666을 설정
+    while (end_nums.size() < N) {  // N개의 종말의 수를 찾을 때까지 반복
+        string num_str = to_string(num);  // 현재 숫자를 문자열로 변환
+
+        // 문자열에 "666"이 포함되어 있는지 검사
+        if (num_str.find("666") != string::npos) {
+            end_nums.push_back(num);  // 종말의 수를 벡터에 추가
+        }
+        num++;  // 다음 숫자로 증가
+    }
+
+    cout << end_nums[N - 1] << endl;  // N번째 종말의 수 출력
+
+    return 0;
+}
