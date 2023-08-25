@@ -58,6 +58,7 @@
         "iostream": "cpp",
         "map": "cpp",
         "populationmovement": "cpp",
-        "hidenandrun3": "cpp"
+        "hidenandrun3": "cpp",
+        "networkconnect": "cpp"
     }
 }
