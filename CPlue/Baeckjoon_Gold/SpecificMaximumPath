@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+const int INF = INT_MAX;  // 무한대를 나타내는 값으로 INT_MAX 사용
+
+vector<vector<pair<int, int>>> graph;  // 간선 정보를 저장하는 그래프
+int value[805];  // 시작 정점으로부터의 최단 거리를 저장할 배열
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> priQ;  // 우선순위 큐
+
+void dijkstra(int start);
+
+int main() 
+{
+    int N, E;
+    cin >> N >> E;
+    
+    graph.resize(N + 1);  // 정점 개수에 맞게 그래프 크기 초기화
+    
+    for (int i = 0; i < E; i++) 
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+        graph[a].push_back(make_pair(b, c));  // 양방향 간선 정보 추가
+        graph[b].push_back(make_pair(a, c));
+    }
+
+    int v1, v2;
+    cin >> v1 >> v2;
+
+    long long v1_1, v1_v2, v1_N, v2_1, v2_N;
+
+    dijkstra(v1);  // v1을 시작점으로 하는 최단 거리 계산
+    v1_1 = value[1];  // v1에서 1로 가는 최단 거리
+    v1_v2 = value[v2];  // v1에서 v2로 가는 최단 거리
+    v1_N = value[N];  // v1에서 N으로 가는 최단 거리
+    
+    dijkstra(v2);  // v2를 시작점으로 하는 최단 거리 계산
+    v2_1 = value[1];  // v2에서 1로 가는 최단 거리
+    v2_N = value[N];  // v2에서 N으로 가는 최단 거리
+
+    long long tmp1 = v1_1 + v1_v2 + v2_N;  // v1 -> 1 -> v2 -> N 경로
+    long long tmp2 = v2_1 + v1_v2 + v1_N;  // v2 -> 1 -> v1 -> N 경로
+    long long answer = min(tmp1, tmp2);  // 두 경로 중 짧은 경로 선택
+
+    if (answer >= INF)  // 경로가 불가능한 경우
+        answer = -1;  // -1로 설정
+    
+    cout << answer;  // 결과 출력
+
+    return 0;
+}
+
+void dijkstra(int start) 
+{
+    int numVertices = graph.size() - 1;  // 정점 개수
+    for (int i = 1; i <= numVertices; i++) 
+    {
+        value[i] = INF;  // 모든 정점의 최단 거리를 무한대로 초기화
+    }
+    value[start] = 0;  // 시작 정점의 최단 거리는 0
+    priQ.push(make_pair(0, start));  // 우선순위 큐에 시작 정점 추가
+
+    while (!priQ.empty()) 
+    {
+        int currentDistance = priQ.top().first;  // 현재까지의 최단 거리
+        int currentVertex = priQ.top().second;  // 현재 정점
+
+        priQ.pop();  // 처리한 정점 제거
+
+        for (const auto& edge : graph[currentVertex]) 
+        {
+            int neighborVertex = edge.first;  // 이웃 정점
+            int edgeWeight = edge.second;  // 간선의 가중치
+
+            if (currentDistance + edgeWeight < value[neighborVertex]) 
+            {
+                value[neighborVertex] = currentDistance + edgeWeight;  // 최단 거리 업데이트
+                priQ.push(make_pair(value[neighborVertex], neighborVertex));  // 다음 정점 추가
+            }
+        }
+    }
+}

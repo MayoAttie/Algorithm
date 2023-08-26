@@ -59,6 +59,7 @@
         "map": "cpp",
         "populationmovement": "cpp",
         "hidenandrun3": "cpp",
-        "networkconnect": "cpp"
+        "networkconnect": "cpp",
+        "specificmaximumpath": "cpp"
     }
 }
