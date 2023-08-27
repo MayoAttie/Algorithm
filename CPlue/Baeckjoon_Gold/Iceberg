@@ -1,0 +1,114 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+const int MAX = 300;
+
+int N, M;
+vector<vector<int>> graph;    // 빙산의 높이 정보를 저장하는 2차원 벡터
+vector<vector<bool>> visited; // DFS 방문 여부를 저장하는 2차원 벡터
+
+int dx[4] = { 0, 0, 1, -1 };
+int dy[4] = { 1, -1, 0, 0 };
+
+// DFS 함수: 빙산의 덩어리를 찾기 위해 사용
+void DFS(int x, int y)
+{
+    visited[x][y] = true;
+
+    for (int i = 0; i < 4; i++)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+
+        if (nx >= 0 && ny >= 0 && nx < N && ny < M)
+        {
+            if (visited[nx][ny] == false && graph[nx][ny] != 0)
+            {
+                DFS(nx, ny);
+            }
+        }
+    }
+}
+
+// 주변에 바닷물이 몇 개 있는지 세는 함수
+int Melt(int x, int y)
+{
+    int Cnt = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+
+        if (graph[nx][ny] == 0) Cnt++;
+    }
+    return Cnt;
+}
+
+void Solution()
+{
+    int Year = 0;
+    while (true)
+    {
+        int count = 0;
+        visited.assign(N, vector<bool>(M, false));
+
+        // 빙산의 덩어리 개수를 찾는 부분
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < M; j++)
+            {
+                if (graph[i][j] != 0 && visited[i][j] == false)
+                {
+                    count++;
+                    DFS(i, j);
+                }
+            }
+        }
+
+        // 두 덩어리 이상이거나 덩어리가 없을 경우 결과 출력
+        if (count >= 2) { cout << Year << "\n"; break; }
+        if (count == 0) { cout << 0 << "\n"; break; }
+
+        // 빙산 높이 조정
+        vector<vector<int>> temp(N, vector<int>(M, 0));
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < M; j++)
+            {
+                if (graph[i][j] != 0)
+                {
+                    temp[i][j] = graph[i][j] - Melt(i, j);
+                    if (temp[i][j] < 0) temp[i][j] = 0;
+                }
+            }
+        }
+
+        graph = temp; // 변경된 빙산 높이로 업데이트
+
+        Year++;
+    }
+}
+
+int main(void)
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N >> M;
+    graph.assign(N, vector<int>(M, 0));    // 빙산의 높이 정보 초기화
+    visited.assign(N, vector<bool>(M, false)); // DFS 방문 여부 초기화
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            cin >> graph[i][j]; // 빙산의 높이 정보 입력
+        }
+    }
+
+    Solution(); // 문제 해결 함수 호출
+
+    return 0;
+}
