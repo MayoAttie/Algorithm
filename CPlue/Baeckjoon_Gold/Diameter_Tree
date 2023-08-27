@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// 각 노드마다 연결된 노드와 가중치를 저장하는 그래프
+vector<vector<pair<int, int>>> graph;
+
+// 각 노드의 방문 여부를 저장하는 배열
+vector<bool> visited;
+
+// 트리의 지름 길이
+int diameter = 0;
+
+// 트리의 지름에서 가장 먼 노드
+int farthest = 0;
+
+// DFS를 이용하여 노드를 탐색하면서 지름을 구하는 함수
+void DFS(int node, int dist);
+
+int main() {
+    int N;
+    scanf("%d", &N);
+
+    // 그래프와 방문 배열 초기화
+    graph = vector<vector<pair<int, int>>>(N + 1);
+    visited = vector<bool>(N + 1, false);
+
+    // 간선 정보 입력 및 그래프 구성
+    for (int i = 0; i < N - 1; i++) {
+        int a, b, c;
+        scanf("%d %d %d", &a, &b, &c);
+        graph[a].emplace_back(b, c);
+        graph[b].emplace_back(a, c);
+    }
+
+    // 임의의 노드에서 가장 먼 노드를 찾음
+    DFS(1, 0);
+    
+    // 가장 먼 노드에서 다시 가장 먼 노드를 찾아 지름을 구함
+    diameter = 0;
+    visited = vector<bool>(N + 1, false);
+    DFS(farthest, 0);
+
+    // 트리의 지름 출력
+    printf("%d\n", diameter);
+
+    return 0;
+}
+
+// DFS를 이용하여 트리의 지름을 구하는 함수
+void DFS(int node, int dist) {
+    visited[node] = true;
+
+    if (dist > diameter) {
+        diameter = dist;
+        farthest = node;
+    }
+
+    for (auto i : graph[node]) {
+        int next = i.first;
+        int weight = i.second;
+        if (!visited[next])
+            DFS(next, dist + weight);
+    }
+}
