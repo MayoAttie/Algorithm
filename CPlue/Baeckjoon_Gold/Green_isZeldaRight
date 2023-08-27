@@ -1,0 +1,96 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+const int INF = INT_MAX;
+vector<vector<int>> graph; // 그래프 정보를 저장할 2차원 벡터
+vector<vector<int>> dist; // 최단 거리를 저장할 2차원 벡터
+
+int dX[4] = { 1,0,-1,0 }; // X 방향 이동 값 배열
+int dY[4] = { 0,1,0,-1 }; // Y 방향 이동 값 배열
+int testCase; // 테스트 케이스 크기
+
+struct Point
+{
+    int x;
+    int y;
+    int cost;
+    Point(int x, int y, int cost) : x(x), y(y), cost(cost) {}
+
+    // 비교 연산자 오버로딩
+    bool operator>(const Point& other) const
+    {
+        return cost > other.cost;
+    }
+};
+
+void Dijkstra(); // 다익스트라 알고리즘 함수 선언
+
+int main()
+{
+    int index = 1; // 문제 번호 카운트 변수
+    while (true)
+    {
+        cin >> testCase;
+
+        if (testCase == 0)
+            break;
+
+        // 그래프와 최단 거리 벡터 초기화
+        graph = vector<vector<int>>(testCase, vector<int>(testCase, 0));
+        dist = vector<vector<int>>(testCase, vector<int>(testCase, INF));
+
+        // 그래프 정보 입력 받기
+        for (int i = 0; i < testCase; i++)
+        {
+            for (int j = 0; j < testCase; j++)
+            {
+                cin >> graph[i][j];
+            }
+        }
+
+        Dijkstra(); // 다익스트라 알고리즘 호출
+        cout << "Problem " << index << ": " << dist[testCase - 1][testCase - 1] << endl;
+        index++; // 문제 번호 증가
+    }
+}
+
+// 다익스트라 알고리즘 함수 정의
+void Dijkstra()
+{
+    priority_queue<Point, vector<Point>, greater<Point>> priQ; // 우선순위 큐 선언
+    priQ.push(Point(0, 0, graph[0][0])); // 시작점을 큐에 삽입
+    dist[0][0] = graph[0][0]; // 시작점의 최단 거리 초기화
+
+    while (!priQ.empty())
+    {
+        Point current = priQ.top(); // 우선순위 큐에서 가장 작은 거리의 노드를 가져옴
+        priQ.pop();
+
+        int x = current.x;
+        int y = current.y;
+        int cost = current.cost;
+
+        if (dist[x][y] < cost)
+            continue;
+
+        // 현재 위치에서 4방향 이동 가능한 경우의 수 검사
+        for (int i = 0; i < 4; i++)
+        {
+            int nx = x + dX[i];
+            int ny = y + dY[i];
+
+            if (nx >= 0 && nx < testCase && ny >= 0 && ny < testCase)
+            {
+                int newCost = cost + graph[nx][ny]; // 새로운 거리 계산
+                if (newCost < dist[nx][ny]) // 기존 거리보다 작으면 업데이트
+                {
+                    dist[nx][ny] = newCost;
+                    priQ.push(Point(nx, ny, newCost)); // 우선순위 큐에 삽입
+                }
+            }
+        }
+    }
+}
