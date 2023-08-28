@@ -1,0 +1,96 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> maps;
+vector<vector<bool>> visited;
+
+int drX[4] = { 1, 0, -1, 0 };     // 4방향 x 좌표 변화량
+int drY[4] = { 0, 1, 0, -1 };     // 4방향 y 좌표 변화량
+
+int times, result;
+
+bool BFS(int col, int row);
+
+int main()
+{
+    int row;
+    int col;
+    cin >> col >> row;
+    times = 0;     // 초기 시간을 0으로 설정
+    result = 0;    // 초기 결과값을 0으로 설정
+
+    maps = vector<vector<int>>(col, vector<int>(row, 0));
+    visited = vector<vector<bool>>(col, vector<bool>(row, false)); // 방문 여부 배열 초기화
+
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            scanf("%d", &maps[i][j]);
+        }
+    }
+
+    while (true)
+    {
+        if (BFS(col, row))
+            break;
+        visited.assign(col, vector<bool>(row, false)); // 방문 여부 배열 초기화
+    }
+}
+
+bool BFS(int col, int row)
+{
+    // 시작점 방문 처리 및 초기화
+    visited[0][0] = true;
+    int count = 0;
+    queue<pair<int, int>> que;
+    que.push(make_pair(0, 0));
+
+    // 한 시간이 지남
+    times++;
+
+    // BFS 시작
+    while (!que.empty())
+    {
+        pair<int, int> current = que.front();
+        que.pop();
+
+        for (int i = 0; i < 4; i++)
+        {
+            int nY = current.first + drY[i];
+            int nX = current.second + drX[i];
+
+            // 유효한 범위 내에서 방문하지 않은 칸이면
+            if (nY >= 0 && nY < col && nX >= 0 && nX < row && !visited[nY][nX])
+            {
+                // 빈 칸일 경우 큐에 추가
+                if (maps[nY][nX] == 0)
+                    que.push(make_pair(nY, nX));
+                else
+                {
+                    // 치즈를 만나면 녹이기
+                    maps[nY][nX] = 0;
+                    count++;
+                }
+                visited[nY][nX] = true;
+            }
+        }
+    }
+
+    // 녹은 치즈가 없으면
+    if (count == 0)
+    {
+        // 결과 출력 후 반복 종료
+        printf("%d\n", --times);
+        printf("%d\n", result);
+        return true;
+    }
+    else
+    {
+        // 녹은 치즈가 있다면 남은 치즈 갱신
+        result = count;
+        return false;
+    }
+}

@@ -61,6 +61,7 @@
         "hidenandrun3": "cpp",
         "networkconnect": "cpp",
         "specificmaximumpath": "cpp",
-        "iceberg": "cpp"
+        "iceberg": "cpp",
+        "cheese": "cpp"
     }
 }
