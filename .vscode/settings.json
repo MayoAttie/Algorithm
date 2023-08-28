@@ -63,6 +63,7 @@
         "specificmaximumpath": "cpp",
         "iceberg": "cpp",
         "cheese": "cpp",
-        "gasstation": "cpp"
+        "gasstation": "cpp",
+        "leavecompany": "cpp"
     }
 }
