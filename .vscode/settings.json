@@ -62,6 +62,7 @@
         "networkconnect": "cpp",
         "specificmaximumpath": "cpp",
         "iceberg": "cpp",
-        "cheese": "cpp"
+        "cheese": "cpp",
+        "gasstation": "cpp"
     }
 }

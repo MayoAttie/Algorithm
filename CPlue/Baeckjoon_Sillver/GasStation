@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    int cities;
+    cin >> cities;
+    vector<int> roadLens(cities - 1);
+    vector<int> gasPrices(cities);
+
+    for (size_t i = 0; i < roadLens.size(); i++)
+    {
+        cin >> roadLens[i];
+    }
+    for (size_t i = 0; i < gasPrices.size(); i++)
+    {
+        cin >> gasPrices[i];
+    }
+
+
+    long long totalCost = 0; // 최종 비용
+    long long currentCost = 0; // 현재까지의 비용
+
+    currentCost = gasPrices[0];
+    totalCost = currentCost * roadLens[0];
+
+    for (int i = 1; i < roadLens.size(); i++)
+    {
+        if (currentCost < gasPrices[i])
+            totalCost += currentCost * roadLens[i];
+        else
+        {
+            currentCost = gasPrices[i];
+            totalCost += currentCost * roadLens[i];
+        }
+    }
+
+    cout << totalCost << endl;
+}
