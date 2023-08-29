@@ -64,6 +64,7 @@
         "iceberg": "cpp",
         "cheese": "cpp",
         "gasstation": "cpp",
-        "leavecompany": "cpp"
+        "leavecompany": "cpp",
+        "liar": "cpp"
     }
 }

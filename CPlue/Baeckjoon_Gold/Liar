@@ -1,0 +1,99 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> party;      // 파티 정보를 저장하는 2차원 벡터
+vector<int> knower;             // 진실을 아는 사람들을 저장하는 벡터
+vector<int> parents;            // 유니온-파인드에서 부모 노드를 저장하는 배열
+int result = 0;                 // 결과값을 저장하는 변수
+
+void unionFunc(int a, int b);   // 두 그룹을 합치는 유니온 연산 함수
+int Find(int a);                // 노드의 루트 노드를 찾는 파인드 함수
+
+int main()
+{
+    ios::sync_with_stdio(false); // 입출력 속도 향상을 위한 설정
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N, M, truePerson;
+    cin >> N >> M >> truePerson;  // 사람 수(N), 파티 수(M), 진실을 아는 사람 수(truePerson) 입력
+
+    party = vector<vector<int>>(M);    // 파티 정보 초기화
+    knower = vector<int>(truePerson);   // 진실을 아는 사람 초기화
+    parents = vector<int>(N + 1);      // 부모 노드 배열 초기화
+
+    for (int i = 0; i < truePerson; i++)
+    {
+        cin >> knower[i];   // 진실을 아는 사람들 입력
+    }
+
+    for (int i = 0; i < M; i++)
+    {
+        int len;
+        cin >> len;          // 파티의 참가자 수 입력
+        for (int j = 0; j < len; j++)
+        {
+            int data;
+            cin >> data;
+            party[i].push_back(data); // 파티의 참가자 정보 입력
+        }
+    }
+
+    for (int i = 0; i <= N; i++)
+    {
+        parents[i] = i;     // 유니온-파인드 초기화: 각 노드는 처음에 자신을 부모로 가리킴
+    }
+
+    // 파티에 속한 모든 사람들을 하나의 그룹으로 합침
+    for (int i = 0; i < M; i++)
+    {
+        int firstPeople = party[i][0];
+        for (int j = 0; j < party[i].size(); j++)
+        {
+            unionFunc(firstPeople, party[i][j]);
+        }
+    }
+
+    // 진실을 아는 사람과 같은 그룹에 속한 파티를 확인하여 결과값 계산
+    for (int i = 0; i < M; i++)
+    {
+        bool isPossible = true;   // 파티가 진실을 아는 사람과 같은 그룹에 속하는지 여부
+
+        int current = party[i][0]; // 파티의 첫 번째 사람을 기준으로 검사
+
+        for (int j = 0; j < truePerson; j++)
+        {
+            if (Find(current) == Find(knower[j])) // 같은 그룹인 경우
+            {
+                isPossible = false;
+                break;
+            }
+        }
+
+        if (isPossible)
+            result++;   // 진실을 모르는 사람과 같은 그룹에 속한 파티일 경우 결과값 증가
+    }
+
+    cout << result;   // 결과 출력
+}
+
+// 두 그룹을 합치는 유니온 연산 함수
+void unionFunc(int a, int b)
+{
+    a = Find(a);
+    b = Find(b);
+
+    if (a != b)
+        parents[a] = b;  // a의 루트를 b로 설정하여 두 그룹을 합침
+}
+
+// 노드의 루트 노드를 찾는 파인드 함수
+int Find(int a)
+{
+    if (a == parents[a])   // 자기 자신이 루트 노드인 경우
+        return a;           // a가 루트 노드임을 반환
+    else
+        return parents[a] = Find(parents[a]); // 경로 압축을 통해 루트 노드 갱신 후 반환
+}
