@@ -1,0 +1,56 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<bool> visited;
+vector<int> visitOrder;
+
+void DFS(int node);
+
+int main()
+{
+    int N, M, start;
+
+    cin >> N >> M >> start;
+
+    graph = vector<vector<int>>(N + 1);
+    visited = vector<bool>(N + 1);
+    visitOrder = vector<int>(N + 1, 0);
+
+    for (int i = 0; i < M; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+
+    for (int i = 1; i <= N; i++)
+    {
+        sort(graph[i].begin(), graph[i].end(), greater<int>());
+    }
+
+    DFS(start);
+
+    for (int i = 1; i <= N; i++)
+    {
+        cout << visitOrder[i] << "\n";
+    }
+}
+
+void DFS(int node)
+{
+    static int order = 1;
+    visited[node] = true;
+    visitOrder[node] = order++;
+
+    for (auto tmp : graph[node])
+    {
+        if (!visited[tmp])
+        {
+            DFS(tmp);
+        }
+    }
+}
