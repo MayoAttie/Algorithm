@@ -1,0 +1,96 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+
+vector<vector<char>> table;
+vector<vector<bool>> visited;
+
+int sheepCount = 0;
+int wolfCount = 0;
+
+int drY[4] = { 1, 0, -1, 0 };
+int drX[4] = { 0, 1, 0, -1 };
+
+void DFS(int y, int x);
+
+int main()
+{
+    int col, row;
+    cin >> col >> row;
+
+    int totalSheep = 0;
+    int totalWolf = 0;
+
+    // 마당의 정보를 저장하는 2차원 벡터 초기화
+    table = vector<vector<char>>(col, vector<char>(row, ' '));
+    visited = vector<vector<bool>>(col, vector<bool>(row, false));
+
+    // 마당의 정보 입력 받기
+    for (int i = 0; i < col; i++)
+    {
+        string str;
+        cin >> str;
+
+        for (int j = 0; j < row; j++)
+        {
+            table[i][j] = str[j];
+        }
+    }
+
+    // 모든 칸에 대해 탐색
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            sheepCount = 0;
+            wolfCount = 0;
+
+            // 울타리가 아니고 아직 방문하지 않았다면 DFS 탐색
+            if (table[i][j] != '#' && !visited[i][j])
+                DFS(i, j);
+
+            // 양과 늑대의 수에 따라서 결과 계산
+            if (sheepCount > wolfCount)
+            {
+                wolfCount = 0;
+                totalSheep += sheepCount;
+            }
+            else
+            {
+                sheepCount = 0;
+                totalWolf += wolfCount;
+            }
+
+        }
+    }
+
+    // 최종 결과 출력
+    cout << totalSheep << " " << totalWolf << endl;
+
+}
+
+void DFS(int y, int x)
+{
+    visited[y][x] = true;
+
+    // 현재 위치의 동물 수 세기
+    if (table[y][x] == 'o')
+        sheepCount++;
+    else if (table[y][x] == 'v')
+        wolfCount++;
+
+    // 상하좌우로 탐색
+    for (int i = 0; i < 4; i++)
+    {
+        int ny = y + drY[i];
+        int nx = x + drX[i];
+
+        // 영역을 벗어나지 않고 울타리가 아니며 아직 방문하지 않았다면 DFS 탐색
+        if (ny >= 0 && ny < table.size() && nx >= 0 && nx < table[0].size() &&
+            !visited[ny][nx] && table[ny][nx] != '#')
+        {
+            DFS(ny, nx);
+        }
+    }
+}
