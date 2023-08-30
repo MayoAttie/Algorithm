@@ -1,0 +1,26 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string S;
+    cin >> S;
+
+    int zeros = 0;
+    int ones = 0;
+
+    for (int i = 0; i < S.size(); i++)
+    {
+        if (S[i] != S[i + 1])
+        {
+            if (S[i] == '0')
+                zeros++;
+            else
+                ones++;
+        }
+    }
+
+    cout << min(zeros, ones);
+}
