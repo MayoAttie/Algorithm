@@ -68,6 +68,7 @@
         "liar": "cpp",
         "citydivideplan": "cpp",
         "sheep": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "decimalpath": "cpp"
     }
 }
