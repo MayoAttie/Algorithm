@@ -67,6 +67,7 @@
         "leavecompany": "cpp",
         "liar": "cpp",
         "citydivideplan": "cpp",
-        "sheep": "cpp"
+        "sheep": "cpp",
+        "cmath": "cpp"
     }
 }

@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+struct Edge
+{
+    double cost;
+    int u, v;
+    Edge(double c, int x, int y) : cost(c), u(x), v(y) {}
+
+    bool operator<(const Edge& other) const
+    {
+        return cost < other.cost;
+    }
+};
+
+vector<int> parent;
+
+int find(int x)
+{
+    if (parent[x] == x)
+        return x;
+
+    return parent[x] = find(parent[x]);
+}
+
+void unionSets(int x, int y)
+{
+    int rootX = find(x);
+    int rootY = find(y);
+    parent[rootY] = rootX;
+}
+
+double euclideanDistance(pair<double, double> p1, pair<double, double> p2 )
+{
+    double dx = p1.first - p2.first;
+    double dy = p1.second - p2.second;
+    return sqrt(dx * dx + dy * dy);
+}
+
+double kruskal(int n, const vector<pair<double, double>>& points)
+{
+    vector<Edge> edges;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            double distance = euclideanDistance(points[i], points[j]);
+            edges.emplace_back(distance, i, j);
+        }
+    }
+
+    sort(edges.begin(), edges.end());
+
+    parent.resize(n);
+    for (int i = 0; i < n; i++)
+    {
+        parent[i] = i;
+    }
+
+    double totalCost = 0.0;
+    for (const Edge& edge : edges)
+    {
+        if (find(edge.u) != find(edge.v))
+        {
+            unionSets(edge.u, edge.v);
+            totalCost += edge.cost;
+        }
+    }
+
+    return totalCost;
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<pair<double, double>> points(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> points[i].first >> points[i].second;
+    }
+
+    double result = kruskal(n, points);
+    cout.precision(2);
+    cout << fixed << result << endl;
+
+}
