@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<bool> visited;
+vector<int> answer;
+
+void BFS(int start);
+
+int main()
+{
+    int nodes, edges, start;
+    cin >> nodes >> edges >> start;
+
+    graph = vector<vector<int>>(nodes + 1);
+    visited = vector<bool>(nodes + 1);
+    answer = vector<int>(nodes + 1, 0);
+    for (int i = 0; i < edges; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    for (int i = 1; i <= nodes; i++)
+    {
+        sort(graph[i].begin(), graph[i].end());
+    }
+    BFS(start);
+
+    for (int i = 1; i <= nodes; i++)
+    {
+        cout << answer[i] << "\n";
+    }
+
+}
+
+void BFS(int start)
+{
+    queue<pair<int, int>> que;
+    int order = 1;
+    que.push(make_pair(start, order));
+    visited[start] = true;
+
+    while (!que.empty())
+    {
+        int curNode = que.front().first;
+        int curOrder = que.front().second;
+        que.pop();
+        answer[curNode] = curOrder;
+
+        for (auto tmp : graph[curNode])
+        {
+            if (!visited[tmp])
+            {
+                order++;
+                que.push(make_pair(tmp, order));
+                visited[tmp] = true;
+            }
+        }
+    }
+}

@@ -49,10 +49,8 @@ int main()
         {
             for (int k = 1; k <= nodes; k++)
             {
-                if (graph[j][k] > graph[j][i] + graph[i][k])
-                {
-                    graph[j][k] = graph[j][i] + graph[i][k]; // 플로이드-와샬 알고리즘 적용
-                }
+                // 플로이드-와샬 알고리즘 적용
+                graph[j][k] = min(graph[j][k], graph[j][i] + graph[i][k]);
             }
         }
     }

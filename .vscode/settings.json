@@ -70,6 +70,7 @@
         "sheep": "cpp",
         "cmath": "cpp",
         "decimalpath": "cpp",
-        "seogangground": "cpp"
+        "seogangground": "cpp",
+        "algorithmclass_bfs1": "cpp"
     }
 }
