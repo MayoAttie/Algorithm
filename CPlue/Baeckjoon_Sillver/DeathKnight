@@ -1,0 +1,56 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+int dx[] = {-2, -2, 0, 0, 2, 2};
+int dy[] = {-1, 1, -2, 2, -1, 1};
+
+vector<vector<int>> dist; // 최단 거리를 저장할 배열
+
+int BFS(int n, int r1, int c1, int r2, int c2) 
+{
+    queue<pair<int, int>> que;
+    que.push({r1, c1});
+    dist[r1][c1] = 0; // 시작 위치의 최단 거리를 0으로 초기화
+
+    while (!que.empty()) 
+    {
+        int x = que.front().first;
+        int y = que.front().second;
+        que.pop();
+
+        for (int i = 0; i < 6; i++) 
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx >= 0 && nx < n && ny >= 0 && ny < n && dist[nx][ny] == -1) 
+            {
+                que.push({nx, ny});
+                dist[nx][ny] = dist[x][y] + 1; // 다음 위치의 최단 거리를 업데이트
+            }
+        }
+    }
+
+    return dist[r2][c2]; // 목표 지점의 최단 거리 반환
+}
+
+int main() 
+{
+    int n;
+    cin >> n;
+    int r1, c1, r2, c2;
+    cin >> r1 >> c1 >> r2 >> c2;
+
+    dist = vector<vector<int>>(n, vector<int>(n, -1)); // dist 배열 초기화
+
+    int result = BFS(n, r1, c1, r2, c2);
+
+    if (result == -1) 
+        cout << -1 << endl; // 이동할 수 없는 경우
+    else 
+        cout << result << endl; // 최단 이동 거리 출력
+
+    return 0;
+}
