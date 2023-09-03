@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    int N, M, J;
+    cin >> N >> M; // N: 스크린 크기, M: 바구니 크기
+    cin >> J; // J: 떨어지는 사과 개수
+
+    int now = 1; // 바구니 현재 위치
+    vector<int> apples(J); // 사과 위치를 저장할 벡터
+    int answer = 0; // 이동 거리를 저장할 변수
+
+    // 떨어지는 사과 위치 입력
+    for (int i = 0; i < J; i++)
+    {
+        cin >> apples[i];
+    }
+
+    // 각 사과에 대해 이동 거리 계산
+    for (int i = 0; i < J; i++)
+    {
+        int apple = apples[i];
+        if (now <= apple && now + (M - 1) >= apple)
+        {
+            // 현재 바구니 위치에서 사과를 받을 수 있는 경우, 거리 계산 없음
+            continue;
+        }
+        else if (now > apple)
+        {
+            // 현재 바구니 위치보다 왼쪽에 사과가 떨어진 경우
+            answer += abs(apple - now); // 왼쪽으로 이동한 거리 추가
+            now = apple; // 바구니 위치 업데이트
+        }
+        else
+        {
+            // 현재 바구니 위치보다 오른쪽에 사과가 떨어진 경우
+            answer += apple - (M - 1) - now; // 오른쪽으로 이동한 거리 추가
+            now = apple - (M - 1); // 바구니 위치 업데이트
+        }
+    }
+
+    cout << answer << endl; // 결과 출력
+
+    return 0;
+}

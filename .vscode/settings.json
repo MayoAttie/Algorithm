@@ -74,6 +74,7 @@
         "algorithmclass_bfs1": "cpp",
         "easyshortestdistance": "cpp",
         "war_battle": "cpp",
-        "twofirendnumber": "cpp"
+        "twofirendnumber": "cpp",
+        "applereceivinggame": "cpp"
     }
 }
