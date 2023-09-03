@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    vector<vector<char>> friends(N, vector<char>(N));
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            cin >> friends[i][j];
+        }
+    }
+
+    int maxTwoFriends = -1;     // 가장 많은 2-친구 수
+
+    for (int i = 0; i < N; i++)
+    {
+        int twoFriends = 0;     // 현재 사람의 2-친구 수
+
+        for (int j = 0; j < N; j++)
+        {
+            if (i == j)
+                continue;   // 자기 자신은 제외
+
+            // 친구이면 1-친구
+            if (friends[i][j] == 'Y')
+                twoFriends++;
+            else
+            {
+                // 1-친구가 아닌 경우, 공통 친구 찾기
+                for (int k = 0; k < N; k++)
+                {
+                    if (friends[i][k] == 'Y' && friends[j][k] == 'Y')
+                    {
+                        twoFriends++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 가장 많은 2-친구 수 업데이트
+        if (twoFriends > maxTwoFriends)
+            maxTwoFriends = twoFriends;
+    }
+
+    cout << maxTwoFriends << endl;
+
+    return 0;
+
+}
