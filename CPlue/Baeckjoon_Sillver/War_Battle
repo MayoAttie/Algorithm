@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <cmath>
+using namespace std;
+
+vector<vector<char>> graph; // 전투터의 맵을 저장하는 2차원 벡터
+vector<vector<bool>> visited; // 방문 여부를 저장하는 2차원 벡터
+
+int drX[4] = { 1,0,-1,0 }; // 상하좌우 이동을 위한 배열
+int drY[4] = { 0,1,0,-1 };
+
+int DFS(int y, int x, char target); // DFS 탐색을 위한 함수 선언
+
+int main()
+{
+    int row, col;
+    cin >> row >> col;
+
+    graph = vector<vector<char>>(col, vector<char>(row, ' ')); // 전투터의 크기에 맞게 벡터 초기화
+    visited = vector<vector<bool>>(col, vector<bool>(row, false)); // 방문 여부 초기화
+
+    for (int i = 0; i < col; i++)
+    {
+        string data;
+        cin >> data;
+        for (int j = 0; j < row; j++)
+        {
+            graph[i][j] = data[j]; // 전투터의 상황을 입력받음
+        }
+    }
+
+    int totalBlue = 0; // 파란 팀의 총 위력
+    int totalWhite = 0; // 흰 팀의 총 위력
+
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            if (!visited[i][j]) // 방문하지 않은 위치에서 시작
+            {
+                int groupSize = DFS(i, j, graph[i][j]); // 같은 팀 병사 그룹 크기 계산
+                if (graph[i][j] == 'B') // 파란 팀인 경우
+                    totalBlue += groupSize * groupSize; // 위력을 계산하여 더함
+                else // 흰 팀인 경우
+                    totalWhite += groupSize * groupSize; // 위력을 계산하여 더함
+            }
+        }
+    }
+
+    cout << totalWhite << " " << totalBlue << endl; // 결과 출력
+}
+
+int DFS(int y, int x, char target)
+{
+    int count = 1; // 현재 위치를 포함한 그룹의 초기 크기
+    stack<pair<int, int>> stk; // 스택을 사용한 DFS 탐색
+    stk.push(make_pair(y, x)); // 시작 위치를 스택에 추가
+    visited[y][x] = true; // 시작 위치를 방문한 것으로 표시
+
+    while (!stk.empty())
+    {
+        int curY = stk.top().first;
+        int curX = stk.top().second;
+        stk.pop();
+
+        for (int i = 0; i < 4; i++)
+        {
+            unsigned int nY = curY + drY[i];
+            unsigned int nX = curX + drX[i];
+            if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() &&
+                !visited[nY][nX] && graph[nY][nX] == target) // 인접한 위치가 탐색 대상인 경우
+            {
+                count++; // 그룹 크기를 증가시킴
+                visited[nY][nX] = true; // 방문한 것으로 표시
+                stk.push(make_pair(nY, nX)); // 스택에 추가하여 계속 탐색
+            }
+        }
+    }
+
+    return count; // 최종 그룹 크기 반환
+}

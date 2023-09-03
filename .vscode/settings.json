@@ -72,6 +72,7 @@
         "decimalpath": "cpp",
         "seogangground": "cpp",
         "algorithmclass_bfs1": "cpp",
-        "easyshortestdistance": "cpp"
+        "easyshortestdistance": "cpp",
+        "war_battle": "cpp"
     }
 }
