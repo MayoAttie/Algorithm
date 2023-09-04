@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int E, S, M;
+    cin >> E >> S >> M;
+
+    int year = 1; // 우리 연도로 1년부터 시작
+
+    // 무한 루프를 사용하여 조건을 만족하는 연도를 찾을 때까지 반복
+    while (true) {
+        // E, S, M 각각에 대해 연도를 뺀 값이 주기(15, 28, 19)의 배수인지 확인
+        // 만약 모든 조건을 만족하면 해당 연도가 정답
+        if ((year - E) % 15 == 0 && (year - S) % 28 == 0 && (year - M) % 19 == 0) {
+            cout << year << endl; // 정답 출력
+            break; // 정답을 찾았으므로 반복문 종료
+        }
+        
+        year++; // 다음 연도로 이동
+    }
+
+    return 0;
+}
