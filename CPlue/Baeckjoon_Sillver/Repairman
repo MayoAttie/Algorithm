@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    int N, L;
+    int count = 1; // 초기 테이프 개수를 1로 초기화
+    cin >> N >> L; // 입력: 물이 샌 곳의 개수(N)와 테이프의 길이(L)
+
+    vector<int> downNum(N, 0); // 물이 샌 위치를 저장하는 벡터
+
+    for (int i = 0; i < N; i++)
+    {
+        cin >> downNum[i]; // 물이 샌 위치 입력
+    }
+
+    sort(downNum.begin(), downNum.end()); // 물이 샌 위치를 오름차순으로 정렬
+
+    int start = downNum[0]; // 시작 위치를 첫 번째 물이 샌 곳으로 초기화
+
+    for (int i = 1; i < N; i++)
+    {
+        if (L <= downNum[i] - start) // 현재 위치와 시작 위치 간격이 테이프 길이 이상이면
+        {
+            count++; // 새로운 테이프를 사용
+            start = downNum[i]; // 시작 위치 업데이트
+        }
+    }
+
+    cout << count; // 필요한 테이프의 최소 개수 출력
+
+    return 0;
+}
