@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cmath>
+using namespace std;
+
+vector<vector<int>> graph;  // 헛간과 연결된 길을 나타내는 그래프
+vector<bool> visited;       // 방문 여부를 표시하는 배열
+vector<int> dist;           // 시작 헛간으로부터의 거리를 저장하는 배열
+
+void BFS(int start);
+
+int main()
+{
+    int N, M;
+    scanf("%d %d", &N, &M);
+
+    graph = vector<vector<int>>(N + 1);
+    visited = vector<bool>(N + 1, false);
+    dist = vector<int>(N + 1, 0);
+
+    // 간선 정보 입력
+    for (int i = 0; i < M; i++)
+    {
+        int a, b;
+        scanf("%d %d", &a, &b);
+
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+
+    BFS(1);
+
+
+    int answer = 0; // 가장 먼 헛간까지의 거리
+    for (int i = 1; i <= N; i++)
+    {
+        // 가장 먼 거리 갱신
+        answer = max(answer, dist[i]);
+    }
+
+    int count = 0;  // 같은 거리를 갖는 헛간의 개수
+    int pos = N+1;  // 가장 작은 헛간 번호 초기화
+    for (int i = 1; i <= N; i++)
+    {
+        if (dist[i] == answer)
+        {
+            count++;                // 같은 거리를 갖는 헛간 개수 증가
+            pos = min(pos, i);      // 가장 작은 헛간 번호 갱신
+        }
+    }
+
+    printf("%d %d %d\n", pos, answer, count);
+
+    return 0;
+}
+
+void BFS(int start)
+{
+    queue<pair<int, int>> que;
+    que.push({ start, 0 }); // 시작 헛간과 거리 0으로 큐에 삽입
+    visited[start] = true; // 시작 헛간 방문 표시
+
+    while (!que.empty())
+    {
+        int current = que.front().first;        // 현재 헛간 번호
+        int curDist = que.front().second;       // 현재 헛간까지의 거리
+        dist[current] = curDist;                // 현재 헛간까지의 거리 저장
+        que.pop();
+
+        for (auto i : graph[current])
+        {
+            if (!visited[i])
+            {
+                visited[i] = true;              // 방문 표시
+                que.push({ i, curDist + 1 });   // 다음 헛간과 거리 증가
+            }
+        }
+    }
+}
