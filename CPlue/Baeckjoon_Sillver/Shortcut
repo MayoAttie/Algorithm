@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <limits>
+using namespace std;
+
+const int INF = numeric_limits<int>::max();
+
+struct Edge {
+    int to, cost;
+    Edge(int t, int c) : to(t), cost(c) {}
+};
+
+void dijkstra(vector<vector<Edge>>& graph, vector<int>& distance, int start) {
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, start});
+    distance[start] = 0;
+
+    while (!pq.empty()) {
+        int dist = pq.top().first;
+        int node = pq.top().second;
+        pq.pop();
+
+        if (dist > distance[node]) continue; // 이미 더 짧은 경로가 있다면 무시
+
+        for (const Edge& edge : graph[node]) {
+            int next_node = edge.to;
+            int next_cost = dist + edge.cost;
+
+            if (next_cost < distance[next_node]) {
+                distance[next_node] = next_cost; // 최단 거리 갱신
+                pq.push({next_cost, next_node}); // 우선순위 큐에 삽입
+            }
+        }
+    }
+}
+
+int main() {
+    int n, d;
+    cin >> n >> d;
+
+    vector<vector<Edge>> graph(d + 1);
+    vector<int> distance(d + 1, INF);
+
+    // 초기화: 모든 지점에서 바로 다음 지점으로 가는 거리를 1로 설정
+    for (int i = 0; i < d; ++i) {
+        graph[i].emplace_back(i + 1, 1);
+    }
+
+    // 지름길 정보 입력 및 그래프 업데이트
+    for (int i = 0; i < n; ++i) {
+        int s, e, l;
+        cin >> s >> e >> l;
+        if (e > d) continue; // 목적지가 d를 넘어가면 무시
+        graph[s].emplace_back(e, l); // 지름길 정보를 그래프에 추가
+    }
+
+    // 다익스트라 알고리즘 실행
+    dijkstra(graph, distance, 0);
+
+    // 결과 출력
+    cout << distance[d] << endl;
+
+    return 0;
+}
