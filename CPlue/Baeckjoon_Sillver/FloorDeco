@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<char>> graph;  // 입력된 바닥 장식 모양을 저장하는 그래프
+vector<vector<bool>> visited;  // 방문 여부를 저장하는 배열
+
+int colY[2] = { 1, -1 };  // 세로 나무 판자의 이웃 행을 나타내는 상대적인 Y 좌표
+int colX[2] = { 0, 0 };  // 세로 나무 판자의 이웃 열을 나타내는 상대적인 X 좌표
+
+int rowY[2] = { 0, 0 };  // 가로 나무 판자의 이웃 행을 나타내는 상대적인 Y 좌표
+int rowX[2] = { 1, -1 };  // 가로 나무 판자의 이웃 열을 나타내는 상대적인 X 좌표
+
+void DFS(char target, int y, int x);  // DFS 함수 선언
+
+int main()
+{
+    int N;
+    int M;
+    cin >> N >> M;
+
+    graph = vector<vector<char>>(N, vector<char>(M, ' '));  // N x M 크기의 그래프 초기화
+    visited = vector<vector<bool>>(N, vector<bool>(M, false));  // 방문 여부 배열 초기화
+
+    for (int i = 0; i < N; i++)
+    {
+        string tmp;
+        cin >> tmp;
+        for (int j = 0; j < M; j++)
+        {
+            graph[i][j] = tmp[j];  // 바닥 장식 모양을 그래프에 저장
+        }
+    }
+
+    int count = 0;  // 나무 판자 그룹의 개수를 저장할 변수
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            if (!visited[i][j])
+            {
+                count++;
+                DFS(graph[i][j], i, j);  // 방문하지 않은 나무 판자를 시작으로 DFS 호출
+            }
+        }
+    }
+    cout << count << endl;  // 나무 판자 그룹의 개수 출력
+}
+
+void DFS(char target, int y, int x)
+{
+    visited[y][x] = true;  // 현재 위치를 방문했다고 표시
+
+    if (target == '|')
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            unsigned int nY = y + colY[i];
+            unsigned int nX = x + colX[i];
+
+            if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() && !visited[nY][nX])
+            {
+                if (graph[nY][nX] == target)
+                    DFS(target, nY, nX);  // 같은 나무 판자를 찾아 DFS 호출
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            unsigned int nY = y + rowY[i];
+            unsigned int nX = x + rowX[i];
+
+            if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() && !visited[nY][nX])
+            {
+                if (graph[nY][nX] == target)
+                    DFS(target, nY, nX);  // 같은 나무 판자를 찾아 DFS 호출
+            }
+        }
+    }
+}
