@@ -78,6 +78,7 @@
         "applereceivinggame": "cpp",
         "babyshark2": "cpp",
         "shortcut": "cpp",
-        "hideandseek2": "cpp"
+        "hideandseek2": "cpp",
+        "finddocuments": "cpp"
     }
 }

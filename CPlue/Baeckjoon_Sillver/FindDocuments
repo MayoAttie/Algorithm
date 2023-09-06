@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string document, word;
+
+    // 문서와 검색하려는 단어를 입력받음
+    getline(cin, document); // 문서 입력
+    getline(cin, word);     // 검색하려는 단어 입력
+
+    int maxCount = 0; // 중복되지 않게 최대 등장 횟수를 저장할 변수
+
+    // 문서의 길이와 검색하려는 단어의 길이를 비교하여 처리
+    if (document.size() >= word.size())
+    {
+        // 문서를 검사하면서 단어를 찾음
+        for (int i = 0; i <= document.size() - word.size(); i++)
+        {
+            bool isValid = true;
+
+            // 현재 위치부터 단어의 길이만큼 문자를 비교하여 중복 여부를 확인
+            for (int j = 0; j < word.size(); j++)
+            {
+                if (document[i + j] != word[j])
+                {
+                    isValid = false;
+                    break; // 중복되지 않게 등장하지 않으면 검사 중단
+                }
+            }
+
+            // 단어가 중복되지 않게 등장할 경우
+            if (isValid)
+            {
+                maxCount++;           // 최대 등장 횟수 증가
+                i += word.size() - 1; // 중복 등장 방지를 위해 인덱스 조정
+            }
+        }
+    }
+
+    // 최대 등장 횟수 출력
+    cout << maxCount << endl;
+
+    return 0;
+}
