@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> graph; // 격자 정보를 저장하는 2차원 배열
+vector<vector<bool>> visited; // 방문 여부를 저장하는 2차원 배열
+
+int drY[4] = {1, 0, -1, 0}; // 4방향 이동을 위한 상대적인 Y 좌표
+int drX[4] = {0, 1, 0, -1}; // 4방향 이동을 위한 상대적인 X 좌표
+
+void BFS(int y, int x); // BFS 탐색 함수
+
+int main()
+{
+    int col, row;
+    cin >> col >> row;
+
+    // 격자와 방문 여부 배열 초기화
+    graph = vector<vector<int>>(col, vector<int>(row, 0));
+    visited = vector<vector<bool>>(col, vector<bool>(row, false));
+
+    // 격자 정보 입력
+    for (int i = 0; i < col; i++)
+    {
+        string tmp;
+        cin >> tmp;
+        for (int j = 0; j < row; j++)
+        {
+            graph[i][j] = tmp[j] - '0'; // 문자를 숫자(0 또는 1)로 변환하여 저장
+        }
+    }
+
+    // 시작점부터 연결된 흰색(0) 영역을 탐색
+    for (int i = 0; i < row; i++)
+    {
+        if (!visited[0][i] && graph[0][i] == 0)
+        {
+            BFS(0, i);
+        }
+    }
+
+    bool canReachEnd = false; // 끝점까지 도달 가능한지 여부
+
+    // 마지막 행의 어느 위치라도 방문되었다면 도달 가능
+    for (int i = 0; i < row; i++)
+    {
+        if (visited[col - 1][i] == true)
+        {
+            canReachEnd = true;
+            break;
+        }
+    }
+
+    if (canReachEnd)
+        cout << "YES"; // 끝점까지 도달 가능한 경우
+    else
+        cout << "NO"; // 도달 불가능한 경우
+
+    return 0;
+}
+
+void BFS(int y, int x)
+{
+    queue<pair<int, int>> que;
+    que.push({y, x});
+    visited[y][x] = true;
+
+    while (!que.empty())
+    {
+        pair<int, int> current = que.front();
+        que.pop();
+
+        for (int i = 0; i < 4; i++)
+        {
+            unsigned int nY = current.first + drY[i];
+            unsigned int nX = current.second + drX[i];
+
+            if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() &&
+                !visited[nY][nX] && graph[nY][nX] == 0)
+            {
+                visited[nY][nX] = true;
+                que.push(make_pair(nY, nX));
+            }
+        }
+    }
+}
