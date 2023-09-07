@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<vector<bool>> visited;
+int col, row;
+
+int drY[8] = {1,0,-1,0,1,-1,1,-1};
+int drX[8] = {0,1,0,-1,1,1,-1,-1};
+
+void BFS(int y, int x);
+
+int main()
+{
+    cin >> col >> row;
+
+    graph = vector<vector<int>>(col, vector<int>(row, 0));
+    visited = vector<vector<bool>>(col, vector<bool>(row, false));
+
+    for(int i=0; i<col; i++) // 수정된 부분: i<col로 변경
+    {
+        for(int j=0; j<row; j++)
+        {
+            cin >> graph[i][j];
+        }
+    }
+
+    int count = 0;
+
+    for(int i=0; i<col; i++)
+    {
+        for(int j=0; j<row; j++)
+        {
+            if(graph[i][j] == 1 && !visited[i][j])
+            {
+                count++;
+                BFS(i, j);
+            }
+        }
+    }
+
+    cout << count;
+}
+
+void BFS(int y, int x)
+{
+    queue<pair<int,int>> que;
+    que.push({y, x});
+    visited[y][x] = true;
+
+    while(!que.empty()) // 수정된 부분: while로 변경
+    {
+        pair<int,int> current = que.front();
+        que.pop();
+
+        for(int i=0; i<8; i++)
+        {
+            int nY = current.first + drY[i];
+            int nX = current.second + drX[i];
+
+            if(nY>=0 && nY<col && nX>=0 && nX<row && !visited[nY][nX] &&
+                graph[nY][nX] == 1)
+            {
+                que.push({nY, nX});
+                visited[nY][nX] = true;
+            }
+        }
+    }
+}
