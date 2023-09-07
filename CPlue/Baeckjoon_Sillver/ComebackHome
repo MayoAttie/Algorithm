@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<char>> graph;
+vector<vector<bool>> visited;
+
+int drY[4] = {1, 0, -1, 0};
+int drX[4] = {0, 1, 0, -1};
+int row, col, target;
+int answer = 0;
+
+// DFS 함수 정의
+void DFS(int y, int x, int count);
+
+int main()
+{
+    // 입력 받기
+    cin >> col >> row >> target;
+
+    // 그래프와 방문 여부를 나타내는 배열 초기화
+    graph = vector<vector<char>>(col, vector<char>(row, '.'));
+    visited = vector<vector<bool>>(col, vector<bool>(row, false));
+
+    // 그래프 정보 입력
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            cin >> graph[i][j];
+        }
+    }
+
+    // 시작 위치 표시 및 DFS 호출
+    visited[col - 1][0] = true; // 시작 위치는 (col - 1, 0)
+    DFS(col - 1, 0, 1); // 시작 위치부터 거리 1부터 시작
+
+    // 결과 출력
+    cout << answer;
+}
+
+// 깊이 우선 탐색 함수 정의
+void DFS(int y, int x, int count)
+{
+    // 목표 지점에 도달한 경우
+    if (y == 0 && x == row - 1)
+    {
+        if (count == target) // 주어진 거리와 일치하는 경우
+            answer++; // 가능한 가짓수 증가
+
+        return; // 재귀 종료
+    }
+
+    // 네 방향에 대한 탐색
+    for (int i = 0; i < 4; i++)
+    {
+        int nY = y + drY[i];
+        int nX = x + drX[i];
+
+        // 유효한 범위 내에 있고 방문하지 않았으며 장애물이 아닌 경우
+        if (nY >= 0 && nY < col && nX >= 0 && nX < row && !visited[nY][nX] &&
+            graph[nY][nX] != 'T')
+        {
+            visited[nY][nX] = true; // 방문 표시
+            DFS(nY, nX, count + 1); // 다음 위치로 이동하며 거리 증가
+            visited[nY][nX] = false; // 이동 후 방문 표시 해제 (백트래킹)
+        }
+    }
+}
