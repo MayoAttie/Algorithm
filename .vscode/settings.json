@@ -79,6 +79,7 @@
         "babyshark2": "cpp",
         "shortcut": "cpp",
         "hideandseek2": "cpp",
-        "finddocuments": "cpp"
+        "finddocuments": "cpp",
+        "findfriends_returningstudents": "cpp"
     }
 }

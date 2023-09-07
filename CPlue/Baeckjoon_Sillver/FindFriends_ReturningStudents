@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<char>> campus;
+vector<vector<bool>> visited;
+
+int drX[4] = { 1,0,-1,0 };
+int drY[4] = { 0,1,0,-1 };
+
+int BFS(pair<int, int> start);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int col, row;
+    pair<int, int> start;
+
+    cin >> col >> row;
+
+    campus = vector<vector<char>>(col, vector<char>(row, ' '));
+    visited = vector<vector<bool>>(col, vector<bool>(row, false));
+
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            cin >> campus[i][j];
+            if (campus[i][j] == 'I')
+                start = make_pair(i, j);
+        }
+    }
+
+    int answer = BFS(start);
+
+    if (answer <= 0)
+        cout << "TT\n";
+    else
+        cout << answer << endl;
+}
+
+int BFS(pair<int, int> start)
+{
+    int count = 0;
+    queue<pair<int, int>> que;
+    que.push(start);
+
+    while (!que.empty())
+    {
+        int crY = que.front().first;
+        int crX = que.front().second;
+        que.pop();
+
+        if (campus[crY][crX] == 'P')
+            count++;
+
+        visited[crY][crX] = true;
+
+        for (int i = 0; i < 4; i++)
+        {
+            unsigned int nY = crY + drY[i];
+            unsigned int nX = crX + drX[i];
+
+            if (nY >= 0 && nY < campus.size() && nX >= 0 && nX < campus[0].size() &&
+                !visited[nY][nX] && campus[nY][nX] != 'X')
+            {
+                que.push({ nY,nX });
+                visited[nY][nX] = true;
+            }
+        }
+    }
+    return count;
+}
