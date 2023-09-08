@@ -1,0 +1,102 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<char>> graph; // 입력으로 받는 그래프 정보를 저장하는 이차원 벡터
+vector<vector<bool>> visited; // 방문 여부를 저장하는 이차원 벡터
+
+int drY[4] = { 1, 0, -1, 0 }; // 상하좌우 이동을 위한 Y 방향 변화값 배열
+int drX[4] = { 0, 1, 0, -1 }; // 상하좌우 이동을 위한 X 방향 변화값 배열
+
+pair<int, int> BFS(int y, int x); // BFS 함수 선언
+
+int main()
+{
+    int row, col; // 그래프의 행과 열의 크기
+    cin >> col >> row; // 행과 열 크기 입력
+
+    // 그래프와 방문 여부 배열 초기화
+    graph = vector<vector<char>>(col, vector<char>(row, ' '));
+    visited = vector<vector<bool>>(col, vector<bool>(row, false));
+
+    // 그래프 정보 입력
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            cin >> graph[i][j];
+        }
+    }
+
+    int totalShep = 0; // 양의 총 수
+    int totalWolf = 0; // 늑대의 총 수
+
+    // 그래프를 순회하며 양과 늑대의 수를 계산
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            if (!visited[i][j] && graph[i][j] != '#')
+            {
+                pair<int, int> tmp = BFS(i, j); // BFS로 영역 내 양과 늑대의 수 계산
+                totalWolf += tmp.first; // 늑대 수 누적
+                totalShep += tmp.second; // 양 수 누적
+            }
+        }
+    }
+
+    // 결과 출력
+    cout << totalShep << "\n" << totalWolf << endl;
+}
+
+// BFS 함수 정의
+pair<int, int> BFS(int y, int x)
+{
+    int cntWolf = 0; // 현재 영역 내 늑대의 수
+    int cntShep = 0; // 현재 영역 내 양의 수
+
+    queue<pair<int, int>> que; // BFS 탐색을 위한 큐
+    que.push({ y, x }); // 시작점을 큐에 넣음
+    visited[y][x] = true; // 시작점을 방문 표시
+
+    while (!que.empty())
+    {
+        int curY = que.front().first;
+        int curX = que.front().second;
+        que.pop();
+
+        if (graph[curY][curX] == 'v')
+            cntWolf++; // 현재 위치가 늑대면 늑대 수 증가
+        else if (graph[curY][curX] == 'k')
+            cntShep++; // 현재 위치가 양이면 양 수 증가
+
+        // 상하좌우로 이동하면서 유효한 위치를 큐에 추가
+        for (int i = 0; i < 4; i++)
+        {
+            unsigned int nY = curY + drY[i];
+            unsigned int nX = curX + drX[i];
+
+            if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() &&
+                !visited[nY][nX])
+            {
+                if (graph[nY][nX] != '#')
+                {
+                    visited[nY][nX] = true; // 방문 표시
+                    que.push(make_pair(nY, nX)); // 다음 위치 큐에 추가
+                }
+            }
+        }
+    }
+
+    // 양과 늑대 수 비교하여 조건에 따라 0으로 설정
+    if (cntWolf != 0 && cntShep != 0)
+    {
+        if (cntWolf < cntShep)
+            cntWolf = 0;
+        if (cntShep <= cntWolf)
+            cntShep = 0;
+    }
+
+    return make_pair(cntWolf, cntShep); // 늑대와 양의 수를 반환
+}
