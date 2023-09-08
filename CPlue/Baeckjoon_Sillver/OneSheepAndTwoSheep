@@ -1,0 +1,78 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<char>> graph;
+vector<vector<bool>> visited;
+
+int drY[4] = { 1,0,-1,0 };
+int drX[4] = { 0,1,0,-1 };
+
+void BFS(int y, int x);
+
+int main()
+{
+	int testCase = 0;
+
+	cin >> testCase;
+	
+	for (int i = 0; i < testCase; i++)
+	{
+		int col, row;
+		cin >> col >> row;
+
+		graph = vector<vector<char>>(col, vector<char>(row, 0));
+		visited = vector<vector<bool>>(col, vector<bool>(row, false));
+		
+		for (int i = 0; i < col; i++)
+		{
+			for (int j = 0; j < row; j++)
+			{
+				cin >> graph[i][j];
+			}
+		}
+		int count = 0;
+		for (int i = 0; i < col; i++)
+		{
+			for (int j = 0; j < row; j++)
+			{
+				if (graph[i][j] == '#' && !visited[i][j])
+				{
+					count++;
+					BFS(i, j);
+				}
+			}
+		}
+
+		cout << count << endl;
+	}
+}
+
+void BFS(int y, int x)
+{
+	queue<pair<int, int>> que;
+	que.push(make_pair(y, x));
+	graph[y][x] = true;
+
+	while (!que.empty())
+	{
+		pair<int, int> current = que.front();
+		que.pop();
+
+		for (int i = 0; i < 4; i++)
+		{
+			unsigned int nY = current.first + drY[i];
+			unsigned int nX = current.second + drX[i];
+
+			if (nY >= 0 && nY < graph.size() && nX >= 0 && nX < graph[0].size() && !visited[nY][nX])
+			{
+				if (graph[nY][nX] == '#')
+				{
+					visited[nY][nX] = true;
+					que.push({ nY,nX });
+				}
+			}
+		}
+	}
+}
