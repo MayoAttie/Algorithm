@@ -83,6 +83,7 @@
         "findfriends_returningstudents": "cpp",
         "shepherdkung": "cpp",
         "polyomino": "cpp",
-        "jumpkingjelly": "cpp"
+        "jumpkingjelly": "cpp",
+        "allpermutation": "cpp"
     }
 }

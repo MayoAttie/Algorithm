@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void generatePermutations(vector<int>& current, vector<bool>& used, int N) 
+{
+    if (current.size() == N) 
+    {
+        for (int num : current) 
+        {
+            cout << num << ' ';
+        }
+        cout << '\n';
+        return;
+    }
+
+    for (int i = 1; i <= N; ++i) 
+    {
+        if (!used[i]) 
+        {
+            used[i] = true;
+            current.push_back(i);
+
+            generatePermutations(current, used, N);
+
+            used[i] = false;
+            current.pop_back();
+        }
+    }
+}
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    vector<int> current;
+    vector<bool> used(N + 1, false);
+
+    generatePermutations(current, used, N);
+
+    return 0;
+}
