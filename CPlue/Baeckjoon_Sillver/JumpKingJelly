@@ -1,0 +1,79 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+const int MAX_N = 101;
+int N; 
+
+struct Node 
+{
+    int x, y, count;
+
+    Node(int _x, int _y, int _count) : x(_x), y(_y), count(_count) {}
+};
+
+// DFS 함수 선언
+string dfs(int board[MAX_N][MAX_N]);
+
+int main() 
+{
+    cin >> N;
+
+    int board[MAX_N][MAX_N];
+
+    // 배열 입력 받기
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < N; j++) 
+        {
+            cin >> board[i][j];
+        }
+    }
+
+    // DFS 호출하여 결과 출력
+    cout << dfs(board) << endl;
+
+    return 0;
+}
+
+// DFS 함수 정의
+string dfs(int board[MAX_N][MAX_N])
+{
+    stack<Node> stk;
+    bool visited[MAX_N][MAX_N] = { false };
+
+    // 시작 노드를 스택에 추가
+    stk.push(Node(0, 0, board[0][0]));
+
+    while (!stk.empty())
+    {
+        Node cur = stk.top();
+        stk.pop();
+
+        int x = cur.x;
+        int y = cur.y;
+        int count = cur.count;
+
+        // 목적지에 도달하면 "HaruHaru"를 반환
+        if (board[x][y] == -1) 
+            return "HaruHaru";
+
+        // 이미 방문한 노드인 경우 스킵
+        if (visited[x][y]) 
+            continue;
+
+        // 현재 노드를 방문 처리
+        visited[x][y] = true;
+
+        // 오른쪽 노드를 스택에 추가 (x 좌표 이동)
+        if (x + count < N && !visited[x + count][y]) 
+            stk.push(Node(x + count, y, board[x + count][y]));
+
+        // 아래 노드를 스택에 추가 (y 좌표 이동)
+        if (y + count < N && !visited[x][y + count]) 
+            stk.push(Node(x, y + count, board[x][y + count]));
+    }
+
+    // 도달할 수 없는 경우 "Hing"을 반환
+    return "Hing";
+}

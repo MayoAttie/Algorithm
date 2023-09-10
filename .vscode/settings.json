@@ -82,6 +82,7 @@
         "finddocuments": "cpp",
         "findfriends_returningstudents": "cpp",
         "shepherdkung": "cpp",
-        "polyomino": "cpp"
+        "polyomino": "cpp",
+        "jumpkingjelly": "cpp"
     }
 }
