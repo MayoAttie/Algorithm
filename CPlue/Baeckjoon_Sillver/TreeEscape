@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<vector<int>> adjList; // 그래프의 인접 리스트를 저장할 2차원 벡터
+int answer = 0; // 답을 저장할 변수
+
+// 깊이 우선 탐색 (Depth-First Search) 함수
+// cur: 현재 노드, p: 이전 노드, cnt: 현재 깊이
+void dfs(int cur, int p, int cnt);
+
+int main() {
+    int N;
+    cin >> N; // 노드의 개수 입력 받기
+
+    adjList = vector<vector<int>>(N + 1); // 그래프 초기화
+
+    for (int i = 1; i <= N; i++) 
+    {
+        adjList[i] = vector<int>(); // 각 노드의 인접 리스트 초기화
+    }
+
+    for (int i = 0; i < N - 1; i++) 
+    {
+        int a, b;
+        cin >> a >> b; // 간선 정보 입력 받기
+        adjList[a].push_back(b); // 무방향 그래프이므로 양쪽에 모두 추가
+        adjList[b].push_back(a);
+    }
+
+    dfs(1, 0, 0); // DFS 시작 (시작 노드, 이전 노드 없음, 깊이 0)
+
+    // answer 값이 짝수인지 홀수인지에 따라 "No" 또는 "Yes" 출력
+    cout << (answer % 2 == 0 ? "No" : "Yes") << endl;
+
+    return 0;
+}
+
+void dfs(int cur, int p, int cnt) 
+{
+    for (int next : adjList[cur]) 
+    {
+        if (next != p) 
+        {   // 이전 노드가 아닌 경우에만 재귀 호출
+            dfs(next, cur, cnt + 1); // 다음 노드로 이동하며 깊이 증가
+        }
+    }
+
+    if (adjList[cur].size() == 1) 
+    {
+        answer += cnt; // 현재 노드가 리프 노드인 경우 깊이를 answer에 더함
+    }
+}

@@ -84,6 +84,7 @@
         "shepherdkung": "cpp",
         "polyomino": "cpp",
         "jumpkingjelly": "cpp",
-        "allpermutation": "cpp"
+        "allpermutation": "cpp",
+        "treeescape": "cpp"
     }
 }
