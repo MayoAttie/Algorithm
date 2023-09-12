@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    vector<int> number = vector<int>(9, 0);
+    int total = 0;
+
+    for (int i = 0; i < 9; i++) 
+    {
+        cin >> number[i];
+        total += number[i];
+    }
+
+    int index1 = -1, index2 = -1;
+
+    for (int i = 0; i < 8; i++) 
+    {
+        for (int j = i + 1; j < 9; j++) 
+        {
+            if (total - (number[i] + number[j]) == 100) 
+            {
+                index1 = i;
+                index2 = j;
+                break;
+            }
+        }
+        if (index1 != -1) 
+            break;
+        
+    }
+
+    if (index1 != -1 && index2 != -1) 
+    {
+        number.erase(number.begin() + max(index1, index2)); 
+        number.erase(number.begin() + min(index1, index2));
+    }
+
+
+    for (int i = 0; i < number.size(); i++) 
+    {
+        cout << number[i] << endl;
+    }
+
+}
