@@ -87,6 +87,7 @@
         "allpermutation": "cpp",
         "treeescape": "cpp",
         "tournament": "cpp",
-        "breakingpointsandbreakinglines": "cpp"
+        "breakingpointsandbreakinglines": "cpp",
+        "thegameofdeath": "cpp"
     }
 }
