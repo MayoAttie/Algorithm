@@ -86,6 +86,7 @@
         "jumpkingjelly": "cpp",
         "allpermutation": "cpp",
         "treeescape": "cpp",
-        "tournament": "cpp"
+        "tournament": "cpp",
+        "breakingpointsandbreakinglines": "cpp"
     }
 }

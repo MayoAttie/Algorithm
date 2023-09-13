@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int>> graph;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    graph = vector<vector<int>>(n + 1);
+
+    // 간선 정보 입력
+    for (int i = 0; i < n - 1; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+
+    int qNum;
+    cin >> qNum;
+
+    for (int i = 0; i < qNum; i++)
+    {
+        int t, k;
+        cin >> t >> k;
+
+        if (t == 1)
+        {
+            if (graph[k].size() >= 2)
+                cout << "yes\n";
+            else
+                cout << "no\n";
+        }
+        else if (t == 2)
+        {
+            cout << "yes\n";
+        }
+    }
+
+    return 0;
+}
