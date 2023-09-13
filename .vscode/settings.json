@@ -88,6 +88,7 @@
         "treeescape": "cpp",
         "tournament": "cpp",
         "breakingpointsandbreakinglines": "cpp",
-        "thegameofdeath": "cpp"
+        "thegameofdeath": "cpp",
+        "numberssum2": "cpp"
     }
 }
