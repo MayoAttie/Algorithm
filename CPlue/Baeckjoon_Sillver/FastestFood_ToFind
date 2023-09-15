@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+vector<vector<int>> graph;
+vector<vector<bool>> visited;
+
+int drX[4] = { 1,0,-1,0 };
+int drY[4] = { 0,1,0,-1 };
+
+void BFS(pair<int, int> start);
+
+struct node
+{
+    int x;
+    int y;
+    int dist;
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int row, col;
+    cin >> row >> col;
+
+    graph = vector<vector<int>>(row, vector<int>(col, 0));
+    visited = vector<vector<bool>>(row, vector<bool>(col, false));
+
+    pair<int, int> start;
+
+    for (int i = 0; i < row; i++)
+    {
+        string tmp;
+        cin >> tmp;
+        for (int j = 0; j < col; j++)
+        {
+            graph[i][j] = tmp[j] - '0';
+
+            if (graph[i][j] == 2)
+                start = { i,j };
+        }
+    }
+
+    BFS(start);
+
+}
+
+void BFS(pair<int, int> start)
+{
+    queue<node> que;
+    que.push({ start.first, start.second, 0 });
+    visited[start.first][start.second] = true;
+    while (!que.empty())
+    {
+        int curX = que.front().x;
+        int curY = que.front().y;
+        int curDist = que.front().dist;
+        que.pop();
+
+        if (graph[curX][curY] == 3 || graph[curX][curY] == 4 ||
+            graph[curX][curY] == 5)
+        {
+            cout << "TAK" << "\n";
+            cout << curDist;
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            int nX = curX + drX[i];
+            int nY = curY + drY[i];
+
+            if (nX >= 0 && nX < graph.size() && nY >= 0 && nY < graph[0].size() &&
+                !visited[nX][nY] && graph[nX][nY] != 1)
+            {
+                visited[nX][nY] = true;
+                que.push({ nX,nY,curDist + 1 });
+            }
+        }
+    }
+
+    cout << "NIE";
+}
