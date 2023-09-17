@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    string S;
+    cin >> S;
+
+    vector<int> first(26, -1);
+
+    for (int i = 0; i < S.length(); ++i) 
+    {
+        char currentChar = S[i];
+        int index = currentChar - 'a'; 
+
+
+        if (first[index] == -1) 
+            first[index] = i;
+        
+    }
+
+
+    for (int i = 0; i < 26; ++i) 
+    {
+        cout << first[i] << " ";
+    }
+    
+    return 0;
+}
