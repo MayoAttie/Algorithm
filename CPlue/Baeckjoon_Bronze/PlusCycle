@@ -1,0 +1,25 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    int original = N;
+    int cnt = 0;
+
+    do 
+    {
+        int first = N / 10;
+        int second = N % 10;
+
+        int sum = first + second;
+        N = (second * 10) + (sum % 10);
+
+        cnt++;
+    } while (N != original);
+
+    cout << cnt << endl;
+    return 0;
+}
