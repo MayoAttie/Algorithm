@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int bfs(int start, int finish, int n, vector<int>& graph)
+ {
+    vector<int> visited(n, -1);
+    queue<int> q;
+    q.push(start - 1);
+    visited[start - 1] = 0;
+
+    while (!q.empty()) 
+    {
+        int node = q.front();
+        q.pop();
+
+        for (int i = node; i < n; i += graph[node]) 
+        {
+            if (visited[i] == -1) 
+            {
+                q.push(i);
+                visited[i] = visited[node] + 1;
+                if (i == finish - 1) 
+                    return visited[i];
+                
+            }
+        }
+
+        for (int i = node; i >= 0; i -= graph[node]) {
+            if (visited[i] == -1) 
+            {
+                q.push(i);
+                visited[i] = visited[node] + 1;
+                if (i == finish - 1) 
+                    return visited[i];
+                
+            }
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> graph(n);
+    for (int i = 0; i < n; i++) 
+    {
+        cin >> graph[i];
+    }
+
+    int a, b;
+    cin >> a >> b;
+
+    int answer = bfs(a, b, n, graph);
+    cout << answer << endl;
+
+    return 0;
+}
