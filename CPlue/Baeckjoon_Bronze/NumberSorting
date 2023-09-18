@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+void quickSort(vector<int>& arr, int left, int right) 
+{
+    if (left >= right) 
+        return;
+
+    int pivot = arr[left]; 
+    int low = left + 1;
+    int high = right;
+
+    while (low <= high) 
+    {
+        while (low <= right && arr[low] <= pivot) 
+            low++;
+
+        while (high >= left + 1 && arr[high] >= pivot) 
+            high--;
+        
+        if (low <= high) 
+            swap(arr[low], arr[high]);
+    }
+
+
+    swap(arr[left], arr[high]);
+
+
+    quickSort(arr, left, high - 1);
+    quickSort(arr, high + 1, right);
+}
+
+int main() 
+{
+    int N;
+    cin >> N;
+    vector<int> arr(N);
+
+    for (int i = 0; i < N; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    quickSort(arr, 0, N - 1);
+
+    for (int i = 0; i < N; i++) 
+    {
+        cout << arr[i] << endl;
+    }
+
+    return 0;
+}
