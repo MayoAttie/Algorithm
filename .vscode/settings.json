@@ -95,6 +95,7 @@
         "ox_quiz": "cpp",
         "n_stageragument": "cpp",
         "istream": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "fastasumb": "cpp"
     }
 }
