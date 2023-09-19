@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    int total;
+    int len;
+    cin >> total >> len;
+    
+    int now = 0;
+    for(int i=0; i<len; i++)
+    {
+        int cost, num;
+        cin >> cost >> num;
+        now += cost*num;
+    }
+    if(now == total)
+        cout << "Yes"<<endl;
+    else
+        cout << "No" << endl;
+}
