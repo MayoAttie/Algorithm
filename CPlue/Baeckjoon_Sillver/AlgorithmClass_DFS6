@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <algorithm>
+
+using namespace std;
+
+// 깊이 우선 탐색(DFS) 함수
+void DFS(vector<vector<int>>& graph, int start, vector<bool>& visited, vector<int>& nodes_depth, vector<int>& nodes_cnt) {
+    deque<pair<int, int>> stack;
+    stack.push_back({ start, 0 }); // 시작 노드를 스택에 넣고 깊이 초기화
+    int cnt = 1;
+
+    while (!stack.empty())
+    {
+        int cur_node = stack.back().first;
+        int depth = stack.back().second;
+        stack.pop_back();
+
+        if (visited[cur_node])
+            continue;
+
+        visited[cur_node] = true;
+        nodes_depth[cur_node] = depth;
+        nodes_cnt[cur_node] = cnt++;
+
+        for (int next_node : graph[cur_node])
+        {
+            if (!visited[next_node])
+                stack.push_back({ next_node, depth + 1 });
+        }
+    }
+}
+
+int main()
+{
+    int n, m, start;
+    cin >> n >> m >> start;
+
+    vector<vector<int>> graph(n + 1); // 그래프 인접 리스트
+    vector<bool> visited(n + 1, false); // 노드 방문 여부
+    vector<int> nodes_depth(n + 1, 0); // 노드의 깊이
+    vector<int> nodes_cnt(n + 1, 0); // 노드의 방문 순서
+
+    // 그래프 정보 입력
+    for (int i = 0; i < m; i++)
+    {
+        int tail, head;
+        cin >> tail >> head;
+        graph[tail].push_back(head);
+        graph[head].push_back(tail);
+    }
+
+    // 각 노드의 인접 리스트를 정렬
+    for (int i = 0; i <= n; i++)
+    {
+        sort(graph[i].begin(), graph[i].end());
+    }
+
+    // DFS 호출
+    DFS(graph, start, visited, nodes_depth, nodes_cnt);
+
+    long long total = 0;
+
+    // 결과 계산
+    for (int i = 1; i <= n; i++) 
+    {
+        if (i == start || nodes_depth[i] == 0) 
+            continue;
+
+        total += static_cast<long long>(nodes_depth[i]) * nodes_cnt[i];
+    }
+
+    cout << total << endl;
+
+    return 0;
+}
