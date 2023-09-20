@@ -100,6 +100,7 @@
         "thegameofdeath2": "cpp",
         "algorithmclass_dfs6": "cpp",
         "dial": "cpp",
-        "make_maze": "cpp"
+        "make_maze": "cpp",
+        "algorithmclass_dfs3": "cpp"
     }
 }
