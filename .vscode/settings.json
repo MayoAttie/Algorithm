@@ -99,6 +99,7 @@
         "fastasumb": "cpp",
         "thegameofdeath2": "cpp",
         "algorithmclass_dfs6": "cpp",
-        "dial": "cpp"
+        "dial": "cpp",
+        "make_maze": "cpp"
     }
 }
