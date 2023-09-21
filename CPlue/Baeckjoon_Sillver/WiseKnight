@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <tuple>
+
+using namespace std;
+
+const int dy[] = { 1, 2, 2, 1, -1, -2, -2, -1 };
+const int dx[] = { 2, 1, -1, -2, -2, -1, 1, 2 };
+
+vector<vector<int>> visited;
+
+// BFS 함수 정의
+void bfs(int n, int startY, int startX) 
+{
+    queue<pair<int, int>> q;
+    q.push(make_pair(startY, startX));
+    visited[startY][startX] = 0;
+
+    while (!q.empty()) 
+    {
+        int curY, curX;
+        tie(curY, curX) = q.front();
+        q.pop();
+
+        for (int i = 0; i < 8; ++i) 
+        {
+            int ny = curY + dy[i];
+            int nx = curX + dx[i];
+
+            if (ny >= 0 && ny <= n && nx >= 0 && nx <= n && visited[ny][nx] == -1) 
+            {
+                visited[ny][nx] = visited[curY][curX] + 1;
+                q.push(make_pair(ny, nx));
+            }
+        }
+    }
+}
+
+int main() 
+{
+    int n, m;
+    cin >> n >> m;
+
+    int y, x;
+    cin >> y >> x;
+
+    visited = vector<vector<int>>(n + 1, vector<int>(n + 1, -1));
+    bfs(n, y, x);
+
+    vector<int> answer;
+    for (int i = 0; i < m; ++i) 
+    {
+        int a, b;
+        cin >> a >> b;
+        answer.push_back(visited[a][b]);
+    }
+
+    for (int i = 0; i < m; ++i) 
+    {
+        cout << answer[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
