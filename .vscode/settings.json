@@ -102,6 +102,7 @@
         "dial": "cpp",
         "make_maze": "cpp",
         "algorithmclass_dfs3": "cpp",
-        "password": "cpp"
+        "password": "cpp",
+        "constant": "cpp"
     }
 }
