@@ -1,0 +1,46 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    stack<int> stk;
+
+    for (int i = 0; i < N; i++)
+    {
+        string comand;
+        cin >> comand;
+
+        if (comand == "push")
+        {
+            int x;
+            cin >> x;
+            stk.push(x);
+        }
+        else if (comand == "pop")
+        {
+            if (!stk.empty())
+            {
+                cout << stk.top() << endl;
+                stk.pop();
+            }
+            else
+                cout << -1 << endl;
+        }
+        else if (comand == "size")
+            cout << stk.size() << endl;
+        else if (comand == "empty")
+            cout << (stk.empty() ? 1 : 0) << endl;
+        else if (comand == "top")
+        {
+            if (!stk.empty())
+                cout << stk.top() << endl;
+            else
+                cout << -1 << endl;
+        }
+    }
+}
