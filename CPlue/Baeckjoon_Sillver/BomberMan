@@ -1,0 +1,104 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+// 좌표를 저장하는 구조체 정의
+struct Node 
+{
+    int r;
+    int c;
+    Node(int r, int c) : r(r), c(c) {}
+};
+
+vector<vector<char>> map; // 맵을 나타내는 2차원 벡터
+int _time = 0; // 현재 시간
+queue<Node> que; // 폭탄이 터질 위치를 저장하는 큐
+
+// 폭탄을 터트리는 BFS 함수
+void BFS() 
+{
+    int dx[] = { -1, 1, 0, 0 };
+    int dy[] = { 0, 0, -1, 1 };
+    while (!que.empty()) {
+        Node temp = que.front();
+        que.pop();
+        int x = temp.r;
+        int y = temp.c;
+        map[x][y] = '.'; // 폭탄 터짐을 나타내는 'O'를 빈 공간 '.'으로 변경
+
+        for (int dir = 0; dir < 4; dir++) 
+        {
+            int nX = x + dx[dir];
+            int nY = y + dy[dir];
+
+            // 범위 체크 후 주변 4방향의 폭탄을 터트림
+            if (nX >= 0 && nX < map.size() && nY >= 0 && nY < map[0].size())
+                map[nX][nY] = '.';
+        }
+    }
+}
+
+int main() 
+{
+    int row, col, N;
+    cin >> row >> col >> N;
+    map = vector<vector<char>>(row, vector<char>(col));
+
+    // 초기 맵 입력
+    for (int i = 0; i < row; i++) 
+    {
+        string str;
+        cin >> str;
+        for (int j = 0; j < col; j++) 
+        {
+            map[i][j] = str[j];
+        }
+    }
+
+    // N초까지 시뮬레이션
+    for (int _time = 2; _time <= N; _time++) 
+    {
+        if (_time % 2 == 0) 
+        {
+            // 짝수 초일 때, 폭탄 설치 및 폭탄 터트리기
+            for (int i = 0; i < row; i++) 
+            {
+                for (int j = 0; j < col; j++) 
+                {
+                    if (map[i][j] == 'O') 
+                    {
+                        que.push(Node(i, j)); // 폭탄 위치 저장
+                    }
+                }
+            }
+
+            // 다음 초에는 모든 칸에 폭탄 설치됨
+            for (int i = 0; i < row; i++) 
+            {
+                for (int j = 0; j < col; j++) 
+                {
+                    map[i][j] = 'O';
+                }
+            }
+        }
+
+        if (_time % 2 == 1) 
+        {
+            // 홀수 초일 때, 폭탄 터트리기
+            BFS();
+        }
+    }
+
+    // 최종 맵 출력
+    for (int i = 0; i < row; i++) 
+    {
+        for (int j = 0; j < col; j++) 
+        {
+            cout << map[i][j];
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
