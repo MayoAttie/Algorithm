@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool paper[100][100] = { false };
+
+void black(int x, int y) 
+{
+    for (int i = 0; i < 10; i++) 
+    {
+        for (int j = 0; j < 10; j++) 
+        {
+            paper[x + i][y + j] = true;
+        }
+    }
+}
+
+int main() 
+{
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++) 
+    {
+        int x, y;
+        cin >> x >> y;
+        black(x, y);
+    }
+
+    int cnt = 0;
+    for (int i = 0; i < 100; i++) 
+    {
+        for (int j = 0; j < 100; j++) 
+        {
+            if (paper[i][j] == true) 
+                cnt++;
+        }
+    }
+
+    cout << cnt << endl;
+    return 0;
+}
