@@ -1,0 +1,132 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <queue>
+#include <algorithm>
+#include <climits>  // INT_MAX를 사용하기 위한 헤더 파일
+using namespace std;
+
+const int MAX_N = 11;
+vector<vector<int>> graph;  // 그래프 정보를 저장하는 2차원 벡터
+vector<int> people;  // 각 지역의 인구 정보를 저장하는 벡터
+int N;  // 지역의 수
+vector<bool> isSelected;  // 부분집합에 포함되었는지 여부를 저장하는 벡터
+int result = INT_MAX;  // 결과값 초기화
+
+// BFS를 사용하여 두 팀이 연결되어 있는지 확인하는 함수
+bool BFS(bool flag) 
+{
+    bool isVisited[MAX_N] = { false };  // 방문 여부를 저장하는 배열
+    queue<int> q;  // BFS에 사용할 큐
+
+    // 시작점 찾기
+    for (int i = 1; i <= N; i++) 
+    {
+        if (isSelected[i] == flag) 
+        {
+            q.push(i);
+            isVisited[i] = true;
+            break;
+        }
+    }
+
+    // BFS를 사용하여 연결된 정점을 방문하고 같은 팀으로 표시
+    while (!q.empty()) {
+        int n = q.front();
+        q.pop();
+
+        for (int i = 1; i <= N; i++) 
+        {
+            // 시작점 또는 다른 팀의 정점인 경우 스킵
+            if (isVisited[i] || flag != isSelected[i])
+                continue;
+
+            if (graph[n][i] == 1) 
+            {
+                q.push(i);
+                isVisited[i] = true;
+            }
+        }
+    }
+
+    // 같은 팀에 속하는데 방문하지 않은 정점이 있는지 확인
+    for (int i = 1; i <= N; i++) {
+        if (isSelected[i] == flag && !isVisited[i])
+            return false;
+    }
+
+    return true;
+}
+
+// 두 팀의 점수 차를 계산하는 함수
+int gap() 
+{
+    int teamA = 0, teamB = 0;
+
+    for (int i = 1; i <= N; i++) 
+    {
+        if (isSelected[i]) 
+            teamA += people[i];
+        else 
+            teamB += people[i];
+    }
+
+    return abs(teamA - teamB);
+}
+
+// 부분집합을 생성하는 재귀 함수
+void subset(int cnt) {
+    if (cnt == N + 1) 
+    {
+        // 두 팀이 각각 연결되어 있는지 확인하고 결과값 업데이트
+        if (BFS(true) && BFS(false))
+            result = min(result, gap());
+        return;
+    }
+
+    // 현재 원소를 부분집합에 포함시키고 다음 원소로 재귀 호출
+    isSelected[cnt] = true;
+    subset(cnt + 1);
+
+    // 현재 원소를 부분집합에서 제외하고 다음 원소로 재귀 호출
+    isSelected[cnt] = false;
+    subset(cnt + 1);
+}
+
+int main() 
+{
+    cin >> N;
+    graph = vector<vector<int>>(N + 1, vector<int>(N + 1));  // 그래프 초기화
+    people = vector<int>(N + 1);  // 인구 정보 초기화
+    isSelected = vector<bool>(N + 1);  // 부분집합 초기화
+
+    // 인구 정보 입력
+    for (int i = 1; i <= N; i++) 
+    {
+        cin >> people[i];
+    }
+
+    // 인접 정보 입력
+    for (int i = 1; i <= N; i++) 
+    {
+        int M;
+        cin >> M;
+        for (int j = 0; j < M; j++) 
+        {
+            int num;
+            cin >> num;
+            graph[i][num] = 1;
+        }
+    }
+
+    // 부분집합 생성 함수 호출
+    subset(1);
+
+    // 결과 출력
+    if (result == INT_MAX)
+        cout << -1 << endl;
+    else
+        cout << result << endl;
+
+    return 0;
+}
