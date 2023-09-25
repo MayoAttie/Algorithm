@@ -1,0 +1,46 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    int N, K;
+    cin >> N >> K;
+
+    queue<int> que; // 원에 앉아있는 사람들을 나타내는 큐
+    vector<int> result; // 요세푸스 순열을 저장할 벡터
+
+    // 1부터 N까지의 사람들을 큐에 넣음
+    for (int i = 1; i <= N; i++) 
+    {
+        que.push(i);
+    }
+
+    while (!que.empty()) 
+    {
+        // K-1번째 사람까지는 제거하지 않고 큐의 뒤로 옮김
+        for (int i = 0; i < K - 1; i++) 
+        {
+            int front = que.front();
+            que.pop();
+            que.push(front);
+        }
+
+        // K번째 사람을 제거하고 결과 벡터에 추가
+        result.push_back(que.front());
+        que.pop();
+    }
+
+    // 요세푸스 순열 출력
+    cout << "<";
+    for (int i = 0; i < result.size(); i++) 
+    {
+        cout << result[i];
+        if (i < result.size() - 1) 
+            cout << ", ";
+    }
+    cout << ">" << endl;
+
+    return 0;
+}
