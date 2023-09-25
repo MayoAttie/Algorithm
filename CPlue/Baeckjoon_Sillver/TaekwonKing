@@ -1,0 +1,61 @@
+#include <iostream>
+#include <queue>
+#include <set>
+#include <string> // 문자열 처리를 위한 헤더 추가
+using namespace std;
+
+// BFS 함수 정의
+int BFS(int start, int end) 
+{
+    queue<pair<int, int>> que; // 큐를 사용하여 BFS 구현
+    que.push({ start, end }); // 시작점을 큐에 추가
+    set<string> visited; // 방문 여부를 체크하기 위한 set 컨테이너
+    int time = 0; // 경과 시간을 저장할 변수
+
+    while (!que.empty()) // 큐가 비어있지 않을 동안 반복
+    {
+        int size = que.size(); // 현재 큐의 크기를 저장
+
+        for (int s = 0; s < size; s++) 
+        {
+            pair<int, int> now = que.front(); // 큐의 맨 앞 원소 가져오기
+            que.pop(); // 큐에서 제거
+
+            if (now.first == now.second) // 현재 위치가 목표 위치와 같으면
+                return time; // 경과 시간 반환
+
+            pair<int, int> next = { now.first + 1, now.second }; // A 발차기
+            if (next.first <= next.second && visited.find(to_string(next.first) + "," + to_string(next.second)) == visited.end()) 
+            {
+                // 조건을 만족하고 아직 방문하지 않았다면
+                visited.insert(to_string(next.first) + "," + to_string(next.second)); // 방문 처리
+                que.push(next); // 큐에 추가
+            }
+
+            next = { 2 * now.first, now.second + 3 }; // B 발차기
+            if (next.first <= next.second && visited.find(to_string(next.first) + "," + to_string(next.second)) == visited.end()) 
+            {
+                visited.insert(to_string(next.first) + "," + to_string(next.second)); // 방문 처리
+                que.push(next); // 큐에 추가
+            }
+        }
+
+        time++; // 경과 시간 증가
+    }
+
+    return -1; // 도달할 수 없는 경우 -1 반환
+}
+
+int main() {
+    int n;
+    cin >> n; // 테스트 케이스의 수 입력
+
+    for (int i = 0; i < n; i++) { // 각 테스트 케이스에 대해 반복
+        int s, t;
+        cin >> s >> t; // 시작점과 목표점 입력
+        int result = BFS(s, t); // BFS 함수 호출하여 결과 계산
+        cout << result << endl; // 결과 출력
+    }
+
+    return 0;
+}

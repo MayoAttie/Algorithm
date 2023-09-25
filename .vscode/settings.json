@@ -104,6 +104,7 @@
         "algorithmclass_dfs3": "cpp",
         "password": "cpp",
         "constant": "cpp",
-        "groupwordchecker": "cpp"
+        "groupwordchecker": "cpp",
+        "taekwonking": "cpp"
     }
 }
