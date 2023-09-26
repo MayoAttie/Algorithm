@@ -105,6 +105,7 @@
         "password": "cpp",
         "constant": "cpp",
         "groupwordchecker": "cpp",
-        "taekwonking": "cpp"
+        "taekwonking": "cpp",
+        "infinitebooster": "cpp"
     }
 }
