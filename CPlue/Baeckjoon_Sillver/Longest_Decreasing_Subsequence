@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+    vector<int> numbers(N);
+    vector<int> dp(N, 1);
+
+    for (int i = 0; i < N; i++)
+    {
+        cin >> numbers[i];
+    }
+
+    for (int i = 1; i < N; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (numbers[i] < numbers[j] && dp[i] < dp[j] + 1)
+                dp[i] = dp[j] + 1;
+        }
+    }
+
+    int max_length = 0;
+    for (int i = 0; i < N; i++)
+    {
+        if (max_length < dp[i])
+            max_length = dp[i];
+    }
+
+    cout << max_length << endl;
+
+    return 0;
+}
