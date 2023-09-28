@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    int numbers[10] = { 0 }; 
+    int N;
+    cin >> N;
+
+    while (N > 0) 
+    {
+        int digit = N % 10;
+        numbers[digit]++;
+        N /= 10;
+    }
+
+    numbers[6] += numbers[9];
+    numbers[9] = 0;
+    numbers[6] = (numbers[6] + 1) / 2; 
+
+    int answer = 0;
+    for (int i = 0; i < 10; i++) 
+    {
+        answer = max(numbers[i], answer);
+    }
+
+    cout << answer << endl; 
+
+    return 0;
+}
