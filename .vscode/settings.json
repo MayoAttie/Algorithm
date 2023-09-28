@@ -109,6 +109,7 @@
         "infinitebooster": "cpp",
         "print_asis_2": "cpp",
         "hotel_acm": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "heightorder": "cpp"
     }
 }
