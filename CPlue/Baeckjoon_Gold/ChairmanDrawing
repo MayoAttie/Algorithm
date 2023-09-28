@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+const int INF = INT_MAX / 2;
+
+int N;
+vector<vector<int>> dist;
+vector<vector<int>> v;
+
+void floydWarshall() 
+{
+    for (int t = 1; t <= N; t++) 
+    {
+        for (int s = 1; s <= N; s++) 
+        {
+            for (int e = 1; e <= N; e++) 
+            {
+                dist[s][e] = min(dist[s][e], dist[s][t] + dist[t][e]);
+            }
+        }
+    }
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> N;
+
+    v.resize(N + 1);
+    dist.resize(N + 1, vector<int>(N + 1, INF));
+
+    for (int i = 1; i <= N; i++) 
+    {
+        dist[i][i] = 0;
+    }
+
+    while (true) 
+    {
+        int a, b;
+        cin >> a >> b;
+        if (a == -1 && b == -1) 
+            break;
+    
+        v[a].push_back(b);
+        v[b].push_back(a);
+        dist[a][b] = dist[b][a] = 1;
+    }
+
+    floydWarshall();
+
+    int res = INT_MAX;
+    vector<int> score(N + 1, 0);
+
+    for (int n = 1; n <= N; n++) 
+    {
+        int max_dist = 0;
+        for (int i = 1; i <= N; i++) 
+        {
+            if (dist[n][i] < INF) 
+                max_dist = max(max_dist, dist[n][i]);
+        }
+        score[n] = max_dist;
+        res = min(res, score[n]);
+    }
+
+    vector<int> list;
+    for (int n = 1; n <= N; n++) 
+    {
+        if (score[n] == res) 
+            list.push_back(n);
+        
+    }
+
+    cout << res << " " << list.size() << endl;
+    for (int n : list) 
+    {
+        cout << n << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
