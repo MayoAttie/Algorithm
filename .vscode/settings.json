@@ -110,6 +110,7 @@
         "print_asis_2": "cpp",
         "hotel_acm": "cpp",
         "limits": "cpp",
-        "heightorder": "cpp"
+        "heightorder": "cpp",
+        "chairmandrawing": "cpp"
     }
 }
