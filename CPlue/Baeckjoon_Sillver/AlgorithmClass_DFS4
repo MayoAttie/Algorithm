@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int>> graph;
+vector<int> visited;
+
+void DFS(int node, int depth);
+
+int main()
+{
+    int N, M, S;
+    cin >> N >> M >> S;
+    
+    graph = vector<vector<int>>(N+1);
+    visited = vector<int>(N+1, -1);
+    
+    for(int i=0; i<M; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+    
+    for(int i=1; i<=N; i++)
+    {
+        sort(graph[i].begin(), graph[i].end(), greater<int>());
+    }
+        
+    DFS(S, 0);
+    
+    for(int i=1; i<=N; i++)
+    {
+        cout << visited[i] << "\n";
+    }
+}
+
+void DFS(int node, int depth)
+{
+    visited[node] = depth;
+    
+    for(int i : graph[node])
+    {
+        if(visited[i] == -1)
+        {
+            DFS(i, depth+1);
+        }
+    }
+}
