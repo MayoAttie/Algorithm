@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int INF = 987654321;
+
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+
+    vector<vector<int>> graph(N, vector<int>(N, INF));
+
+    for (int i = 0; i < N; i++)
+    {
+        graph[i][i] = 0;
+    }
+
+    for (int i = 0; i < M; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a - 1][b - 1] = 1;
+    }
+
+    // 플로이드-워셜 알고리즘 적용
+    for (int m = 0; m < N; m++)
+    {
+        for (int s = 0; s < N; s++)
+        {
+            for (int e = 0; e < N; e++)
+            {
+                if (graph[s][e] > graph[s][m] + graph[m][e])
+                    graph[s][e] = graph[s][m] + graph[m][e];
+            }
+        }
+    }
+
+    for (int i = 0; i < N; i++)
+    {
+        int cnt = 0;
+        for (int j = 0; j < N; j++)
+        {
+            if (graph[i][j] == INF && graph[j][i] == INF)
+                cnt++;
+        }
+        cout << cnt << "\n";
+    }
+
+    return 0;
+}
