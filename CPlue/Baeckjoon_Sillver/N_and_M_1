@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> sequence;
+vector<bool> used;
+int N, M;
+
+void generator(int depth);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    cin >> N >> M;
+    used = vector<bool>(N + 1, false);
+    
+    generator(0);       
+}
+
+void generator(int depth)
+{
+    if(depth == M)
+    {
+        for (int num : sequence)
+        {
+            cout << num << " ";
+        }
+        cout << "\n";
+        return; 
+    }
+    
+    for(int i=1; i<=N; i++)
+    {
+         if(!used[i])
+         {
+             used[i] = true;
+             sequence.push_back(i);
+             generator(depth + 1);
+             sequence.pop_back();
+             used[i] = false;
+         }
+    }
+}
