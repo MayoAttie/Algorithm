@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Value 
+{
+    int pos;
+    int oneNum;
+    int zeroNum;
+    
+    Value(int p, int o, int z) : pos(p), oneNum(o), zeroNum(z) {}
+};
+
+int main() 
+{
+    int tCase;
+    cin >> tCase;
+    
+    vector<Value> dp(41, Value(-1, -1, -1));
+    dp[0] = Value(0, 0, 1);
+    dp[1] = Value(1, 1, 0);
+
+    while (tCase--) 
+    {
+        int N;
+        cin >> N;
+        
+        for (int i = 2; i <= N; i++) 
+        {
+            if (dp[i].pos == -1) 
+            {
+                dp[i].pos = i;
+                dp[i].oneNum = dp[i - 1].oneNum + dp[i - 2].oneNum;
+                dp[i].zeroNum = dp[i - 1].zeroNum + dp[i - 2].zeroNum;
+            }
+        }
+        cout << dp[N].zeroNum << " " << dp[N].oneNum << "\n";
+    }
+
+    return 0;
+}
