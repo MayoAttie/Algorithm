@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string input;
+    cin >> input;
+    
+    int count = 0; 
+    int i = 0; 
+    
+    while (i < input.length()) {
+        if (input[i] == 'c' && (input[i + 1] == '=' || input[i + 1] == '-')) {
+            i += 2;
+        }
+        else if (input[i] == 'd') {
+            if (input[i + 1] == 'z' && input[i + 2] == '=') {
+                i += 3;
+            }
+            else if (input[i + 1] == '-') {
+                i += 2;
+            }
+            else {
+                i++;
+            }
+        }
+        else if ((input[i] == 'l' || input[i] == 'n') && input[i + 1] == 'j') {
+            i += 2;
+        }
+        else if ((input[i] == 's' || input[i] == 'z') && input[i + 1] == '=') {
+            i += 2;
+        }
+        else {
+            i++;
+        }
+        
+        count++;
+    }
+    
+    cout << count << endl;
+    
+    return 0;
+}
