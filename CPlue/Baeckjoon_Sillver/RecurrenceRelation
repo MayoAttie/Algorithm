@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+long long t(int n) 
+{
+    if (n == 0) return 1;
+    
+    long long dp[n + 1] = {0};
+    dp[0] = 1;
+    
+    for (int i = 1; i <= n; i++) 
+    {
+        for (int j = 0; j < i; j++) 
+        {
+            dp[i] += dp[j] * dp[i - j - 1];
+        }
+    }
+    
+    return dp[n];
+}
+
+int main() 
+{
+    int n;
+    cin >> n;
+    
+    long long result = t(n);
+    
+    cout << result << endl;
+    
+    return 0;
+}
