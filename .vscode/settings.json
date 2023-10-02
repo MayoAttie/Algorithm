@@ -111,6 +111,7 @@
         "hotel_acm": "cpp",
         "limits": "cpp",
         "heightorder": "cpp",
-        "chairmandrawing": "cpp"
+        "chairmandrawing": "cpp",
+        "roboticvacuum": "cpp"
     }
 }

@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int N, M;
+int cnt = 0;
+vector<vector<int>> map;
+vector<vector<bool>> visited;
+
+int dr[] = { -1, 0, 1, 0 };
+int dc[] = { 0, 1, 0, -1 };
+
+void pathFind(int r, int c, int dir);
+
+int main() {
+    cin >> N >> M;
+
+    map = vector<vector<int>>(N, vector<int>(M));
+    visited = vector<vector<bool>>(N, vector<bool>(M, false));
+
+    int r, c, dir;
+    cin >> r >> c >> dir;
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            cin >> map[i][j];
+        }
+    }
+
+    pathFind(r, c, dir);
+
+    cout << cnt << endl;
+
+    return 0;
+}
+
+// 0 = nort, 1 = east, 2 = south, 3 = west
+void pathFind(int r, int c, int dir) 
+{
+    int nowR = r;
+    int nowC = c;
+    int nowDir = dir;
+
+    int stop = 0;
+
+    while (true) 
+    {
+        if (stop == 4) 
+        {
+            int backDir = (nowDir - 2 < 0) ? (nowDir + 2) : (nowDir - 2);
+            int backR = nowR + dr[backDir];
+            int backC = nowC + dc[backDir];
+
+            if (map[backR][backC] == 1)
+                break;
+            else 
+            {
+                nowR = backR;
+                nowC = backC;
+                stop = 0;
+            }
+        }
+
+        if (!visited[nowR][nowC]) 
+        {
+            visited[nowR][nowC] = true;
+            cnt++;
+        }
+
+        int nextDir = (nowDir - 1 < 0) ? (nowDir + 3) : (nowDir - 1);
+        int nextR = nowR + dr[nextDir];
+        int nextC = nowC + dc[nextDir];
+
+        if (!visited[nextR][nextC] && map[nextR][nextC] == 0) 
+        {
+            nowR = nextR;
+            nowC = nextC;
+            nowDir = nextDir;
+            stop = 0;
+        }
+        else 
+        {
+            nowDir = nextDir;
+            stop++;
+        }
+    }
+}
