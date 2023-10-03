@@ -112,6 +112,7 @@
         "limits": "cpp",
         "heightorder": "cpp",
         "chairmandrawing": "cpp",
-        "roboticvacuum": "cpp"
+        "roboticvacuum": "cpp",
+        "emoticon": "cpp"
     }
 }

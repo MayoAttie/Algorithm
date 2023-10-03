@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int BFS(int s) 
+{
+    vector<vector<bool>> check(2000, vector<bool>(1001, false));
+
+    queue<pair<int, int>> que;
+    que.push(make_pair(1, 0));
+
+    int second = 0;
+    while (!que.empty()) 
+    {
+        int size = que.size();
+        for (int i = 0; i < size; i++) 
+        {
+            pair<int, int> emoticon = que.front();
+            que.pop();
+            int screenEmoge = emoticon.first;
+            int clipboard = emoticon.second;
+
+            if (screenEmoge == s) 
+                return second;
+
+            if (screenEmoge < s && !check[screenEmoge + clipboard][clipboard]) 
+            {
+                check[screenEmoge + clipboard][clipboard] = true;
+                que.push(make_pair(screenEmoge + clipboard, clipboard));
+            }
+
+            if (screenEmoge > 0) {
+                if (!check[screenEmoge - 1][clipboard]) 
+                {
+                    check[screenEmoge - 1][clipboard] = true;
+                    que.push(make_pair(screenEmoge - 1, clipboard));
+                }
+
+                if (screenEmoge < s && !check[screenEmoge][screenEmoge]) 
+                {
+                    check[screenEmoge][screenEmoge] = true;
+                    que.push(make_pair(screenEmoge, screenEmoge));
+                }
+            }
+        }
+        second++;
+    }
+
+    return second;
+}
+
+int main() {
+    int S;
+    cin >> S;
+
+    int rst = BFS(S);
+    cout << rst << endl;
+
+    return 0;
+}
