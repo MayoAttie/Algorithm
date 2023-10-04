@@ -113,6 +113,7 @@
         "heightorder": "cpp",
         "chairmandrawing": "cpp",
         "roboticvacuum": "cpp",
-        "emoticon": "cpp"
+        "emoticon": "cpp",
+        "twodimenisonal_arraysum": "cpp"
     }
 }
