@@ -114,6 +114,7 @@
         "chairmandrawing": "cpp",
         "roboticvacuum": "cpp",
         "emoticon": "cpp",
-        "twodimenisonal_arraysum": "cpp"
+        "twodimenisonal_arraysum": "cpp",
+        "work": "cpp"
     }
 }

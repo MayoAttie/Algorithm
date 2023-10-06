@@ -1,0 +1,106 @@
+/// BFS
+
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+void BFS(vector<vector<int>>& work, vector<bool>& visited, int start, int& cnt) {
+    queue<int> que;
+    que.push(start);
+    visited[start] = true;
+
+    while (!que.empty()) 
+    {
+        int x = que.front();
+        que.pop();
+
+        for (int i : work[x]) 
+        {
+            if (!visited[i]) 
+            {
+                visited[i] = true;
+                cnt++;
+                que.push(i);
+            }
+        }
+    }
+}
+
+int main() {
+    int N, M;
+    cin >> N >> M;
+
+    int cnt = 0;
+    vector<vector<int>> work(N + 1);
+    vector<bool> visited(N + 1, false);
+
+    for (int i = 0; i < M; ++i) 
+    {
+        int a, b;
+        cin >> a >> b;
+        work[b].push_back(a);
+    }
+
+    int start;
+    cin >> start;
+
+    BFS(work, visited, start, cnt);
+
+    cout << cnt << endl;
+
+    return 0;
+}
+
+
+
+/// DFS
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> graph;
+vector<bool> visited;
+void DFS(int node);
+int cnt = 0;
+int main()
+{
+    int N;
+    int M;
+    int target;
+    cin >> N >> M;
+
+    graph.resize(N + 1);
+    visited.resize(N + 1, false);
+
+    for (int i = 0; i < M; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[b].push_back(a);
+    }
+    cin >> target;
+
+    DFS(target);
+
+    cout << cnt;
+
+}
+
+void DFS(int node)
+{
+    visited[node] = true;
+
+    for (int i : graph[node])
+    {
+
+        if (!visited[i])
+        {
+            cnt++;
+            DFS(i);
+        }
+    }
+}
