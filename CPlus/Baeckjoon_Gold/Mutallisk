@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+// SCV 체력 상태에 대한 방문 여부를 저장하는 배열
+vector<vector<vector<bool>>> visited(61, vector<vector<bool>>(61, vector<bool>(61, false)));
+
+// SCV 공격에 대한 데미지 배열
+vector<vector<int>> damage = { {1, 3, 9}, {1, 9, 3}, {3, 1, 9}, {3, 9, 1}, {9, 1, 3}, {9, 3, 1} };
+
+// BFS 알고리즘을 사용하여 최소 공격 횟수를 구하는 함수
+void bfs(vector<int>& arr)
+{
+    queue<pair<vector<int>, int>> que;
+
+    que.push({ {arr[0], arr[1], arr[2]}, 0 });
+
+    while (!que.empty())
+    {
+        auto cur = que.front();
+        que.pop();
+
+        // 모든 SCV의 체력이 0일 때 최소 공격 횟수 출력 후 종료
+        if (cur.first[0] == 0 && cur.first[1] == 0 && cur.first[2] == 0)
+        {
+            cout << cur.second << endl;
+            break;
+        }
+
+        // 가능한 모든 공격 조합에 대해 탐색
+        for (int i = 0; i < 6; i++)
+        {
+            int a = cur.first[0] - damage[i][0];
+            int b = cur.first[1] - damage[i][1];
+            int c = cur.first[2] - damage[i][2];
+
+            // 체력이 음수가 되지 않도록 처리
+            if (a >= 0 && b >= 0 && c >= 0)
+            {
+                if (!visited[a][b][c])
+                {
+                    que.push({ {a, b, c}, cur.second + 1 });
+                    visited[a][b][c] = true;
+                }
+            }
+            else
+            {
+                // 체력이 음수인 경우 0으로 처리
+                if (a < 0) a = 0;
+                if (b < 0) b = 0;
+                if (c < 0) c = 0;
+
+                if (!visited[a][b][c])
+                {
+                    que.push({ {a, b, c}, cur.second + 1 });
+                    visited[a][b][c] = true;
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i]; // SCV 체력 입력
+    }
+
+    // SCV 수가 3개 미만인 경우, 0으로 채워서 3개로 맞춤
+    while (arr.size() < 3)
+    {
+        arr.push_back(0);
+    }
+
+    bfs(arr); // BFS를 통해 최소 공격 횟수 계산
+
+    return 0;
+}
