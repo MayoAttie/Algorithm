@@ -1,0 +1,35 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+bool comparer(const string& a, const string& b)
+{
+    if (a.length() < b.length())
+        return true;
+    else if (a.length() > b.length())
+        return false;
+    else
+        return a < b;
+}
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    vector<string> strs(N);
+
+    for (int i = 0; i < N; i++)
+        cin >> strs[i];
+
+    sort(strs.begin(), strs.end(), comparer);
+
+    auto it = unique(strs.begin(), strs.end());
+    strs.erase(it, strs.end());
+
+    for (auto i : strs)
+        cout << i << "\n";
+}
