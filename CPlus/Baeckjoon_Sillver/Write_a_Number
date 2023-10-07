@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    int length = 0;
+    int digits = 1;
+
+    for (int base = 1; base <= N; base *= 10) 
+    {
+        int nextBase = base * 10;
+        length += (min(nextBase - 1, N) - base + 1) * digits;
+        digits++;
+    }
+
+    cout << length << "\n";
+
+    return 0;
+}
