@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<int> visited;
+vector<int> depth; 
+
+void BFS(int start);
+
+int main()
+{
+    int n, m, r;
+    cin >> n >> m >> r;
+
+    graph.resize(n + 1);
+    visited.resize(n + 1,-1);
+    depth.resize(n + 1, 0);
+
+    for (int i = 0; i < m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+    for (int i = 1; i <= n; i++)
+        sort(graph[i].begin(), graph[i].end());
+
+    BFS(r);
+
+    long long sum = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        sum += (long long)depth[i] * visited[i];
+    }
+
+    cout << sum << endl;
+
+    return 0;
+}
+void BFS(int start)
+{
+    int cnt = 1;
+    queue<int> q;
+    q.push(start);
+    visited[start] = 0; 
+    depth[start] = 0;
+
+    while (!q.empty())
+    {
+        int current = q.front();
+        q.pop();
+
+        for (int i : graph[current])
+        {
+            if (visited[i] == -1)
+            {
+                visited[i] = visited[current] + 1;
+                depth[i] = ++cnt;
+                q.push(i);
+            }
+        }
+    }
+}
