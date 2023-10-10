@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void primeNumber(int n, int k) 
+{
+    vector<int> arr(n + 1);
+
+    for (int i = 2; i <= n; i++) 
+    {
+        arr[i] = i;
+    }
+    for (int i = 2; i <= n; i++) 
+    {
+        if (arr[i] == 0) continue; 
+
+        for (int j = i; j <= n; j += i) 
+        {
+            if (arr[j] != 0) 
+            {
+                arr[j] = 0;
+                k--;
+
+                if (k == 0) 
+                {
+                    cout << j;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    primeNumber(n, k);
+
+    return 0;
+}
