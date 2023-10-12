@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int N; //buildings
+int S; //targets
+int D; //safeHouse
+int F; //frontPower
+int B; //backPower
+int K; //pollices
+
+void BFS(vector<int>& buildings);
+int main()
+{
+    cin >> N >> S >> D >> F >> B >> K;
+    vector<int> buildings(N + 1, 0);
+    for (int i = 0; i < K; i++)
+    {
+        int a;
+        cin >> a;
+        buildings[a] = 1;
+    }
+
+
+    BFS(buildings);
+
+}
+
+void BFS(vector<int>& buildings)
+{
+    vector<bool> visited(N + 1, false);
+    queue<pair<int, int>> que;
+    que.push({ S,0 });
+    visited[S] = true;
+
+    while (!que.empty())
+    {
+        int curNode = que.front().first;
+        int curCnt = que.front().second;
+        que.pop();
+
+        if (curNode == D)
+        {
+            cout << curCnt;
+            return;
+        }
+
+        int frontStep = curNode + F;
+        if (frontStep <= N && !visited[frontStep])
+        {
+            if (buildings[frontStep] != 1)
+            {
+                que.push({ frontStep, curCnt + 1 });
+                visited[frontStep] = true;
+            }
+        }
+        int backStep = curNode - B;
+        if (backStep >= 1 && !visited[backStep])
+        {
+            if (buildings[backStep] != 1)
+            {
+                que.push({ backStep, curCnt + 1 });
+                visited[backStep] = true;
+            }
+        }
+    }
+    cout << "BUG FOUND";
+}
