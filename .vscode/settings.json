@@ -119,6 +119,7 @@
         "wordsort": "cpp",
         "algorithmclass_bfs4": "cpp",
         "elementary_6_math": "cpp",
-        "algorithmclass_dfs5": "cpp"
+        "algorithmclass_dfs5": "cpp",
+        "onoff_switch": "cpp"
     }
 }

@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void toggleSwitches(vector<int>& switchs, int center) {
+    int left = center - 1;
+    int right = center + 1;
+
+    // 스위치의 중심을 변경
+    switchs[center] = switchs[center] == 1 ? 0 : 1 ;
+
+    // 좌우로 대칭인 스위치 변경
+    while (left >= 0 && right < switchs.size() && switchs[left] == switchs[right]) 
+    {
+        switchs[left] = switchs[left] == 1 ? 0 : 1;
+        switchs[right] = switchs[right] == 1 ? 0 : 1;
+        left--;
+        right++;
+    }
+}
+
+int main()
+{
+    int len;
+    cin >> len;
+    vector<int> switchs(len);
+    //남학생은 스위치 번호가 자기가 받은 수의 배수이면, 
+    //그 스위치의 상태를 바꾼다.
+    /**여학생은 자기가 받은 수와 같은 번호가 붙은 스위치를 중심으로
+     * 좌우가 대칭이면서 가장 많은 스위치를 포함하는 구간을 찾아서,
+     * 그 구간에 속한 스위치의 상태를 모두 바꾼다
+     *
+    */
+    for (int i = 0; i < len; i++)
+    {
+        cin >> switchs[i];
+    }
+
+    int S;
+    cin >> S;
+    vector<pair<int, int>> students(S);
+    for (int i = 0; i < S; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        students[i] = { a,b };
+    }
+
+    for (int i = 0; i < S; i++) {
+        int type = students[i].first;
+        int num = students[i].second;
+
+        if (type == 1) 
+        { // 남학생
+            for (int j = num - 1; j < len; j += num) 
+            {
+                switchs[j] = switchs[j] == 1 ? 0 : 1;
+            }
+        }
+        else
+        { // 여학생
+            toggleSwitches(switchs, num - 1); // 스위치 번호는 1부터 시작하므로 -1 해줍니다.
+        }
+    }
+
+    int cnt = 0;
+    // 스위치 상태 출력
+    for (int i = 0; i < len; i++) 
+    {
+        if (cnt == 20)
+        {
+            cout << "\n";
+            cnt = 0;
+        }
+        cout << switchs[i] << " ";
+        cnt++;
+    }
+
+    return 0;
+}
