@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<vector<int>> dis;
+vector<int> dx, dy;
+
+int BFS(int N, int M, int K) 
+{
+    for (int i = 0; i < M; i++) 
+    {
+        if (graph[0][i] == 1)
+        {
+            dis[0][i] = 0;
+        }
+    }
+
+    queue<pair<int, int>> que;
+    for (int i = 0; i < M; i++) 
+    {
+        if (graph[0][i] == 1)
+            que.push({ 0, i });
+    
+    }
+
+    int ans = INT_MAX;
+
+    while (!que.empty())
+    {
+        int x = que.front().first;
+        int y = que.front().second;
+        que.pop();
+
+        if (x == N - 1) 
+        {
+            ans = min(ans, dis[x][y]);
+            continue;
+        }
+
+        for (int i = 0; i < K; i++) 
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+            if (graph[nx][ny] != 1 || dis[nx][ny] != -1) continue;
+
+            dis[nx][ny] = dis[x][y] + 1;
+            que.push({ nx, ny });
+        }
+    }
+
+    return ans;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N, M;
+    cin >> N >> M;
+
+    graph.resize(N, vector<int>(M));
+    dis.resize(N, vector<int>(M, -1));
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++) 
+            cin >> graph[i][j];
+    }
+
+    int K;
+    cin >> K;
+
+    dx.resize(K);
+    dy.resize(K);
+
+    for (int i = 0; i < K; i++) 
+        cin >> dx[i] >> dy[i];
+
+    int ans = BFS(N, M, K);
+
+    if (ans != INT_MAX) 
+        cout << ans;
+    else 
+        cout << -1;
+}
