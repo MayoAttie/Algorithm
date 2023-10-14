@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	int value_5 = N / 5;
+	int remain = N % 5;
+
+	while (value_5 > 0 && remain % 3 != 0)
+	{
+		value_5--;
+		remain += 5;
+	}
+
+	if (remain % 3 != 0)
+		cout << -1;
+	else
+	{
+		int value_3 = remain / 3;
+		cout << value_5 + value_3 << endl;
+	}
+}
