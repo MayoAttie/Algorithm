@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+int main() 
+{
+    map<int, vector<int>> dic;
+    vector<int> one, two, three;
+
+    for (int i = 0; i < 12; i++) 
+    {
+        int x, y;
+        cin >> x >> y;
+
+        dic[x].push_back(y);
+        dic[y].push_back(x);
+    }
+
+    for (const auto& entry : dic) 
+    {
+        int i = entry.first;
+        if (dic[i].size() == 1) 
+            one.push_back(i);
+        else if (dic[i].size() == 2) 
+            two.push_back(i);
+        else 
+            three.push_back(i);
+    }
+
+    for (int i : three) 
+    {
+        int sum = 0;
+        for (int j : dic[i]) 
+        {
+            sum += dic[j].size();
+        }
+        if (sum == 6) 
+        {
+            cout << i << endl;
+            break;
+        }
+    }
+
+    return 0;
+}
