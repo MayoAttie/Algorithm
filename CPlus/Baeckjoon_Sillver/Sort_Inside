@@ -1,0 +1,20 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    long long N;
+    cin >> N;
+
+    string numStr = to_string(N);
+
+    sort(numStr.rbegin(), numStr.rend());
+
+    long long sortNum = stoll(numStr);
+
+    cout << sortNum << endl;
+
+    return 0;
+}
