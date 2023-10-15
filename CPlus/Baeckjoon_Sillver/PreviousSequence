@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    vector<int> permutation(N);
+    for (int i = 0; i < N; i++) 
+{
+        cin >> permutation[i];
+    }
+
+    if (prev_permutation(permutation.begin(), permutation.end())) 
+{
+        for (int i = 0; i < N; i++) 
+{
+            cout << permutation[i] << " ";
+        }
+    }
+    else 
+        cout << -1;
+
+    return 0;
+}
