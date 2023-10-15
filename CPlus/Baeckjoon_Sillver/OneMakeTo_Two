@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> dp(N + 1);
+    vector<int> prev(N + 1);
+
+    dp[1] = 0;
+
+    for (int i = 2; i <= N; i++) 
+    {
+        dp[i] = dp[i - 1] + 1;
+        prev[i] = i - 1;
+
+        if (i % 2 == 0 && dp[i] > dp[i / 2] + 1) 
+        {
+            dp[i] = dp[i / 2] + 1;
+            prev[i] = i / 2;
+        }
+
+        if (i % 3 == 0 && dp[i] > dp[i / 3] + 1) 
+        {
+            dp[i] = dp[i / 3] + 1;
+            prev[i] = i / 3;
+        }
+    }
+
+    cout << dp[N] << endl;
+
+    vector<int> order;
+    int current = N;
+    while (current > 1) 
+    {
+        order.push_back(current);
+        current = prev[current];
+    }
+    order.push_back(1);
+
+    for (int i = 0; i < order.size(); i++)
+    {
+        cout << order[i] << " ";
+    }
+
+
+    return 0;
+}
