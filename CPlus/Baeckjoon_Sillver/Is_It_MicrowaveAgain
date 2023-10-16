@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <queue>
+#include <set>
+using namespace std;
+
+int BFS(int sec, int BUTTON[]) 
+{
+    if (sec == 30) 
+        return 1;
+    
+    queue<int> que;
+    que.push(0);
+    set<int> visited;
+    int time = 0;
+    
+    while (!que.empty())
+    {
+        int size = que.size();
+        for (int s = 0; s < size; s++) 
+        {
+            int current = que.front();
+            que.pop();
+            
+            if (current / 10 == sec)
+            {
+                // 목표 조리시간에 도달한 경우
+                if (current % 10 == 1)
+                    return time;  // 조리 중인 경우
+                else 
+                    return time + 1;  // 조리 중이 아닌 경우
+            }
+            
+            for (int i = 0; i < 4; i++) 
+            {
+                int next = current + 10 * BUTTON[i];
+                if (i == 3 && next % 10 == 0) 
+                    next += 1;
+                
+                if (visited.find(next) == visited.end() && next / 10 <= sec) 
+                {
+                    // 중복 상태를 방지하고 유효한 다음 상태를 큐에 추가
+                    que.push(next);
+                    visited.insert(next);
+                }
+            }
+        }
+        time++;
+    }
+    return -1;  // 목표 조리시간에 도달할 수 없는 경우
+}
+
+int main() 
+{
+    string str;
+    cin >> str;
+    int min = stoi(str.substr(0, 2));
+    int sec = stoi(str.substr(3, 2));
+    sec += min * 60;
+    int BUTTON[4] = { 10, 60, 600, 30 };
+    int result = BFS(sec, BUTTON);
+    cout << result << endl;
+    return 0;
+}
