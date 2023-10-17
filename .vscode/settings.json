@@ -121,6 +121,7 @@
         "elementary_6_math": "cpp",
         "algorithmclass_dfs5": "cpp",
         "onoff_switch": "cpp",
-        "gotowork": "cpp"
+        "gotowork": "cpp",
+        "snakeandladdergame": "cpp"
     }
 }
