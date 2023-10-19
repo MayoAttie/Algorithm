@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+struct Node {
+    int node;
+    int weight;
+
+    Node(int n, int cost) : node(n), weight(cost) {}
+};
+struct CompareNodes 
+{
+    bool operator()(const Node& a, const Node& b) 
+    {
+        return a.weight > b.weight;
+    }
+};
+void Dijkstra();
+
+int N, M;
+vector<vector<Node>> graph;
+vector<int> dist;
+
+int main() 
+{
+    cin >> N >> M;
+    graph.resize(N + 1);
+    dist.resize(N + 1, INT_MAX);
+
+    for (int i = 0; i < M; i++) 
+    {
+        int A, B, C;
+        cin >> A >> B >> C;
+        graph[A].push_back(Node(B, C));
+        graph[B].push_back(Node(A, C));
+    }
+
+    Dijkstra();
+    cout << dist[N] << endl;
+
+    return 0;
+}
+
+void Dijkstra()
+{
+    priority_queue<Node, vector<Node>, CompareNodes> priQ;
+    priQ.push(Node(1, 0));
+    dist[1] = 0;
+
+    while (!priQ.empty())
+    {
+        Node now = priQ.top();
+        priQ.pop();
+
+        for (Node next : graph[now.node]) 
+        {
+            if (dist[next.node] > dist[now.node] + next.weight) 
+            {
+                dist[next.node] = dist[now.node] + next.weight;
+                priQ.push(Node(next.node, dist[next.node]));
+            }
+        }
+    }
+}
