@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+using namespace std;
+
+map<string, string> parent;  // 사람과 그의 멘토의 관계를 저장하는 맵
+
+string find(string x) 
+{
+    if (parent.find(x) == parent.end()) 
+    {
+        // 만약 x가 parent 맵에 존재하지 않으면, 새로운 노드로 추가하고 자신을 리턴
+        parent[x] = x;
+        return x;
+    }
+    if (parent[x] == x) 
+    {
+        // x의 부모가 자기 자신인 경우, 자신을 리턴
+        return x;
+    }
+    // x의 부모가 자기 자신이 아닌 경우, 재귀적으로 부모를 찾아 리턴
+    parent[x] = find(parent[x]);
+    return parent[x];
+}
+
+void unionFunc(string x, string y) 
+{
+    x = find(x);
+    y = find(y);
+    if (x != y) 
+    {
+        // x와 y가 다른 그룹에 속한 경우, x의 부모를 y로 변경하여 그룹을 합침
+        parent[x] = y;
+    }
+}
+
+int main() 
+{
+    int caseNumber = 1;
+    while (true) 
+    {
+        int N;
+        cin >> N;
+        if (N == 0)
+            break;
+
+        parent.clear();  // 초기화: 각 테스트 케이스마다 parent 맵을 비움
+
+        // 입력을 받아서 그래프를 구성
+        for (int i = 0; i < N; i++) 
+        {
+            string a, b;
+            cin >> a >> b;
+            unionFunc(a, b);  // 두 사람을 연결 (Union)
+        }
+
+        map<string, bool> root;
+        for (const auto& p : parent) 
+        {
+            // 연결된 그룹의 루트 노드를 찾아서 저장
+            root[find(p.first)] = true;
+        }
+
+        // 각 테스트 케이스마다 결과 출력
+        cout << caseNumber << " " << root.size() << endl;
+        caseNumber++;
+    }
+
+    return 0;
+}
