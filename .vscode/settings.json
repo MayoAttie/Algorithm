@@ -124,6 +124,7 @@
         "gotowork": "cpp",
         "snakeandladdergame": "cpp",
         "cheese2": "cpp",
-        "chickendelivery": "cpp"
+        "chickendelivery": "cpp",
+        "continuoussum": "cpp"
     }
 }
