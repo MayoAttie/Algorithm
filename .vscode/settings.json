@@ -123,6 +123,7 @@
         "onoff_switch": "cpp",
         "gotowork": "cpp",
         "snakeandladdergame": "cpp",
-        "cheese2": "cpp"
+        "cheese2": "cpp",
+        "chickendelivery": "cpp"
     }
 }
