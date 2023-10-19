@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <deque>
+using namespace std;
+struct node
+{
+    int x;
+    int y;
+    int cnt;
+};
+vector<vector<int>> graph;
+vector<vector<bool>> visited;
+int N, M;
+int drX[4] = { 1, 0, -1, 0 };
+int drY[4] = { 0, 1, 0, -1 };
+
+void BFS(int x, int y);
+
+int main() 
+{
+    cin >> M >> N;
+
+    graph = vector<vector<int>>(N, vector<int>(M));
+    visited = vector<vector<bool>>(N, vector<bool>(M, false));
+
+    for (int i = 0; i < N; i++) 
+    {
+        string str;
+        cin >> str;
+        for (int j = 0; j < M; j++) 
+        {
+            graph[i][j] = str[j] - '0';
+        }
+    }
+
+    BFS(0, 0);
+}
+
+void BFS(int x, int y) 
+{
+    deque<node> deQue;
+    deQue.push_front({ x, y, 0 });
+    visited[x][y] = true;
+
+    while (!deQue.empty()) 
+    {
+        int curX = deQue.front().x;
+        int curY = deQue.front().y;
+        int curCnt = deQue.front().cnt;
+        deQue.pop_front();
+        if (curX == N - 1 && curY == M - 1)
+        {
+            cout << curCnt;
+            break;
+        }
+
+        for (int j = 0; j < 4; j++) {
+            int nX = curX + drX[j];
+            int nY = curY + drY[j];
+
+            if (nX >= 0 && nX < N && nY >= 0 && nY < M && !visited[nX][nY])
+            {
+                if (graph[nX][nY] == 0)
+                {
+                    deQue.push_front({ nX, nY, curCnt });
+                    visited[nX][nY] = true;
+                }
+                else
+                {
+                    deQue.push_back({ nX, nY, curCnt +1 });
+                    visited[nX][nY] = true;
+                }
+            }
+        }
+    }
+}
