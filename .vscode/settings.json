@@ -122,6 +122,7 @@
         "algorithmclass_dfs5": "cpp",
         "onoff_switch": "cpp",
         "gotowork": "cpp",
-        "snakeandladdergame": "cpp"
+        "snakeandladdergame": "cpp",
+        "cheese2": "cpp"
     }
 }
