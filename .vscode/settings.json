@@ -127,6 +127,7 @@
         "chickendelivery": "cpp",
         "continuoussum": "cpp",
         "algospot": "cpp",
-        "secretclub": "cpp"
+        "secretclub": "cpp",
+        "game": "cpp"
     }
 }

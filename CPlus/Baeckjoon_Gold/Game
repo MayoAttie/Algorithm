@@ -1,0 +1,123 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+struct play
+{
+    int x;
+    int y;
+    int life;
+};
+
+vector<vector<int>> graph;
+vector<vector<bool>> visited;
+
+int drX[4] = { 1, -1, 0, 0 };
+int drY[4] = { 0, 0, 1, -1 };
+void BFS();
+
+int main()
+{
+    graph.resize(501, vector<int>(501, 0));
+    visited.resize(501, vector<bool>(501, false));
+    int n, m;
+    cin >> n;
+    for (int i = 0; i < n; i++) 
+    {
+        int x1, y1, x2, y2;
+        cin >> x1 >> y1 >> x2 >> y2;
+        if (x1 > x2) 
+        {
+            int temp = x1;
+            x1 = x2;
+            x2 = temp;
+        }
+        if (y1 > y2) 
+        {
+            int temp = y1;
+            y1 = y2;
+            y2 = temp;
+        }
+        for (int x = x1; x <= x2; x++) 
+        {
+            for (int y = y1; y <= y2; y++) 
+            {
+                graph[x][y] = 1;
+            }
+        }
+    }
+    cin >> m;
+    for (int i = 0; i < m; i++) 
+    {
+        int x1, y1, x2, y2;
+        cin >> x1 >> y1 >> x2 >> y2;
+        if (x1 > x2) 
+        {
+            int temp = x1;
+            x1 = x2;
+            x2 = temp;
+        }
+        if (y1 > y2) 
+        {
+            int temp = y1;
+            y1 = y2;
+            y2 = temp;
+        }
+        for (int x = x1; x <= x2; x++) 
+        {
+            for (int y = y1; y <= y2; y++) 
+            {
+                visited[x][y] = 2;
+            }
+        }
+    }
+
+    BFS();
+}
+
+void BFS()
+{
+    deque<play> deQ;
+    deQ.push_front({ 0, 0, 0 });
+    visited[0][0] = true;
+    while (!deQ.empty())
+    {
+        int curX = deQ.front().x;
+        int curY = deQ.front().y;
+        int curLife = deQ.front().life;
+        deQ.pop_front();
+
+        if (curX == 500 && curY == 500)
+        {
+            cout << curLife;
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            int nX = curX + drX[i];
+            int nY = curY + drY[i];
+
+            if (nX >= 0 && nX < 501 && nY >= 0 && nY < 501 && !visited[nX][nY])
+            {
+                if (graph[nX][nY] == 2) 
+                    continue;
+
+                if (graph[nX][nY] == 0) 
+                {
+                    deQ.push_front({ nX, nY, curLife });
+                    visited[nX][nY] = true;
+                }
+                else if (graph[nX][nY] == 1) 
+                {
+                    deQ.push_back({ nX, nY, curLife + 1 });
+                    visited[nX][nY] = true;
+                }
+            }
+        }
+    }
+
+    cout << -1;
+}
