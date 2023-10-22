@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+const int INF = 987654321;
+
+vector<vector<int>> costs;
+vector<int> path;
+vector<bool> visited;
+int N;
+int minCost = INF;
+
+void BruteForce(int index, int cost, int prev);
+
+int main()
+{
+    cin >> N;
+    costs = vector<vector<int>>(N, vector<int>(N, 0));
+    visited = vector<bool>(N, false);
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            cin >> costs[i][j];
+        }
+    }
+
+    visited[0] = true;
+    BruteForce(1, 0, 0);
+    cout << minCost;
+}
+
+void BruteForce(int index, int cost, int prev)
+{
+    if (index == N)
+    {
+        if (!costs[prev][0])
+            return;
+        else
+            cost += costs[prev][0];
+
+        minCost = min(minCost, cost);
+        return;
+    }
+
+    for (int i = 1; i < N; i++)
+    {
+        if (visited[i] || !costs[prev][i])
+            continue;
+
+        visited[i] = true;
+        BruteForce(index + 1, cost + costs[prev][i], i);
+        visited[i] = false;
+    }
+}

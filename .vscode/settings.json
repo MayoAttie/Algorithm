@@ -131,6 +131,7 @@
         "game": "cpp",
         "melonfield": "cpp",
         "parttimerkangho": "cpp",
-        "thefamoussevenprincesses": "cpp"
+        "thefamoussevenprincesses": "cpp",
+        "travelingsalesmanproblem": "cpp"
     }
 }
