@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+
+using namespace std;
+
+const string CYCLE = "CYCLE";
+const string NOT_CYCLE = "NO CYCLE";
+
+bool detectCycle(vector<list<int>>& map, int now, vector<bool>& visited, int n) 
+{
+    if (now == n) 
+        return true;
+    
+    visited[now] = true;
+    bool result = true;
+    for (int next : map[now]) 
+    {
+        if (visited[next]) 
+            return false;
+        if (!detectCycle(map, next, visited, n)) 
+            result = false;
+        
+    }
+    visited[now] = false;
+    return result;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<list<int>> map(n + 1);
+
+    for (int i = 1; i < n; i++) 
+    {
+        int num;
+        cin >> num;
+        for (int j = 0; j < num; j++) 
+        {
+            int next;
+            cin >> next;
+            map[i].push_back(next);
+        }
+    }
+
+    vector<bool> visited(n + 1, false);
+    if (!detectCycle(map, 1, visited, n)) 
+        cout << CYCLE << endl;
+    else 
+        cout << NOT_CYCLE << endl;
+    
+
+    return 0;
+}
