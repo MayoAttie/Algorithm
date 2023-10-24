@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int>> dp;
+vector<int> nums;
+// 동적 프로그래밍을 수행하는 함수
+void dynamicProgramming(int k, vector<bool>& visited) 
+{
+    for (int num : nums) 
+    {
+        visited[num] = true;
+        dp[1].push_back(num);
+    }
+
+    for (int i = 2; i <= k; i++) 
+    {
+        vector<int> previous = dp[i - 1];
+        for (int p : previous) 
+        {
+            for (int num : nums) 
+            {
+                int nextNum = num + p;
+                visited[nextNum] = true;
+                if (find(dp[i].begin(), dp[i].end(), nextNum) == dp[i].end()) 
+                {
+                    dp[i].push_back(nextNum);
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    nums = vector<int>(n);
+    for (int i = 0; i < n; i++) 
+    {
+        cin >> nums[i];
+    }
+
+    int k;
+    cin >> k;
+
+    dp = vector<vector<int>>(k + 1, vector<int>());
+    vector<bool> visited(*max_element(nums.begin(), nums.end()) * k + 1, false);
+
+    dynamicProgramming(k, visited);
+
+    for (int j = 1; j <= *max_element(nums.begin(), nums.end()) * k; j++) 
+    {
+        if (!visited[j]) 
+        {
+            cout << (j % 2 == 0 ? "holsoon win at " : "jjaksoon win at ") << j << endl;
+            break;
+        }
+    }
+
+    return 0;
+}
