@@ -1,0 +1,115 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+struct Node 
+{
+    int x, y, dist;
+    Node(int x, int y, int dist) : x(x), y(y), dist(dist) {}
+};
+
+const int dx[] = { 0, 0, 1, -1 };
+const int dy[] = { 1, -1, 0, 0 };
+vector<vector<int>> map;
+
+int main() 
+{
+    int n;
+    cin >> n;
+    map.resize(n, vector<int>(n));
+
+    queue<Node> que;
+
+    // 입력 받은 맵 정보를 초기화
+    for (int i = 0; i < n; i++) 
+    {
+        for (int j = 0; j < n; j++) 
+        {
+            cin >> map[i][j];
+            if (map[i][j] == 9) 
+            {
+                // 아기 상어의 위치를 큐에 추가하고 맵에서 제거
+                que.push(Node(i, j, 0));
+                map[i][j] = 0;
+            }
+        }
+    }
+
+    int size = 2; // 아기 상어의 초기 크기
+    int eat = 0; // 먹은 물고기 수
+    int ans = 0; // 이동한 거리
+
+    while (true) 
+    {
+        vector<Node> eatFish; // 먹을 수 있는 물고기 저장
+        vector<vector<int>> dist(n, vector<int>(n, 0)); // 거리 정보 초기화
+
+        while (!que.empty()) 
+        {
+            Node p = que.front();
+            que.pop();
+            int x = p.x;
+            int y = p.y;
+
+            for (int k = 0; k < 4; k++) 
+            {
+                int nx = x + dx[k];
+                int ny = y + dy[k];
+
+                if (0 <= nx && nx < n && 0 <= ny && ny < n) 
+                {
+                    if (dist[nx][ny] == 0 && map[nx][ny] <= size) 
+                    {
+                        dist[nx][ny] = dist[x][y] + 1;
+                        que.push(Node(nx, ny, dist[nx][ny]));
+                        if (1 <= map[nx][ny] && map[nx][ny] <= 6 && map[nx][ny] < size) 
+                            eatFish.push_back(Node(nx, ny, dist[nx][ny]));
+                    }
+                }
+            }
+        }
+
+        if (eatFish.empty()) 
+        {
+            // 먹을 수 있는 물고기가 없으면 종료
+            cout << ans << endl;
+            return 0;
+        }
+
+        Node nowFish = eatFish[0];
+        for (int i = 1; i < eatFish.size(); i++) 
+        {
+            // 가장 가까운 물고기 선택
+            if (nowFish.dist > eatFish[i].dist) 
+                nowFish = eatFish[i];
+            else if (nowFish.dist == eatFish[i].dist) 
+            {
+                if (nowFish.x > eatFish[i].x) 
+                    nowFish = eatFish[i];
+                else if (nowFish.x == eatFish[i].x) 
+                {
+                    if (nowFish.y > eatFish[i].y) 
+                        nowFish = eatFish[i];
+                }
+            }
+        }
+
+        // 선택한 물고기 먹기
+        map[nowFish.x][nowFish.y] = 0;
+        ans += nowFish.dist;
+        eat++;
+
+        if (size == eat) 
+        {
+            // 아기 상어 크기 증가
+            size++;
+            eat = 0;
+        }
+        que.push(nowFish);
+    }
+
+    return 0;
+}
