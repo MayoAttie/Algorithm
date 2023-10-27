@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    int n;
+    cin >> n;
+
+    long long d[81];
+    d[0] = 4;
+    d[1] = 6;
+
+    for (int i = 2; i <= n; i++) 
+    {
+        d[i] = d[i - 1] + d[i - 2];
+    }
+
+    cout << d[n - 1] << endl;
+
+    return 0;
+}
