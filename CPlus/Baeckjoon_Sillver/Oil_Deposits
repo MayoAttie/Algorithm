@@ -1,0 +1,80 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int dr[] = { -1, -1, -1, 0, 1, 1, 1, 0 };
+int dc[] = { -1, 0, 1, 1, 1, 0, -1, -1 };
+
+int m, n; 
+char grid[100][100];
+
+int bfs(int startX, int startY) 
+{
+    int count = 0;
+    queue<pair<int, int>> que;
+
+    que.push(make_pair(startX, startY));
+    grid[startX][startY] = '*';
+
+    while (!que.empty()) 
+    {
+        pair<int, int> cur = que.front();
+        que.pop();
+        int curX = cur.first;
+        int curY = cur.second;
+
+        for (int i = 0; i < 8; i++) 
+        {
+            int nX = curX + dr[i];
+            int nY = curY + dc[i];
+
+            // 범위 검사와 오일 덩어리인지 검사
+            if (nX >= 0 && nX < m && nY >= 0 && nY < n && grid[nX][nY] == '@') 
+            {
+                que.push(make_pair(nX, nY));
+                grid[nX][nY] = '*'; // 방문한 곳은 마킹
+            }
+        }
+
+        count++;
+    }
+
+    return count;
+}
+
+int main() 
+{
+    while (true) {
+        cin >> m >> n;
+
+        if (m == 0) 
+            break;
+        
+
+        for (int i = 0; i < m; i++) 
+        {
+            for (int j = 0; j < n; j++) 
+            {
+                cin >> grid[i][j];
+            }
+        }
+
+        int oilDeposits = 0;
+
+        for (int i = 0; i < m; i++) 
+        {
+            for (int j = 0; j < n; j++) 
+            {
+                if (grid[i][j] == '@') 
+                {
+                    oilDeposits++;
+                    bfs(i, j);
+                }
+            }
+        }
+
+        cout << oilDeposits << endl;
+    }
+
+    return 0;
+}
