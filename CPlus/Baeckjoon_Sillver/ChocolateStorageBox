@@ -1,0 +1,116 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+vector<vector<char>> box;
+vector<int> boxState;
+vector<int> _count;
+bool CheckState(int stateNum);
+int ConnectFind(int x, int y, vector<vector<bool>>& visited);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int testCase;
+    int stateNum;
+    cin >> testCase;
+    while (testCase--)
+    {
+        box = vector<vector<char>>(3, vector<char>(3));
+        for (int i = 0; i < 3; i++)
+        {
+            string str;
+            cin >> str;
+            for (int j = 0; j < 3; j++)
+            {
+                box[i][j] = str[j];
+            }
+        }
+
+        cin >> stateNum;
+        boxState = vector<int>(stateNum);
+
+        for (int i = 0; i < stateNum; i++)
+        {
+            cin >> boxState[i];
+        }
+
+        bool answer = CheckState(stateNum);
+
+        if (answer)
+            cout << 1 << "\n";
+        else
+            cout << 0 << "\n";
+    }
+}
+
+bool CheckState(int stateNum)
+{
+    vector<vector<bool>> visited(3, vector<bool>(3,false));
+    _count.clear();
+    for (int i = 0; i < stateNum; i++)
+    {
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                if (box[x][y] == 'O' && !visited[x][y])
+                {
+                    _count.push_back(ConnectFind(x, y, visited));
+                }
+            }
+        }
+    }
+
+    sort(_count.begin(), _count.end());
+    sort(boxState.begin(), boxState.end());
+    int len = _count.size();
+    if (len != stateNum)
+        return false;
+    for (int i = 0; i < stateNum; i++)
+    {
+        if (boxState[i] != _count[i])
+            return false;
+    }
+    return true;
+}
+
+int ConnectFind(int x, int y, vector<vector<bool>>& visited)
+{
+    int drX[4] = { 0, 0, 1, -1 };
+    int drY[4] = { 1, -1, 0, 0 };
+    int result = 1;
+    queue<pair<int, int>> que;
+    que.push({ x, y });
+    visited[x][y] = true;
+
+    while (!que.empty())
+    {
+        int curX = que.front().first;
+        int curY = que.front().second;
+        que.pop();
+        for (int i = 0; i < 4; i++)
+        {
+            int nX = curX + drX[i];
+            int nY = curY + drY[i];
+
+            if (nX >= 0 && nX < 3 && nY >= 0 && nY < 3 && !visited[nX][nY])
+            {
+                if (box[nX][nY] == 'O')
+                {
+                    que.push({ nX, nY });
+                    visited[nX][nY] = true;
+                    result++;
+                }
+            }
+        }
+    }
+
+    return result;
+}
