@@ -7,7 +7,7 @@ using namespace std;
 
 vector<vector<char>> box;
 vector<int> boxState;
-vector<int> _count;
+
 bool CheckState(int stateNum);
 int ConnectFind(int x, int y, vector<vector<bool>>& visited);
 
@@ -52,30 +52,28 @@ int main()
 
 bool CheckState(int stateNum)
 {
-    vector<vector<bool>> visited(3, vector<bool>(3,false));
-    _count.clear();
-    for (int i = 0; i < stateNum; i++)
+
+    vector<vector<bool>> visited(3, vector<bool>(3, false));
+    vector<int> count;
+
+    for (int x = 0; x < 3; x++)
     {
-        for (int x = 0; x < 3; x++)
+        for (int y = 0; y < 3; y++)
         {
-            for (int y = 0; y < 3; y++)
+            if (box[x][y] == 'O' && !visited[x][y])
             {
-                if (box[x][y] == 'O' && !visited[x][y])
-                {
-                    _count.push_back(ConnectFind(x, y, visited));
-                }
+                count.push_back(ConnectFind(x, y, visited));
             }
         }
     }
+    
 
-    sort(_count.begin(), _count.end());
-    sort(boxState.begin(), boxState.end());
-    int len = _count.size();
-    if (len != stateNum)
+    sort(count.begin(), count.end());
+    if (count.size() != boxState.size())
         return false;
     for (int i = 0; i < stateNum; i++)
     {
-        if (boxState[i] != _count[i])
+        if (boxState[i] != count[i])
             return false;
     }
     return true;
