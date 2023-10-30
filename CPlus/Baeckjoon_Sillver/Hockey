@@ -1,0 +1,34 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int main() 
+{
+    int W, H, X, Y, P;
+    cin >> W >> H >> X >> Y >> P;
+
+    double r = H / 2.0;
+    double c1x = X;
+    double c1y = Y + r;
+    double c2x = X + W;
+    double c2y = Y + r;
+
+    int count = 0;
+
+    for (int i = 0; i < P; i++) 
+    {
+        int x, y;
+        cin >> x >> y;
+
+        double d1 = sqrt((c1x - x) * (c1x - x) + (c1y - y) * (c1y - y));
+        double d2 = sqrt((c2x - x) * (c2x - x) + (c2y - y) * (c2y - y));
+
+        if (d1 <= r || d2 <= r || (X <= x && x <= X + W && Y <= y && y <= Y + H)) 
+            count++;
+    }
+
+    cout << count << endl;
+
+    return 0;
+}
