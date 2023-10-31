@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int>> graph;
+vector<bool> visited;
+void BFS(int start);
+int main() 
+{
+    int N, M;
+    cin >> N >> M;
+    graph.resize(N + 1);
+    visited.resize(N + 1, false);
+
+    for (int i = 0; i < M; i++) 
+    {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    BFS(1);
+
+    if (find(visited.begin() + 1, visited.end(), false) != visited.end()) 
+    {
+        for (int i = 1; i <= N; i++) 
+        {
+            if (!visited[i]) 
+                cout << i << endl;
+        }
+    }
+    else 
+        cout << 0 << endl;
+
+    return 0;
+}
+
+
+void BFS(int start)
+{
+    queue<int> que;
+    que.push(start);
+    visited[start] = true;
+
+    while (!que.empty())
+    {
+        int node = que.front();
+        que.pop();
+
+        for (int n : graph[node])
+        {
+            if (!visited[n])
+            {
+                que.push(n);
+                visited[n] = true;
+            }
+        }
+    }
+}
