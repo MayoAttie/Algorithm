@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+int main() 
+{
+    int n, k;
+    cin >> n >> k;
+    vector<string> nums;
+    set<string> result;
+
+    for (int i = 0; i < n; i++) 
+    {
+        string num;
+        cin >> num;
+        nums.push_back(num);
+    }
+
+    sort(nums.begin(), nums.end()); 
+
+    do 
+    {
+        string str;
+        for (int i = 0; i < k; i++) 
+        {
+            str += nums[i];
+        }
+        result.insert(str);
+    } while (next_permutation(nums.begin(), nums.end()));
+
+    cout << result.size() << endl;
+
+    return 0;
+}
