@@ -141,6 +141,7 @@
         "chocolatestoragebox": "cpp",
         "quicknumberserach": "cpp",
         "verticalreading": "cpp",
-        "chief_invitation": "cpp"
+        "chief_invitation": "cpp",
+        "numbertutor_tutee_relationships": "cpp"
     }
 }

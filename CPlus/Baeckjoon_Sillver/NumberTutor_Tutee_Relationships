@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int MOD = 1000000007;
+
+vector<int> parent;
+vector<int> _size;
+
+int UnionFind(int n);
+bool Unite(int x, int y);
+
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+
+    parent.resize(N);
+    _size.resize(N);
+
+    for (int i = 0; i < N; i++)
+    {
+        parent[i] = i;
+        _size[i] = 1;
+    }
+
+    for (int i = 0; i < M; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        Unite(u - 1, v - 1);
+    }
+
+    long long result = 1;
+
+    for (int i = 0; i < N; i++)
+    {
+        if (UnionFind(i) == i)
+            result = (result * _size[i]) % MOD;
+    }
+
+    cout << result;
+
+    return 0;
+}
+
+int UnionFind(int n)
+{
+    if (parent[n] == n)
+        return n;
+
+    return parent[n] = UnionFind(parent[n]);
+}
+
+bool Unite(int x, int y)
+{
+    x = UnionFind(x);
+    y = UnionFind(y);
+
+    if (x != y)
+    {
+        if (_size[x] < _size[y])
+            swap(x, y);
+        parent[y] = x;
+        _size[x] += _size[y];
+        return true;
+    }
+    return false;
+}
