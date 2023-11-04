@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+#include <cmath>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int main()
+{
+    int a, p;
+    cin >> a >> p;
+
+    vector<int> d;
+    d.push_back(a);
+
+    while (true)
+    {
+        int answer = 0;
+        string str = to_string(d.back());
+
+        for (char c : str)
+        {
+            int digit = c - '0';
+            answer += pow(digit, p);
+        }
+
+        auto it = find(d.begin(), d.end(), answer);
+
+        if (it != d.end())
+        {
+            int index = distance(d.begin(), it);
+            d.erase(d.begin() + index, d.end());
+            break;
+        }
+
+        d.push_back(answer);
+    }
+
+    cout << d.size() << endl;
+
+    return 0;
+}
