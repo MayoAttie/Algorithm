@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+    vector<int> hp(N);
+    vector<int> happy(N);
+
+    for (int i = 0; i < N; i++) 
+    {
+        cin >> hp[i]; // 체력
+    }
+
+    for (int i = 0; i < N; i++) 
+    {
+        cin >> happy[i]; // 기쁨
+    }
+
+    vector<vector<int>> dp(N + 1, vector<int>(101, 0));
+
+    for (int i = 1; i <= N; i++) 
+    {
+        for (int j = 0; j <= 100; j++) 
+        {
+            dp[i][j] = dp[i - 1][j]; // i번째 사람을 선택하지 않는 경우
+
+            if (j >= hp[i - 1] && j - hp[i - 1] >= 1) 
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - hp[i - 1]] + happy[i - 1]); // i번째 사람을 선택하는 경우
+        }
+    }
+
+    cout << dp[N][100] << endl;
+
+    return 0;
+}
