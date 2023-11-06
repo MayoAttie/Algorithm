@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() 
+{
+    int N;
+    cin >> N;
+    vector<vector<int>> arr(N, vector<int>(5));
+    vector<int> maxCost(N, 0);
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < 5; j++) 
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < 5; j++) 
+        {
+            for (int k = j + 1; k < 5; k++) 
+            {
+                for (int l = k + 1; l < 5; l++) 
+                {
+                    int sum = (arr[i][j] + arr[i][k] + arr[i][l]) % 10;
+                    if (sum >= maxCost[i])
+                        maxCost[i] = sum;
+                }
+            }
+        }
+    }
+
+    int maxSum = -1;
+    int answer = -1;
+    for (int i = 0; i < N; i++) 
+    {
+        if (maxCost[i] >= maxSum)
+        {
+            maxSum = maxCost[i];
+            answer = i;
+        }
+    }
+
+    cout << answer + 1 << endl;
+
+    return 0;
+}

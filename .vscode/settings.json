@@ -142,6 +142,7 @@
         "quicknumberserach": "cpp",
         "verticalreading": "cpp",
         "chief_invitation": "cpp",
-        "numbertutor_tutee_relationships": "cpp"
+        "numbertutor_tutee_relationships": "cpp",
+        "numbergame": "cpp"
     }
 }
