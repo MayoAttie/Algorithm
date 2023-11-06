@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+using namespace std;
+
+int N, M;
+vector<vector<char>> graph;
+vector<vector<int>> visited;
+
+int drX[4] = { 1,-1,0,0 };
+int drY[4] = { 0,0,1,-1 };
+
+void BFS(int sX, int sY);
+
+int main() 
+{
+    cin >> N >> M;
+    int x1, y1, x2, y2;
+    cin >> x1 >> y1 >> x2 >> y2;
+
+    graph.resize(N, vector<char>(M));
+    visited.resize(N, vector<int>(M, -1));
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            cin >> graph[i][j];
+        }
+    }
+
+    BFS(x1 - 1, y1 - 1);
+    cout << visited[x2 - 1][y2 - 1] << endl;
+
+    return 0;
+}
+
+
+void BFS(int sX, int sY)
+{
+    deque<pair<int, int>> que;
+    que.push_back({ sX, sY });
+    visited[sX][sY] = 0;
+
+    while (!que.empty())
+    {
+        int curX = que.front().first;
+        int curY = que.front().second;
+        que.pop_front();
+
+        for (int i = 0; i < 4; i++)
+        {
+            int nX = curX + drX[i];
+            int nY = curY + drY[i];
+
+            if (nX >= 0 && nX < N && nY >= 0 && nY < M && visited[nX][nY] == -1)
+            {
+                if (graph[nX][nY] == '1' || graph[nX][nY] == '#')
+                {
+                    visited[nX][nY] = visited[curX][curY] + 1;
+                    que.push_back({ nX,nY });
+                }
+                else
+                {
+                    visited[nX][nY] = visited[curX][curY];
+                    que.push_front({ nX,nY });
+                }
+            }
+        }
+    }
+}
