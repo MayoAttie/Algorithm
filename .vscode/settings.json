@@ -143,6 +143,7 @@
         "verticalreading": "cpp",
         "chief_invitation": "cpp",
         "numbertutor_tutee_relationships": "cpp",
-        "numbergame": "cpp"
+        "numbergame": "cpp",
+        "moveing": "cpp"
     }
 }
