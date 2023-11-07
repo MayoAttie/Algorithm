@@ -144,6 +144,7 @@
         "chief_invitation": "cpp",
         "numbertutor_tutee_relationships": "cpp",
         "numbergame": "cpp",
-        "moveing": "cpp"
+        "moveing": "cpp",
+        "sequences_and_queries_15": "cpp"
     }
 }

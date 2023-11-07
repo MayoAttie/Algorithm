@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+int n;
+vector<int> arr, tree;
+
+int Init(int start, int end, int node);
+int Update(int start, int end, int node, int index);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> n;
+    arr.resize(n + 1);
+    tree.resize(4 * n);
+
+    arr[0] = INT_MAX; // 최소값 비교 시, 초기값 설정
+
+    for (int i = 1; i <= n; i++)
+        cin >> arr[i]; // 배열 입력
+
+    Init(1, n, 1); // 세그먼트 트리 초기화
+
+    int m;
+    cin >> m; // 쿼리 수
+
+    for (int i = 0; i < m; i++)
+    {
+        int type;
+        cin >> type;
+        if (type == 1)
+        {
+            int a, b;
+            cin >> a >> b;
+            arr[a] = b; // 배열 값 업데이트
+            Update(1, n, 1, a); // 세그먼트 트리 업데이트
+        }
+        else if (type == 2)
+            cout << tree[1] << "\n"; // 가장 작은 값의 인덱스 출력
+    }
+}
+
+// 세그먼트 트리 초기화 함수
+int Init(int start, int end, int node)
+{
+    if (start == end)
+        return tree[node] = start; // 리프 노드의 경우, 해당 인덱스를 반환
+
+    int mid = (start + end) / 2;
+    int left = Init(start, mid, node * 2); // 왼쪽 자식 노드 초기화
+    int right = Init(mid + 1, end, node * 2 + 1); // 오른쪽 자식 노드 초기화
+    return tree[node] = (arr[left] <= arr[right]) ? left : right; // 부모 노드는 두 자식 중 작은 값을 가짐
+}
+
+// 세그먼트 트리 업데이트 함수
+int Update(int start, int end, int node, int index)
+{
+    if (start > index || end < index)
+        return tree[node]; // 범위를 벗어난 경우, 현재 노드의 값 반환
+    if (start == end)
+        return tree[node] = index; // 리프 노드인 경우, 해당 인덱스로 업데이트
+
+    int mid = (start + end) / 2;
+    int left = Update(start, mid, node * 2, index); // 왼쪽 자식 노드 업데이트
+    int right = Update(mid + 1, end, node * 2 + 1, index); // 오른쪽 자식 노드 업데이트
+    return tree[node] = (arr[left] <= arr[right]) ? left : right; // 부모 노드는 두 자식 중 작은 값을 가짐
+}
