@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    int leaf = 0;
+
+    if (m == 2)
+        leaf = 1;
+
+    int preLeaf = 0;
+
+    for (int i = 1; i < n; i++)
+    {
+        if (m > leaf)
+        {
+            cout << "0 " << i << "\n";
+            leaf += 1;
+        }
+        else
+            cout << preLeaf << " " << i << "\n";
+
+
+        preLeaf = i;
+    }
+
+}
