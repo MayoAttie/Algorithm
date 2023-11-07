@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> graph(1001, vector<int>(1001, 0));
+vector<pair<int, int>> waters;
+int drX[4] = { 1, 0, -1, 0 };
+int drY[4] = { 0, 1, 0, -1 };
+
+void BFS(int X, int Y);
+
+int main() 
+{
+    int X, Y, N;
+    cin >> X >> Y >> N;
+    X += 500;
+    Y += 500;
+    waters.resize(N);
+
+    for (int i = 0; i < N; i++) 
+    {
+        int a, b;
+        cin >> a >> b;
+        
+        graph[a + 500][b + 500] = 2;
+    }
+
+
+    graph[500][500] = 1;
+
+    BFS(X, Y);
+}
+
+void BFS(int X, int Y) 
+{
+    queue<pair<int, int>> que;
+    que.push({ 500, 500 }); 
+
+    while (!que.empty()) 
+    {
+        int curX = que.front().first;
+        int curY = que.front().second;
+        que.pop();
+
+        if (curX == X && curY == Y) 
+        {
+            cout << graph[curX][curY] - 1; 
+            return;
+        }
+
+        for (int i = 0; i < 4; i++) 
+        {
+            int nX = curX + drX[i];
+            int nY = curY + drY[i];
+
+            if (nX >= 0 && nX < 1001 && nY >= 0 && nY < 1001) 
+            {
+                if (graph[nX][nY])
+                    continue;
+
+                graph[nX][nY] = graph[curX][curY] + 1;
+                que.push({ nX, nY });
+            }
+        }
+    }
+}
