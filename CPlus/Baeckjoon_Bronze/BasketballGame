@@ -1,0 +1,53 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+bool comparer(const pair<char, int>& a, const pair<char, int>& b)
+{
+    return a.first < b.first;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    map<char, int> counter;
+    vector<string> arr(N);
+    vector<char> answer;
+
+    for (int i = 0; i < N; i++)
+    {
+        cin >> arr[i];
+        if (!arr[i].empty())
+        {
+            char firstChar = arr[i][0];
+            counter[firstChar]++;
+        }
+    }
+
+    vector<pair<char, int>> sortedCounter(counter.begin(), counter.end());
+    sort(sortedCounter.begin(), sortedCounter.end(), comparer);
+
+    for (const auto& i : sortedCounter)
+    {
+        if (i.second >= 5)
+            answer.push_back(i.first);
+    }
+    if (answer.size() == 0)
+        cout << "PREDAJA";
+    else
+    {
+        for (int i = 0; i < answer.size(); i++)
+            cout << answer[i];
+    }
+
+    return 0;
+}
