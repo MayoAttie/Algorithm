@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int N, M;
+vector<int> sequence;
+bool used[9];
+
+void generateSequences(int cnt) 
+{
+    if (cnt == M) 
+    {
+        for (int i = 0; i < M; i++) 
+        {
+            cout << sequence[i] << ' ';
+        }
+        cout << '\n';
+        return;
+    }
+
+    for (int i = 1; i <= N; i++) 
+    {
+        if (!used[i]) {
+            if (cnt == 0 || sequence[cnt - 1] < i) 
+            {
+                used[i] = true;
+                sequence[cnt] = i;
+                generateSequences(cnt + 1);
+                used[i] = false;
+            }
+        }
+    }
+}
+
+int main() 
+{
+    cin >> N >> M;
+    sequence.resize(M);
+
+    generateSequences(0);
+
+    return 0;
+}
