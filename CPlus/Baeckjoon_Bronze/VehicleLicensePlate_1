@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() 
+{
+    string str;
+    cin >> str;
+
+    int result = 1;
+    int maxC = 26; // a~z
+    int maxD = 10; // 0~9
+
+    if (str[0] == 'c') 
+        result = maxC;
+    else if (str[0] == 'd') 
+        result = maxD;
+    
+
+    for (int i = 1; i < str.length(); i++) 
+    {
+        int cnt;
+        char cur = str[i];
+        char prev = str[i - 1];
+
+        if (cur == 'c') 
+            cnt = maxC;
+        else 
+            cnt = maxD;
+        
+        if (cur == prev) 
+            cnt--;
+        
+        result *= cnt;
+    }
+
+    cout << result << endl;
+    return 0;
+}
