@@ -146,6 +146,7 @@
         "numbergame": "cpp",
         "moveing": "cpp",
         "sequences_and_queries_15": "cpp",
-        "basketballgame": "cpp"
+        "basketballgame": "cpp",
+        "bead_escape": "cpp"
     }
 }

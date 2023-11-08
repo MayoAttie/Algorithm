@@ -1,0 +1,151 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <tuple>
+#include <string>
+using namespace std;
+
+struct Bead 
+{
+    int rx, ry, bx, by, cnt;
+    string order;
+};
+
+struct MoveResult 
+{
+    int x, y, count;
+};
+
+const int MAX_N = 11;
+int N, M;
+vector<string> arr;
+vector<vector<vector<vector<bool>>>> visited;
+int dx[4] = { 0, 0, 1, -1 };
+int dy[4] = { 1, -1, 0, 0 };
+
+MoveResult Move(int x, int y, int i, int j);
+string OrderCheck(Bead current, int idx);
+Bead BFS();
+
+int main() 
+{
+    cin >> N >> M;
+    arr.resize(N);
+    visited.assign(N, vector<vector<vector<bool>>>(M, vector<vector<bool>>(N, vector<bool>(M, false))));
+
+    for (int i = 0; i < N; i++) 
+        cin >> arr[i];
+    
+
+    Bead result = BFS();
+
+    if (result.cnt != -1)
+        cout << result.cnt << "\n" << result.order << endl;
+    else
+        cout << result.cnt;
+
+    return 0;
+}
+
+MoveResult Move(int x, int y, int i, int j)
+{
+    int count = 0;
+    while (arr[x + i][y + j] != '#' && arr[x][y] != 'O')
+    {
+        x += i;
+        y += j;
+        count++;
+    }
+    return { x, y, count };
+}
+
+string OrderCheck(Bead current, int idx)
+{
+    string tmp = current.order;
+    if (idx == 0) tmp += 'R';
+    else if (idx == 1) tmp += 'L';
+    else if (idx == 2) tmp += 'D';
+    else tmp += 'U';
+    return tmp;
+}
+
+Bead BFS()
+{
+    deque<Bead> q;
+    int rx, ry, bx, by;
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            if (arr[i][j] == 'R')
+            {
+                rx = i;
+                ry = j;
+            }
+            if (arr[i][j] == 'B')
+            {
+                bx = i;
+                by = j;
+            }
+        }
+    }
+    q.push_back({ rx, ry, bx, by, 1, "" });
+    visited[rx][ry][bx][by] = true;
+
+    while (!q.empty())
+    {
+        Bead current = q.front();
+        q.pop_front();
+
+        if (current.cnt > 10)
+            break;
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            MoveResult result = Move(current.rx, current.ry, dx[i], dy[i]);
+            int nrx = result.x;
+            int nry = result.y;
+            int rCnt = result.count;
+
+            result = Move(current.bx, current.by, dx[i], dy[i]);
+            int nbx = result.x;
+            int nby = result.y;
+            int bCnt = result.count;
+
+            if (arr[nbx][nby] == 'O')
+                continue;
+
+
+            if (arr[nrx][nry] == 'O')
+            {
+
+                current.order = OrderCheck(current, i);
+                return current;
+            }
+
+            if (nrx == nbx && nry == nby)
+            {
+                if (rCnt > bCnt)
+                {
+                    nrx -= dx[i];
+                    nry -= dy[i];
+                }
+                else
+                {
+                    nbx -= dx[i];
+                    nby -= dy[i];
+                }
+            }
+
+            if (!visited[nrx][nry][nbx][nby])
+            {
+                visited[nrx][nry][nbx][nby] = true;
+                q.push_back({ nrx, nry, nbx, nby, current.cnt + 1, OrderCheck(current,i) });
+            }
+        }
+    }
+
+    return { 0,0,0,0,-1,"" };
+}
