@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+int N, M;
+vector<int> tree, arr;
+
+int Init(int start, int end, int node);
+int Update(int start, int end, int node, int index);
+int Query(int start, int end, int node, int i, int j);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N;
+    arr.resize(N+1);
+    tree.resize(N * 4);
+
+    for (int i = 1; i <= N; i++)
+        cin >> arr[i];
+
+    Init(1, N, 1);
+
+    cin >> M;
+    for (int i = 0; i < M; i++)
+    {
+        int type;
+        cin >> type;
+        int a, b;
+        cin >> a >> b;
+        if (type == 1)   // 교체
+        {
+            arr[a] = b;
+            Update(1, N, 1, a);
+        }
+        else if (type == 2)  // 범위 내 데이터 중 가장 작은 값 출력
+        {
+            cout << Query(1, N, 1, a, b) << "\n";
+        }
+    }
+}
+
+int Init(int start, int end, int node)
+{
+    if (start == end)
+        return tree[node] = arr[start];
+
+    int mid = (start + end) / 2;
+    int left = Init(start, mid, node * 2);
+    int right = Init(mid + 1, end, node * 2 + 1);
+
+    return tree[node] = (left < right) ? left : right;
+}
+
+int Update(int start, int end, int node, int index)
+{
+    if (start > index || end < index)
+        return tree[node];
+    if (start == end)
+        return tree[node] = arr[index];
+
+    int mid = (start + end) / 2;
+    int left = Update(start, mid, node * 2, index);
+    int right = Update(mid + 1, end, node * 2 + 1, index);
+
+    return tree[node] = (left < right) ? left : right;
+}
+
+int Query(int start, int end, int node, int i, int j)
+{
+    if (j < start || i > end)
+        return 2000000001;
+    if (i <= start && end <= j)
+        return tree[node];
+    int mid = (start + end) / 2;
+    int leftMin = Query(start, mid, node * 2, i, j);
+    int rightMin = Query(mid + 1, end, node * 2 + 1, i, j);
+    return (leftMin< rightMin) ? leftMin : rightMin;
+}
