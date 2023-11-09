@@ -150,6 +150,7 @@
         "bead_escape": "cpp",
         "tunnelentranceandexit": "cpp",
         "vehiclelicenseplate_1": "cpp",
-        "sequences_and_queries_17": "cpp"
+        "sequences_and_queries_17": "cpp",
+        "weeklymeeting": "cpp"
     }
 }
