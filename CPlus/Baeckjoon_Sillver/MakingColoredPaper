@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int whiteCount = 0;
+int blueCount = 0;
+
+bool IsColored(vector<vector<int>>& paper, int row, int col, int size) 
+{
+    int color = paper[row][col];
+    for (int i = row; i < row + size; i++) 
+    {
+        for (int j = col; j < col + size; j++) 
+        {
+            if (paper[i][j] != color)
+                return false;
+        }
+    }
+    return true;
+}
+
+void DividePaper(vector<vector<int>>& paper, int row, int col, int size) 
+{
+    if (IsColored(paper, row, col, size)) 
+    {
+        if (paper[row][col] == 0)
+            whiteCount++;
+        else
+            blueCount++;
+        return;
+    }
+
+    int newSize = size / 2;
+    DividePaper(paper, row, col, newSize);                   // 왼쪽 위
+    DividePaper(paper, row, col + newSize, newSize);          // 오른쪽 위
+    DividePaper(paper, row + newSize, col, newSize);          // 왼쪽 아래
+    DividePaper(paper, row + newSize, col + newSize, newSize); // 오른쪽 아래
+}
+
+int main() {
+    int N;
+    cin >> N;
+    vector<vector<int>> paper(N, vector<int>(N));
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            cin >> paper[i][j];
+    }
+
+    DividePaper(paper, 0, 0, N);
+
+    cout << whiteCount << "\n";
+    cout << blueCount << "\n";
+
+    return 0;
+}
