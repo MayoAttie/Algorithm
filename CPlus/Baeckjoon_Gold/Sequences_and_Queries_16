@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <limits>
+using namespace std;
+
+struct Node 
+{
+    int num;
+    int idx;
+
+    Node(int num = numeric_limits<int>::max(), int idx = numeric_limits<int>::max()) : num(num), idx(idx) {}
+
+    bool operator < (const Node& other) const 
+    {
+        if (num == other.num) return idx < other.idx;
+        return num < other.num;
+    }
+};
+
+vector<int> arr;
+vector<Node> tree;
+int N, M;
+
+Node Init(int start, int end, int node);
+Node Update(int start, int end, int node, int index);
+Node FindValue(int start, int end, int node, int i, int j);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N;
+    arr.resize(N + 1);
+    tree.resize(N * 4);
+    for (int i = 1; i <= N; i++)
+        cin >> arr[i];
+    
+    cin >> M;
+
+    Init(1, N, 1);
+
+    for (int i = 0; i < M; i++)
+    {
+        int a, b, type;
+        cin >> type;
+        cin >> a >> b;
+
+        if (type == 1)
+        {
+            arr[a] = b;
+            Update(1, N, 1, a);
+        }
+        else if (type == 2)
+        {
+            Node result = FindValue(1, N, 1, a, b);
+            cout << result.idx << "\n";
+        }
+    }
+}
+
+Node Init(int start, int end, int node)
+{
+    if (start == end)
+        return tree[node] = Node(arr[start], start);
+
+    int mid = (start + end) / 2;
+    Node left = Init(start, mid, node * 2);
+    Node right = Init(mid + 1, end, node * 2 + 1);
+
+    return tree[node] = (left < right) ? left : right;
+}
+
+Node Update(int start, int end, int node, int index)
+{
+    if (start > index || index > end)
+        return tree[node];
+    if (start == end)
+        return tree[node] = { arr[index], index };
+
+    int mid = (start + end) / 2;
+    Node left = Update(start, mid, node * 2, index);
+    Node right = Update(mid + 1, end, node * 2 + 1, index);
+
+    return tree[node] = (left < right) ? left : right;
+}
+Node FindValue(int start, int end, int node, int i, int j)
+{
+    if (j < start || i > end)
+        return Node();
+
+    if (i <= start && end <= j)
+        return tree[node];
+
+    int mid = (start + end) / 2;
+    Node left = FindValue(start, mid, node * 2, i, j);
+    Node right = FindValue(mid + 1, end, node * 2 + 1, i, j);
+
+    if (left.num == numeric_limits<int>::max())
+        return right;
+    if (right.num == numeric_limits<int>::max())
+        return left;
+
+    return (left < right) ? left : right;
+}
