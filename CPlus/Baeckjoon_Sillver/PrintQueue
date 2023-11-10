@@ -1,0 +1,65 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+struct File
+{
+    int number; 
+    int index; 
+};
+
+int main() 
+{
+    int testCase;
+    cin >> testCase;
+
+    for (int t = 0; t < testCase; ++t)
+    {
+        int cnt, idx;
+        cin >> cnt >> idx;
+        queue<File> que;
+
+        for (int j = 0; j < cnt; j++)
+        {
+            int a;
+            cin >> a;
+            que.push({ j, a });
+        }
+
+        int result = 1;
+
+        while (!que.empty())
+        {
+            File current = que.front();
+            que.pop();
+            bool check = true;
+
+            queue<File> tmp = que;
+            while (!tmp.empty())
+            {
+                File value = tmp.front();
+                tmp.pop();
+
+                if (current.index < value.index)
+                {
+                    check = false;
+                    break;
+                }
+            }
+
+            if (!check) 
+                que.push(current);
+            else 
+            {
+                if (current.number == idx)
+                    cout << result << endl;
+                else 
+                    result++;
+            }
+        }
+    }
+
+    return 0;
+}
