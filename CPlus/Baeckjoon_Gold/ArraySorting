@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+struct Node 
+{
+    vector<int> arr;
+    bool visited;
+    int cost;
+
+    Node(vector<int> arr, int cost) : arr(arr), cost(cost), visited(false) {}
+};
+
+vector<vector<int>> opers;
+vector<int> arr;
+
+void Dijkstra();
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    arr.resize(N + 1);
+    arr[0] = 0;
+
+    for (int i = 1; i <= N; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    int M;
+    cin >> M;
+
+    opers.resize(M);
+
+    for (int i = 0; i < M; i++) 
+    {
+        int l, r, c;
+        cin >> l >> r >> c;
+        opers[i] = { l, r, c };
+    }
+
+    Dijkstra();
+
+    return 0;
+}
+
+void Dijkstra()
+{
+    int N = arr.size() - 1;
+    map<vector<int>, int> costMap;
+
+    costMap[arr] = 0;
+
+    priority_queue<pair<int, vector<int>>> pq;
+    pq.push({ 0, arr });
+
+    while (!pq.empty()) {
+        int cost = -pq.top().first;
+        vector<int> curArr = pq.top().second;
+        pq.pop();
+
+        if (cost > costMap[curArr]) 
+            continue;
+
+        for (int i = 0; i < opers.size(); i++) 
+        {
+            vector<int> nextArr = curArr;
+            int l = opers[i][0];
+            int r = opers[i][1];
+            int c = opers[i][2];
+
+            swap(nextArr[l], nextArr[r]);
+
+            int nextCost = cost + c;
+
+            if (costMap.find(nextArr) == costMap.end() || nextCost < costMap[nextArr]) 
+            {
+                costMap[nextArr] = nextCost;
+                pq.push({ -nextCost, nextArr });
+            }
+        }
+    }
+
+    vector<int> target = arr;
+    sort(target.begin(), target.end());
+
+    if (costMap.find(target) != costMap.end()) 
+        cout << costMap[target] << endl;
+    else 
+        cout << -1 << endl;
+    
+}
