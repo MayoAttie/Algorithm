@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+int main() 
+{
+    string input;
+    cin >> input;
+
+    if (input.size() >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')) 
+    {
+        string tmp = input.substr(2);
+        istringstream stream(tmp);
+        int num;
+        stream >> hex >> num;
+        cout << num << endl;
+    }
+    else if (input[0] == '0') 
+    {
+        istringstream stream(input);
+        int num;
+        stream >> oct >> num;
+        cout << num << endl;
+    }
+    else 
+        cout << input << endl;
+
+    return 0;
+}
