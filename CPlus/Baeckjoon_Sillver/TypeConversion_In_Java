@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <map>
+using namespace std;
+
+map<string, vector<string>> tree;
+bool isConvert(const string& from, const string& to);
+int main() 
+{
+    int N;
+    cin >> N;
+
+    for (int i = 0; i < N - 1; i++) 
+    {
+        string child, parent;
+        cin >> child >> parent;
+        tree[child].push_back(parent);
+    }
+
+    string class1, class2;
+    cin >> class1 >> class2;
+
+    if (isConvert(class1, class2) || isConvert(class2, class1)) 
+        cout << "1" << endl;
+    else 
+        cout << "0" << endl;
+    
+    return 0;
+}
+
+bool isConvert(const string& from, const string& to)
+{
+    if (from == to)
+        return true;
+
+    for (const string& parent : tree[from])
+    {
+        if (isConvert(parent, to))
+            return true;
+    }
+    return false;
+}
