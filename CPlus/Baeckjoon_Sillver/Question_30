@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int tCase;
+	cin >> tCase;
+	while (tCase--)
+	{
+		int A, B;
+		cin >> A >> B;
+
+		int minNum = min(A, B);
+		if (minNum == A)
+		{
+			while (true)
+			{
+				if (B - A < A)
+					break;
+				B /= 2;
+			}
+		}
+		else
+		{
+			while (true)
+			{
+				if (A - B < B)
+					break;
+				A /= 2;
+			}
+		}
+
+		while (A!=B)
+		{
+			if (A > B) 
+			{
+				A /= 2;
+				if (A == B)
+					break;
+				B /= 2;
+			}
+			else
+			{
+				B /= 2;
+				if (A == B)
+					break;
+				A /= 2;
+			}
+		}
+
+		cout << (A * 10) << "\n";
+	}
+}
