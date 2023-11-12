@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<int> apple;
+int k, result;
+
+void bfs(int start);
+
+int main() 
+{
+    int n, start = 0;
+    cin >> n >> k;
+
+    vector<int> tree(n, -1);
+
+    graph.resize(n);
+    apple.resize(n);
+
+    for (int i = 0; i < n; i++) 
+        graph[i] = vector<int>();
+
+    for (int i = 0; i < n - 1; i++) 
+    {
+        int p, c;
+        cin >> p >> c;
+        graph[p].push_back(c);
+        tree[c] = p;
+    }
+
+    for (int i = 0; i < n; i++) 
+    {
+        if (tree[i] == -1) 
+        {
+            start = i;
+            break;
+        }
+    }
+
+    for (int i = 0; i < n; i++) 
+        cin >> apple[i];
+
+    result = 0;
+
+    bfs(start);
+
+    cout << result << endl;
+}
+
+void bfs(int start) 
+{
+    queue<pair<int, int>> q;
+    result += apple[start];
+    q.push(make_pair(start, 0));
+
+    while (!q.empty()) 
+    {
+        pair<int, int> current = q.front();
+        q.pop();
+
+        for (int num : graph[current.first])
+        {
+            result += apple[num];
+            if (current.second + 1 < k) 
+                q.push(make_pair(num, current.second + 1));
+        }
+    }
+}
