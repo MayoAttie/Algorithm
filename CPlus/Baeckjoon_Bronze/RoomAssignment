@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+    int n, k;
+    cin >> n >> k;
+    vector<vector<vector<int>>> arr(7, vector<vector<int>>(2));
+
+    for (int i = 0; i < n; i++) 
+    {
+        int s, y;
+        cin >> s >> y;
+        arr[y][s].push_back(1);
+    }
+
+    int ans = 0;
+    for (const auto& ws : arr) 
+    {
+        ans += ceil(static_cast<double>(ws[0].size()) / k) + ceil(static_cast<double>(ws[1].size()) / k);
+    }
+
+    cout << ans << endl;
+
+    return 0;
+}
