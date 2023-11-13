@@ -157,6 +157,7 @@
         "printqueue": "cpp",
         "fashionking_shinhyebin": "cpp",
         "numbersort": "cpp",
-        "typeconversion_in_java": "cpp"
+        "typeconversion_in_java": "cpp",
+        "triangletree": "cpp"
     }
 }
