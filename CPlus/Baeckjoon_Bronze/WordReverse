@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	int T;
+	cin >> T;
+
+	cin.ignore();
+	for (int i = 0; i < T; i++)
+	{
+		string str;
+		getline(cin, str);
+		
+		istringstream iss(str);
+		string word;
+		vector<string> words;
+
+		while (iss>>word)
+		{
+			words.push_back(word);
+		}
+		
+		for (int i = 0; i < words.size(); i++)
+		{
+			for (int j = words[i].length()-1; j>=0; j--)
+				cout << words[i][j];
+
+			if (i < words.size() - 1)
+				cout << " ";
+		}
+		cout << endl;
+	}
+
+}
