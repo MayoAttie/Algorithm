@@ -1,0 +1,27 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int N, M;
+    cin >> N >> M;
+
+    vector<vector<int>> dp(M + 1, vector<int>(N + 1, 0));
+    for (int i = 1; i <= M; i++)
+    {
+        int day, page;
+        cin >> day >> page;
+
+        for (int j = 0; j <= N; j++)
+        {
+            dp[i][j] = dp[i - 1][j];
+
+            if (j >= day)
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - day] + page);
+        }
+    }
+
+    cout << dp[M][N];
+    return 0;
+}
