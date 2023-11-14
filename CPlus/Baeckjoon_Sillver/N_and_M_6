@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int n, m;
+vector<int> arr;
+vector<int> result;
+vector<bool> visit;
+
+void Backtraking(int start, int cnt) 
+{
+    if (cnt == m) 
+    {
+        for (int i = 0; i < m; i++) 
+        {
+            cout << result[i] << " ";
+        }
+        cout << endl;
+        return;
+    }
+    else 
+    {
+        for (int i = start; i < n; i++) 
+        {
+            if (!visit[i]) 
+            {
+                visit[i] = true;
+                result[cnt] = arr[i];
+                Backtraking(i + 1, cnt + 1);
+                visit[i] = false;
+            }
+        }
+    }
+}
+
+int main() 
+{
+    cin >> n >> m;
+    arr.resize(n);
+    visit.resize(n, false);
+    result.resize(m);
+
+    for (int i = 0; i < n; i++) 
+        cin >> arr[i];
+   
+
+    sort(arr.begin(), arr.end());
+    Backtraking(0, 0);
+
+    return 0;
+}
