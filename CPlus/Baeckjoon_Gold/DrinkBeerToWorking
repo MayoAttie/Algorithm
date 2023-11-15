@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+void BFS(int start_x, int start_y, int end_x, int end_y, vector<pair<int, int>>& graph, vector<bool>& visited);
+
+int main()
+{
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        int start_x, start_y;
+
+        vector<pair<int, int>> graph;
+        for (int i = 0; i < n; i++)
+        {
+            int x, y;
+            cin >> x >> y;
+            graph.push_back({x, y});
+        }
+
+        int end_x, end_y;
+        cin >> end_x >> end_y;
+        vector<bool> visited(n + 1, false);
+
+        BFS(0, 0, end_x, end_y, graph, visited);
+    }
+}
+
+void BFS(int start_x, int start_y, int end_x, int end_y, vector<pair<int, int>>& graph, vector<bool>& visited)
+{
+    deque<pair<int, int>> q;
+    q.push_back({start_x, start_y});
+
+    while (!q.empty())
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop_front();
+
+        if (abs(x - end_x) + abs(y - end_y) <= 1000)
+        {
+            cout << "happy" << endl;
+            return;
+        }
+
+        for (int i = 0; i < graph.size(); i++)
+        {
+            if (!visited[i])
+            {
+                int nx = graph[i].first;
+                int ny = graph[i].second;
+
+                if (abs(x - nx) + abs(y - ny) <= 1000)
+                {
+                    q.push_back({nx, ny});
+                    visited[i] = true;
+                }
+            }
+        }
+    }
+
+    cout << "sad" << endl;
+}
