@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+vector<int> dp; 
+
+int countZeros(int num) 
+{
+    string numStr = to_string(num);
+
+    if (dp[num] != -1) 
+        return dp[num];
+    
+
+    int zeroCount = count(numStr.begin(), numStr.end(), '0');
+    dp[num] = zeroCount;
+
+    return zeroCount;
+}
+
+int countZerosInRange(int n, int m) 
+{
+    int totalCount = 0;
+
+    for (int num = n; num <= m; ++num) 
+    {
+        totalCount += countZeros(num);
+    }
+
+    return totalCount;
+}
+
+int main() 
+{
+    int T;
+    cin >> T;
+
+    for (int i = 0; i < T; ++i) 
+    {
+        int N, M;
+        cin >> N >> M;
+
+        dp.resize(M + 1, -1);
+        int result = countZerosInRange(N, M);
+        cout << result << endl;
+    }
+
+    return 0;
+}
