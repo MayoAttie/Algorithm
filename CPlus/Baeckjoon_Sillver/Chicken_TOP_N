@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> num;
+vector<int> tmp;
+void check(int s, int e, int n, int k);
+void merge(int s, int e, int n, int k);
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, k;
+    cin >> n;
+
+    num.resize(n);
+    tmp.resize(n);
+
+    for (int i = 0; i < n; i++) 
+        cin >> num[i];
+
+    cin >> k;
+
+    merge(0, n - 1, n, k);
+
+    for (int i = 0; i < n; i++) 
+        cout << num[i] << " ";
+
+    return 0;
+}
+
+
+void check(int s, int e, int n, int k)
+{
+    if ((e - s) > (n / k))
+        return;
+    
+    int mid = (s + e) / 2;
+    int idx1 = s;
+    int idx2 = mid + 1;
+    int idx3 = 0;
+
+    while (idx1 <= mid && idx2 <= e)
+    {
+        if (num[idx1] <= num[idx2])
+        {
+            tmp[idx3] = num[idx1];
+            idx3 += 1;
+            idx1 += 1;
+        }
+        else
+        {
+            tmp[idx3] = num[idx2];
+            idx3 += 1;
+            idx2 += 1;
+        }
+    }
+    while (idx1 <= mid)
+    {
+        tmp[idx3] = num[idx1];
+        idx3 += 1;
+        idx1 += 1;
+    }
+    while (idx2 <= e)
+    {
+        tmp[idx3] = num[idx2];
+        idx3 += 1;
+        idx2 += 1;
+    }
+    for (int i = s; i <= e; i++)
+        num[i] = tmp[i - s];
+
+}
+
+void merge(int s, int e, int n, int k)
+{
+    if (s == e)
+        return;
+
+    int mid = (s + e) / 2;
+    merge(s, mid, n, k);
+    merge(mid + 1, e, n, k);
+    check(s, e, n, k);
+}
