@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <map>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	string name;
+	cin >> name;
+
+	sort(name.begin(), name.end());
+
+	map<char, int> count;
+	for (char ch : name)
+		count[ch]++;
+
+	int odd = 0;
+	string oddAlpha = "";
+	string answer = "";
+
+	for (auto& i : count)
+	{
+		char ch = i.first;
+		int cnt = i.second;
+
+		if (cnt % 2 != 0)
+		{
+			odd++;
+			oddAlpha += ch;
+		}
+
+		for (int i = 0; i < cnt / 2; i++)
+			answer += ch;
+	}
+
+	if (odd > 1)
+		cout << "I'm Sorry Hansoo\n";
+	else if (odd == 0)
+		cout << answer + string(answer.rbegin(), answer.rend()) << '\n';
+	else
+		cout << answer + oddAlpha + string(answer.rbegin(), answer.rend()) << '\n';
+}
