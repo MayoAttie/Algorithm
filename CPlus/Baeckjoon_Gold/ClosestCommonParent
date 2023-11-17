@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int>> tree;
+void DFS(int current, int parent, vector<int>& parentArray);
+int FindCommonParent(int node1, int node2, vector<int>& parentArray);
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int tCase;
+	cin >> tCase;
+
+	while (tCase--)
+	{
+		int len;
+		cin >> len;
+		int root;
+		tree = vector<vector<int>>(len+1);
+
+		for (int i = 0; i < len-1; i++)
+		{
+			int a, b;		// a==parent, b==child
+			cin >> a >> b;
+
+			tree[a].push_back(b);
+			tree[b].push_back(a);
+
+			if (i == 0)
+				root = a;
+		}
+
+		int node1, node2;
+		cin >> node1 >> node2;
+
+		vector<int> parentArray(len + 1, -1);
+		DFS(root, -1, parentArray);
+		
+		int answer = FindCommonParent(node1, node2, parentArray);
+
+		cout << answer << '\n';
+	}
+}
+
+void DFS(int current, int parent, vector<int>& parentArray)
+{
+	parentArray[current] = parent;
+	for (int i : tree[current])
+	{
+		if (i != parent)
+			DFS(i, current, parentArray);
+	}
+}
+
+int FindCommonParent(int node1, int node2, vector<int>& parentArray)
+{
+	vector<bool> visited(parentArray.size(), false);
+
+	while (node1 != -1)
+	{
+		visited[node1] = true;
+		node1 = parentArray[node1];
+	}
+
+	while (!visited[node2])
+	{
+		node2 = parentArray[node2];
+	}
+
+	return node2;
+}
