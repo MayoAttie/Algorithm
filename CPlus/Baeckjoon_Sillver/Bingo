@@ -1,0 +1,106 @@
+#include <iostream>
+
+using namespace std;
+
+int board[5][5];
+int bingo[5][5];
+int visited[5][5];
+
+bool BingoFind();
+
+int main() 
+{
+    int answer = 0;
+
+    for (int i = 0; i < 5; i++) 
+    {
+        for (int j = 0; j < 5; j++) 
+            cin >> board[i][j];
+    }
+
+    for (int i = 0; i < 5; i++) 
+    {
+        for (int j = 0; j < 5; j++) 
+            cin >> bingo[i][j];
+    }
+
+    for (int i = 0; i < 5; i++) 
+    {
+        for (int j = 0; j < 5; j++) 
+        {
+            int tmp = bingo[i][j];
+            answer++;
+
+            for (int a = 0; a < 5; a++) 
+            {
+                for (int b = 0; b < 5; b++) 
+                {
+                    if (tmp == board[a][b])
+                    {
+                        visited[a][b] = 1;
+                        if (BingoFind()) 
+                        {
+                            cout << answer << endl;
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    cout << answer << endl;
+
+    return 0;
+}
+
+
+bool BingoFind() 
+{
+    int line = 0;
+    int cnt = 0;
+
+    for (int i = 0; i < 5; i++) 
+    {
+        for (int j = 0; j < 5; j++) 
+        {
+            if (visited[i][j] == 1)
+                cnt++;
+        }
+        if (cnt == 5)
+            line++;
+        cnt = 0;
+    }
+
+    for (int i = 0; i < 5; i++) 
+    {
+        for (int j = 0; j < 5; j++) 
+        {
+            if (visited[j][i] == 1)
+                cnt++;
+        }
+        if (cnt == 5)
+            line++;
+        cnt = 0;
+    }
+
+    for (int i = 0; i < 5; i++) 
+    {
+        if (visited[i][i] == 1)
+            cnt++;
+    }
+    if (cnt == 5)
+        line++;
+    cnt = 0;
+
+    for (int i = 0; i < 5; i++) 
+    {
+        if (visited[i][4 - i] == 1)
+            cnt++;
+    }
+    if (cnt == 5)
+        line++;
+    cnt = 0;
+
+    return line >= 3;
+}
