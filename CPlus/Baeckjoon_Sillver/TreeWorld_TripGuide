@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+
+using namespace std;
+vector<int> Finder(vector<int>& orders);
+unordered_set<int> visited;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int n;
+	cin >> n;
+
+	vector<int> orders(n);
+	for (int i = 0; i < n; i++)
+		cin >> orders[i];
+	
+	vector<int> parents = Finder(orders);
+	cout << visited.size() << '\n';
+
+	for (int i = 0; i < visited.size(); i++)
+		cout << parents[i] << " ";
+}
+
+vector<int> Finder(vector<int>& orders)
+{
+	int len = orders.size();
+	vector<int> parents(len);
+	parents[orders[0]] = -1;
+	visited.insert(orders[0]);
+
+	for (int i = 1; i < len; i++)
+	{
+		if (!visited.count(orders[i]))
+		{
+			parents[orders[i]] = orders[i - 1];
+			visited.insert(orders[i]);
+		}
+	}
+
+	return parents;
+}
