@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> field;
+
+void SandCount(int block, int dx, int dy, vector<vector<double>>& dir, int N, int& answer, int& sX, int& sY);
+
+int main()
+{
+    int N;
+    cin >> N;
+    field.resize(N, vector<int>(N));
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+            cin >> field[i][j];
+    }
+
+    vector<vector<double>> left =
+    {
+        {1,1,0.01},{1,0,0.07},{1,-1,0.1},
+        {-1,1,0.01},{-1,0,0.07},{-1,-1,0.1},
+        {2,0,0.02},{-2,0,0.02},{0,-2,0.05},
+        {0,-1,0}
+    };
+
+    vector<vector<double>> right, down, up;
+
+    for (auto& dir : left)
+    {
+        right.push_back({ dir[0], -dir[1], dir[2] });
+        down.push_back({ -dir[1], dir[0], dir[2] });
+        up.push_back({ dir[1], dir[0], dir[2] });
+    }
+
+    int sX = N / 2;
+    int sY = N / 2;
+
+    int answer = 0;
+
+    for (int i = 1; i <= N; i++)
+    {
+        if (i % 2 == 1)
+        {
+            SandCount(i, 0, -1, left, N, answer, sX, sY);
+            SandCount(i, 1, 0, down, N, answer, sX, sY);
+        }
+        else if (i % 2 == 0)
+        {
+            SandCount(i, 0, 1, right, N, answer, sX, sY);
+            SandCount(i, -1, 0, up, N, answer, sX, sY);
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
+
+void SandCount(int block, int dx, int dy, vector<vector<double>>& dir, int N, int& answer, int& sX, int& sY)
+{
+    for (int i = 0; i < block; i++)
+    {
+        sX += dx;
+        sY += dy;
+        if (sY < 0)
+            break;
+
+        int total = 0;
+        for (auto& d : dir)
+        {
+            int nx = sX + d[0];
+            int ny = sY + d[1];
+
+            int spray = field[sX][sY] * d[2];
+
+            if (d[2] == 0)
+                spray = field[sX][sY] - total;
+
+            total += spray;
+
+            if (0 <= nx && nx < N && 0 <= ny && ny < N)
+                field[nx][ny] += spray;
+            else
+                answer += spray;
+        }
+    }
+}
