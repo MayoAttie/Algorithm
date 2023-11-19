@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int graph[5][5];
+int drX[4] = { 1, -1, 0, 0 };
+int drY[4] = { 0, 0, 1, -1 };
+int answer = 987654321;
+
+void DFS(int r, int c, int eat, int cnt);
+
+int main()
+{
+    int r, c;
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+            cin >> graph[i][j];
+    }
+    cin >> r >> c;
+    graph[r][c] = -1;
+    DFS(r, c, 0, 0);
+    if (answer == 987654321)
+        cout << -1;
+    else
+        cout << answer;
+}
+
+void DFS(int r, int c, int eat, int cnt)
+{
+    if (eat >= 3)
+    {
+        answer = min(answer, cnt);
+        return;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        int nr = r + drX[i];
+        int nc = c + drY[i];
+
+        if (nr < 0 || nr >= 5 || nc < 0 || nc >= 5)
+            continue;
+
+        if (graph[nr][nc] != -1)
+        {
+            int origin = graph[nr][nc];
+            if (origin == 1)
+            {
+                graph[nr][nc] = -1;
+                DFS(nr, nc, eat + 1, cnt + 1);
+            }
+            else
+            {
+                graph[nr][nc] = -1;
+                DFS(nr, nc, eat, cnt + 1);
+            }
+
+            // 상태를 원래대로 복구
+            graph[nr][nc] = origin;
+        }
+    }
+}
