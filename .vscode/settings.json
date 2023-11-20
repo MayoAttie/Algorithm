@@ -160,6 +160,7 @@
         "typeconversion_in_java": "cpp",
         "triangletree": "cpp",
         "bingo": "cpp",
-        "wizardsharkandtornado": "cpp"
+        "wizardsharkandtornado": "cpp",
+        "gradestatistics": "cpp"
     }
 }

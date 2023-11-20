@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+bool comparer(const int& a, const int& b) {return a>b;}
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    for (int i = 0; i < N; i++)
+    {
+        int K;
+        cin >> K;
+        vector<int> clsData(K);
+
+        int maxValue = 0;
+        int minValue = INT_MAX; 
+        int gaps = 0;
+
+        for (int j = 0; j < K; j++)
+        {
+            int a;
+            cin >> a;
+            clsData[j] = a;
+        }
+        sort(clsData.begin(), clsData.end(), comparer);
+
+        for (int j = 0; j < K; j++)
+        {
+            maxValue = max(maxValue, clsData[j]);
+            minValue = min(minValue, clsData[j]);
+            int curGap = 0;
+            if (j != 0)
+                curGap = abs(clsData[j] - clsData[j - 1]);
+
+            gaps = max(curGap, gaps);
+        }
+
+        cout << "Class " << i+1 << '\n';
+        cout << "Max " << maxValue << ", Min " << minValue << ", Largest gap " << gaps << '\n'; 
+    }
+}
