@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool comparer(const pair<int, int>& a, const pair<int, int>& b) 
+{
+    return a.second > b.second; 
+}
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    vector<pair<int, int>> people(N);
+    for (int i = 0; i < N; i++)
+    {
+        people[i].first = i + 1;
+        cin >> people[i].second;
+    }
+
+    // 1번 후보자의 지지자가 가장 많다면 반복문 탈출 후, 반복 횟수 출력
+    // 매 반복마다, 가장 값이 큰 후보의 지지자를 뺏어옴.
+    // 1번 후보보다 값이 큰 후보가 1명이라도 있다면 반복 지속
+    int answer = 0;
+    while (true)
+    {
+        sort(people.begin(), people.end(), comparer);
+
+        if (people[0].first == 1)
+        {
+            if (N > 1)
+            {
+                if (people[0].second > people[1].second)
+                    break;
+            }
+            else
+                break;
+        }
+
+        auto result = find_if(people.begin(), people.end(), [](const pair<int, int>& p)
+            {
+                return p.first == 1;
+            });
+
+        result->second += 1;
+        if (people[0].first != 1)
+            people[0].second -= 1;
+        else
+            people[1].second -= 1;
+
+        answer++;
+    }
+
+    cout << answer << endl;
+
+}
