@@ -1,0 +1,91 @@
+#include <iostream>
+#include <deque>
+#include <vector>
+
+using namespace std;
+
+int cnt_2 = 0;
+int cnt_3 = 0;
+
+void Mover(deque<int>& que, int index)
+{
+    switch (index)
+    {
+    case 1:
+        que.pop_front();
+        break;
+    case 2:
+    {
+        int tmp;
+        tmp = que.front();
+        que.pop_front();
+        que.push_back(tmp);
+        cnt_2++;
+    }
+    break;
+    case 3:
+    {
+        int tmp;
+        tmp = que.back();
+        que.pop_back();
+        que.push_front(tmp);
+        cnt_3++;
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+    deque<int> que;
+
+    for (int i = 1; i <= N; i++)
+    {
+        que.push_back(i);
+    }
+
+    for (int i = 0; i < M; i++)
+    {
+        int target;
+        cin >> target;
+
+        int target_index = 0;
+        for (int j = 0; j < que.size(); j++)
+        {
+            if (que[j] == target)
+            {
+                target_index = j;
+                break;
+            }
+        }
+
+        int left_distance = target_index;
+        int right_distance = que.size() - target_index;
+
+        if (left_distance <= right_distance)
+        {
+            while (que.front() != target)
+            {
+                Mover(que, 2);
+            }
+        }
+        else
+        {
+            while (que.front() != target)
+            {
+                Mover(que, 3);
+            }
+        }
+
+
+        Mover(que, 1);
+    }
+
+    cout << cnt_2 + cnt_3 << endl;
+
+    return 0;
+}
