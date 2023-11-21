@@ -1,0 +1,74 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    // 기둥의 개수 입력
+    int N;
+    cin >> N;
+
+    // 기둥 정보를 저장할 벡터
+    vector<pair<int, int>> pillar;
+
+    // 가장 높은 기둥과 가장 끝에 있는 기둥의 정보 초기화
+    int highest = 0;
+    int longest = 0;
+    int highest_idx = 0;
+    int longest_height = 0;
+
+    // 기둥 정보 입력 및 최댓값 갱신
+    for (int i = 0; i < N; ++i) 
+    {
+        int a, b;
+        cin >> a >> b;
+        pillar.push_back(make_pair(a, b));
+
+        if (b > highest) 
+        {
+            highest = b;
+            highest_idx = a;
+        }
+        if (a > longest) 
+        {
+            longest = a;
+            longest_height = b;
+        }
+    }
+
+    // 높이를 기록할 배열 초기화
+    vector<int> arr(longest + 1, 0);
+
+    // 입력받은 기둥 정보를 배열에 기록
+    for (int i = 0; i < N; ++i) 
+    {
+        arr[pillar[i].first] = pillar[i].second;
+    }
+
+    // 왼쪽 방향으로 가장 높은 기둥으로 통일
+    for (int j = 1; j < highest_idx; ++j) 
+    {
+        if (!(arr[j] > arr[j - 1])) 
+            arr[j] = arr[j - 1];
+        
+    }
+
+    // 오른쪽 방향으로 가장 높은 기둥으로 통일
+    for (int k = longest; k > highest_idx; --k) 
+    {
+        if (!(arr[k - 1] > arr[k])) 
+            arr[k - 1] = arr[k];
+        
+    }
+
+    // 기록된 높이들의 합 계산
+    int sum = 0;
+    for (int l : arr) 
+        sum += l;
+    
+
+    // 결과 출력
+    cout << sum << endl;
+
+    return 0;
+}
