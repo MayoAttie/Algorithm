@@ -1,0 +1,129 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    char board[8][8];
+    char kingCol, rockCol;
+    int kingRow, rockRow;
+
+    for (int i = 0; i < 8; i++) 
+    {
+        for (int j = 0; j < 8; j++) 
+        {
+            board[i][j] = '.';
+        }
+    }
+
+    cin >> kingCol >> kingRow >> rockCol >> rockRow;
+
+    kingCol -= 'A';
+    kingRow = 8 - kingRow;
+    rockCol -= 'A';
+    rockRow = 8 - rockRow;
+
+    board[kingRow][kingCol] = 'K';
+    board[rockRow][rockCol] = 'R';
+
+    int N;
+    cin >> N;
+
+    while (N--) 
+    {
+        string move;
+        cin >> move;
+
+        int nextKingR = kingRow;
+        int nextKingC = kingCol;
+        int nextRockR = rockRow;
+        int nextRockC = rockCol;
+
+        if (move == "R") 
+            nextKingC++;
+        else if (move == "L") 
+            nextKingC--;
+        else if (move == "B") 
+            nextKingR++;
+        else if (move == "T") 
+            nextKingR--;
+        else if (move == "RT") 
+        {
+            nextKingR--;
+            nextKingC++;
+        }
+        else if (move == "LT") 
+        {
+            nextKingR--;
+            nextKingC--;
+        }
+        else if (move == "RB") 
+        {
+            nextKingR++;
+            nextKingC++;
+        }
+        else if (move == "LB") 
+        {
+            nextKingR++;
+            nextKingC--;
+        }
+
+        if (nextKingR >= 0 && nextKingR < 8 && nextKingC >= 0 && nextKingC < 8)
+        {
+            if (nextKingR == rockRow && nextKingC == rockCol)
+            {
+                if (move == "R") 
+                    nextRockC++;
+                else if (move == "L") 
+                    nextRockC--;
+                else if (move == "B") 
+                    nextRockR++;
+                else if (move == "T") 
+                    nextRockR--;
+                else if (move == "RT") 
+                {
+                    nextRockR--;
+                    nextRockC++;
+                }
+                else if (move == "LT") 
+                {
+                    nextRockR--;
+                    nextRockC--;
+                }
+                else if (move == "RB") 
+                {
+                    nextRockR++;
+                    nextRockC++;
+                }
+                else if (move == "LB") 
+                {
+                    nextRockR++;
+                    nextRockC--;
+                }
+
+                if (nextRockR >= 0 && nextRockR < 8 && nextRockC >= 0 && nextRockC < 8)
+                {
+                    board[kingRow][kingCol] = '.';
+                    board[rockRow][rockCol] = '.';
+                    kingRow = nextKingR;
+                    kingCol = nextKingC;
+                    rockRow = nextRockR;
+                    rockCol = nextRockC;
+                    board[kingRow][kingCol] = 'K';
+                    board[rockRow][rockCol] = 'R';
+                }
+            }
+            else 
+            {
+                board[kingRow][kingCol] = '.';
+                kingRow = nextKingR;
+                kingCol = nextKingC;
+                board[kingRow][kingCol] = 'K';
+            }
+        }
+    }
+
+    cout << static_cast<char>('A' + kingCol) << 8 - kingRow << '\n';
+    cout << static_cast<char>('A' + rockCol) << 8 - rockRow << '\n';
+
+    return 0;
+}
