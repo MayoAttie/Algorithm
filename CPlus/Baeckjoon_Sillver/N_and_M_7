@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int N, M;
+vector<int> arr;
+vector<int> tmp;
+vector<string> answer;
+
+void Generator() 
+{
+    if (tmp.size() == M)
+    {
+        string result;
+        for (int i = 0; i < M; i++) 
+        {
+            result += to_string(tmp[i]) + " ";
+        }
+        answer.push_back(result);
+    }
+    else 
+    {
+        for (int i : arr) 
+        {
+            tmp.push_back(i);
+            Generator();
+            tmp.pop_back();
+        }
+    }
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N >> M;
+
+    arr.resize(N);
+    for (int i = 0; i < N; i++) 
+        cin >> arr[i];
+    
+
+    sort(arr.begin(), arr.end());
+
+    Generator();
+
+    for (const string& str : answer)
+        cout << str << '\n';
+    
+
+    return 0;
+}
