@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    // 방의 정원과 전체 학생 수 입력 받기
+    int A, B, C, N;
+    cin >> A >> B >> C >> N;
+
+    // 결과를 나타내는 변수 초기화
+    int result = 0;
+
+    // 세 종류의 방을 활용하여 가능한 모든 조합을 검사
+    for (int i = 0; i < 300; i++) 
+    {
+        for (int j = 0; j < 150; j++) 
+        {
+            for (int k = 0; k < 100; k++) 
+            {
+                // 현재 조합이 전체 학생 수와 일치하는지 검사
+                if ((i * A) + (j * B) + (k * C) == N) 
+                {
+                    // 일치하면 결과를 1로 설정하고 반복문 종료
+                    result = 1;
+                    break;
+                }
+            }
+        }
+    }
+
+    // 최종 결과 출력
+    cout << result;
+
+    return 0;
+}
