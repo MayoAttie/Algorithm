@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+double solution(int N, vector<double>& arr);
+int main()
+{
+	int N;
+	cin >> N;
+	vector<double> arr(N);
+
+	for (int i = 0; i < N; i++)
+		cin >> arr[i];
+
+	double answer = solution(N, arr);
+	cout << fixed << setprecision(3) << answer;
+}
+
+double solution(int N, vector<double>& arr)
+{
+	double maxValue = arr[0];
+	double minValue = arr[0];
+	double result = arr[0];
+
+	for (int i = 1; i < N; i++)
+	{
+		if (arr[i] < 0)
+			swap(maxValue, minValue);
+
+		maxValue = max(arr[i], maxValue * arr[i]);
+		minValue = min(arr[i], minValue * arr[i]);
+
+		result = max(result, maxValue);
+	}
+
+	return round(result * 1000) / 1000;
+}
