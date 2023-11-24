@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+int ReverseNum(string n);
+int main()
+{
+	string X, Y;
+	cin >> X >> Y;
+
+	int answer = ReverseNum(to_string(ReverseNum(X)+ReverseNum(Y)));
+	cout << answer;
+}
+
+int ReverseNum(string n)
+{
+	int result = 0;
+	string str = "";
+
+	for (int i = n.length()-1; i >=0; i--)
+	{
+		str += n[i];
+	}
+
+	result = stoi(str);
+	
+
+	return result;
+}
