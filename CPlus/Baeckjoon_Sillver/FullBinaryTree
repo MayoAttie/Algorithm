@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> orders;
+vector<vector<int>> trees;
+void inOrder(int depth, int start, int end);
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int K;
+    cin >> K;
+    int totalNodes = (1 << K) - 1;
+
+    orders.resize(totalNodes);
+    trees.resize(K);
+
+    for (int i = 0; i < totalNodes; i++)
+        cin >> orders[i];
+
+    inOrder(0, 0, totalNodes);
+
+    for (const auto& tmp : trees) 
+    {
+        for (int i : tmp) 
+        {
+            cout << i << " ";
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
+
+
+void inOrder(int depth, int start, int end)
+{
+    if (start >= end)
+        return;
+
+    int mid = (start + end) / 2;
+    trees[depth].push_back(orders[mid]);
+
+    inOrder(depth + 1, start, mid);
+    inOrder(depth + 1, mid + 1, end);
+}
