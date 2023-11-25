@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+vector<vector<pair<int, int>>> graph;
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>que;
+
+vector<int> Dijkstra(int start, int end);
+
+int main()
+{
+    int V, E, P;
+    cin >> V >> E >> P;
+    graph.resize(V + 1);
+
+    for (int i = 0; i < E; i++)
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+        graph[a].push_back({ b,c });
+        graph[b].push_back({ a,c });
+    }
+
+    vector<int> dp1 = Dijkstra(1, V);
+    vector<int> dp2 = Dijkstra(P, V);
+
+    if (dp1[V] >= dp1[P] + dp2[V])
+        cout << "SAVE HIM";
+    else
+        cout << "GOOD BYE";
+}
+
+vector<int> Dijkstra(int start, int end)
+{
+    vector<int> dp(end + 1, INT_MAX);
+    que.push({ 0, start }); 
+    dp[start] = 0;
+
+    while (!que.empty())
+    {
+        int curDist = que.top().first;
+        int curNode = que.top().second;
+        que.pop();
+
+        if (dp[curNode] < curDist)
+            continue;
+
+        for (auto& next : graph[curNode])
+        {
+            int nextNode = next.first;
+            int nextDist = next.second;
+
+            if (dp[nextNode] <= curDist + nextDist)
+                continue;
+
+            dp[nextNode] = curDist + nextDist;
+            que.push({ curDist + nextDist, nextNode });
+        }
+    }
+
+    return dp;
+}
