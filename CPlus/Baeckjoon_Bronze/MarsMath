@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+using namespace std;
+
+
+int main() 
+{
+    int T;
+    cin >> T;
+
+    double num;
+    char ch;
+
+    while (T--)
+    {
+        cin >> num;
+        while (true)
+        {
+            cin.get(ch);
+            if (ch == '@')
+                num *= 3;
+            if (ch == '%')
+                num += 5;
+            if (ch == '#')
+                num -= 7;
+            if (ch == '\n')
+                break;
+        }
+        cout << fixed;
+        cout.precision(2);
+        cout << num << '\n';
+    }
+
+    
+
+    return 0;
+}
