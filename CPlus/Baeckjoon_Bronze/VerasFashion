@@ -1,0 +1,12 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+    long long result = N * (N - 1);
+    cout << result;
+	
+}
