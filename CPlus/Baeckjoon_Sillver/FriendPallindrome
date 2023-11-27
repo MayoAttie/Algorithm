@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int n, m;
+vector<vector<int>> graph;
+vector<bool> visit;
+int answer;
+
+void dfs(int depth, int count) 
+{
+    if (depth >= m) 
+    {
+        answer = max(answer, count);
+        return;
+    }
+
+    if (visit[graph[depth][0]] || visit[graph[depth][1]]) 
+        dfs(depth + 1, count);
+    else 
+    {
+        visit[graph[depth][0]] = true;
+        visit[graph[depth][1]] = true;
+
+        dfs(depth + 1, count + 1);
+
+        visit[graph[depth][0]] = false;
+        visit[graph[depth][1]] = false;
+
+        dfs(depth + 1, count);
+    }
+}
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> n >> m;
+    visit.resize(n + 1, false);
+
+    if (m == 0) 
+    {
+        cout << 1;
+        return 0;
+    }
+
+    graph.resize(m, vector<int>(2));
+
+    for (int i = 0; i < m; i++) 
+        cin >> graph[i][0] >> graph[i][1];
+    
+
+    dfs(0, 0);
+
+    answer *= 2;
+
+    if (answer < n) 
+        answer++;
+    
+
+    cout << answer << endl;
+
+    return 0;
+}
