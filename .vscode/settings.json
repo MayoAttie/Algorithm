@@ -162,6 +162,7 @@
         "bingo": "cpp",
         "wizardsharkandtornado": "cpp",
         "gradestatistics": "cpp",
-        "nationalassemblyelections": "cpp"
+        "nationalassemblyelections": "cpp",
+        "olympic": "cpp"
     }
 }
