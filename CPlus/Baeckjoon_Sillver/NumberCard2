@@ -1,0 +1,35 @@
+#include <map>
+#include <iostream>
+#include <vector>
+using namespace std;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N, M;
+	cin >> N;
+	map<int, int> table;
+	for (int i = 0; i < N; i++)
+	{
+		int a;
+		cin >> a;
+		table[a]++;
+	}
+
+	cin >> M;
+	for (int i = 0; i < M; i++)
+	{
+		int a;
+		cin >> a;
+		if (table.find(a) != table.end())
+		{
+			cout << table[a] << " ";
+		}
+		else
+		{
+			cout << 0 << " ";
+		}
+	}
+}
