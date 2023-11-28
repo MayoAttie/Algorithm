@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstdlib>
+#include <functional>
+
+using namespace std;
+
+struct number
+{
+    int num;
+    int sign;
+};
+
+bool compareror(const number& a, const number& b)
+{
+    if (a.num != b.num)
+        return a.num > b.num;
+    else
+        return a.sign > b.sign;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    function<bool(const number&, const number&)> compareFunction = compareror;
+    priority_queue<number, vector<number>, decltype(compareFunction)> heap(compareFunction);
+
+    for (int i = 0; i < N; i++)
+    {
+        int a;
+        cin >> a;
+
+        int signs = 0;
+        if (a > 0)
+            signs = 1;
+        else
+            signs = -1;
+
+        if (a == 0)
+        {
+            if (!heap.empty())
+            {
+                if (heap.top().sign == 1)
+                    cout << heap.top().num << '\n';
+                else
+                    cout << -heap.top().num << '\n';
+                heap.pop();
+            }
+            else
+                cout << 0 << '\n';
+        }
+        else
+        {
+            heap.push({ abs(a), signs });
+        }
+    }
+
+    return 0;
+}
