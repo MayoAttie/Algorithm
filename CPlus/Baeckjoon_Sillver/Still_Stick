@@ -1,0 +1,39 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int main()
+{
+    // 괄호 문자열을 입력받음
+    string str;
+    getline(cin, str);
+
+    // 스택을 사용하여 괄호의 짝을 확인
+    stack<char> stk;
+
+    // 결과적으로 쌍이 맞는 괄호의 개수를 저장하는 변수
+    int cnt = 0;
+
+    // 문자열을 순회하면서 괄호의 짝을 확인
+    for (int i = 0; i < str.length(); i++)
+    {
+        if (str[i] == '(')
+            stk.push(str[i]); // 여는 괄호인 경우 스택에 푸시
+        else
+        {
+            stk.pop(); // 닫는 괄호인 경우 스택에서 팝
+
+            // 직전 문자가 여는 괄호인 경우
+            if (str[i - 1] == '(')
+                cnt += stk.size(); // 스택의 크기만큼 더함 (현재 닫는 괄호와 짝을 이루는 여는 괄호의 개수)
+            else
+                cnt++; // 직전 문자가 닫는 괄호인 경우, 하나의 닫는 괄호가 더 추가됨
+        }
+    }
+
+    // 결과 출력
+    cout << cnt;
+
+    return 0;
+}
