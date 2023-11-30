@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <unordered_set>
+
+using namespace std;
+
+class Magic 
+{
+public:
+    int magic_a, magic_b;
+    unordered_set<int> restriction;
+
+    Magic(int magic_a, int magic_b, const vector<vector<int>>& restrictions) : magic_a(magic_a), magic_b(magic_b) 
+    {
+        for (const vector<int>& interval : restrictions) 
+        {
+            for (int i = interval[0]; i <= interval[1]; ++i) 
+            {
+                restriction.insert(i);
+            }
+        }
+    }
+
+    int makePuppy(int target) 
+    {
+        vector<bool> visited(target + 1, false);
+        for (int res : restriction) 
+        {
+            visited[res] = true;
+        }
+
+        queue<pair<int, int>> q;
+        q.push(make_pair(0, 0));
+        visited[0] = true;
+
+        while (!q.empty()) 
+        {
+            int curPuppy = q.front().first;
+            int actionCnt = q.front().second;
+            q.pop();
+
+            if (curPuppy == target) 
+                return actionCnt;
+            
+
+            for (int nxt : {curPuppy + magic_a, curPuppy + magic_b}) 
+            {
+                if (nxt <= target && !visited[nxt]) 
+                {
+                    visited[nxt] = true;
+                    q.push(make_pair(nxt, actionCnt + 1));
+                }
+            }
+        }
+
+        return -1;
+    }
+};
+
+pair<Magic, int> initData() 
+{
+    int totalPuppy, totalInterval, magicA, magicB;
+    cin >> totalPuppy >> totalInterval >> magicA >> magicB;
+
+    vector<vector<int>> intervals(totalInterval, vector<int>(2));
+    for (int i = 0; i < totalInterval; ++i) 
+    {
+        cin >> intervals[i][0] >> intervals[i][1];
+    }
+
+    return make_pair(Magic(magicA, magicB, intervals), totalPuppy);
+}
+
+int main() 
+{
+    pair<Magic, int> data = initData();
+    Magic magicInfo = data.first;
+    int puppy = data.second;
+
+    cout << magicInfo.makePuppy(puppy) << endl;
+
+    return 0;
+}
