@@ -1,0 +1,34 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>  // Include the algorithm header for max_element
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+	vector<int> arr(N);
+	vector<int> answer(N, 0);
+	for (int i = 0; i < N; i++)
+		cin >> arr[i];
+
+	pair<int, int> maxHigh = {arr[0],0};
+	int cnt = 0;
+	for (int i = 1; i < N; i++)
+	{
+		if (maxHigh.first > arr[i])
+			cnt++;
+		else
+		{
+			answer[maxHigh.second] = cnt;
+			maxHigh.second = i;
+			maxHigh.first = arr[i];
+			cnt = 0;
+		}
+	}
+	answer[maxHigh.second] = cnt;
+	int result = *max_element(answer.begin(), answer.end());
+	cout << result;
+
+}
