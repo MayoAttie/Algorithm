@@ -1,0 +1,80 @@
+#include <iostream>
+#include <bitset>
+#include <string>
+using namespace std;
+
+
+class SetOperations 
+{
+private:
+    int S;
+
+public:
+    SetOperations() : S(0) {}
+
+    void add(int x) 
+    {
+        S |= (1 << (x - 1));
+    }
+
+    void remove(int x) 
+    {
+        S &= ~(1 << (x - 1));
+    }
+
+    int check(int x) const 
+    {
+        return ((S & (1 << (x - 1))) != 0) ? 1 : 0;
+    }
+
+    void toggle(int x) 
+    {
+        S ^= (1 << (x - 1));
+    }
+
+    void all() 
+    {
+        S = (1 << 20) - 1;
+    }
+
+    void empty() 
+    {
+        S = 0;
+    }
+};
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    SetOperations set;
+
+    int M;
+    cin >> M;
+
+    for (int i = 0; i < M; ++i) 
+    {
+        string command;
+        int x;
+
+        cin >> command;
+
+        if (command == "add" || command == "remove" || command == "check" || command == "toggle") 
+            cin >> x;
+        if (command == "add") 
+            set.add(x);
+        else if (command == "remove") 
+            set.remove(x);
+        else if (command == "check") 
+            cout << set.check(x) << '\n';
+        else if (command == "toggle") 
+            set.toggle(x);
+        else if (command == "all") 
+            set.all();
+        else if (command == "empty") 
+            set.empty();
+    }
+
+    return 0;
+}
