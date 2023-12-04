@@ -1,0 +1,34 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <string>
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+	set<string> checker;
+	int cnt = 0;
+	for (int i = 0; i < N; i++)
+	{
+		string input;
+		cin >> input;
+		if (input == "ENTER")
+		{
+			for (const auto& tmp : checker)
+				cnt++;
+			
+			checker.clear();
+		}
+		else
+		{
+			checker.insert(input);
+		}
+	}
+
+	for (const auto& tmp : checker)
+		cnt++;
+
+	cout << cnt;
+}
