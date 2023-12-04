@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+struct Word 
+{
+    string word;
+    int cnt;
+
+    // 비교 함수 정의
+    bool operator<(const Word& other) const 
+    {
+        if (cnt != other.cnt)
+        {
+            return cnt > other.cnt;  // 빈도수 내림차순
+        }
+        if (word.length() != other.word.length()) 
+        {
+            return word.length() > other.word.length();  // 길이 내림차순
+        }
+        return word < other.word;  // 알파벳 사전 순
+    }
+};
+
+int main() 
+{
+    int N, M;
+    cin >> N >> M;
+
+    map<string, int> checker;  // 단어 빈도수를 저장하는 map
+
+    // 단어 입력 및 빈도수 계산
+    for (int i = 0; i < N; ++i) 
+    {
+        string word;
+        cin >> word;
+        if (word.length() >= M) 
+        {
+            checker[word]++;
+        }
+    }
+
+    // Word 구조체를 이용하여 단어를 정렬
+    vector<Word> answer;
+    for (const auto& i : checker)
+    {
+        answer.push_back({ i.first, i.second });
+    }
+    sort(answer.begin(), answer.end());
+
+    // 정렬된 단어 출력
+    for (const auto& i : answer)
+    {
+        cout << i.word << '\n';
+    }
+
+    return 0;
+}
