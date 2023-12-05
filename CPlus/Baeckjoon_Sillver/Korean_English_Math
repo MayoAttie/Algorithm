@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+struct Subject
+{
+    string name;
+    int kor;
+    int eng;
+    int math;
+};
+
+bool comparer(const Subject& a, const Subject& b)
+{
+    if(a.kor != b.kor)
+        return a.kor > b.kor;
+    else if(a.eng != b.eng)
+        return a.eng < b.eng;
+    else if(a.math != b.math)
+        return a.math > b.math;
+    else
+        return a.name < b.name;
+}
+
+int main()
+{
+    int N;
+    cin >> N;
+    vector<Subject> classes(N);
+    for(int i=0; i<N; i++)
+    {
+        cin >> classes[i].name >> classes[i].kor >> classes[i].eng >> classes[i].math;
+    }
+
+    sort(classes.begin(), classes.end(), comparer);
+
+    for(int i=0; i< N; i++)
+    {
+        cout << classes[i].name << '\n';
+    }
+}
