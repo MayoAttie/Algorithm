@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+vector<vector<pair<int, int>>> graph;
+vector<int> dp;
+vector<int> path;
+
+void dijksrtra(int start);
+
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+
+    graph.resize(N + 1);
+    dp.assign(N + 1, INT_MAX);
+    path.resize(N + 1);
+
+    for (int i = 0; i < M; i++)
+    {
+        int A, B, C;
+        cin >> A >> B >> C;
+        graph[A].push_back({ B,C });
+        graph[B].push_back({ A,C });
+    }
+
+    dijksrtra(1);
+
+    cout << N - 1 << endl;
+    for (int i = 2; i <= N; i++)
+    {
+        cout << i << " " << path[i] << endl;
+    }
+}
+
+void dijksrtra(int start)
+{
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    dp[start] = 0;
+    pq.push({ 0,start });
+
+    while (!pq.empty())
+    {
+        int curDist = pq.top().first;
+        int curNode = pq.top().second;
+        pq.pop();
+
+        for (const auto& edge : graph[curNode])
+        {
+            int nextDist = edge.second;
+            int nextNode = edge.first;
+
+            if (dp[nextNode] > curDist + nextDist)
+            {
+                dp[nextNode] = curDist + nextDist;
+                path[nextNode] = curNode;
+                pq.push({ dp[nextNode], nextNode });
+            }
+        }
+    }
+}
