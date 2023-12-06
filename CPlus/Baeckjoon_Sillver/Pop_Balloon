@@ -1,0 +1,44 @@
+#include <iostream>
+#include <deque>
+using namespace std;
+int main()
+{
+    int n;
+    cin >> n;
+
+    deque<pair<int, int>> deq;
+
+    for (int i = 1; i <= n; i++)
+    {
+        int a;
+        cin >> a;
+        deq.push_back(make_pair(i, a));
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        auto p = deq.front();
+        deq.pop_front();
+
+        cout << p.first << " ";
+
+        if (p.second > 0)
+        {
+            for (int j = 0; j < p.second - 1; j++)
+            {
+                deq.push_back(deq.front());
+                deq.pop_front();
+            }
+        }
+        else
+        {
+            for (int j = 0; j < abs(p.second); j++)
+            {
+                deq.push_front(deq.back());
+                deq.pop_back();
+            }
+        }
+    }
+
+    return 0;
+}
