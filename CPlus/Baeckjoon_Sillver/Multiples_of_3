@@ -1,0 +1,33 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main() 
+{
+    string X;
+    cin >> X;
+
+    int cnt = 0;
+
+    while (X.size() > 1) 
+    {
+        int sum = 0;
+        for (char d : X) 
+        {
+            sum += (d - '0'); 
+        }
+
+        X = to_string(sum);
+        cnt++;
+    }
+
+    cout << cnt << '\n';
+
+    int value = X[0] - '0';
+
+    if (value % 3 == 0)
+        cout << "YES\n";
+    else 
+        cout << "NO\n";
+
+    return 0;
+}
