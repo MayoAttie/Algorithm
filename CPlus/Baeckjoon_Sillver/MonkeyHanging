@@ -1,0 +1,38 @@
+#include <iostream>
+#include <stack>
+#include <cmath>
+#include <algorithm>
+#include <string>
+using namespace std;
+int main() 
+{
+    int tCase;
+    cin >> tCase;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    while (tCase--)
+    {
+        string op;
+        getline(cin, op);
+
+        int maxDepth = 0;
+        stack<char> tree;
+
+        for (char o : op)
+        {
+            if (o == ']')
+            {
+                maxDepth = max(static_cast<int>(tree.size()), maxDepth);
+                tree.pop();
+            }
+            else
+            {
+                tree.push('[');
+            }
+        }
+
+        cout << static_cast<int>(pow(2, maxDepth)) << endl;
+    }
+
+    return 0;
+}
