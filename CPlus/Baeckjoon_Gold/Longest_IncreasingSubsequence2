@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+vector<int> dp;
+
+int Binarysearch(int left, int right, int now);
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+    dp.resize(N+1);
+    vector<int> arr(N+1);
+    
+    for(int i=1; i<=N; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int answer = 1;
+    dp[answer] = arr[1];
+    int index;
+    for(int i=2; i<=N; i++)
+    {
+        if(dp[answer] < arr[i])
+        {
+            answer++;
+            dp[answer] = arr[i];
+        }
+        else
+        {
+            index = Binarysearch(1,answer,arr[i]); 
+            dp[index] = arr[i];
+        }
+    }
+
+    cout << answer;
+}
+
+int Binarysearch(int left, int right, int now)
+{
+    int mid;
+    while(left < right)
+    {
+        mid = (left + right)/2;
+        if(dp[mid] < now)
+            left = mid +1;
+        else
+            right = mid;
+    }
+    return left;
+}

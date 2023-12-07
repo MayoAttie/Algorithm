@@ -164,6 +164,7 @@
         "gradestatistics": "cpp",
         "nationalassemblyelections": "cpp",
         "olympic": "cpp",
-        "korean_english_math": "cpp"
+        "korean_english_math": "cpp",
+        "longest_increasingsubsequence2": "cpp"
     }
 }
