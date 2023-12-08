@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<vector<char>> room(N, vector<char>(N));
+
+    // 입력 받기
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < N; j++)
+            cin >> room[i][j];
+    }
+
+    int rowTotal = 0;
+    int colTotal = 0;
+
+    for (int i = 0; i < N; i++) 
+    {
+        int cnt = 0;
+        for (int j = 0; j < N; j++) 
+        {
+            if (room[i][j] == '.') 
+                cnt++;
+            else 
+            {
+                if (cnt >= 2) 
+                    rowTotal++;
+                cnt = 0;
+            }
+        }
+        if (cnt >= 2) 
+            rowTotal++;
+    }
+
+    for (int j = 0; j < N; j++) 
+    {
+        int cnt = 0;
+        for (int i = 0; i < N; i++) 
+        {
+            if (room[i][j] == '.') 
+                cnt++;
+            else
+            {
+                if (cnt >= 2) 
+                    colTotal++;
+                cnt = 0;
+            }
+        }
+        if (cnt >= 2) 
+            colTotal++;
+    }
+
+    std::cout << rowTotal << " " << colTotal << endl;
+
+    return 0;
+}
