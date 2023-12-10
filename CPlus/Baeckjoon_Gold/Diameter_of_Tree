@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <limits>
+
+using namespace std;
+
+vector<vector<pair<int, int>>> tree;
+vector<int> check;
+pair<int, int> maxDist = {0, numeric_limits<int>::min()};
+
+void dfs(int node, int dist) 
+{
+    check[node] = 1;
+    if (maxDist.second < dist)
+        maxDist = {node, dist};
+
+    for (const auto& [nextNode, nextDist] : tree[node]) 
+    {
+        if (check[nextNode])
+            continue;
+        dfs(nextNode, dist + nextDist);
+    }
+}
+
+int main() 
+{
+    int N;
+    cin >> N;
+    tree.resize(N + 1);
+    check.resize(N + 1, 0);
+
+    for (int i = 0; i < N; i++) 
+    {
+        int node;
+        cin >> node;
+        while (true) 
+        {
+            int nextNode, nextDist;
+            cin >> nextNode;
+            if (nextNode == -1)
+                break;
+            cin >> nextDist;
+
+            tree[node].emplace_back(nextNode, nextDist);
+        }
+    }
+
+    dfs(1, 0);
+    maxDist.second = numeric_limits<int>::min();
+    fill(check.begin(), check.end(), 0);
+    dfs(maxDist.first, 0);
+
+    cout << maxDist.second << '\n';
+
+    return 0;
+}
