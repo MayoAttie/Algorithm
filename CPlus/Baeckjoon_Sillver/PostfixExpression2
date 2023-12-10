@@ -1,0 +1,60 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	string input;
+	cin >> input;
+
+	map<char, double> values;
+    for (char i = 'A'; i < 'A' + N; i++)
+    {
+        double num;
+        cin >> num;
+        values[i] = num;
+    }
+    stack<double> stk;
+    for (int i = 0; i < input.length(); i++)
+    {
+        if (isalpha(input[i]))
+        {
+            double num = values[input[i]];
+            stk.push(num);
+        }
+        else
+        {
+            double num2 = stk.top(); stk.pop();
+            double num1 = stk.top(); stk.pop();
+
+            switch (input[i])
+            {
+            case '+':
+                stk.push(num1 + num2);
+                break;
+            case '-':
+                stk.push(num1 - num2);
+                break;
+            case '*':
+                stk.push(num1 * num2);
+                break;
+            case '/':
+                stk.push(num1 / num2);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    cout << fixed << setprecision(2) << stk.top() << endl;
+
+}
