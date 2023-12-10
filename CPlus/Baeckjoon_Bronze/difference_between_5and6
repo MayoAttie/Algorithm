@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main()
+{
+	int A, B;
+	cin >> A >> B;
+	string aNum = to_string(A);
+	string bNum = to_string(B);
+    for (char& c : aNum) 
+    {
+        if (c == '6') 
+            c = '5';
+    }
+    for (char& c : bNum) 
+    {
+        if (c == '6') 
+            c = '5';
+    }
+    int minAnswer = stoi(aNum) + stoi(bNum);
+
+    for (char& c : aNum) 
+    {
+        if (c == '5') 
+            c = '6';
+        
+    }
+    for (char& c : bNum) 
+    {
+        if (c == '5') 
+            c = '6';
+    }
+    int maxAnswer = stoi(aNum) + stoi(bNum);
+
+    std::cout << minAnswer << " " << maxAnswer;
+
+}
