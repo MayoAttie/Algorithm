@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <cmath>    
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+    vector<int> arr(N);
+
+    for (int i = 0; i < N; ++i)
+    {
+        cin >> arr[i];
+    }
+    //평균
+    double sum = 0;
+    for (int num : arr)
+    {
+        sum += num;
+    }
+    int aver = round(sum / N);
+    cout << aver << endl;
+
+    //중앙
+    sort(arr.begin(), arr.end());
+    int median = arr[N / 2];
+    cout << median << endl;
+
+    // 최빈
+    map<int, int> frequency;
+
+    for (int i = 0; i < N; i++)
+    {
+        frequency[arr[i]]++;
+    }
+
+    int firstMax = 0, secondMax = 0;
+    pair<int, int> a, b;
+
+    for (const auto& entry : frequency)
+    {
+        if (entry.second > firstMax)
+        {
+            secondMax = firstMax;
+            firstMax = entry.second;
+
+            b = a;
+            a = make_pair(entry.first, entry.second);
+        }
+        else if (entry.second > secondMax)
+        {
+            secondMax = entry.second;
+            b = make_pair(entry.first, entry.second);
+        }
+    }
+
+    int mode = (a.second == b.second) ? max(a.first, b.first) : (a.second > b.second ? a.first : b.first);
+    cout << mode << endl;
+
+    //범위
+    int range = arr[N - 1] - arr[0];
+    cout << range << endl;
+
+    return 0;
+}
