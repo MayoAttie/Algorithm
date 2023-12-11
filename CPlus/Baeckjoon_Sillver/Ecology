@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+#include <iomanip> 
+using namespace std;
+
+int main()
+{
+    string input;
+    map<string, int> trees;
+    int total = 0;
+
+    while (getline(cin, input))
+    {
+        trees[input]++;
+        total++;
+    }
+
+    cout << fixed << setprecision(4); // 소수점 4자리까지 출력
+
+    for (const auto& pair : trees)
+    {
+        const string& treeName = pair.first;
+        int treeCount = pair.second;
+        double ratio = (treeCount * 100.0) / total; // 비율 계산 수정
+
+        cout << treeName << " " << ratio << '\n';
+    }
+
+}
