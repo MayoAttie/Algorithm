@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>	
+#include <set>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int T;
+	cin >> T;
+
+	while (T--)
+	{
+		int N, M;
+		cin >> N;
+		set<int>_set;
+		for (int i = 0; i < N; i++)
+		{
+			int a;
+			cin >> a;
+			_set.insert(a);
+		}
+		cin >> M;
+		for (int i = 0; i < M; i++)
+		{
+			int a;
+			cin >> a;
+			if (_set.find(a) != _set.end())
+			{
+				cout << "1\n";
+			}
+			else
+			{
+				cout << "0\n";
+			}
+		}
+
+	}
+}
