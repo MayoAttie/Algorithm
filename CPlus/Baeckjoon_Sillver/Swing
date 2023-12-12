@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <unordered_set>
+
+using namespace std;
+struct Node
+{
+    string str;
+    int cnt;
+
+    Node(const string& str, int cnt) : str(str), cnt(cnt) {}
+};
+char buf[15];
+char target[8];
+const string START = "12348765";
+const int TRANSFORM_TYPE_RULE[4][8] = 
+{
+    {4, 5, 6, 7, 0, 1, 2, 3},
+    {3, 0, 1, 2, 7, 4, 5, 6},
+    {0, 2, 6, 3, 4, 1, 5, 7},
+    {7, 1, 2, 3, 4, 5, 6, 0}
+};
+
+string transform(const string& str, int type) 
+{
+    string result;
+    for (int i = 0; i < 8; i++) {
+        result += str[TRANSFORM_TYPE_RULE[type][i]];
+    }
+    return result;
+}
+
+void BFS() 
+{
+    unordered_set<string> vsited;
+    queue<Node> q;
+
+    const string goal(target, 8);
+    q.push(Node(START, 0));
+    vsited.insert(START);
+
+    while (!q.empty()) 
+    {
+        string cur = q.front().str;
+        int cnt = q.front().cnt;
+        q.pop();
+        if (cur == goal) 
+        {
+            cout << cnt << endl;
+            return;
+        }
+        for (int i = 0; i < 4; i++) 
+        {
+            string next = transform(cur, i);
+            if (vsited.count(next)) 
+                continue;
+            vsited.insert(next);
+            q.push(Node(next, cnt + 1));
+        }
+    }
+}
+int main()
+{
+    cin.read(buf, 15);
+
+    for (int i = 0; i < 4; i++)
+        target[i] = buf[i * 2];
+    
+    for (int i = 7; i >= 4; i--)
+        target[i] = buf[(11 - i) * 2];
+
+    BFS();
+    return 0;
+}
