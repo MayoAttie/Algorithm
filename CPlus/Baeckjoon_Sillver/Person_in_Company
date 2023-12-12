@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+	map<string,int> mans;
+	for (int i = 0; i < N; i++)
+	{
+		string name, time;
+		cin >> name >> time;
+		mans[name] = 1;
+
+		if(time == "leave")
+			mans[name] = 2;
+	}
+	vector<string> answer;
+	for (const auto& entry : mans) 
+	{
+		if (entry.second == 1) 
+			answer.push_back(entry.first);
+	}
+
+	sort(answer.rbegin(), answer.rend());
+	for (string i : answer)
+		cout << i << '\n';
+}
