@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <stack>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N;
+	cin >> N;
+	stack<int> stk;
+	while (N--)
+	{
+		int cmd;
+		cin >> cmd;
+
+		switch (cmd)
+		{
+		case 1:
+		{
+			int value;
+			cin >> value;
+			stk.push(value);
+		}
+			break;
+		case 2:
+		{
+			if (!stk.empty()) 
+			{
+				cout << stk.top() << '\n';
+				stk.pop();
+			}
+			else 
+				cout << -1 << '\n';
+		}
+			break;
+		case 3:
+		{
+			cout << stk.size()<<'\n';
+		}
+			break;
+		case 4:
+		{
+			cout << stk.empty() << '\n';
+		}
+			break;
+		case 5:
+		{
+			if (!stk.empty())
+				cout << stk.top() << '\n';
+			else
+				cout << -1 << '\n';
+		}
+			break;
+		}
+	}
+}
