@@ -1,0 +1,79 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    string line;
+    getline(cin, line);
+
+    stack<char> stk;
+    for (char c : line) 
+    {
+        stk.push(c);
+    }
+
+    int m;
+    cin >> m;
+    cin.ignore();  // Ignore the newline character after reading 'm'
+
+    stack<char> tmpStk;
+    for (int i = 0; i < m; i++) 
+    {
+        string cmd;
+        getline(cin, cmd);
+        char op = cmd[0];
+
+        if (op == 'L')
+        {
+            if (!stk.empty())
+            {
+                tmpStk.push(stk.top());
+                stk.pop();
+            }
+        }
+        else if (op == 'D')
+        {
+            if (!tmpStk.empty())
+            {
+                stk.push(tmpStk.top());
+                tmpStk.pop();
+            }
+        }
+        else if (op == 'B')
+        {
+            if (!stk.empty())
+                stk.pop();
+        }
+        else 
+            stk.push(cmd[2]);
+    }
+
+    while (!tmpStk.empty())
+    {
+        stk.push(tmpStk.top());
+        tmpStk.pop();
+    }
+
+    vector<char> answer;
+
+    while (!stk.empty())
+    {
+        answer.push_back(stk.top());
+        stk.pop();
+    }
+
+    reverse(answer.begin(), answer.end());
+    for (int i = 0; i < answer.size(); i++)
+        cout << answer[i];
+
+
+
+    return 0;
+}
