@@ -1,0 +1,108 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+struct Point 
+{
+    int x, y, time;
+};
+
+vector<vector<char>> graph;
+queue<Point> que;
+queue<Point> water;
+
+int drX[4] = { 1,0,-1,0 };
+int drY[4] = { 0,1,0,-1 };
+
+int answer = 987654321;
+
+void BFS(int x, int y) 
+{
+    while (!que.empty()) 
+    {
+        int len = water.size();
+        for (int i = 0; i < len; i++) 
+        {
+            Point tmp = water.front();
+            water.pop();
+            int curx = tmp.x;
+            int cury = tmp.y;
+
+            for (int j = 0; j < 4; j++) 
+            {
+                int nx = curx + drX[j];
+                int ny = cury + drY[j];
+
+                if (nx >= 0 && nx < x && ny >= 0 && ny < y && graph[nx][ny] == '.') 
+                {
+                    graph[nx][ny] = '*';
+                    water.push({ nx,ny });
+                }
+            }
+        }
+
+        len = que.size();
+        for (int i = 0; i < len; i++) 
+        {
+            Point tmp = que.front();
+            que.pop();
+
+            int curx = tmp.x;
+            int cury = tmp.y;
+            int time = tmp.time;
+
+            for (int j = 0; j < 4; j++) 
+            {
+                int nx = curx + drX[j];
+                int ny = cury + drY[j];
+
+                if (nx >= 0 && nx < x && ny >= 0 && ny < y) 
+                {
+                    if (graph[nx][ny] == 'D') 
+                    {
+                        answer = min(answer, time + 1);
+                        return;
+                    }
+                    else if (graph[nx][ny] == '.') 
+                    {
+                        graph[nx][ny] = 'S';
+                        que.push({ nx,ny, time + 1 });
+                    }
+                }
+            }
+        }
+    }
+}
+
+int main() 
+{
+    int x, y;
+    cin >> x >> y;
+    graph = vector<vector<char>>(x, vector<char>(y));
+
+    for (int i = 0; i < x; i++) 
+    {
+        string str;
+        cin >> str;
+        for (int j = 0; j < y; j++) 
+        {
+            graph[i][j] = str[j];
+            if (graph[i][j] == 'S')
+                que.push({ i,j,0 });
+            else if (graph[i][j] == '*')
+                water.push({ i,j });
+        }
+    }
+
+    BFS(x, y);
+
+    if (answer == 987654321)
+        cout << "KAKTUS";
+    else
+        cout << to_string(answer);
+
+    return 0;
+}
