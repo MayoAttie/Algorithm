@@ -1,0 +1,26 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int getGcd(int a, int b)
+{
+    while(b!= 0)
+    {
+        int tmp = b;
+        b = a%b;
+        a = tmp;
+    }
+    return a;
+}
+
+int main()
+{
+    int n, m;
+    char colon;
+
+    cin >> n >> colon >> m;
+    int result = getGcd(n,m);
+
+    cout << n/result << ":" << m/result;
+}
