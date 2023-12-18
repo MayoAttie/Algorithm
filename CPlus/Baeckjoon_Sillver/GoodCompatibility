@@ -1,0 +1,26 @@
+#include <iostream>
+#include <unordered_set>
+#include <string>
+using namespace std;
+int main() 
+{
+    int n;
+    cin >> n;
+    unordered_set<string> dance{ "ChongChong" };
+
+    for (int i = 1; i <= n; ++i) 
+    {
+        string a, b;
+        cin >> a >> b;
+
+        if (dance.find(a) != dance.end()) 
+            dance.insert(b);
+
+        if (dance.find(b) != dance.end()) 
+            dance.insert(a);
+    }
+
+    cout << dance.size() << endl;
+
+    return 0;
+}
