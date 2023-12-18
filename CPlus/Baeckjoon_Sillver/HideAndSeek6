@@ -1,0 +1,42 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int getGcd(int a, int b)
+{
+	while (b != 0)
+	{
+		int tmp = a % b;
+		a = b;
+		b = tmp;
+	}
+	return a;
+}
+int main()
+{
+	int N, S;
+	cin >> N >> S;
+
+	vector<int> arr(N);
+
+	for (int i = 0; i < N; i++)
+		cin >> arr[i];
+
+	vector<int> dist;
+	for (int i = 0; i < N; i++)
+	{
+		int x = S - arr[i];
+		if (x == 0)
+			continue;
+		else if (x < 0)
+			x *= -1;
+
+		dist.push_back(x);
+	}
+
+	int answer = dist[0];
+	for (int i = 1; i < N; i++)
+		answer = getGcd(dist[i], answer);
+
+	cout << answer;
+}
