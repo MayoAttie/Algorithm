@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+
+// 효율적인 모듈러 지수 연산을 사용하여 (base^exp) % mod를 계산하는 함수
+long long Solution(long long base, long long exp, long long mod) 
+{
+    long long result = 1;  // 결과를 1로 초기화
+    base %= mod;  // 큰 base 값에 대비하여 base를 mod로 나눈 나머지를 사용
+
+    // exp가 0이 될 때까지 반복
+    while (exp > 0) 
+    {
+        // 현재 exp의 비트가 1이면
+        if (exp % 2 == 1) 
+        {
+            result = (result * base) % mod;  // 결과에 base를 곱하고 mod로 나눈 나머지를 취함
+        }
+
+        exp >>= 1;  // exp를 오른쪽으로 1만큼 비트 시프트 (2로 나누는 것과 동일)
+        base = (base * base) % mod;  // base를 제곱하고 mod로 나눈 나머지를 취함
+    }
+
+    return result;  // 최종 결과 반환
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);  // C와 C++ 표준 스트림 간 동기화 비활성화 (빠른 입출력을 위해)
+    cin.tie(NULL);  // cin을 cout에서 분리 (빠른 입출력을 위해)
+
+    long long A, B, C;
+    cin >> A >> B >> C;  // A, B, C에 대한 입력값을 받음
+
+    cout << Solution(A, B, C) << '\n';  // Solution 함수를 사용하여 A^B % C의 결과 출력
+
+    return 0;  // 성공적인 완료를 나타내기 위해 0 반환
+}
