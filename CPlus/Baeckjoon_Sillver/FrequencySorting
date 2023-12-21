@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int N, C;
+	cin >> N >> C;
+	map<int, int> checker;
+	map<int, int> orders;
+	int index = 0;
+	for (int i = 0; i < N; i++)
+	{
+		int a;
+		cin >> a;
+
+		checker[a]++;
+
+		auto it = orders.find(a);
+		if (it == orders.end())
+		{
+			orders[a] = index;
+			index++;
+		}
+	}
+
+	vector<pair<int, int>> arr(checker.begin(), checker.end());
+
+	sort(arr.begin(), arr.end(), [&orders](const auto& a, const auto& b) 
+		{
+		if (a.second != b.second) 
+			return a.second > b.second;
+		return orders[a.first] < orders[b.first];
+		});
+
+
+	for (const auto& a : arr) 
+	{
+		for (int i = 0; i < a.second; ++i) 
+		{
+			cout << a.first << " ";
+		}
+	}
+	
+}
