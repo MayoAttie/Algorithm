@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+using namespace std;
+
+int gauss[45];
+bool check[1001];
+
+void search(int count, int cur, int index) 
+{
+    if (count == 3) 
+    {
+        if (cur == 0)
+            check[index] = true;
+        return;
+    }
+    if (cur <= 0)
+        return;
+
+    for (int i = 1; i < 45; ++i) 
+    {
+        if (cur < gauss[i])
+            break;
+        search(count + 1, cur - gauss[i], index);
+    }
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    memset(check, false, sizeof(check));
+
+    for (int i = 1; i < 45; ++i)
+        gauss[i] = i * (i + 1) / 2;
+
+    for (int i = 1; i < 1001; ++i)
+        search(0, i, i);
+
+    int T;
+    cin >> T;
+
+    for (int i = 0; i < T; ++i) 
+    {
+        int K;
+        cin >> K;
+        if (check[K])
+            cout << "1\n";
+        else
+            cout << "0\n";
+    }
+
+    return 0;
+}
