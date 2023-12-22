@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int N;
+        cin >> N;
+
+        vector<vector<int>> arr(2, vector<int>(N));
+        vector<vector<int>> DP(2, vector<int>(N, 0));
+
+        for (int i = 0; i < 2; ++i) {
+            for (int j = 0; j < N; ++j) {
+                cin >> arr[i][j];
+            }
+        }
+
+        DP[0][0] = arr[0][0];
+        DP[1][0] = arr[1][0];
+
+        if (N == 1) 
+        {
+            cout << max(DP[0][0], DP[1][0]) << '\n';
+            continue;
+        }
+
+        DP[0][1] = arr[1][0] + arr[0][1];
+        DP[1][1] = arr[0][0] + arr[1][1];
+
+        if (N == 2) 
+        {
+            cout << max(DP[0][1], DP[1][1]) << '\n';
+            continue;
+        }
+
+        for (int i = 2; i < N; ++i) 
+        {
+            DP[0][i] = max(DP[1][i - 2], DP[1][i - 1]) + arr[0][i];
+            DP[1][i] = max(DP[0][i - 2], DP[0][i - 1]) + arr[1][i];
+        }
+
+        cout << max(DP[0][N - 1], DP[1][N - 1]) << '\n';
+    }
+
+}
