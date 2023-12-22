@@ -1,0 +1,75 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+
+using namespace std;
+
+int visited[100001];
+int times[100001];
+
+void bfs(int n, int k) 
+{
+    queue<int> q;
+    q.push(n);
+    times[n] = 1;
+
+    while (!q.empty()) 
+    {
+        int now = q.front();
+        q.pop();
+
+        if (now == k) 
+            return;
+
+        if (now * 2 <= 100000 && times[now * 2] == 0)
+        {
+            times[now * 2] = times[now] + 1;
+            visited[now * 2] = now;
+            q.push(now * 2);
+        }
+        if (now + 1 <= 100000 && times[now + 1] == 0)
+        {
+            times[now + 1] = times[now] + 1;
+            visited[now + 1] = now;
+            q.push(now + 1);
+        }
+        if (now - 1 >= 0 && times[now - 1] == 0)
+        {
+            times[now - 1] = times[now] + 1;
+            visited[now - 1] = now;
+            q.push(now - 1);
+        }
+    }
+}
+
+int main() 
+{
+    int n, k;
+    cin >> n >> k;
+
+    if (n == k) 
+        cout << 0 << '\n' << n << '\n';
+    else 
+    {
+        bfs(n, k);
+        cout << times[k] - 1 << '\n';
+
+        stack<int> stk;
+        stk.push(k);
+        int index = k;
+        while (index != n) 
+        {
+            stk.push(visited[index]);
+            index = visited[index];
+        }
+
+        while (!stk.empty()) 
+        {
+            cout << stk.top() << ' ';
+            stk.pop();
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
