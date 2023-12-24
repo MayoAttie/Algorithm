@@ -1,0 +1,23 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int main()
+{
+    int a, b;
+    cin >> a >> b;
+
+    string str_a = to_string(a);
+    string str_b = to_string(b);
+
+    reverse(str_a.begin(), str_a.end());
+    reverse(str_b.begin(), str_b.end());
+
+    if (str_a > str_b)
+        cout << str_a << endl;
+    else
+        cout << str_b << endl;
+
+    return 0;
+}

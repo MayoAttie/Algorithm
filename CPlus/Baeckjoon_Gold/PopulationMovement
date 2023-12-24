@@ -1,22 +1,101 @@
 #include <iostream>
 #include <vector>
-
+#include <queue>
+#include <cmath>  // abs 함수를 사용하기 위한 헤더
 using namespace std;
 
 vector<vector<int>> map;
 vector<vector<int>> tmpMap;
 vector<vector<bool>> visited;
+queue<pair<int, int>> que;  // '>'가 누락된 부분 수정
+int drX[4] = {1, 0, -1, 0};
+int drY[4] = {0, 1, 0, -1};
 
-int drX[4] = {1,0,-1,0};
-int drY[4] = {0,1,0,-1};
+int BFS(int lowPoint, int maxPoint);  // 반환 타입을 int로 수정
 
-int main()
-{
+int main() {
+    int len;
     int lowPoint;
     int maxPoint;
-    int len;
 
     cin >> len >> lowPoint >> maxPoint;
 
-    
+    map = vector<vector<int>>(len, vector<int>(len, 0));
+    tmpMap = vector<vector<int>>(len, vector<int>(len, 0)); 
+    visited = vector<vector<bool>>(len, vector<bool>(len, false)); 
+
+    for (int i = 0; i < len; i++) {
+        for (int j = 0; j < len; j++) {
+            cin >> map[i][j];
+            tmpMap[i][j] = map[i][j];
+        }
+    }
+
+    int count = 0;
+    while (true) {
+        int flag = 0;
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                if (!visited[i][j]) {
+                    pair<int, int> current = {i, j};
+                    que.push(current);
+                    visited[i][j] = true;
+                    flag += BFS(lowPoint, maxPoint);
+                }
+            }
+        }
+
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                map[i][j] = tmpMap[i][j];
+                visited[i][j] = false;
+            }
+        }
+
+        if (flag == 0) {
+            cout << count;
+            break;
+        }
+        count++;
+    }
+    return 0;
+}
+
+int BFS(int lowPoint, int maxPoint)
+ {  
+    int sum = 0;
+    int divide = 0;
+    int flag = 0;
+    vector<pair<int, int>> vec;
+
+    while (!que.empty()) {
+        pair<int, int> current = que.front();
+        sum += map[current.first][current.second]; 
+        vec.push_back(current);
+        que.pop();
+
+        for (int i = 0; i < 4; i++) {
+            unsigned int nX = current.first + drX[i];  
+            unsigned int nY = current.second + drY[i];  
+
+            if (nX >= 0 && nX < map.size() && nY >= 0 && nY < map.size() && !visited[nY][nX]) {
+                int dif = abs(map[current.first][current.second] - map[nX][nY]);  // secind -> second로 수정
+                if (dif >= lowPoint && dif <= maxPoint) {
+                    visited[nY][nX] = true;
+                    flag = 1;
+                    que.push(make_pair(nY, nX)); 
+                }
+            }
+        }
+    }
+
+    divide = (int)sum / vec.size();
+
+    for (int i = 0; i < vec.size(); i++) {
+        pair<int, int> data = vec[i];
+        tmpMap[data.first][data.second] = divide;
+    }
+
+    return flag; 
 }

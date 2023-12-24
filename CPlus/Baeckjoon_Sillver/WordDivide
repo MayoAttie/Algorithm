@@ -1,0 +1,20 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <set>
+using namespace std;
+
+set<string> wordSet;
+
+int main()
+{
+    string str;
+    cin >> str;
+
+    
+}
+
+void Finder()
+{
+    
+}

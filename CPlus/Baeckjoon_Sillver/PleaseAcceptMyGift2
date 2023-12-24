@@ -1,9 +1,24 @@
 #include <iostream>
 #include <vector>
-
+#include <string>
 using namespace std;
 
 int main()
 {
-    
+    int N;
+    string maps;
+    cin >> N;
+
+    cin >> maps;
+
+    int cnt =1;
+
+    for(int i=1; i<N; i++)   
+    {
+        if(maps[i] == 'E' && maps[i-1] =='W')
+            cnt++;
+    }
+
+    cout << cnt;
+
 }

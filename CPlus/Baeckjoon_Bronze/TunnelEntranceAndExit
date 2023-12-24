@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() 
+{
+    int n, m;
+    cin >> n >> m;
+    int maxCar = m;
+
+    for (int i = 0; i < n; i++) 
+    {
+        int A, B;
+        cin >> A >> B;
+
+        m += A;
+        m -= B;
+        maxCar = max(maxCar, m);
+
+        if (m < 0) 
+        {
+            maxCar = 0;
+            break;
+        }
+    }
+
+    cout << maxCar << endl;
+
+    return 0;
+}

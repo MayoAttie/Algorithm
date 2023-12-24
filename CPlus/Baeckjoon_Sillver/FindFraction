@@ -1,0 +1,49 @@
+#include <iostream>
+
+using namespace std;
+
+int findDiagonalIndex(int x) 
+{
+    int sum = 0;
+    int index = 0;
+    while (x > sum)
+    {
+        index++;
+        sum += index;
+    }
+    return index;
+}
+
+int main() 
+{
+    int X;
+    cin >> X;
+
+    int index = findDiagonalIndex(X);
+
+    int parent, child;
+
+    if (index % 2 == 0)
+    {
+        parent = index;
+        child = 1;
+        for (int i = 1; i < X - (index - 1) * index / 2; i++)
+        {
+            parent--;
+            child++;
+        }
+    }
+    else {
+        parent = 1;
+        child = index;
+        for (int i = 1; i < X - (index - 1) * index / 2; i++)
+        {
+            parent++;
+            child--;
+        }
+    }
+
+    cout << child << "/" << parent << endl;
+
+    return 0;
+}

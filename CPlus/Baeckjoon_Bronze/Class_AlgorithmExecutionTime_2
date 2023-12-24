@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+int main() 
+{
+    int n;
+    cin >> n;
+
+    int sum = n;
+
+    int degree = 1;
+
+    cout << sum << endl;
+    cout << (degree > 3 ? 4 : degree) << endl;
+
+    return 0;
+}

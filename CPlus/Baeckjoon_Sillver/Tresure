@@ -22,5 +22,17 @@ int main()
         }
     }
 
-    
+    sort(A.begin(), A.end());
+    sort(B.begin(), B.end());
+
+    int answer =0;
+
+    for(int i=0; i<N; i++)
+    {
+        int a = A[i];
+        int b = B[N-1-i];
+        answer+= a*b;
+    }
+
+    cout << answer << endl;
 }
