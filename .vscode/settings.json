@@ -165,6 +165,7 @@
         "nationalassemblyelections": "cpp",
         "olympic": "cpp",
         "korean_english_math": "cpp",
-        "longest_increasingsubsequence2": "cpp"
+        "longest_increasingsubsequence2": "cpp",
+        "lotto": "cpp"
     }
 }
