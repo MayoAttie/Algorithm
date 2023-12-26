@@ -1,0 +1,49 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int n, p;
+    cin >> n >> p;
+    int answer = 0;
+    stack<int> stk[8];
+    for(int i=0; i<n; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        
+        if(stk[a].empty())
+        {
+            stk[a].push(b);
+            answer++;
+        }
+        else if(stk[a].top() < b)
+        {
+            stk[a].push(b);
+            answer++;
+        }
+        else if(stk[a].top() > b)
+        {
+            while (stk[a].top() > b)
+            {
+                stk[a].pop();
+                answer++;
+                if(stk[a].empty())
+                {
+                    stk[a].push(b);
+                    answer++;
+                }
+            }
+            if(stk[a].top() < b)
+            {
+                stk[a].push(b);
+                answer++;
+            }
+        }
+    }
+
+    cout << answer;
+}
