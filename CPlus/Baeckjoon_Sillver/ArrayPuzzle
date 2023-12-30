@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// 함수: 3x3 부분 행렬의 값을 뒤집습니다.
+void reverseValue(vector<vector<int>>& arr, int i, int j) 
+{
+    for (int x = i; x < i + 3; ++x) 
+    {
+        for (int y = j; y < j + 3; ++y) 
+        {
+            // 0을 1로, 1을 0으로 뒤집습니다.
+            arr[x][y] = 1 - arr[x][y];
+        }
+    }
+}
+
+int main() 
+{
+    // 변수: 행과 열의 개수 입력 받기
+    int n, m;
+    cin >> n >> m;
+
+    // 2차원 벡터: 입력 받은 행과 열의 크기로 초기화
+    vector<vector<int>> listA(n, vector<int>(m));
+    vector<vector<int>> listB(n, vector<int>(m));
+
+    // 입력: 행렬 A의 값 입력 받기
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < m; ++j) 
+        {
+            char c;
+            cin >> c;
+            // 문자를 정수로 변환하여 저장
+            listA[i][j] = c - '0';
+        }
+    }
+
+    // 입력: 행렬 B의 값 입력 받기
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < m; ++j) 
+        {
+            char c;
+            cin >> c;
+            // 문자를 정수로 변환하여 저장
+            listB[i][j] = c - '0';
+        }
+    }
+
+    // 변수: 뒤집기 연산 횟수 초기화
+    int cnt = 0;
+
+    // 예외 처리: 행이나 열의 크기가 3보다 작고, A와 B가 같지 않을 때
+    if ((n < 3 || m < 3) && listA != listB) 
+        cnt = -1;
+    
+    else 
+    {
+        // 행렬 A와 B를 3x3 부분 행렬 단위로 비교하며 뒤집기 연산 수행
+        for (int r = 0; r < n - 2; ++r) 
+        {
+            for (int c = 0; c < m - 2; ++c) 
+            {
+                // 해당 부분 행렬이 다를 경우 뒤집기 연산 수행
+                if (listA[r][c] != listB[r][c]) 
+                {
+                    cnt += 1;
+                    reverseValue(listA, r, c);
+                }
+            }
+        }
+    }
+
+    // 최종 결과 출력
+    if (cnt != -1 && listA != listB) 
+        cnt = -1;
+    
+    cout << cnt << endl;
+
+    return 0;
+}
