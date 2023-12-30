@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<string> answer;
+
+bool compare(string a, string b) 
+{
+    int aLen = a.length();
+    int bLen = b.length();
+    if (aLen > bLen)
+        return false;
+    else if (aLen < bLen)
+        return true;
+    else
+        return a < b;
+}
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    for (int k = 0; k < n; k++) 
+    {
+        string line;
+        cin >> line;
+        string tmp = "";
+        bool flag = false;
+
+        for (int i = 0; i < line.length(); i++) 
+        {
+            if (isdigit(line[i])) 
+            {
+                tmp += line[i];
+                flag = true;
+            }
+            else 
+            {
+                if (flag) 
+                {
+                    while (true) 
+                    {
+                        if (tmp.length() > 1 && tmp[0] == '0')
+                            tmp = tmp.substr(1, tmp.length() - 1);
+                        else
+                            break;
+                    }
+                    answer.push_back(tmp);
+                }
+                flag = false;
+                tmp = "";
+            }
+        }
+
+
+        if (flag) 
+        {
+            while (true) 
+            {
+                if (tmp.length() > 1 && tmp[0] == '0')
+                    tmp = tmp.substr(1, tmp.length() - 1);
+                else
+                    break;
+            }
+            answer.push_back(tmp);
+        }
+    }
+
+    sort(answer.begin(), answer.end(), compare);
+
+    for (const string& s : answer)
+    {
+        cout << s << '\n';
+    }
+
+    return 0;
+}
