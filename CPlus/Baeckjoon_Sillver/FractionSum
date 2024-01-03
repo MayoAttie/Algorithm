@@ -1,0 +1,31 @@
+#include <iostream>
+
+using namespace std;
+
+int getGcd(int a, int b) 
+{
+    while (b != 0) 
+    {
+        int tmp = b;
+        b = a % b;
+        a = tmp;
+    }
+    return a;
+}
+
+int main() 
+{
+    int a1, b1, a2, b2;
+    cin >> a1 >> b1 >> a2 >> b2;
+
+    int child = a1 * b2 + a2 * b1;
+    int mother = b1 * b2;
+
+    int tmp = getGcd(child, mother);
+    child /= tmp;
+    mother /= tmp;
+
+    cout << child << ' ' << mother << '\n';
+
+    return 0;
+}
