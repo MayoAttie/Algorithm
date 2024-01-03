@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+    deque<int> que;
+
+    while (N--)
+    {
+        int cm;
+        cin >> cm;
+
+        switch (cm)
+        {
+        case 1:
+        {
+            int x;
+            cin >> x;
+            que.push_front(x);
+        }
+        break;
+        case 2:
+        {
+            int x;
+            cin >> x;
+            que.push_back(x);
+        }
+        break;
+        case 3:
+            if (!que.empty())
+            {
+                cout << que.front() << '\n';
+                que.pop_front();
+            }
+            else
+                cout << -1 << '\n';
+            break;
+        case 4:
+            if (!que.empty())
+            {
+                cout << que.back() << '\n';
+                que.pop_back();
+            }
+            else
+                cout << -1 << '\n';
+            break;
+        case 5:
+            cout << que.size() << '\n';
+            break;
+        case 6:
+            cout << (que.empty() ? 1 : 0) << '\n';
+            break;
+        case 7:
+            if (!que.empty())
+                cout << que.front() << '\n';
+            else
+                cout << -1 << '\n';
+            break;
+        case 8:
+            if (!que.empty())
+                cout << que.back() << '\n';
+            else
+                cout << -1 << '\n';
+            break;
+        default:
+            break;
+        }
+    }
+
+    return 0;
+}
