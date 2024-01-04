@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>	
+using namespace std;
+
+int GetGcd(int a, int b)
+{
+    while (b != 0)
+    {
+        int tmp = b;
+        b = a % b;
+        a = tmp;
+    }
+    return a;
+}
+int main() 
+{
+    int N;
+    cin >> N;
+
+    int a;
+    cin >> a;
+
+    vector<int> arr;
+
+    for (int i = 1; i < N; ++i) 
+    {
+        int num;
+        cin >> num;
+        arr.push_back(num - a);
+        a = num;
+    }
+
+    int gcd = arr[0];
+    for (int j = 1; j < arr.size(); ++j) 
+    {
+        gcd = GetGcd(gcd, arr[j]);
+    }
+
+    int answer = 0;
+    for (int i : arr) 
+    {
+        answer += i / gcd - 1;
+    }
+
+    cout << answer << endl;
+
+    return 0;
+}
