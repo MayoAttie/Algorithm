@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> queuestack(N);
+    for (int i = 0; i < N; ++i) 
+    {
+        cin >> queuestack[i];
+    }
+
+    vector<int> arr(N);
+    for (int i = 0; i < N; ++i) 
+    {
+        cin >> arr[i];
+    }
+
+    int M;
+    cin >> M;
+
+    vector<int> nums(M);
+    for (int i = 0; i < M; ++i)
+    {
+        cin >> nums[i];
+    }
+
+    vector<int> finalQue;
+
+    for (int i = 0; i < N; ++i) 
+    {
+        if (queuestack[i] != 1)
+            finalQue.push_back(arr[i]);
+    }
+
+    // 문자열을 담을 변수
+    string answer;
+
+    // 만약 M이 finalQue의 크기보다 크거나 같을 때
+    if (M >= finalQue.size())
+    {
+        // finalQue의 뒤에서부터 시작하여 원소를 역순으로 answer에 추가
+        for (int i = finalQue.size() - 1; i >= 0; --i)
+        {
+            answer += to_string(finalQue[i]) + " ";
+        }
+
+        // 그 후, nums 벡터에서 부족한 개수만큼 추가
+        for (int i = 0; i < M - finalQue.size(); ++i)
+        {
+            answer += to_string(nums[i]) + " ";
+        }
+    }
+    else // M이 finalQue의 크기보다 작을 때
+    {
+        // finalQue의 뒤에서부터 M개의 원소만 추출하여 answer에 추가
+        for (int i = finalQue.size() - 1; i >= finalQue.size() - M; --i)
+        {
+            answer += to_string(finalQue[i]) + " ";
+        }
+    }
+    cout << answer << endl;
+
+    return 0;
+}
