@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	long long k, n;
+	cin >> k >> n;
+	vector<long long> arr(k);
+
+	for (int i = 0; i < k; i++)
+	{
+		cin >> arr[i];
+	}
+
+	long long start = 1;
+	long long end = *max_element(arr.begin(), arr.end());
+
+	while (start <= end)
+	{
+		long long mid = (start + end) / 2;
+		long long cnt = 0;
+
+		for (int i = 0; i < k; i++)
+		{
+			cnt += arr[i] / mid;
+		}
+
+		if (cnt >= n)
+			start = mid + 1;
+		else
+			end = mid - 1;
+	}
+
+	cout << end << endl;
+}
