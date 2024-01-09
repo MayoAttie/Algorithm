@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+int main()
+{
+	vector<long long> dp(100, 0);
+	dp[0] = 1;
+	dp[1] = 1;
+	dp[2] = 1;
+	dp[3] = 2;
+	dp[4] = 2;
+
+	for (int i = 5; i < 100; i++)
+	{
+		dp[i] = dp[i - 5] + dp[i - 1];
+	}
+
+	int T;
+	cin >> T;
+
+	while (T--)
+	{
+		int N;
+		cin >> N;
+
+		long long answer = dp[N - 1];
+		cout << answer << '\n';
+	}
+}
