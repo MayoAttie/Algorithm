@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+bool IsPrime(int num)
+{
+    if (num == 1)
+        return false;
+    for (int i = 2; i * i <= num; i++)
+    {
+        if (num % i == 0)
+            return false;
+    }
+
+    return true;
+}
+
+int main()
+{
+    int dp[246913] = { 0 }; // 배열 초기화
+
+    for (int i = 2; i <= 246912; i++)
+    {
+        if (IsPrime(i))
+            dp[i] = i;
+    }
+
+    int N;
+    while (true)
+    {
+        int cnt = 0;
+        cin >> N;
+        if (N == 0)
+            break;
+        for (int i : dp)
+        {
+            if (N < i && i <= 2 * N)
+                cnt++;
+        }
+
+        cout << cnt << endl;
+    }
+
+    return 0;
+}
