@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int N;
+vector<vector<int>> arr;
+vector<int> visited;
+int result = INT_MAX;
+
+void backtracking(int a, int n)
+{
+	if (a == N / 2)
+	{
+		int start = 0;
+		int link = 0;
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (visited[i] && visited[j])
+				{
+					start += arr[i][j];
+				}
+				else if (!visited[i] && !visited[j])
+				{
+					link += arr[i][j];
+				}
+			}
+		}
+
+		result = min(result, abs(start - link));
+		return;
+	}
+	else
+	{
+		for (int x = n; x < N; x++)
+		{
+			if (!visited[x])
+			{
+				visited[x] = true;
+				backtracking(a + 1, x + 1);
+				visited[x] = false;
+			}
+		}
+	}
+}
+
+int main()
+{
+	cin >> N;
+	arr.resize(N, vector<int>(N));
+	visited.resize(N, false);
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+	backtracking(0, 0);
+
+	cout << result;
+
+
+}
