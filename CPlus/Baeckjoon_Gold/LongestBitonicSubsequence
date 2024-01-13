@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// 주어진 수열 A에서 가장 긴 바이토닉 부분 수열의 길이를 계산하는 함수
+int DP(vector<int>& A)
+{
+    int len = A.size();
+
+    // LIS(증가하는 부분 수열) 길이를 저장하는 배열
+    vector<int> lts(len, 1);
+
+    // 각 위치에서의 LIS 계산
+    for (int i = 1; i < len; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (A[i] > A[j] && lts[i] < lts[j] + 1)
+            {
+                lts[i] = lts[j] + 1;
+            }
+        }
+    }
+
+    // LDS(감소하는 부분 수열) 길이를 저장하는 배열
+    vector<int> lds(len, 1);
+
+    // 각 위치에서의 LDS 계산
+    for (int i = len - 2; i >= 0; i--)
+    {
+        for (int j = len - 1; j > i; j--)
+        {
+            if (A[i] > A[j] && lds[i] < lds[j] + 1)
+            {
+                lds[i] = lds[j] + 1;
+            }
+        }
+    }
+
+    // 각 위치에서의 LIS와 LDS의 합 - 1이 가장 긴 바이토닉 부분 수열 길이
+    vector<int> result(len);
+    transform(lts.begin(), lts.end(), lds.begin(), result.begin(), plus<int>());
+    transform(result.begin(), result.end(), result.begin(), [](int x) {return x - 1; });
+
+    // 최대 길이 반환
+    return *max_element(result.begin(), result.end());
+}
+
+int main()
+{
+    // 입출력 성능 향상을 위한 코드
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    // 수열의 크기 N 입력
+    int N;
+    cin >> N;
+
+    // 수열 A 입력
+    vector<int> A(N);
+    for (int i = 0; i < N; i++)
+    {
+        cin >> A[i];
+    }
+
+    // 가장 긴 바이토닉 부분 수열의 길이 계산
+    int answer = DP(A);
+
+    // 결과 출력
+    cout << answer;
+}
