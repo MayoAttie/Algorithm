@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+vector<vector<int>> arr;
+
+void Solution(int rowS, int colS, int size)
+{
+	if (size == 1)
+	{
+		cout << arr[rowS][colS];
+		return;
+	}
+
+	int num = arr[rowS][colS];
+
+	for (int i = rowS; i < rowS + size; i++)
+	{
+		for (int j = colS; j < colS + size; j++)
+		{
+			if (num != arr[i][j])
+			{
+				cout << "(";
+				size /= 2;
+				Solution(rowS, colS, size);
+				Solution(rowS, colS+size, size);
+				Solution(rowS+size, colS, size);
+				Solution(rowS+size, colS+size, size);
+				cout << ")";
+				return;
+			}
+		}
+	}
+	cout << arr[rowS][colS];
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+		
+	int N;
+	cin >> N;
+
+	arr.resize(N, vector<int>(N));
+
+	for (int i = 0; i < N; i++)
+	{
+		string str;
+		cin >> str;
+		for (int j = 0; j < N; j++)
+		{
+			arr[i][j] = str[j] - '0';
+		}
+	}
+	Solution(0, 0, N);
+}
