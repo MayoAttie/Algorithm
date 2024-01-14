@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>	
+#include <algorithm>
+
+using namespace std;
+
+bool isAnswer(const vector<int>& arr, long long high, long long M)
+{
+	long long sum = 0;
+	for (int i = 0; i < arr.size(); i++)
+	{
+		if (arr[i] > high)
+		{
+			sum += arr[i] - high;
+		}
+	}
+
+	return sum >= M;
+}
+
+long long binarySearch(vector<int>& arr, int M)
+{
+	long long left = 0;
+	long long right = *max_element(arr.begin(), arr.end());
+
+	while (left <= right)
+	{
+		long long mid = (left + right) / 2;
+		if (isAnswer(arr, mid, M))
+			left = mid + 1;
+		else
+			right = mid - 1;
+	}
+
+	return right;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N, M;
+	cin >> N >> M;
+
+	vector<int> arr(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+	sort(arr.begin(), arr.end());
+
+
+	long long result = binarySearch(arr, M);
+
+	cout << result << endl;
+}
