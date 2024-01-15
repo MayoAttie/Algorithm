@@ -166,6 +166,7 @@
         "olympic": "cpp",
         "korean_english_math": "cpp",
         "longest_increasingsubsequence2": "cpp",
-        "lotto": "cpp"
+        "lotto": "cpp",
+        "sudoku": "cpp"
     }
 }

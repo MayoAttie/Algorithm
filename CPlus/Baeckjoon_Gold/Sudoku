@@ -1,0 +1,97 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int board[9][9];
+
+// 'num'을 주어진 행과 열에 놓을 수 있는지 확인하는 함수
+bool isValid(int row, int col, int num)
+{
+    // 해당 행을 확인
+    for (int i = 0; i < 9; i++)
+    {
+        if (board[row][i] == num)
+            return false;
+    }
+
+    // 해당 열을 확인
+    for (int i = 0; i < 9; i++)
+    {
+        if (board[i][col] == num)
+            return false;
+    }
+
+    // 3x3 서브그리드를 확인
+    for (int i = 0; i < 9; i++)
+    {
+        if (board[row - row % 3 + i / 3][col - col % 3 + i % 3] == num)
+            return false;
+    }
+
+    return true;
+}
+
+// 스도쿠 퍼즐을 해결하는 재귀 함수
+bool Solution(vector<pair<int, int>>& zeros, int index)
+{
+    // 모든 빈 칸이 채워졌다면 퍼즐이 해결된 것
+    if (index == zeros.size())
+        return true;
+
+    int row = zeros[index].first;
+    int col = zeros[index].second;
+
+    // 현재 위치에 1부터 9까지의 숫자를 놓아보기
+    for (int i = 1; i <= 9; i++)
+    {
+        if (isValid(row, col, i))
+        {
+            // 현재 위치에 'i'를 놓음
+            board[row][col] = i;
+
+            // 남은 퍼즐을 재귀적으로 해결
+            if (Solution(zeros, index + 1))
+                return true;
+
+            // 'i'를 놓는 것이 해결책으로 이어지지 않으면 백트래킹
+            board[row][col] = 0;
+        }
+    }
+
+    // 현재 위치에 어떤 숫자도 놓을 수 없음
+    return false;
+}
+
+int main()
+{
+    // 빈 칸의 위치를 저장하는 벡터
+    vector<pair<int, int>> zeros;
+
+    // 초기 스도쿠 보드 입력
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            cin >> board[i][j];
+            if (board[i][j] == 0)
+                zeros.push_back({ i, j });
+        }
+    }
+
+    // 스도쿠 풀이 시도
+    Solution(zeros, 0);
+
+    // 최종 결과 출력
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            cout << board[i][j] << " ";
+        }
+
+        cout << '\n';
+    }
+
+    return 0;
+}
