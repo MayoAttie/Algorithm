@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <numeric>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<int> arr(N);
+
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+	sort(arr.begin(), arr.end());
+	int X;
+	cin >> X;
+
+	// 조건 : sum(A_i ~ A_j) == X 
+	vector<int> subArr;
+	int start = 0;
+	int end = N-1;
+	int answer = 0;
+	while (start < end)
+	{
+		int sum = arr[start] + arr[end];
+
+
+		if (sum > X) 
+			end--;
+		else if (sum < X) 
+			start++;
+		else 
+		{
+			answer++;
+			start++;
+		}
+	}
+
+	cout << answer;
+}
+
+
