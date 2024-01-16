@@ -167,6 +167,7 @@
         "korean_english_math": "cpp",
         "longest_increasingsubsequence2": "cpp",
         "lotto": "cpp",
-        "sudoku": "cpp"
+        "sudoku": "cpp",
+        "recolorchessboard2": "cpp"
     }
 }

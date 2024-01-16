@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N, M, K;
+    cin >> N >> M >> K; // 행, 열, 체스판 크기를 입력받음
+
+    vector<vector<int>> sum(N + 1, vector<int>(M + 1, 0)); // 각 지점까지의 누적 합을 저장할 2차원 배열
+
+    vector<string> board(N); // 보드 상태를 저장할 벡터
+    for (int i = 0; i < N; ++i)
+    {
+        cin >> board[i]; // 보드 상태를 입력받음
+    }
+
+    // 각 지점까지의 누적 합 계산
+    for (int r = 1; r <= N; ++r)
+    {
+        for (int c = 1; c <= M; ++c)
+        {
+            if ((r + c) % 2 == 0) // 행과 열의 합이 짝수인 경우
+            {
+                if (board[r - 1][c - 1] == 'B')
+                    sum[r][c] = sum[r - 1][c] + sum[r][c - 1] - sum[r - 1][c - 1];
+                else
+                    sum[r][c] = sum[r - 1][c] + sum[r][c - 1] - sum[r - 1][c - 1] + 1;
+            }
+            else // 행과 열의 합이 홀수인 경우
+            {
+                if (board[r - 1][c - 1] == 'W')
+                    sum[r][c] = sum[r - 1][c] + sum[r][c - 1] - sum[r - 1][c - 1];
+                else
+                    sum[r][c] = sum[r - 1][c] + sum[r][c - 1] - sum[r - 1][c - 1] + 1;
+            }
+        }
+    }
+
+    int max_val = -1e9; // 최대값 초기화
+    int min_val = 1e9; // 최소값 초기화
+
+    // KxK 크기의 체스판을 이동하면서 최소와 최대 누적 합 계산
+    for (int r = K; r <= N; ++r)
+    {
+        for (int c = K; c <= M; ++c)
+        {
+            int value = sum[r][c] - sum[r - K][c] - sum[r][c - K] + sum[r - K][c - K];
+            max_val = max(max_val, value);
+            min_val = min(min_val, value);
+        }
+    }
+
+    // 결과 출력
+    cout << min({ min_val, max_val, K * K - min_val, K * K - max_val }) << endl;
+
+    return 0;
+}
