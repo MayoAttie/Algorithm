@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>	
+using namespace std;
+
+unordered_map<string, string> parent;
+unordered_map<string, int> visited;
+
+void Union(string a, string b);
+string Find(string a);
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	int T;
+	cin >> T;
+	while (T--)
+	{
+		int F;
+		cin >> F;
+		parent.clear();
+		visited.clear();
+		while (F--)
+		{
+			string a, b;
+			cin >> a >> b;
+
+			if (parent.find(a) == parent.end())
+			{
+				parent[a] = a;
+				visited[a] = 1;
+			}
+			if (parent.find(b) == parent.end())
+			{
+				parent[b] = b;
+				visited[b] = 1;
+			}
+
+			Union(a, b);
+			cout << visited[Find(a)] << '\n';
+		}
+
+	}
+
+
+}
+
+
+void Union(string a, string b)
+{
+	a = Find(a);
+	b = Find(b);
+
+	if (a == b)
+		return;
+	else
+	{
+		parent[b] = a;
+		visited[a] += visited[b];
+	}
+}
+
+string Find(string a)
+{
+	if (a == parent[a])
+		return a;
+
+	else
+	{
+		visited[a] += visited[parent[a]];
+		parent[a] = Find(parent[a]);
+		return parent[a];
+	}
+}
