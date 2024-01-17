@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+
+vector<int> getPrimes(int N) 
+{
+    vector<bool> arr(N + 1, true);
+    arr[0] = arr[1] = false;
+
+    for (int i = 2; i <= sqrt(N); i++) 
+    {
+        if (arr[i]) 
+        {
+            int j = 2;
+            while (i * j <= N) 
+            {
+                arr[i * j] = false;
+                j += 1;
+            }
+        }
+    }
+
+    vector<int> primeArr;
+    for (int i = 2; i <= N; i++) 
+    {
+        if (arr[i])
+            primeArr.push_back(i);
+    }
+
+    return primeArr;
+}
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    if (N == 1) 
+    {
+        cout << 0 << '\n';
+        return 0;
+    }
+
+    vector<int> primeArr = getPrimes(N);
+
+    int left = 0;
+    int right = 0;
+    int tmpSum = primeArr[0];
+    int cnt = 0;
+
+    while (left <= right) 
+    {
+        if (tmpSum > N) 
+        {
+            tmpSum -= primeArr[left];
+            left++;
+        }
+        else 
+        {
+            if (tmpSum == N)
+                cnt++;
+            right++;
+            if (right == primeArr.size())
+                break;
+            tmpSum += primeArr[right];
+        }
+    }
+
+    cout << cnt << '\n';
+
+    return 0;
+}
