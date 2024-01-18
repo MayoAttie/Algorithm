@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Node
+{
+    int left;
+    int right;
+    int result;
+
+    bool operator<(const Node& other) const
+    {
+        return abs(result) < abs(other.result);
+    }
+};
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    vector<int> arr(N);
+    vector<Node> results;
+    for (int i = 0; i < N; i++)
+    {
+        cin >> arr[i];
+    }
+
+    sort(arr.begin(), arr.end());
+
+    int left = 0;
+    int right = N - 1;
+
+    while (left < right)
+    {
+        int current = arr[left] + arr[right];
+        results.push_back({ left, right, current });
+        if (current < 0)
+        {
+            left++;
+        }
+        else if (current > 0)
+        {
+            right--;
+        }
+        else
+        {
+            left++;
+        }
+    }
+
+    sort(results.begin(), results.end());
+    cout << arr[results[0].left] << " " << arr[results[0].right];
+    return 0;
+}
