@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+string max_value;
+string min_value;
+int K;
+vector<char> arr;
+vector<int> numbers(10, 0);  // 사용된 숫자 기록
+vector<bool> visited(10, false);  // 숫자 방문 여부
+
+bool check(int a, int b, char op) 
+{
+    if (op == '<') 
+        return a < b;
+    else if (op == '>') 
+        return a > b;
+    return false;
+}
+
+void Backtracking(int depth, string str) 
+{
+    if (depth == K + 1) 
+    {
+        if (max_value.empty() || max_value < str) 
+        {
+            max_value = str;
+        }
+        if (min_value.empty() || min_value > str) 
+        {
+            min_value = str;
+        }
+        return;
+    }
+
+    for (int i = 0; i <= 9; i++) 
+    {
+        if (!visited[i]) 
+        {
+            if (depth == 0 || check(str.back() - '0', i, arr[depth - 1])) 
+            {
+                visited[i] = true;
+                Backtracking(depth + 1, str + to_string(i));
+                visited[i] = false;
+            }
+        }
+    }
+}
+
+int main() 
+{
+    cin >> K;
+    arr.resize(K);
+    for (int i = 0; i < K; i++) 
+    {
+        cin >> arr[i];
+    }
+    Backtracking(0, "");
+
+    // 최댓값과 최솟값 출력
+    cout << max_value << '\n' << min_value;
+
+    return 0;
+}
