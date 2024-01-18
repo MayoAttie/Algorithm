@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int INF = 987654321;
+
+int main()
+{
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        int K;
+        cin >> K;
+        vector<int> pages(K + 1);
+        vector<vector<int>> dp(K + 1, vector<int>(K + 1));
+        vector<int> sums(K + 1);
+
+        for (int i = 1; i <= K; i++)
+        {
+            cin >> pages[i];
+            sums[i] = sums[i - 1] + pages[i];
+        }
+
+        for (int i = 1; i <= K; i++)
+        {
+            for (int j = 1; j <= K - i; j++)
+            {
+                dp[j][i + j] = INF;
+
+                for (int m = j; m < i + j; m++)
+                {
+                    dp[j][i + j] = min(dp[j][i + j], dp[j][m] + dp[m + 1][i + j] + sums[i + j] - sums[j - 1]);
+                }
+            }
+        }
+
+        cout << dp[1][K] << '\n';
+    }
+    return 0;
+}
