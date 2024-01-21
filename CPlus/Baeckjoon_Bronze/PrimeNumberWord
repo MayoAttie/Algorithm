@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+using namespace std;
+
+bool isPrime(int n)
+{
+	for (int i = 2; i * i <= n; i++)
+	{
+		if (n % i == 0 && i != n)
+			return false;
+	}
+	return true;
+}
+
+int main()
+{
+	map<char, int> convert;
+	for (int i = 1; i <= 26; i++)
+	{
+		convert['a' + (i - 1)] = i;
+	}
+	for (int i = 1; i <= 26; i++)
+	{
+		convert['A' + (i - 1)] = i+26;
+	}
+
+	string str;
+	cin >> str;
+
+	int sum = 0;
+	for (int i = 0; i < str.length(); i++)
+	{
+		sum += convert[str[i]];
+	}
+
+	if (isPrime(sum))
+	{
+		cout << "It is a prime word.";
+	}
+	else
+	{
+		cout << "It is not a prime word.";
+	}
+
+	
+}
