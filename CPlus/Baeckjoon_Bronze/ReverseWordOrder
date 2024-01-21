@@ -1,0 +1,39 @@
+#include <iostream>
+#include <sstream>
+#include <stack>
+
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    cin.ignore();
+
+    for (int i = 0; i < n; ++i)
+    {
+        string str;
+        getline(cin, str);
+
+        istringstream iss(str);
+        stack<string> wordStack;
+
+        string word;
+        while (iss >> word)
+        {
+            wordStack.push(word);
+        }
+
+        cout << "Case #" << (i + 1) << ": ";
+
+        while (!wordStack.empty())
+        {
+            cout << wordStack.top() << " ";
+            wordStack.pop();
+        }
+
+        cout << endl;
+    }
+
+    return 0;
+}
