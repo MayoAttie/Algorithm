@@ -1,0 +1,42 @@
+    #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+bool comparer(const string& a, const string& b)
+{
+	if (a.length() != b.length())
+		return a.length() < b.length();
+
+	int sumA = 0;
+	int sumB = 0;
+	for (int i = 0; i < a.length(); i++)
+	{
+		if (a[i] >= '0' && a[i] <= '9')
+			sumA += a[i] - '0';
+		if (b[i] >= '0' && b[i] <= '9')
+			sumB += b[i] - '0';
+	}
+
+	if (sumA != sumB)
+		return sumA < sumB;
+	
+	return a < b;
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+	vector<string> arr(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+	sort(arr.begin(), arr.end(), comparer);
+
+	for (string i : arr)
+		cout << i << '\n';
+	
+}
