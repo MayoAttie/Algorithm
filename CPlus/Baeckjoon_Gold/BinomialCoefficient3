@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+const int MOD = 1000000007;
+
+// 팩토리얼을 계산하는 함수
+int facto(int N) {
+    int n = 1;
+    for (int i = 2; i <= N; i++) {
+        n = (1LL * n * i) % MOD;
+    }
+    return n;
+}
+
+// 거듭제곱을 계산하는 함수
+int square(int n, int k) {
+    if (k == 0)
+        return 1;
+    else if (k == 1)
+        return n;
+
+    int tmp = square(n, k / 2);
+    if (k % 2)
+        return 1LL * tmp * tmp % MOD * n % MOD;
+    else
+        return 1LL * tmp * tmp % MOD;
+}
+
+int main() {
+    int N, K;
+    cin >> N >> K;
+
+    // 분자를 계산
+    int top = facto(N);
+
+    // 분모를 계산
+    int bot = 1LL * facto(N - K) * facto(K) % MOD;
+
+    // 페르마의 소정리를 사용하여 역원을 계산하고 이항 계수를 출력
+    cout << 1LL * top * square(bot, MOD - 2) % MOD;
+
+    return 0;
+}
