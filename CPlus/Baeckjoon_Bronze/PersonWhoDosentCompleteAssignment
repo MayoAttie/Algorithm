@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    vector<bool> arr(30, false);
+
+    for (int i = 0; i < 28; i++)
+    {
+        int a = 0;
+        cin >> a;
+        arr[a - 1] = true;
+    }
+
+    vector<int> answer;
+    for (int i = 0; i < 30; i++)
+    {
+        if (!arr[i])
+            answer.push_back(i + 1);
+    }
+
+    sort(answer.begin(), answer.end());
+
+    for (int i = 0; i < answer.size(); i++)
+        cout << answer[i] << '\n';
+
+    return 0;
+}
