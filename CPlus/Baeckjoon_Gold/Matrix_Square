@@ -1,0 +1,95 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+const long long MOD = 1000;
+
+// 두 행렬 U와 V의 곱셈을 계산하는 함수
+vector<vector<long long>> multiply(const vector<vector<long long>>& U, const vector<vector<long long>>& V)
+{
+    int len = U.size();
+    vector<vector<long long>> Z(len, vector<long long>(len, 0));
+
+    // 행렬 곱셈 계산
+    for (int row = 0; row < len; row++)
+    {
+        for (int col = 0; col < len; col++)
+        {
+            long long e = 0;
+            for (int i = 0; i < len; i++)
+            {
+                e += U[row][i] * V[i][col];
+            }
+            Z[row][col] = e % MOD;  // 결과를 MOD로 나눈 나머지로 저장
+        }
+    }
+    return Z;
+}
+
+// 주어진 행렬 arr을 num번 거듭 제곱하는 함수
+vector<vector<long long>> square(const vector<vector<long long>>& arr, long long num)
+{
+    int len = arr.size();
+
+    // 기저 조건: 행렬을 1번 거듭 제곱한 경우
+    if (num == 1)
+    {
+        vector<vector<long long>> result(len, vector<long long>(len, 0));
+        for (int i = 0; i < len; i++)
+        {
+            for (int j = 0; j < len; j++)
+            {
+                result[i][j] = arr[i][j] % MOD;  // 결과를 MOD로 나눈 나머지로 저장
+            }
+        }
+
+        return result;
+    }
+
+    // num을 절반으로 나누어 재귀적으로 계산
+    vector<vector<long long>> tmp = square(arr, num / 2);
+    vector<vector<long long>> result = multiply(tmp, tmp);
+
+    // 홀수인 경우 한 번 더 자기 자신을 곱함
+    if (num % 2 == 1)
+        result = multiply(result, arr);
+
+    return result;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    long long B;
+    cin >> N >> B;
+
+    vector<vector<long long>> arr(N, vector<long long>(N));
+
+    // 행렬 입력 받기
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    // 행렬 거듭 제곱 결과 계산
+    vector<vector<long long>> result = square(arr, B);
+
+    // 결과 출력
+    for (auto& row : result)
+    {
+        for (long long val : row)
+        {
+            cout << val << ' ';
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
