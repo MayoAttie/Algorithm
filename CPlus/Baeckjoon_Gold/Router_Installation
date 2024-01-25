@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool isPossible(vector<int> arr, int dist, int C)
+{
+	int install = 1;
+	int pos = arr[0];
+
+	for (int i = 1; i < arr.size(); i++)
+	{
+		if (arr[i] - pos >= dist)
+		{
+			install++;
+			pos = arr[i];
+		}
+	}
+
+	return install >= C;
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N, C;
+	cin >> N >> C;
+
+	vector<int> arr(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+
+	sort(arr.begin(), arr.end());
+
+	int start = 1; 
+	int end = arr[N - 1] - arr[0];
+
+	int answer = 0;
+	while (start <= end)
+	{
+		int mid = (start + end) / 2;
+		if (isPossible(arr, mid, C))
+		{
+			answer = mid;
+			start = mid + 1;
+		}
+		else
+		{
+			end = mid - 1;
+		}
+	}
+
+	cout << answer;
+	
+}
