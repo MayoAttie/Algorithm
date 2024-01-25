@@ -1,0 +1,34 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int N;
+    cin >> N;
+
+    vector<int> xPos(N);
+    vector<int> yPos(N);
+
+    for (int i = 0; i < N; ++i) 
+    {
+        int x, y;
+        cin >> x >> y;
+        xPos[i] = x;
+        yPos[i] = y;
+    }
+
+    sort(xPos.begin(), xPos.end());
+    sort(yPos.begin(), yPos.end());
+
+    int minX = xPos[0];
+    int maxX = xPos[N - 1];
+    int minY = yPos[0];
+    int maxY = yPos[N - 1];
+
+    long long area = 1LL * (maxX - minX) * (maxY - minY);
+
+    cout << area << endl;
+
+}
