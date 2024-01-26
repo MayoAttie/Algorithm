@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+int main() 
+{
+    int m, n;
+    cin >> m >> n;
+
+    unordered_map<char, string> dict = 
+    {
+        {'1', "one"}, {'2', "two"}, {'3', "three"}, {'4', "four"},
+        {'5', "five"}, {'6', "six"}, {'7', "seven"}, {'8', "eight"},
+        {'9', "nine"}, {'0', "zero"}
+    };
+
+    vector<pair<int, string>> arr;
+
+    for (int i = m; i <= n; ++i) 
+    {
+        string strNum;
+        for (char ch : to_string(i)) 
+        {
+            strNum += dict[ch] + " ";
+        }
+        arr.push_back({ i, strNum });
+    }
+
+    sort(arr.begin(), arr.end(), [](const pair<int, string>& a, const pair<int, string>& b)
+        {
+        return a.second < b.second;
+        });
+
+    for (int i = 0; i < arr.size(); ++i)
+    {
+        cout << arr[i].first << " ";
+
+        if ((i + 1) % 10 == 0 && i != 0) 
+        {
+            cout << endl;
+        }
+    }
+
+    return 0;
+}
