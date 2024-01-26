@@ -1,0 +1,53 @@
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <unordered_set>
+
+using namespace std;
+
+int main() 
+{
+    int T;
+    cin >> T;
+
+    cin.ignore(); 
+
+    for (int t = 0; t < T; ++t) 
+    {
+        string str;
+        getline(cin, str);
+
+        vector<string> animalSounds;
+        unordered_set<string> animalSet;
+
+        while (true) 
+        {
+            string line;
+            getline(cin, line);
+
+            if (line == "what does the fox say?") 
+                break;
+
+            istringstream iss(line);
+            string word, sound;
+
+            iss >> word >> word >> sound;
+
+            animalSounds.push_back(sound);
+            animalSet.insert(sound);
+        }
+
+        istringstream iss(str);
+        string word;
+
+        while (iss >> word) 
+        {
+            if (animalSet.find(word) == animalSet.end()) 
+                cout << word << " ";
+        }
+
+        cout << endl;
+    }
+
+    return 0;
+}
