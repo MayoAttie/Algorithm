@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <climits>	
+using namespace std;
+
+int solution(int j, int m)
+{
+	int r = (j - 1) % (m + 1);
+	
+	vector<int> winNumber;
+	for (int i = r; i <= j; i += (m + 1))
+	{
+		winNumber.push_back(i);
+	}
+
+	return winNumber.size();
+}
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    int minTurn = INT_MAX;
+    int answer = -1;
+
+    for (int i = 1; i <= N; i++) 
+    {
+        int j, m;
+        cin >> j >> m;
+
+        int result = solution(j, m);
+
+        if (result < minTurn) 
+        {
+            minTurn = result;
+            answer = i;
+        }
+    }
+
+    cout << answer << ' ' << minTurn*2;
+}
