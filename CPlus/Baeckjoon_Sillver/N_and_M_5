@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> subArr;
+vector<int> arr;
+vector<bool> visited;
+int N, M;
+
+void backtracking(vector<int>& cur)
+{
+	if (cur.size() >= M)
+	{
+		subArr.push_back(cur);
+		return;
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		if (!visited[i])
+		{
+			visited[i] = true;
+			cur.push_back(arr[i]);
+
+			backtracking(cur);
+
+			visited[i] = false;
+			cur.pop_back();
+		}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+		
+	cin >> N >> M;
+	arr.resize(N);
+	visited.resize(N, false);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+	vector<int> tmp;
+	backtracking(tmp);
+
+	sort(subArr.begin(), subArr.end());
+
+	for (auto& i : subArr)
+	{
+		for (int j : i)
+		{
+			cout << j << " ";
+		}
+		cout << '\n';
+	}
+	
+}
