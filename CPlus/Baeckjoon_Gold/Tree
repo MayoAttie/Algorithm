@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+int n, m, caseNum = 1;
+vector<vector<int>> graph;
+vector<int> visited;
+
+bool findCycle(int start) 
+{
+    bool isCycle = false;
+    deque<int> que;
+    que.push_back(start);
+
+    while (!que.empty())
+    {
+        int curNode = que.front();
+        que.pop_front();
+
+        if (visited[curNode])
+        {
+            isCycle = true;
+        }
+
+        visited[curNode] = 1;
+
+        for (int i : graph[curNode])
+        {
+            if (visited[i] == 0) 
+                que.push_back(i);
+        }
+    }
+
+    return isCycle;
+}
+
+int countTrees() {
+    int count = 0;
+
+    for (int node = 1; node <= n; ++node) 
+    {
+        if (visited[node] == 0) 
+        {
+            if (!findCycle(node)) 
+                count += 1;
+        }
+    }
+
+    return count;
+}
+
+int main() 
+{
+    while (true) 
+    {
+        cin >> n >> m;
+
+        if (n == 0 && m == 0) 
+            break;
+
+        graph.assign(n + 1, vector<int>());
+        visited.assign(n + 1, 0);
+
+        for (int i = 0; i < m; ++i) 
+        {
+            int a, b;
+            cin >> a >> b;
+            graph[a].push_back(b);
+            graph[b].push_back(a);
+        }
+
+        int treeCount = countTrees();
+
+        if (treeCount == 0) 
+            cout << "Case " << caseNum << ": No trees." << endl;
+        else if (treeCount == 1) 
+            cout << "Case " << caseNum << ": There is one tree." << endl;
+        else 
+            cout << "Case " << caseNum << ": A forest of " << treeCount << " trees." << endl;
+
+        caseNum++;
+    }
+
+    return 0;
+}
