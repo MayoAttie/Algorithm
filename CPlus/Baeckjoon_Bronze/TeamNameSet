@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+#include <string>
+using namespace std;
+void cal(const string& name, int love[4]) 
+{
+    for (char ch : name) 
+    {
+        if (ch == 'L') 
+            love[0]++;
+        else if (ch == 'O') 
+            love[1]++;
+        else if (ch == 'V') 
+            love[2]++;
+        else if (ch == 'E') 
+            love[3]++;
+    }
+}
+
+int main() 
+{
+    string name, team, answer;
+    int n;
+    int love[4] = { 0 };
+
+    cin >> name >> n;
+    cal(name, love);
+
+    int max = -1;
+
+    while (n--) 
+    {
+        cin >> team;
+        int love2[4] = { 0 };
+        cal(team, love2);
+
+        for (int i = 0; i < 4; i++) 
+        {
+            love2[i] += love[i];
+        }
+
+        int result = 1;
+
+        for (int i = 0; i < 3; i++) 
+        {
+            for (int j = i + 1; j < 4; j++) 
+            {
+                result *= (love2[i] + love2[j]);
+            }
+        }
+
+        result %= 100;
+
+        if (result > max)
+        {
+            max = result;
+            answer = team;
+        }
+        else if (result == max && answer > team)
+        {
+            answer = team;
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
