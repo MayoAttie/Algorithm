@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    unordered_map<int, int> A;
+    vector<int> input(N); 
+    for (int i = 0; i < N; ++i)
+    {
+        int a;
+        cin >> a;
+        A[a]++;
+        input[i] = a; 
+    }
+
+    vector<int> NGF(N, -1);
+    stack<int> stk;
+    stk.push(0);
+
+    for (int i = 1; i < N; ++i)
+    {
+        while (!stk.empty() && A[input[stk.top()]] < A[input[i]])
+        {
+            NGF[stk.top()] = input[i];
+            stk.pop();
+        }
+        stk.push(i);
+    }
+
+    for (int i = 0; i < N; ++i)
+    {
+        cout << NGF[i] << " ";
+    }
+
+    return 0;
+}
