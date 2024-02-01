@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+vector<int> postOrder;
+vector<int> inOrder;
+void GetPreOrder(int inStart, int inEnd, int postStart, int postEnd)
+{
+	if (inStart > inEnd || postStart > postEnd)
+		return;
+
+	int root = postOrder[postEnd];
+	cout << root << " ";
+
+	int rootIdx = inStart;
+	while (inOrder[rootIdx] != root)
+		rootIdx++;
+
+
+	GetPreOrder(inStart, rootIdx - 1, postStart, postStart + (rootIdx - inStart) - 1);
+	GetPreOrder(rootIdx + 1, inEnd, postStart + (rootIdx - inStart), postEnd - 1);
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+	
+	postOrder.resize(N);
+	inOrder.resize(N);
+
+	for (int i = 0; i < N; i++)
+	{
+		cin >> inOrder[i];
+	}
+	for (int i = 0; i < N; i++)
+	{
+		cin >> postOrder[i];
+	}
+
+	GetPreOrder(0, N - 1, 0, N - 1);
+}
