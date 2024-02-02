@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> parent;
+
+int find(int x) 
+{
+    if (x != parent[x])
+        parent[x] = find(parent[x]);
+    return parent[x];
+}
+
+void unionSets(int x, int y) 
+{
+    x = find(x);
+    y = find(y);
+
+    if (x != y)
+        parent[y] = x;
+}
+
+int kruskal(vector<vector<int>>& graph, int M) 
+{
+    sort(graph.begin(), graph.end(), [](const vector<int>& a, const vector<int>& b) 
+        {
+        return a[2] < b[2];
+        });
+
+    int result = 0;
+    for (const vector<int>& edge : graph) 
+    {
+        if (find(edge[0]) != find(edge[1]))
+            unionSets(edge[0], edge[1]);
+        else
+            result += edge[2];
+    }
+
+    return result;
+}
+
+int main() 
+{
+    while (true) 
+    {
+        int M, N;
+        cin >> M >> N;
+
+        if (M == 0 && N == 0)
+            break;
+
+        parent.resize(M);
+
+        for (int i = 0; i < M; i++)
+            parent[i] = i;
+
+        vector<vector<int>> graph;
+        for (int i = 0; i < N; i++) 
+        {
+            int start, end, cost;
+            cin >> start >> end >> cost;
+            graph.push_back({ start, end, cost });
+        }
+
+        int answer = kruskal(graph, M);
+        cout << answer << endl;
+    }
+
+    return 0;
+}
