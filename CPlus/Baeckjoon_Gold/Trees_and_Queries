@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int N, R, Q;
+vector<vector<int>> tree;
+vector<int> subTree;
+
+void dfs(int node, int parent)
+{
+	subTree[node] = 1;
+
+	for (int i : tree[node])
+	{
+		if (i != parent)
+		{
+			dfs(i, node);
+			subTree[node] += subTree[i];
+		}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	cin >> N >> R >> Q;
+
+	tree.resize(N + 1);
+	subTree.assign(N + 1, 0);
+
+
+	for (int i = 1; i < N; i++)
+	{
+		int U, V;
+		cin >> U >> V;
+
+		tree[U].push_back(V);
+		tree[V].push_back(U);
+	}
+
+	dfs(R, 0);
+
+	for (int i = 0; i < Q; i++)
+	{
+		int U;
+		cin >> U;
+		cout << subTree[U] << '\n';
+	}
+	
+}
