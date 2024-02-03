@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <climits>  
+
+using namespace std;
+
+int main() 
+{
+    // 요소의 개수 (n)와 필요한 최소 메모리 (m)를 입력받습니다.
+    int n, m;
+    cin >> n >> m;
+
+    // 각 요소의 메모리와 비용을 저장할 벡터를 생성합니다.
+    vector<int> memory(n + 1, 0);
+    vector<int> cost(n + 1, 0);
+    int totalCost = 0;
+
+    // 각 요소의 메모리 요구량을 입력합니다.
+    for (int i = 1; i <= n; ++i) 
+    {
+        cin >> memory[i];
+    }
+
+    // 각 요소에 대한 비용을 입력하고 총 비용을 계산합니다.
+    for (int i = 1; i <= n; ++i) 
+    {
+        cin >> cost[i];
+        totalCost += cost[i];
+    }
+
+    // 동적 프로그래밍에 사용할 2차원 벡터를 생성합니다. 크기는 (n+1) x (totalCost+1)입니다.
+    vector<vector<int>> dp(n + 1, vector<int>(totalCost + 1, 0));
+
+    // 답을 큰 값으로 초기화합니다.
+    int answer = INT_MAX;
+
+    // 동적 프로그래밍을 수행합니다.
+    for (int i = 1; i <= n; ++i) 
+    {
+        for (int j = 0; j <= totalCost; ++j)
+        {
+            int cur_memory = memory[i];
+            int cur_cost = cost[i];
+
+            // 현재 비용이 j보다 작으면, 현재 요소를 선택하지 않고 이전 값을 가져옵니다.
+            if (j < cost[i]) 
+                dp[i][j] = dp[i - 1][j];
+            // 그렇지 않으면, 현재 요소를 선택하거나 선택하지 않은 경우 중 더 큰 메모리를 선택합니다.
+            else 
+                dp[i][j] = max(dp[i - 1][j - cur_cost] + cur_memory, dp[i - 1][j]);
+
+            // 선택된 메모리가 필요한 최소 메모리(m)보다 크거나 같다면, 최소 비용을 업데이트합니다.
+            if (dp[i][j] >= m) 
+                answer = min(answer, j);
+        }
+    }
+
+    // 결과를 출력합니다.
+    cout << answer << endl;
+
+    return 0;
+}
