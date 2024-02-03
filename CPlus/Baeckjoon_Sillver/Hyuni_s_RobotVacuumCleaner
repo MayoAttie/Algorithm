@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cmath>
+using namespace std;
+
+int N, M, K;
+vector<vector<int>> graph;
+vector<vector<bool>> visited;
+int dX[4] = { 1,0,-1,0 };
+int dY[4] = { 0,1,0,-1 };
+
+void BFS(int x, int y)
+{
+	queue<pair<int, int>> que;
+	que.push({ x,y });
+	visited[x][y] = true;
+
+	while (!que.empty())
+	{
+		int curX = que.front().first;
+		int curY = que.front().second;
+		int curVal = graph[curX][curY];
+		que.pop();
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nX = curX + dX[i];
+			int nY = curY + dY[i];
+			if (nX >= 0 && nX < N && nY >= 0 && nY < M && !visited[nX][nY])
+			{
+				if (abs(graph[nX][nY] - curVal) > K)
+					continue;
+
+				visited[nX][nY] = true;
+				que.push({ nX,nY });
+			}
+		}
+	}
+}
+
+int main()
+{
+	cin >> N >> M >> K;
+	graph.resize(N, vector<int>(M));
+	visited.resize(N, vector<bool>(M, false));
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			cin >> graph[i][j];
+		}
+	}
+
+	int count = 0;
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			if (!visited[i][j])
+			{
+				count++;
+				BFS(i, j);
+			}
+		}
+	}
+	cout << count;
+}
