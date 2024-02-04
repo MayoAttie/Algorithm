@@ -1,0 +1,43 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int main() 
+{
+    int T;
+    cin >> T;
+
+    for (int t = 0; t < T; ++t) 
+    {
+        int answer = 0;
+
+        int x1, y1, x2, y2;
+        cin >> x1 >> y1 >> x2 >> y2;
+
+        int n;
+        cin >> n;
+
+        for (int i = 0; i < n; ++i) 
+        {
+            int cx, cy, r;
+            cin >> cx >> cy >> r;
+
+            bool is_start_inCircle = pow((cx - x1), 2) + pow((cy - y1), 2) <= pow(r, 2);
+            bool is_arrival_inCircle = pow((cx - x2), 2) + pow((cy - y2), 2) <= pow(r, 2);
+
+            if (is_start_inCircle && !is_arrival_inCircle)
+            {
+                answer++;
+            }
+            else if (!is_start_inCircle && is_arrival_inCircle)
+            {
+                answer++;
+            }
+        }
+
+        cout << answer << endl;
+    }
+
+    return 0;
+}
