@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> parent;
+
+int find(int x)
+{
+	if (parent[x] == x)
+		return x;
+	else
+		return parent[x] = find(parent[x]);
+}
+
+void unionSet(int _a, int _b)
+{
+	int a = find(_a);
+	int b = find(_b);
+
+	if (a != b)
+	{
+		parent[a] = parent[b];
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+		
+	int N, M;
+	cin >> N >> M;
+
+	vector<pair<int, int>> arr(M);
+	parent.resize(N);
+
+	for (int i = 0; i < N; i++)
+	{
+		parent[i] = i;
+	}
+
+	for (int i = 0; i < M; i++)
+	{
+		cin >> arr[i].first >> arr[i].second;
+
+		if (find(arr[i].first) == find(arr[i].second))
+		{
+			cout << i + 1 << endl; 
+			return 0;
+		}
+		else
+		{
+			unionSet(arr[i].first, arr[i].second);
+		}
+	}
+
+	cout << 0 << endl;
+}
