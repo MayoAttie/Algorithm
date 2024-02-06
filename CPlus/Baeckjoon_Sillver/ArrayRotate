@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+int dX[4] = { 0,1,0,-1 };
+int dY[4] = { 1,0,-1,0 };
+void rotateArray(vector<vector<int>>& arr, int N, int M, int R) 
+{
+    for (int k = 0; k < R; ++k) 
+    {
+        int len = min(N, M) / 2;
+
+        for (int i = 0; i < len; i++)
+        {
+            int startVal = arr[i][i];
+            int x = i;
+            int y = i;
+            
+            int j = 0;
+            while (j<4)
+            {
+                int nX = x + dX[j];
+                int nY = y + dY[j];
+
+                if (nX == i && nY == i)
+                    break;
+                if (i <= nX && nX < N - i && i <= nY && nY < M - i)
+                {
+                    arr[x][y] = arr[nX][nY];
+                    x = nX;
+                    y = nY;
+                }
+                else
+                    j++;
+            }
+            arr[i + 1][i] = startVal;
+        }
+    }
+}
+
+int main() 
+{
+    int N, M, R;
+    cin >> N >> M >> R;
+
+    vector<vector<int>> arr(N, vector<int>(M));
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    // 배열 회전 수행
+    rotateArray(arr, N, M, R);
+
+    // 결과 출력
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            cout << arr[i][j] << ' ';
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
