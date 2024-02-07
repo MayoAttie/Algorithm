@@ -1,0 +1,46 @@
+#include <iostream>	
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<int> arr(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+
+	sort(arr.begin(), arr.end());
+	
+	int minHigh = arr[0];
+	int maxHigh = arr.back();
+	
+	int minCost = INT_MAX;
+
+    // 높이 차이가 17 이하인 경우는 비용이 0이 됨
+	if (maxHigh - minHigh <= 17)
+		minCost = 0;
+	else
+	{
+        // 높이 차이가 17보다 큰 경우를 처리
+		for (int i = minHigh; i <= maxHigh - 17; i++)
+		{
+			int cost = 0;
+			
+            // 각 언덕의 높이를 조정하는 비용을 계산
+			for (int j = 0; j < N; j++)
+				cost += max(0, arr[j] - i - 17) * max(0, arr[j] - i - 17);
+			for (int j = 0; j < N; j++)
+				cost += max(0, i - arr[j]) * max(0, i - arr[j]);
+
+			minCost = min(cost, minCost);
+		}
+	}
+
+	cout << minCost;
+}
