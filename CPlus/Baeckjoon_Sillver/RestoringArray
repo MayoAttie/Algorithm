@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() 
+{
+    int h, w, x, y;
+    cin >> h >> w >> x >> y;
+
+    vector<vector<int>> B_arr(h + x, vector<int>(w + y));
+    for (int i = 0; i < h + x; ++i) 
+    {
+        for (int j = 0; j < w + y; ++j) 
+        {
+            cin >> B_arr[i][j];
+        }
+    }
+
+    vector<vector<int>> A_arr(h, vector<int>(w));
+    for (int i = 0; i < h; ++i) 
+    {
+        for (int j = 0; j < w; ++j) 
+        {
+            A_arr[i][j] = B_arr[i][j];
+        }
+    }
+
+    for (int i = x; i < h; ++i) 
+    {
+        for (int j = y; j < w; ++j) 
+        {
+            A_arr[i][j] = B_arr[i][j] - A_arr[i - x][j - y];
+        }
+    }
+
+    for (int i = 0; i < h; ++i) 
+    {
+        for (int j = 0; j < w; ++j) 
+        {
+            cout << A_arr[i][j] << " ";
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
