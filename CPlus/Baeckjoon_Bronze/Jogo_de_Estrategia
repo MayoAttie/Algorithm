@@ -1,0 +1,34 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int J, R;
+	cin >> J >> R;
+
+	vector<int> totalScore(J, 0);
+
+	for (int i = 0; i < J * R; i++)
+	{
+		int a;
+		cin >> a;
+		int b = i % J;
+		totalScore[b] += a;
+	}
+
+	int maxScore = totalScore[0];
+	int answer = 0;
+
+	for (int i = 0; i < J; i++)
+	{
+		if (totalScore[i] >= maxScore)
+		{
+			maxScore = totalScore[i];
+			answer = i;
+		}
+	}
+
+	cout << answer + 1;
+}
