@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+vector<vector<char>> matrix;
+int H, W;
+
+vector<vector<int>> Simulation()
+{
+	vector<vector<int>> result(H,vector<int>(W,0));
+
+	for (int i = 0; i < H; i++)
+	{
+		bool isCloud = false;
+		int idx = 0;
+		for (int j = 0; j < W; j++)
+		{
+			if (matrix[i][j] == '.')
+			{
+				if (isCloud)
+				{
+					result[i][j] = ++idx;
+				}
+				else
+				{
+					result[i][j] = -1;
+				}
+			}
+			else
+			{
+				isCloud = true;
+				idx = 0;
+				result[i][j] = idx;
+			}
+		}
+	}
+
+	return result;
+}
+
+int main()
+{
+	cin >> H >> W;
+
+	matrix.resize(H, vector<char>(W));
+	
+	for (int i = 0; i < H; i++)
+	{
+		for (int j = 0; j < W; j++)
+		{
+			cin >> matrix[i][j];
+		}
+	}
+
+	vector<vector<int>> result = Simulation();
+
+	for (int i = 0; i < H; i++)
+	{
+		for (int j = 0; j < W; j++)
+		{
+			cout << result[i][j] << ' ';
+		}
+		cout << '\n';
+	}
+
+		
+}
