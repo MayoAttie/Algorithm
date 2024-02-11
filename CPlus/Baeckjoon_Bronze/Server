@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int N, T;
+	cin >> N >> T;
+
+	int sum = 0;
+	int cnt = 0;
+	bool isEnd = false;
+	for (int i = 0; i < N; i++)
+	{
+		int a;
+		cin >> a;
+		
+		if (sum + a <= T && !isEnd)
+		{
+			sum += a;
+			cnt++;
+		}
+		else
+			isEnd = true;
+	}
+
+	cout << cnt;
+}
