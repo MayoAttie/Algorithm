@@ -1,0 +1,51 @@
+#include <algorithm>
+#include <vector>
+#include <iostream>
+#include <map>
+using namespace std;
+
+struct Data
+{
+	int conNum;
+	int stuNum;
+	int score;
+	
+	bool operator<(const Data& other) const {
+		return score > other.score;
+	}
+};
+
+int main()
+{
+	int N;
+	cin >> N;
+	vector<Data> arr(N);
+	map<int, int> checker;
+	for (int i = 0; i < N; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		arr[i] = { a,b,c };
+		if (checker.find(a) == checker.end())
+			checker[a] = 0;
+	}
+
+	sort(arr.begin(), arr.end());
+	vector<Data> rank;
+	for (int i = 0; i < arr.size(); i++)
+	{
+		if (checker[arr[i].conNum] < 2)
+		{
+			rank.push_back(arr[i]);
+			checker[arr[i].conNum]++;
+		}
+		if (rank.size() > 2)
+			break;
+	}
+	for (int i = 0; i < rank.size(); i++)
+	{
+		cout << rank[i].conNum << ' ' << rank[i].stuNum << '\n';
+	}
+
+
+}
