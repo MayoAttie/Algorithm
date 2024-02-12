@@ -1,0 +1,33 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    int X_25, Y_25;
+    cin >> X_25 >> Y_25;
+
+    int N;
+    cin >> N;
+
+    double min_price = 9876543210; 
+
+    for (int i = 0; i < N; ++i) 
+    {
+        int X, Y;
+        cin >> X >> Y;
+
+        double price = (double)X * 1000 / Y; 
+        if (price < min_price)
+            min_price = price; 
+    }
+
+    double answer = (double)X_25 * 1000 / Y_25;
+    answer = min(answer, min_price);
+
+    cout << fixed << setprecision(2) << answer << endl; 
+
+    return 0;
+}
