@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+
+    map<string, vector<string>> group_map;
+
+    for (int i = 0; i < N; ++i) 
+    {
+        string team_name;
+        cin >> team_name;
+        int num;
+        cin >> num;
+        cin.ignore();
+        vector<string> members(num);
+        for (int j = 0; j < num; ++j) 
+        {
+            cin >> members[j];
+        }
+        sort(members.begin(), members.end()); 
+        group_map[team_name] = members;
+    }
+
+    for (int i = 0; i < M; ++i) 
+    {
+        string str;
+        cin >> str;
+        int type;
+        cin >> type;
+        cin.ignore(); 
+
+        if (type == 0)
+        {
+            vector<string>& members = group_map[str];
+            for (const string& i : members) 
+            {
+                cout << i << '\n';
+            }
+        }
+        else if (type == 1)
+        {
+            for (const auto& i : group_map) 
+            {
+                const vector<string>& members = i.second;
+                if (find(members.begin(), members.end(), str) != members.end())
+                {
+                    cout << i.first << endl;
+                    break;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
