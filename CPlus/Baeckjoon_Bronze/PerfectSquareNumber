@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+
+	int minValue = -1;
+	int sumValue = 0;
+	for (int i = N; i <= M; i++)
+	{
+		int root = sqrt(i);
+		if (root * root == i)
+		{
+			if (minValue == -1)
+				minValue = i;
+			sumValue += i;
+		}
+	}
+
+	if (minValue == -1)
+		cout << -1;
+	else
+		cout << sumValue << '\n' << minValue;
+}
