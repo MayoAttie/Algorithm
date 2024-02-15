@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() 
+{
+    int n, k;
+    cin >> n >> k; 
+    vector<int> arr(n);
+    vector<int> sum;
+
+    for (int i = 0; i < n; ++i) 
+    {
+        cin >> arr[i];
+    }
+
+    for (int i = 0; i <= n - k; ++i) 
+    {
+        int total = 0;
+        for (int j = i; j < i + k; ++j) 
+        {
+            total += arr[j];
+        }
+        sum.push_back(total);
+    }
+
+    cout << *max_element(sum.begin(), sum.end()) << endl;
+
+    return 0;
+}
