@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Node 
+{
+    int left;
+    int right;
+    Node(int l, int r) : left(l), right(r) {}
+};
+
+vector<vector<Node>> tree;
+vector<int> inOrder;
+int cnt = 0;
+
+void dfs(int current, bool isLeft) 
+{
+    for (Node node : tree[current])
+    {
+        if (node.left != -1) 
+        {
+            dfs(node.left, isLeft);
+            if (!isLeft)
+                cnt++;
+        }
+        if (isLeft)
+            inOrder.push_back(current);
+        
+        else 
+        {
+            if (inOrder[inOrder.size() - 1] == current)
+            {
+                cout << cnt << endl;
+                return;
+            }
+            cnt++;
+        }
+        if (node.right != -1) 
+        {
+            dfs(node.right, isLeft);
+            if (!isLeft)
+                cnt++;
+        }
+    }
+}
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    tree.resize(n + 1);
+
+    for (int i = 0; i < n; i++) 
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+        tree[a].push_back(Node(b, c));
+    }
+
+    dfs(1, true);
+    dfs(1, false);
+
+    return 0;
+}
