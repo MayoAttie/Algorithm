@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() 
+{
+    int n;
+    cin >> n;
+    vector<vector<int>> arr;
+    
+    for (int i = 0; i < n; ++i) 
+    {
+        vector<int> temp;
+        int x, y;
+        cin >> x >> y;
+        temp.push_back(x);
+        temp.push_back(y);
+        arr.push_back(temp);
+    }
+    
+    for (int i = 0; i < arr.size(); ++i) 
+    {
+        int a = arr[i][0] % 10;
+        int b = arr[i][1];
+        
+        if (a == 0) 
+            cout << 10 << endl;
+        else if (a == 1 || a == 5 || a == 6) 
+            cout << a << endl;
+        else if (a == 4 || a == 9) 
+        {
+            if (b % 2 == 0) 
+                cout << (a * a) % 10 << endl;
+            else 
+                cout << a % 10 << endl;
+        }
+        else if (a == 2 || a == 3 || a == 7 || a == 8) 
+        {
+            int result = 1;
+            for (int j = 0; j < b; ++j) 
+            {
+                result = (result * a) % 10;
+            }
+            cout << result << endl;
+        }
+    }
+    
+    return 0;
+}
