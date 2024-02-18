@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+int N, M, S, E;
+vector<vector<int>> graph;
+vector<bool> visited;
+vector<int> dist;
+
+void bfs(int start)
+{
+    queue<int> que;
+    que.push(start);
+    visited[start] = true;
+    dist[start] = 0;
+
+    while (!que.empty())
+    {
+        int current = que.front();
+        que.pop();
+
+        for (int next : graph[current])
+        {
+            if (!visited[next])
+            {
+                que.push(next);
+                visited[next] = true;
+                dist[next] = dist[current] + 1;
+            }
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N >> M >> S >> E;
+
+    graph.resize(N + 1);
+    visited.resize(N + 1, false);
+    dist.resize(N + 1, INT_MAX);
+
+    for (int i = 0; i < M; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+
+    for (int i = 1; i <= N; i++)
+    {
+        if (i == 1)
+        {
+            graph[i].push_back(i + 1);
+            graph[i + 1].push_back(i);
+        }
+        else if (i == N)
+        {
+            graph[i].push_back(i - 1);
+            graph[i - 1].push_back(i);
+        }
+        else
+        {
+            graph[i].push_back(i - 1);
+            graph[i - 1].push_back(i);
+            graph[i].push_back(i + 1);
+            graph[i + 1].push_back(i);
+        }
+    }
+
+    bfs(S);
+
+    cout << dist[E] << endl;
+
+    return 0;
+}
