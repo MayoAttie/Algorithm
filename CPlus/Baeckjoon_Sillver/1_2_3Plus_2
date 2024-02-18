@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> answer; 
+bool found = false; 
+int n, k; 
+int cnt = 0; 
+
+void backtrack(int sum) 
+{
+    if (found)
+        return;
+
+    if (sum > n) 
+        return;
+
+    if (sum == n) 
+    { 
+        cnt++;
+        if (cnt == k) 
+        { 
+            found = true;
+            for (int i = 0; i < answer.size(); ++i) 
+            {
+                if (i > 0) 
+                    cout << "+";
+                cout << answer[i];
+            }
+            cout << '\n';
+        }
+        return;
+    }
+
+
+    for (int i = 1; i <= 3; ++i) 
+    {
+        answer.push_back(i);
+        backtrack(sum + i); 
+        answer.pop_back();
+    }
+}
+
+int main() 
+{
+    cin >> n >> k;
+
+    backtrack(0);
+
+    if (!found) 
+        cout << -1 << endl; 
+
+    return 0;
+}
