@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool comparer(const string& a, const string& b) 
+{
+    string lowerA = a, lowerB = b;
+    transform(lowerA.begin(), lowerA.end(), lowerA.begin(), ::tolower);
+    transform(lowerB.begin(), lowerB.end(), lowerB.begin(), ::tolower);
+    return lowerA < lowerB;
+}
+
+int main() 
+{
+    int n;
+    while (true) 
+    {
+        cin >> n;
+        if (n == 0)
+            break;
+
+        vector<string> words(n);
+        for (int i = 0; i < n; ++i) 
+        {
+            cin >> words[i];
+        }
+
+        sort(words.begin(), words.end(), comparer);
+        cout << words[0] << endl;
+    }
+
+    return 0;
+}
