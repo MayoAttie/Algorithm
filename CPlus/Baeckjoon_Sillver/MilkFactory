@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+using namespace std;
+
+vector<vector<int>> graph;
+vector<bool> visited;
+
+void dfs(int node) 
+{
+    visited[node] = true;
+    for (int next : graph[node])
+    {
+        if (!visited[next]) 
+            dfs(next);
+    }
+}
+
+int main() 
+{
+    int n;
+    cin >> n;
+
+    graph.resize(n + 1);
+    visited.resize(n + 1);
+
+    for (int i = 0; i < n - 1; ++i) 
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[b].push_back(a);
+    }
+
+    int result = -1;
+    for (int i = 1; i <= n; ++i) 
+    {
+        fill(visited.begin(), visited.end(), false);
+        dfs(i);
+
+        bool all_visited = true;
+        for (int j = 1; j <= n; ++j) 
+        {
+            if (!visited[j]) 
+            {
+                all_visited = false;
+                break;
+            }
+        }
+
+        if (all_visited) 
+        {
+            result = i;
+            break;
+        }
+    }
+
+    cout << result << endl;
+
+    return 0;
+}
