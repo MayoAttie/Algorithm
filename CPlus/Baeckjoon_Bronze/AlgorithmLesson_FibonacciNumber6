@@ -1,0 +1,15 @@
+#include <iostream>
+
+using namespace std;
+
+int main() 
+{
+    long long n;
+    cin >> n;
+
+    long long result = (n - 2) * (n - 1) * n / 6;
+    cout << result << endl;
+    cout << "3" << endl;
+
+    return 0;
+}
