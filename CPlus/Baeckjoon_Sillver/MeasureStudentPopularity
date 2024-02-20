@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <string>
+using namespace std;
+int N;
+int main()
+{
+	cin >> N;
+	unordered_map<string, int> dic;
+	
+	for (int i = 0; i < N; i++)
+	{
+		string str;
+		cin >> str;
+		dic[str] = 0;
+	}
+
+	for (int k = 0; k <= N; k++)
+	{
+		string str;
+		getline(cin, str);
+
+		vector<string>words;
+		size_t pos = 0;
+		while ((pos = str.find(' ')) != string::npos) 
+		{
+			words.push_back(str.substr(0, pos));
+			str.erase(0, pos + 1);
+		}
+		words.push_back(str);
+
+		for (const auto& i : words) 
+		{
+			if (dic.find(i) != dic.end()) 
+				dic[i]++;
+		}
+	}
+
+	vector<pair<string, int>> sortTmp;
+
+	for (const auto& i : dic)
+	{
+		sortTmp.push_back(i);
+	}
+	
+	sort(sortTmp.begin(), sortTmp.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
+		if (a.second != b.second)
+			return a.second > b.second;
+		else
+			return a.first < b.first;
+		});
+
+	for (const auto& i : sortTmp)
+	{
+		cout << i.first << " " << i.second << '\n';
+	}
+}
