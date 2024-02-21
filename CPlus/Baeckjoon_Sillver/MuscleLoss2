@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <set>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+vector<int> arr;
+set<string> visited;
+int N, K;
+
+
+void backtracking(string now, int weight)
+{
+    if (weight < 500)
+        return;
+
+    if (now.size() >= N)
+    {
+        visited.insert(now);
+        return; 
+    }
+
+    for (int i = 1; i <= N; i++)
+    {
+        if (now.find(to_string(i)) != string::npos)
+            continue; 
+
+        string next_now = now + to_string(i);
+        int next_weight = weight + arr[i] - K;
+
+        backtracking(next_now, next_weight);
+    }
+}
+
+int main()
+{
+	cin >> N >> K;
+	arr.resize(N+1);
+
+	for (int i = 1; i <= N; i++)
+	{
+		cin >> arr[i];
+	}
+    backtracking("", 500);
+
+    cout << visited.size();
+	
+}
