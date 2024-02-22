@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+#include <unordered_set>
+#include <sstream>
+
+using namespace std;
+
+int main()
+{
+    int count;
+    cin >> count;
+    cin.ignore();
+
+    string input;
+    getline(cin, input);
+    istringstream iss(input);
+
+    unordered_set<string> cheeseSet;
+    string cheese;
+
+    while (iss >> cheese)
+    {
+        cheeseSet.insert(cheese);
+    }
+
+    int counter = 0;
+    for (const string& s : cheeseSet) 
+    {
+        if (s.size() >= 6 && s.substr(s.size() - 6) == "Cheese") 
+        {
+            counter++;
+        }
+    }
+
+    if (counter >= 4)
+    {
+        cout << "yummy" << endl;
+    } else {
+        cout << "sad" << endl;
+    }
+
+    return 0;
+}
