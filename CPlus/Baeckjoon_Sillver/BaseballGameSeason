@@ -1,0 +1,25 @@
+#include <iostream>
+
+using namespace std;
+
+int main() 
+{
+    int T;
+    cin >> T;
+
+    while (T--) 
+    {
+        int n, m, k, d;
+        cin >> n >> m >> k >> d;
+
+        int b = 2 * d / (k * n * m * (m - 1) + m * m * n * (n - 1));
+        
+        if (b) 
+            cout << (m * (m - 1) * n * k * b / 2) + (m * m * n * (n - 1) * b / 2) << endl;
+        else
+            cout << -1 << endl;
+        
+    }
+
+    return 0;
+}
