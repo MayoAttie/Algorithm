@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <set>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<set<int>> children;
+vector<bool> visited;
+
+void BFS(int start) 
+{
+    queue<int> que;
+    que.push(start);
+    visited[start] = true;
+    while (!que.empty())
+    {
+        int cur = que.front();
+        que.pop();
+        for (int i : graph[cur])
+        {
+            if (!visited[i]) 
+            {
+                visited[i] = true;
+                children[cur].insert(i);
+                que.push(i);
+            }
+        }
+    }
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int N;
+    cin >> N;
+
+    graph.resize(N + 1);
+    children.resize(N + 1);
+    visited.resize(N + 1, false);
+
+    for (int i = 0; i < N - 1; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+
+    vector<int> orders(N);
+    for (int i = 0; i < N; i++) 
+    {
+        cin >> orders[i];
+    }
+
+    BFS(1);
+
+    int next = 1;
+    for (int i : orders)
+    {
+        if (next == N)
+            break;
+        int c_length = children[i].size();
+        set<int> c1(orders.begin() + next, orders.begin() + next + c_length);
+        set<int> c2 = children[i];
+        if (c1 != c2)
+        {
+            cout << "0";
+            return 0;
+        }
+        next += c_length;
+    }
+    cout << "1";
+    return 0;
+}
