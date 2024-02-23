@@ -1,0 +1,46 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int test_case = 1;
+    while (true) 
+    {
+        string str;
+        getline(cin, str);
+
+        if (str[0] == '-') 
+            break;
+
+        stack<char> stk;
+        int count = 0;
+
+        for (char c : str) 
+        {
+            if (c == '{') 
+                stk.push(c);
+            else if (c == '}') 
+            {
+                if (!stk.empty() && stk.top() == '{') 
+                    stk.pop();
+                else 
+                {
+                    stk.push('{');
+                    count++;
+                }
+            }
+        }
+
+        count += stk.size() / 2; 
+
+        cout << test_case << ". " << count << "\n";
+        test_case++;
+    }
+
+    return 0;
+}
