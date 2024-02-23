@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int dx[4] = { -1,0,1,0 };
+int dy[4] = { 0,1,0,-1 };
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int test_case;
+    cin >> test_case;
+
+    while (test_case--)
+    {
+        string str;
+        cin >> str;
+
+        int x = 0, y = 0; 
+        int dir = 0;
+        int xMax = 0, xMin = 0, yMax = 0, yMin = 0;
+
+        for (char ch : str)
+        {
+            switch (ch)
+            {
+            case 'F':
+                x += dx[dir];
+                y += dy[dir];
+                break;
+            case 'B':
+                x -= dx[dir]; 
+                y -= dy[dir]; 
+                break;
+            case 'R':
+                dir = (dir + 1) % 4;
+                break;
+            case 'L':
+                dir = (dir + 3) % 4;
+                break;
+            }
+
+            xMax = max(xMax, x);
+            xMin = min(xMin, x);
+            yMax = max(yMax, y);
+            yMin = min(yMin, y);
+        }
+
+        cout << (xMax - xMin) * (yMax - yMin) << '\n';
+    }
+
+    return 0;
+}
