@@ -1,0 +1,53 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+int main() 
+{
+    long long a, b;
+    int num1, num2;
+
+    map<long long, int> steps;
+    while (true) 
+    {
+        cin >> a >> b;
+        if (a == 0 && b == 0) 
+            break;
+
+        num1 = a;
+        num2 = b;
+
+        bool flag = true;
+        int cnt1 = 0;
+        int cnt2 = 0;
+
+        while (a != 1) 
+        {
+            steps[a] = ++cnt1;
+            if (a % 2) a = a * 3 + 1;
+            else a /= 2;
+        }
+        steps[1] = ++cnt1;
+
+        while (b != 1) 
+        {
+            ++cnt2;
+            if (steps[b] != 0) 
+            {
+                cout << num1 << " needs " << steps[b] - 1 << " steps, " << num2 << " needs " << cnt2 - 1 << " steps, they meet at " << b << '\n';
+                flag = false;
+                break;
+            }
+            if (b % 2) 
+                b = b * 3 + 1;
+            else
+                b /= 2;
+        }
+        if (flag) cout << num1 << " needs " << steps[1] - 1 << " steps, " << num2 << " needs " << cnt2 << " steps, they meet at 1" << '\n';
+
+        steps.clear();
+    }
+
+    return 0;
+}
