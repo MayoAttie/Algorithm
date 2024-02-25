@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() 
+{
+    int tCase;
+    cin >> tCase;
+
+    for (int t = 0; t < tCase; t++)
+    {
+        string a, b;
+        cin >> a >> b;
+        vector<int> dist;
+
+        for (int i = 0; i < a.length(); i++) 
+        {
+            if (a[i] > b[i]) 
+                dist.push_back(26 - (a[i] - b[i]));
+            else 
+                dist.push_back(b[i] - a[i]);
+        }
+
+        cout << "Distances:";
+        for (int i : dist)
+        {
+            cout << " " << i;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
