@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	vector<int> A(10);
+	vector<int> B(10);
+
+	for (int i = 0; i < 10; i++)
+	{
+		cin >> A[i];
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		cin >> B[i];
+	}
+
+	int win = 0;
+	int loss = 0;
+	int draw = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		if (A[i] > B[i])
+			win++;
+		else if (A[i] < B[i])
+			loss++;
+		else
+			draw++;
+	}
+
+	if (win != loss)
+	{
+		if (win > loss)
+			cout << "A";
+		else
+			cout << "B";
+	}
+	else
+		cout << "D";
+}
