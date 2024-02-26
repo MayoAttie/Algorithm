@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+using namespace std;
+
+const int dx[] = { -1, -1, 1, 1 };
+const int dy[] = { -1, 1, -1, 1 };
+
+bool isValid(int x, int y)
+{
+    return x >= 0 && x < 8 && y >= 1 && y <= 8;
+}
+
+struct Node 
+{
+    int x, y;
+    string path;
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        vector<vector<int>> visited(8, vector<int>(8, 0));
+        char s_first, e_first;
+        int s_second, e_second;
+        cin >> s_first >> s_second >> e_first >> e_second;
+
+        int s_first_num = s_first - 'A';
+        int e_first_num = e_first - 'A';
+        bool isFound = false;
+
+        queue<Node> que; 
+        que.push({ s_first_num, s_second, string(1, s_first) + ' ' + to_string(s_second) });
+
+        while (!que.empty())
+        {
+            int x = que.front().x;
+            int y = que.front().y;
+            string curPath = que.front().path;
+            que.pop();
+
+            if (x == e_first_num && y == e_second)
+            {
+                cout << curPath.size() / 3 - 1 << " ";
+                cout << curPath << endl;
+                isFound = true;
+                break;
+            }
+
+            for (int i = 0; i < 4; ++i)
+            {
+                for (int j = 1; j <= 8; ++j)
+                {
+                    int nx = x + dx[i] * j;
+                    int ny = y + dy[i] * j;
+
+                    if (!isValid(nx, ny))
+                        break;
+
+                    if (visited[nx][ny - 1])
+                        continue;
+
+                    visited[nx][ny - 1] = visited[x][y - 1] + 1;
+                    que.push({ nx, ny, curPath + " " + char(nx + 'A') + ' ' + to_string(ny) });
+                }
+            }
+        }
+
+        if (!isFound)
+        {
+            cout << "Impossible" << endl;
+        }
+    }
+
+    return 0;
+}
