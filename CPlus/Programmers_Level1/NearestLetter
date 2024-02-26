@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <iostream>
+using namespace std;
+
+vector<int> solution(string s) 
+{
+    vector<int> answer;
+    map<char, int> _map;
+    
+    for(int i = 0; i < s.size(); i++)
+    {
+        if(_map.find(s[i]) == _map.end())
+        {
+            _map.insert({s[i], i});
+            answer.push_back(-1);
+        }
+        else
+        {
+            int idx = _map[s[i]];
+            int result = i - idx;
+            answer.push_back(result);
+            _map[s[i]] = i;
+        }
+    }
+    
+    return answer;
+}
