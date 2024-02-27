@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(vector<int> food) 
+{
+    string answer = "";
+    int left = 0;
+    int right = 0;
+    
+    answer += "0";
+    for(int i=food.size()-1; i>=1; i--)
+    {
+        string tmp = "";
+        int num = food[i];
+        string str = "";
+        for(int j=0; j<num/2; j++)
+            str += to_string(i);
+        
+        tmp += str;
+        tmp += answer;
+        tmp += str;
+        answer = tmp;
+    }
+    
+    return answer;
+}
