@@ -1,0 +1,19 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(int a, int b)
+{
+    string days[] = {"SUN","MON","TUE","WED","THU","FRI","SAT"};
+    
+    int dayMonth[] = {31,29,31,30,31,30,31,31,30,31,30,31};
+    
+    int total = 0;
+    for(int i=0; i<a; i++)
+        total += dayMonth[i-1];
+    total += (b-1);
+    
+    int dayWeek = (5+ total)%7;
+    return days[dayWeek];
+}
