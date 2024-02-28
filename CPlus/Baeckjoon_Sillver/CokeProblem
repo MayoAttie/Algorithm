@@ -1,0 +1,21 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(int a, int b, int n) 
+{
+    int answer = 0;
+    int num = n;
+
+    while (num >= a)
+    { 
+        int receive = num / a;
+        int remain = num % a;
+
+        answer += receive * b;
+        num = (receive*b) + remain;
+    }
+
+    return answer;
+}
