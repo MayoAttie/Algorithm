@@ -1,0 +1,43 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+vector<int> solution(vector<int> lottos, vector<int> win_nums) 
+{
+    vector<int> answer;
+    map<int, int> table = 
+    {
+        {6, 1},
+        {5, 2},
+        {4, 3},
+        {3, 4},
+        {2, 5},
+        {1, 6},
+        {0, 6}
+    };
+    
+    
+    int checkCnt = 0;
+    int zeros = 0;
+    for(int i=0; i<lottos.size(); i++)
+    {
+        if(lottos[i] != 0)
+        {
+            auto it = find(win_nums.begin(), win_nums.end(), lottos[i]);
+            if(it != win_nums.end())
+            {
+                checkCnt++;
+            }            
+        }
+        else
+            zeros++;
+    }
+
+    answer.push_back(table[checkCnt+zeros]);
+    answer.push_back(table[checkCnt]);
+
+    
+    return answer;
+}
