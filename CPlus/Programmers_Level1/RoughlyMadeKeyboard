@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+vector<int> solution(vector<string> keymap, vector<string> targets) 
+{
+    vector<int> answer;
+    unordered_map<char,int> dists;
+    
+    for(string keys : keymap)
+    {
+        for(int i=0; i<keys.size(); i++)
+        {
+            auto it = dists.find(keys[i]);
+            if(it != dists.end())
+            {
+                int minValue = min(dists[keys[i]], i+1);
+                dists[keys[i]] = minValue;
+            }
+            else
+                dists[keys[i]] = i+1;
+        }
+    }
+    
+    for(string target : targets)
+    {
+        int result = 0;
+        bool isEnd = true;
+        for(char i : target)
+        {
+            auto it = dists.find(i);
+            if(it != dists.end())
+                result += dists[i];
+            else
+            {
+                isEnd = false;
+                break;
+            }
+        }
+        
+        if(isEnd)
+            answer.push_back(result);
+        else
+            answer.push_back(-1);
+    }
+    return answer;
+}
