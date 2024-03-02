@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+int timeToNumber(string time)
+{
+    int m, s;
+    m = stoi(time.substr(0, 2));
+    s = stoi(time.substr(3, 2));
+    return m * 60 + s;
+}
+string numberToTime(int time)
+{
+    int m = time / 60;
+    int s = time % 60;
+    string str = (m < 10 ? "0" : "") + to_string(m) + ":" + (s < 10 ? "0" : "") + to_string(s);
+    return str;
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+    unordered_map<int, int> check;
+    for (int i = 0; i < N; i++)
+    {
+        int team;
+        string time;
+        cin >> team >> time;
+        check[timeToNumber(time)] = team;
+    }
+
+    int team1Win_time = 0;
+    int team2Win_time = 0;
+    int teamScore1 = 0;
+    int teamScore2 = 0;
+
+    int len = timeToNumber("48:00");
+    for (int i = 0; i < len; i++)
+    {
+        if (check.find(i) != check.end())
+        {
+            if (check[i] == 1)
+                teamScore1++;
+            else
+                teamScore2++;
+        }
+
+        if (teamScore1 > teamScore2)
+            team1Win_time++;
+        else if (teamScore1 < teamScore2)
+            team2Win_time++;
+    }
+
+    cout << numberToTime(team1Win_time) << '\n';
+    cout << numberToTime(team2Win_time) << '\n';
+}
