@@ -1,0 +1,43 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+
+string solution(string X, string Y) 
+{
+    string answer = "";
+    unordered_map<char, int> check;
+    vector<char> duple;
+    for (char i : X)
+    {
+        check[i]++;
+    }
+
+    for (char i : Y)
+    {
+        auto it = check.find(i);
+        if (it != check.end())
+        {
+            if (check[i] > 1)
+                check[i]--;
+            else
+                check.erase(i);
+            duple.push_back(i);
+        }
+    }
+
+    sort(duple.begin(), duple.end(), greater<char>());
+    for (char i : duple)
+    {
+        answer += i;
+    }
+
+    
+    if (answer == "")
+        return "-1";
+    else if (answer.find_first_not_of('0') == string::npos)
+        return "0";
+    else
+        return answer;
+}
