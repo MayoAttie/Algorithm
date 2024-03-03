@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+bool Checker(const std::string& str) 
+{
+	for (char c : str) 
+	{
+		if (c != '4' && c !='7')
+			return false;
+	}
+	return true;
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	for (int i = N; i > 0; i--)
+	{
+		string num = to_string(i);
+		if (Checker(num))
+		{
+			cout << i;
+			break;
+		}
+	}
+}
