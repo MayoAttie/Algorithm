@@ -1,0 +1,52 @@
+#include <string>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int solution(vector<int> ingredient)
+{
+    int answer = 0;
+    stack<int> stk;
+    for (int i = 0; i < ingredient.size(); i++)
+    {
+        stk.push(ingredient[i]);
+        bool isPossible = false;
+
+        if (!stk.empty() && stk.size() >= 4)
+        {
+            int ingre1 = stk.top();
+            stk.pop();
+            int ingre2 = stk.top();
+            stk.pop();
+            int ingre3 = stk.top();
+            stk.pop();
+            int ingre4 = stk.top();
+            stk.pop();
+
+            if (ingre4 == 1)
+            {
+                if (ingre3 == 2)
+                {
+                    if (ingre2 == 3)
+                    {
+                        if (ingre1 == 1)
+                            isPossible = true;
+                    }
+                }
+            }
+
+            if (!isPossible)
+            {
+                stk.push(ingre4);
+                stk.push(ingre3);
+                stk.push(ingre2);
+                stk.push(ingre1);
+            }
+            else
+                answer++;
+        }
+
+
+    }
+    return answer;
+}
