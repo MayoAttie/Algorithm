@@ -1,0 +1,70 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <iostream>
+using namespace std;
+
+int DateToNum(string date)
+{
+    string year = date.substr(2,4);
+    string month = date.substr(5,7);
+    string day = date.substr(8);
+    
+    int nYear = (stoi(year)) * (28*12);
+    int nMonth = (stoi(month)) * 28;
+    int nDay = stoi(day);
+    
+    return (nYear + nMonth + nDay);
+}
+
+string NumToDate(int date)
+{
+    int nYear = date / (28 * 12);
+    int nMonth = (date % (28 * 12)) / 28;
+    int nDay = date % 28;
+    
+    string year = to_string(nYear);
+    string month = to_string(nMonth);
+    string day = to_string(nDay);
+    
+    if(year.size() == 1)
+        year = "0"+year;
+    if (month.size() == 1)
+        month = "0" + month;
+    if (day.size() == 1) 
+        day = "0" + day;
+    
+    return "20"+year + "." + month + "." + day;
+}
+
+vector<int> solution(string today, vector<string> terms, vector<string> privacies) 
+{
+    vector<int> answer;
+    map<char, int> dic;
+    int checker = DateToNum(today);
+    for(string str : terms)
+    {
+        char type = str[0];
+        int period = stoi(str.substr(2));
+        dic[type] = period;
+    }
+    
+    int index = 1;
+    for(string str : privacies)
+    {
+        string date = str.substr(0,10);
+        char type = str[11];
+        
+        int offset = dic[type] * 28;
+        int number = DateToNum(date);
+        number += offset;
+        
+        if(number <= checker)
+            answer.push_back(index);
+        
+        NumToDate(number);
+        index++;
+    }
+    
+    return answer;
+}
