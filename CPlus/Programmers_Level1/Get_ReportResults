@@ -1,0 +1,56 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <sstream>
+using namespace std;
+
+vector<int> solution(vector<string> id_list, vector<string> report, int k)
+{
+    vector<int> answer(id_list.size(), 0);
+    set<string> visited;
+    map<string, int> dic;
+    map<string, vector<string>> reporters;
+    map<string, int> convert;
+    
+    for(int i=0; i<id_list.size(); i++)
+    {
+        vector<string> vec;
+        dic[id_list[i]] = 0;
+        reporters[id_list[i]] = vec;
+        convert[id_list[i]] = i;
+    }
+
+    for (string str : report)
+    {
+        stringstream ss(str);
+        string name, target;
+        ss >> name >> target;
+
+        if (visited.find(str) == visited.end())
+        {
+            visited.insert(str);
+            vector<string> tmp = reporters[target];
+            tmp.push_back(name);
+            reporters[target] = tmp;
+            dic[target]++;
+        }
+    }
+
+    for (string str : id_list)
+    {
+        int result = dic[str];
+        if(result >= k)
+        {
+            vector<string> tmp = reporters[str];
+            for(int i=0; i<tmp.size(); i++)
+            {
+                int idx = convert[tmp[i]];
+                answer[idx]++;
+            }
+        }
+    }
+    
+    return answer;
+}
