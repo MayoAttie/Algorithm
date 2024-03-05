@@ -1,0 +1,19 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+string solution(string my_string, vector<int> index_list) 
+{
+    string answer = "";
+    unordered_map<int, char> dic;
+    
+    for(int i=0; i<my_string.size(); i++)
+        dic[i] = my_string[i];
+    
+    for(int idx : index_list)
+    {
+        answer += dic[idx];
+    }
+    return answer;
+}
