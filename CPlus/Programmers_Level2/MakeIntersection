@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <climits>
+
+using namespace std;
+
+int startX = INT_MAX;
+int endX = INT_MIN;
+int startY = INT_MAX;
+int endY = INT_MIN;
+
+vector<string> solution(vector<vector<int>> line)
+{
+    vector<vector<int>> arr;
+    for (int i = 0; i < line.size() - 1; i++)
+    {
+        for (int j = i + 1; j < line.size(); j++)
+        {
+            long long a = line[i][0];
+            long long b = line[i][1];
+            long long e = line[i][2];
+
+            long long c = line[j][0];
+            long long d = line[j][1];
+            long long f = line[j][2];
+            long long mother = (a * d) - (b * c);
+            if (mother == 0)
+                continue;
+
+            long long child1 = (b * f) - (e * d);
+            long long child2 = (e * c) - (a * f);
+
+            if (child1 % mother != 0 || child2 % mother != 0)
+                continue;
+
+            int x = static_cast<int>(child1 / mother);
+            int y = static_cast<int>(child2 / mother);
+
+            vector<int> temp = { x, y };
+            if (find(arr.begin(), arr.end(), temp) == arr.end()) arr.push_back(temp);
+
+            startX = min(startX, x);
+            endX = max(endX, x);
+            startY = min(startY, y);
+            endY = max(endY, y);
+        }
+    }
+
+    vector<string> board;
+    for (int i = startY; i <= endY; i++)
+    {
+        string sb(endX - startX + 1, '.');
+        board.push_back(sb);
+    }
+
+    for (auto& i : arr) 
+    {
+        string& sb = board[abs(i[1] - endY)];
+        sb[abs(i[0] - startX)] = '*';
+    }
+
+    vector<string> answer;
+    for (const auto& str : board) 
+    {
+        answer.push_back(str);
+    }
+
+    return answer;
+}
