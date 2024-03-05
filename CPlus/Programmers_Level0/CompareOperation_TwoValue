@@ -1,0 +1,24 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int sum_twoInt(int a, int b)
+{
+    string sA = to_string(a);
+    string sB = to_string(b);
+    return stoi((sA+sB));
+}
+
+int solution(int a, int b) 
+{
+    int answer = 0;
+    int num1 = sum_twoInt(a,b);
+    int num2 = 2*a*b;
+    if(num1 == num2)
+        answer = num1;
+    else
+        answer = max(num1,num2);
+    
+    return answer;
+}
