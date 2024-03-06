@@ -1,0 +1,78 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <set>
+#include <cmath>
+using namespace std;
+class MazeEscape
+{
+    int n, m;
+    int eX, eY;
+    int len;
+    vector<vector<int>> visited;
+    string dir[4] = { "d", "l", "r", "u" };
+    int dx[4] = { 1,0,0,-1 };    
+    int dy[4] = { 0,-1,1,0 };
+    bool isExit;
+    set<string> roots;
+    string answer;
+public:
+    MazeEscape(int n, int m, int x, int y, int r, int c, int k)
+    {
+        answer = "";
+        isExit = false;
+        this->n = n;
+        this->m = m;
+        eX = r;
+        eY = c;
+        len = k;
+        visited.resize(n + 1, vector<int>(m + 1, 0));
+        int remain = abs(x - eX) + abs(y - eY);
+        if ((len - remain) % 2 != 0 || remain > len)
+            answer = "impossible";
+        else
+            dfs(x, y, "", 0);
+    }
+    string solve()
+    {
+        return answer;
+    }
+
+private:
+    void dfs(int x, int y, string path, int depth)
+    {
+        if (isExit)
+            return;
+        if (len - depth < abs(x - eX) + abs(y - eY))
+            return;
+        if (depth == len)
+        {
+            if (x == eX && y == eY)
+            {
+                roots.insert(path);
+                answer = path;
+                isExit = true;
+            }
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx >= 1 && nx <= n && ny >= 1 && ny <= m)   
+            {
+                string tmp = path + dir[i];
+                dfs(nx, ny, tmp, depth + 1);
+            }
+        }
+    }
+};
+string solution(int n, int m, int x, int y, int r, int c, int k)
+{
+    string answer = "";
+    MazeEscape maze(n, m, x, y, r, c, k);
+    return maze.solve();
+}
