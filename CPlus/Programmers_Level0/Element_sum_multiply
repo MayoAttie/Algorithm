@@ -1,0 +1,19 @@
+#include <string>
+#include <vector>
+#include <cmath>
+#include <numeric>
+using namespace std;
+
+int solution(vector<int> num_list) 
+{
+    int answer = 0;
+    int sum = std::accumulate(num_list.begin(), num_list.end(), 0);
+    int sumPow = pow(sum,2);
+    
+    int mul = 1;
+    for(int i : num_list)
+        mul *= i;
+    
+    
+    return mul<sumPow;
+}
