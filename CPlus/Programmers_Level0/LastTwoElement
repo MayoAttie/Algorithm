@@ -1,0 +1,13 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> solution(vector<int> num_list) 
+{
+    int idx = num_list.size()-1;
+    vector<int> answer = num_list;
+    int last = answer[idx] > answer[idx-1] ? answer[idx] - answer[idx-1] : answer[idx]*2;
+    answer.push_back(last);
+    return answer;
+}
