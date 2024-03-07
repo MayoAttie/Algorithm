@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <bitset>
+#include <algorithm>
+using namespace std;
+
+bool dfs(string& b, long long i, long long depth) 
+{
+    if (depth == 0) 
+    { 
+        return true;  
+    }
+    else if (b[i] == '0') 
+    { 
+        if (b[i - depth] == '1' || b[i + depth] == '1') 
+            return false;
+    }
+
+    bool left = dfs(b, i - depth, depth / 2);
+    bool right = dfs(b, i + depth, depth / 2);
+    return left && right;
+}
+
+string decimalToBinary(long long n) 
+{
+    string num = "";
+    while (n != 0) {
+        if (n % 2 == 1)
+            num += '1';
+        else
+            num += '0';
+        n /= 2;
+    }
+    reverse(num.begin(), num.end());
+    return num;
+}
+
+
+vector<int> solution(vector<long long> numbers) 
+{
+    vector<int> answer;
+    for (long long num : numbers) 
+    {
+        string b = decimalToBinary(num); 
+        
+        string nodes = decimalToBinary(b.size() + 1);
+        if (nodes.find('1', 1) != string::npos) 
+        {
+            long long dummies = (1LL << nodes.length()) - stoi(nodes, nullptr, 2);
+            b = string(dummies, '0') + b;
+        }
+
+        bool result = dfs(b, b.length() / 2, (b.length() + 1) / 4);
+        answer.push_back(result ? 1 : 0);
+    }
+    return answer;
+}
