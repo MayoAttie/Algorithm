@@ -1,0 +1,14 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(int a, int b) 
+{
+    int answer = 0;
+    string sNum1 = to_string(a) + to_string(b);
+    string sNum2 = to_string(b) + to_string(a);
+    int num1 = stoi(sNum1);
+    int num2 = stoi(sNum2);
+    return answer = max(num1,num2);
+}
