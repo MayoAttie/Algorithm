@@ -1,0 +1,20 @@
+#include <string>
+#include <vector>
+#include <cctype>
+#include <algorithm>
+using namespace std;
+
+vector<string> solution(vector<string> strArr) 
+{
+    vector<string> answer;
+    for(int i=0; i<strArr.size(); i++)
+    {
+        string tmp = strArr[i];
+        if(i%2 == 0)
+            transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+        else
+            transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
+        answer.push_back(tmp);
+    }
+    return answer;
+}
