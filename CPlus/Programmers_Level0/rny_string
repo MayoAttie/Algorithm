@@ -1,0 +1,15 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(string rny_string) 
+{
+    size_t it = rny_string.find('m');
+    while(it != string::npos)
+    {
+        rny_string.replace(it, 1, "rn");
+        it = rny_string.find('m', it + 2);
+    }
+    return rny_string;
+}
