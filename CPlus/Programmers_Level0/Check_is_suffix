@@ -1,0 +1,12 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(string my_string, string is_suffix) 
+{
+    reverse(my_string.begin(), my_string.end());
+    string tmp = my_string.substr(0, is_suffix.size());
+    reverse(tmp.begin(),tmp.end());
+    return tmp == is_suffix;
+}
