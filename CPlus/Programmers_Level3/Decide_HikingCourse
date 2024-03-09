@@ -1,0 +1,95 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <iostream>
+#include <algorithm>
+#include <limits> 
+#include <unordered_set>
+using namespace std;
+
+class FindClimbing
+{
+    int n;
+    vector<vector<pair<int, int>>> graph;
+    vector<int> gates;              // 출입구
+    vector<int> summits;            // 산봉우리
+public:
+    FindClimbing(int n, vector<vector<int>> path, vector<int> gates, vector<int> summits)
+    {
+        this->n = n;
+        this->gates = gates;
+        this->summits = summits;
+
+        graph.resize(n + 1);
+        for (auto& edge : path)
+        {
+            int now = edge[0];
+            int next = edge[1];
+            int cost = edge[2];
+
+            graph[now].push_back({ next, cost });
+            graph[next].push_back({ now, cost });
+        }
+        
+    }
+
+    vector<int> solve()
+    {
+        sort(summits.begin(), summits.end());
+        return dijkstra();
+    }
+
+private:
+    vector<int> dijkstra()
+    {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        vector<int> dist(n + 1, numeric_limits<int>::max());
+        unordered_set<int> check(summits.begin(), summits.end());
+        
+        for (int gate : gates)
+        {
+            dist[gate] = 0;
+            pq.push({ 0,gate });
+        }
+
+        while (!pq.empty())
+        {
+            int cur_dist = pq.top().first;
+            int cur_node = pq.top().second;
+            pq.pop();
+
+            if (dist[cur_node] < cur_dist || check.find(cur_node) != check.end())
+                continue;
+
+            for (auto& next : graph[cur_node])
+            {
+                int next_node = next.first;
+                int new_intersity = max(cur_dist,next.second);
+                if (dist[next_node] > new_intersity)
+                {
+                    dist[next_node] = new_intersity;
+                    pq.push({ new_intersity, next_node });
+                }
+            }
+        }
+
+
+        vector<int> result = { -1, numeric_limits<int>::max() };
+        for (int i : summits)
+        {
+            if (dist[i] < result[1])
+            {
+                result[0] = i;
+                result[1] = dist[i];
+            }
+        }
+        return result;
+    }
+};
+
+vector<int> solution(int n, vector<vector<int>> paths, vector<int> gates, vector<int> summits)
+{
+    FindClimbing func(n, paths, gates, summits);
+    vector<int> answer = func.solve();
+    return answer;
+}
