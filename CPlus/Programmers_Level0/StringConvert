@@ -1,0 +1,19 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(string myString, string pat) 
+{
+    int answer = 0;
+    string str ="";
+    for(char ch : myString)
+    {
+        if(ch == 'A')
+            str += 'B';
+        else
+            str += 'A';
+    }
+    auto it = str.find(pat);
+    return it != string::npos;
+}

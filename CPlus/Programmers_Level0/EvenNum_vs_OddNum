@@ -1,0 +1,22 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+int solution(vector<int> num_list) 
+{
+    int oddNum = accumulate(num_list.begin(), num_list.end(), 0, [](int sum, int num){
+        static int count =0;
+        if(++count %2 == 1)
+            return sum + num;
+        else return sum;
+    });
+    int evenNum = accumulate(num_list.begin(), num_list.end(), 0, [](int sum, int num){
+        static int count =0;
+        if(++count %2 == 0)
+            return sum + num;
+        else return sum;
+    });
+    return max(oddNum,evenNum);
+}
