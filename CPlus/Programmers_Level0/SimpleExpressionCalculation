@@ -1,0 +1,33 @@
+#include <string>
+#include <vector>
+#include <sstream>
+#include <iostream> 
+using namespace std;
+
+int solution(string binomial)
+{
+    int answer = 0;
+    stringstream ss(binomial);
+    string tmp;
+    int a = -1;
+    int b = -1;
+    string op;
+    while (ss >> tmp)
+    {
+        if (a == -1)
+            a = stoi(tmp);
+        else if(op == "")
+            op = tmp;
+        else if (b == -1)
+            b = stoi(tmp);
+    }
+
+    if (op == "+")
+        answer = a + b;
+    else if (op == "-")
+        answer = a - b;
+    else
+        answer = a * b;
+
+    return answer;
+}
