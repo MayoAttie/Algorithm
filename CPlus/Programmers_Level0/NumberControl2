@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+string solution(vector<int> numLog) 
+{
+    string answer = "";
+    int num = numLog[0];
+    for(int i=1; i<numLog.size(); i++)
+    {
+        int tmp = numLog[i];
+        if(num < tmp)
+        {
+            if(abs(num-tmp) == 10)
+                answer += 'd';
+            else
+                answer += 'w';
+        }
+        else
+        {
+            if(abs(num-tmp) == 10)
+                answer += 'a';
+            else
+                answer += 's';
+        }
+        num = numLog[i];
+    }
+    return answer;
+}

@@ -1,0 +1,33 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<string> solution(string myString) 
+{
+    vector<string> answer;
+    size_t it = myString.find('x');
+    size_t prev_pos = 0;
+    while(it != string::npos)
+    {
+        size_t it = myString.find('x', prev_pos);
+        string tmp;
+        if (it != string::npos) 
+        {
+            tmp = myString.substr(prev_pos, it - prev_pos); 
+            prev_pos = it + 1; 
+            if(tmp.size()>0)
+                answer.push_back(tmp);
+        }
+        else 
+        {
+            tmp = myString.substr(prev_pos); 
+            if(tmp.size()>0)
+                answer.push_back(tmp);
+            break;
+        }
+    }
+
+    sort(answer.begin(), answer.end()); 
+    return answer;
+}
