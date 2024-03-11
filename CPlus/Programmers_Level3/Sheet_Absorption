@@ -1,0 +1,112 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<string> solution(vector<string> commands) 
+{
+    vector<string> answer;
+    vector<vector<pair<int, int>>> merged(50, vector<pair<int, int>>(50));
+    vector<vector<string>> board(50, vector<string>(50, "EMPTY"));
+
+    for (int i = 0; i < 50; ++i) 
+    {
+        for (int j = 0; j < 50; ++j) 
+        {
+            merged[i][j] = make_pair(i, j);
+        }
+    }
+
+    for (const string& command : commands) 
+    {
+        vector<string> tokens;
+        size_t start = 0, end;
+        while ((end = command.find(' ', start)) != string::npos) 
+        {
+            tokens.push_back(command.substr(start, end - start));
+            start = end + 1;
+        }
+        tokens.push_back(command.substr(start));
+
+        if (tokens[0] == "UPDATE") 
+        {
+            if (tokens.size() == 4) 
+            {
+                int r = stoi(tokens[1]) - 1;
+                int c = stoi(tokens[2]) - 1;
+                string value = tokens[3];
+                int x = merged[r][c].first;
+                int y = merged[r][c].second;
+                board[x][y] = value;
+            } 
+            else if (tokens.size() == 3) 
+            {
+                string value1 = tokens[1];
+                string value2 = tokens[2];
+                for (int i = 0; i < 50; ++i) 
+                {
+                    for (int j = 0; j < 50; ++j) 
+                    {
+                        if (board[i][j] == value1) 
+                            board[i][j] = value2;
+                    }
+                }
+            }
+        }
+        else if (tokens[0] == "MERGE") 
+        {
+            int r1 = stoi(tokens[1]) - 1;
+            int c1 = stoi(tokens[2]) - 1;
+            int r2 = stoi(tokens[3]) - 1;
+            int c2 = stoi(tokens[4]) - 1;
+            int x1 = merged[r1][c1].first;
+            int y1 = merged[r1][c1].second;
+            int x2 = merged[r2][c2].first;
+            int y2 = merged[r2][c2].second;
+            if (board[x1][y1] == "EMPTY") 
+            {
+                board[x1][y1] = board[x2][y2];
+            }
+            for (int i = 0; i < 50; ++i) 
+            {
+                for (int j = 0; j < 50; ++j) 
+                {
+                    if (merged[i][j] == make_pair(x2, y2)) 
+                    {
+                        merged[i][j] = make_pair(x1, y1);
+                    }
+                }
+            }
+        }
+        else if (tokens[0] == "UNMERGE") 
+        {
+            int r = stoi(tokens[1]) - 1;
+            int c = stoi(tokens[2]) - 1;
+            int x = merged[r][c].first;
+            int y = merged[r][c].second;
+            string tmp = board[x][y];
+            for (int i = 0; i < 50; ++i) 
+            {
+                for (int j = 0; j < 50; ++j) 
+                {
+                    if (merged[i][j] == make_pair(x, y)) 
+                    {
+                        merged[i][j] = make_pair(i, j);
+                        board[i][j] = "EMPTY";
+                    }
+                }
+            }
+            board[r][c] = tmp;
+        }
+        else if (tokens[0] == "PRINT") 
+        {
+            int r = stoi(tokens[1]) - 1;
+            int c = stoi(tokens[2]) - 1;
+            int x = merged[r][c].first;
+            int y = merged[r][c].second;
+            answer.push_back(board[x][y]);
+        }
+    }
+
+    return answer;
+}
