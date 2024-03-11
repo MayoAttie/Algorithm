@@ -1,0 +1,23 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+string solution(string myString, string pat) 
+{
+    string answer = "";
+    string str = "";
+    for(char ch : myString)
+    {
+        str += ch;
+        int idx = str.size() - pat.size();
+        if(idx < 0)
+            continue;
+        string tmp = str.substr(idx);
+        
+        if(tmp == pat)
+            answer = str;
+    }
+    
+    return answer;
+}
