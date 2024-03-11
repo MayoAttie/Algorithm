@@ -1,0 +1,20 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(int a, int d, vector<bool> included) 
+{
+    int answer = 0;
+    int roop = 0;
+    for(bool i : included)
+    {
+        if(i)
+        {
+            int tmp = a + (d*roop);
+            answer += tmp;
+        }
+        roop++;
+    }
+    return answer;
+}

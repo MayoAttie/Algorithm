@@ -1,0 +1,17 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(string my_string, int m, int c) 
+{
+    vector<vector<char>> matrix(m);
+    int idx = 0;
+    for(int i=0; i<my_string.size();i++)
+    {
+        matrix[idx].push_back(my_string[i]);
+        ++idx %= m;
+    }
+    string answer(matrix[c-1].begin(), matrix[c-1].end());
+    return answer;
+}
