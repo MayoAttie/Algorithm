@@ -1,0 +1,16 @@
+#include <string>
+#include <vector>
+#include <numeric>
+using namespace std;
+
+int solution(vector<int> date1, vector<int> date2) 
+{
+    int answer = 0;
+    string sDate1 = accumulate(date1.begin(), date1.end(), string{},
+                                [](const string& a, int b) {
+                                    return a + to_string(b);});
+    string sDate2 = accumulate(date2.begin(), date2.end(), string{},
+                                [](const string& a, int b) {
+                                    return a + to_string(b);});
+    return stoi(sDate1)<stoi(sDate2);
+}
