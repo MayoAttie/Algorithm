@@ -1,0 +1,16 @@
+#include <string>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+string solution(string my_string, vector<int> indices) 
+{
+    string answer = "";
+    unordered_set<int> checker(indices.begin(), indices.end());
+    for(int i=0; i<my_string.size(); i++)
+    {
+        if(checker.find(i)==checker.end())
+            answer += my_string[i];
+    }
+    return answer;
+}
