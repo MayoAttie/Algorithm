@@ -1,0 +1,76 @@
+#include <string>
+#include <vector>
+#include <set>
+#include <algorithm>
+using namespace std;
+class DartGame
+{
+    const int INF = 987654321;
+    int target;
+    vector<vector<int>> dp;
+    vector<vector<int>> scores;
+    vector<int> answer;
+public:
+    DartGame(int target)
+    {
+        this->target = target;
+        dp.resize(target + 1, vector<int>(2, INF));
+        for (int i = 0; i <= target; i++)
+            dp[i][1] = 0;
+        scores.push_back({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50 });
+
+        set<int> _set;
+        for (int i = 1; i <= 20; i++)
+        {
+            for (int j = 2; j <= 3; j++)
+            {
+                int tmp = i * j;
+                if (tmp > 20)
+                    _set.insert(tmp);
+            }
+        }
+        scores.push_back(vector<int>(_set.begin(), _set.end()));
+    }
+    vector<int> solve()
+    {
+        DP();
+        return answer;
+    }
+private:
+    void DP()
+    {
+        dp[0][0] = 0;
+        for (int i = 1; i <= target; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                for (int k = 0; k < scores[j].size(); k++)
+                {
+                    int prev = i - scores[j][k];
+                    if (prev < 0)
+                        continue;
+
+                    int total = dp[prev][0] + 1;
+                    int valid = dp[prev][1] + 1 - j;
+
+                    if (total < dp[i][0])
+                        dp[i] = { total, valid };
+                    else if (total == dp[i][0])
+                    {
+                        dp[i][0] = total;
+                        dp[i][1] = max(dp[i][1], valid);
+                    }
+                }
+            }
+        }
+
+        answer = dp[target];
+    }
+};
+
+vector<int> solution(int target)
+{
+    DartGame func(target);
+    return func.solve();
+}
+
