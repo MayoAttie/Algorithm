@@ -1,0 +1,16 @@
+#include <string>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+vector<int> solution(vector<int> arr) 
+{
+    int n = arr.size();
+    int exp = ceil(log2(n));
+    int _size = pow(2, exp);
+    
+    int len = _size - n;
+    for(int i=0; i<len; i++)
+        arr.push_back(0);
+    return arr;
+}

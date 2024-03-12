@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<string> solution(string myStr) 
+{
+    vector<string> answer;
+    string tmp;
+    for(char ch : myStr)
+    {
+        if(ch == 'a' || ch =='b' || ch == 'c')
+        {
+            if(tmp.size())
+            {
+                answer.push_back(tmp);
+                tmp = "";
+            }
+        }
+        else
+            tmp+=ch;
+    }
+    if(tmp.size())
+        answer.push_back(tmp);
+    if(answer.size()==0)
+        answer.push_back("EMPTY");
+    return answer;
+}
