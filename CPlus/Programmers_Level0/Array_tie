@@ -1,0 +1,23 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+int solution(vector<string> strArr) 
+{
+    int answer = 0;
+    unordered_map<int,int> dic;
+    
+    for(string i : strArr)
+    {
+        int len = i.size();
+        dic[len]++;
+    }
+    
+    
+    for (auto& pair : dic)
+        answer = max(answer, pair.second);
+    
+    return answer;
+}
