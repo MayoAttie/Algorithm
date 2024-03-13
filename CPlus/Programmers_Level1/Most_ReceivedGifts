@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <sstream>
+using namespace std;
+
+class MostReceivedGift 
+{
+private:
+    vector<string> friends;
+    vector<vector<int>> giftGraph;
+    vector<vector<int>> result;
+    unordered_map<string, int> map;
+
+public:
+    MostReceivedGift(vector<string> friends, vector<string> gifts) 
+    {
+        this->friends = friends;
+        giftGraph.resize(friends.size(), vector<int>(friends.size(), 0));
+        result.resize(friends.size(), vector<int>(4, 0));
+
+        for (int i = 0; i < friends.size(); i++) 
+        {
+            map[friends[i]] = i;
+        }
+
+        for (string tmp : gifts) 
+        {
+            string A, B;
+            istringstream ss(tmp);
+            ss >> A >> B;
+            giftGraph[map[A]][map[B]]++;
+        }
+
+        for (auto a : map) 
+        {
+            int idx = a.second;
+            int receivedCnt = 0;
+            int givenCnt = 0;
+            for (int i = 0; i < friends.size(); i++) 
+            {
+                givenCnt += giftGraph[idx][i];
+            }
+            result[idx][0] = givenCnt;
+
+            for (int i = 0; i < friends.size(); i++) 
+            {
+                receivedCnt += giftGraph[i][idx];
+            }
+            result[idx][1] = receivedCnt;
+
+            result[idx][2] = givenCnt - receivedCnt;
+        }
+
+        for (int i = 0; i < friends.size(); i++) 
+        {
+            for (int j = i + 1; j < friends.size(); j++) 
+            {
+                if (giftGraph[i][j] == giftGraph[j][i]) 
+                {
+                    if (result[i][2] > result[j][2]) result[i][3]++;
+                    if (result[i][2] < result[j][2]) result[j][3]++;
+                    if (result[i][2] == result[j][2]) continue;
+                }
+                else if (giftGraph[i][j] > giftGraph[j][i]) 
+                    result[i][3]++;
+                else if (giftGraph[i][j] < giftGraph[j][i]) 
+                    result[j][3]++;
+            }
+        }
+    }
+
+    int solve() 
+    {
+        int answer = 0;
+        for (int i = 0; i < friends.size(); i++) 
+        {
+            if (result[i][3] > answer) 
+                answer = result[i][3];
+        }
+        return answer;
+    }
+};
+
+int solution(vector<string> friends, vector<string> gifts) 
+{
+    MostReceivedGift func(friends, gifts);
+    return func.solve();
+}
