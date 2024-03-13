@@ -1,0 +1,23 @@
+#include <string>
+#include <vector>
+#include <cctype>
+using namespace std;
+
+vector<int> solution(string my_string) 
+{
+    vector<int> answer(26*2,0);
+    for(char i : my_string)
+    {
+        if(isupper(i))
+        {
+            int idx = i - 'A';
+            answer[idx]++;
+        }
+        else
+        {
+            int idx = i - 'a' + 26;
+            answer[idx]++;
+        }
+    }
+    return answer;
+}

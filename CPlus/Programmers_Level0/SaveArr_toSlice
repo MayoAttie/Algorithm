@@ -1,0 +1,17 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<string> solution(string my_str, int n) 
+{
+    vector<string> answer;
+    int start = 0;
+    while(start < my_str.size())
+    {
+        string tmp = my_str.substr(start, n);
+        start+=n;
+        answer.push_back(tmp);
+    }
+    return answer;
+}
