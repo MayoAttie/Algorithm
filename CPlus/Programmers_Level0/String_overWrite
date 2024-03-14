@@ -1,0 +1,12 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(string my_string, string overwrite_string, int s) 
+{
+    string str1 = my_string.substr(0, s);
+    string str2 = my_string.substr(s + overwrite_string.size());
+    string answer = str1 + overwrite_string + str2;
+    return answer;
+}
