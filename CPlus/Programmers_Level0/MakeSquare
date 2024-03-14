@@ -1,0 +1,33 @@
+#include <vector>
+using namespace std;
+
+vector<vector<int>> solution(vector<vector<int>> arr) 
+{
+    vector<vector<int>> answer;
+    
+    int row = arr.size();
+    int col = arr[0].size();
+    
+    if (row > col) 
+    {
+        for (vector<int>& row_vec : arr) 
+        {
+            row_vec.insert(row_vec.end(), row - col, 0);
+            answer.push_back(row_vec);
+        }
+    } 
+    else if (row < col) 
+    {
+        for (int i = 0; i < col - row; ++i) 
+        {
+            arr.push_back(vector<int>(col, 0));
+        }
+        answer = arr;
+    } 
+    else 
+    {
+        answer = arr;
+    }
+    
+    return answer;
+}
