@@ -1,0 +1,25 @@
+#include <string>
+#include <vector>
+#include <set>
+#include <algorithm>
+using namespace std;
+
+int solution(vector<int> sides) 
+{
+    set<int> visited;
+    int maxVal = *max_element(sides.begin(), sides.end());
+    int minVal = *min_element(sides.begin(), sides.end());
+    for(int i = 1; i <= maxVal; i++)
+    {
+        if((i + minVal) > maxVal && i<=maxVal)
+            visited.insert(i);            
+    }
+    
+    for(int i = maxVal+1; i <= 2000; i++)
+    {
+        if(i < (minVal + maxVal))
+            visited.insert(i);            
+    }
+    
+    return visited.size();
+}
