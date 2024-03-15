@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+string solution(vector<string> id_pw, vector<vector<string>> db) 
+{
+    string answer = "";
+    unordered_map<string, string> map;
+    for(auto i : db)
+    {
+        string id = i[0];
+        string pwd = i[1];
+        map[id] = pwd;
+    }
+    if(map.find(id_pw[0]) == map.end())
+        answer = "fail";
+    else
+    {
+        if(map[id_pw[0]] != id_pw[1])
+            answer = "wrong pw";
+        else
+            answer = "login";
+    }
+    return answer;
+}

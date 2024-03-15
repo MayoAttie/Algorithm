@@ -1,0 +1,58 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int lenX;
+int lenY;
+
+bool isPossible(int nx, int ny) 
+{
+    if(nx >= 0 && nx < lenX && ny >= 0 && ny < lenY)
+        return true;
+    else
+        return false;
+}
+
+vector<int> solution(vector<string> keyinput, vector<int> board) 
+{
+    int dx[4] = {0, 1, 0, -1};
+    int dy[4] = {1, 0, -1, 0};
+    lenX = board[0];
+    lenY = board[1];
+    pair<int, int> pos = {lenX / 2, lenY / 2}; 
+
+    for(string i : keyinput) 
+    {
+        int nx, ny;
+        if(i == "up") 
+        {
+            nx = dx[0] + pos.first;
+            ny = dy[0] + pos.second;
+        } else if(i == "down") 
+        {
+            nx = dx[2] + pos.first;
+            ny = dy[2] + pos.second;
+        } else if(i == "left") 
+        {
+            nx = dx[3] + pos.first;
+            ny = dy[3] + pos.second;
+        } else if(i == "right") 
+        {
+            nx = dx[1] + pos.first;
+            ny = dy[1] + pos.second;
+        }
+        
+        if(isPossible(nx, ny)) 
+        {
+            pos.first = nx;
+            pos.second = ny;
+        }
+    }
+    pos.second -= lenY/2;
+    pos.first -= lenX/2;
+    
+    vector<int> answer = {pos.first, pos.second};
+    
+    return answer;
+}
