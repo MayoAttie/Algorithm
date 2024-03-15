@@ -1,0 +1,38 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Data
+{
+    int idx;
+    int rank;
+    bool isAttend;
+    Data(int i, int r, bool a) : idx(i), rank(r), isAttend(a) {}
+    bool operator<(const Data& other) const
+    {
+        return rank < other.rank;
+    }
+};
+
+
+
+int solution(vector<int> rank, vector<bool> attendance)
+{
+    int answer = 0;
+    vector<Data> datas;
+    for (int i = 0; i < rank.size(); i++)
+    {
+        datas.push_back({ i, rank[i], attendance[i] });
+    }
+    sort(datas.begin(), datas.end());
+    vector<Data> tmp;
+    for (auto& i : datas)
+    {
+        if (tmp.size() < 3 && i.isAttend)
+            tmp.push_back(i);
+    }
+
+    answer = (tmp[0].idx * 10000) + (tmp[1].idx * 100) + tmp[2].idx;
+    return answer;
+}
