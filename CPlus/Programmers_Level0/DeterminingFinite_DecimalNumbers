@@ -1,0 +1,39 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int getGcd(int a, int b)
+{
+    while(b!=0)
+    {
+        int tmp = b;
+        b = a%b;
+        a = tmp;
+    }
+    return a;
+}
+
+int solution(int a, int b) 
+{
+    int gcdAB = getGcd(a,b);
+    b /= gcdAB;
+    
+    vector<int> num;
+    int i =2;
+    while(i<=b)
+    {
+        if(b%i == 0)
+        {
+            b/=i;
+            num.push_back(i);
+        }
+        else
+            i += 1;
+    }
+    
+    if(all_of(num.begin(), num.end(), [](int n) {return n==2 || n==5;}))
+        return 1;
+    
+    return 2;
+}
