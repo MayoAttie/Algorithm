@@ -1,0 +1,24 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int target;
+
+bool compare(const int& a, const int& b) 
+{
+    if (pow(target - a, 2) != pow(target - b, 2)) 
+        return pow(target - a, 2) < pow(target - b, 2);
+    else 
+        return a > b;
+}
+
+vector<int> solution(vector<int> numlist, int n) 
+{
+    target = n;
+    
+    sort(numlist.begin(), numlist.end(), compare);
+    
+    return numlist;
+}
