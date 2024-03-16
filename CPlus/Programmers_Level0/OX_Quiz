@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+vector<string> solution(vector<string> quiz) 
+{
+    vector<string> answer;
+    for(string i : quiz)
+    {
+        stringstream ss(i);
+        string num1;
+        string oper;
+        string num2;
+        string end;
+        string result;
+        ss >> num1 >> oper >> num2 >> end >> result;
+
+        string judge;
+        if (oper == "+")
+            judge = (stoi(num1) + stoi(num2) == stoi(result) ? "O" : "X");
+        else if (oper == "-")
+            judge = (stoi(num1) - stoi(num2) == stoi(result) ? "O" : "X");
+
+        answer.push_back(judge);
+    }
+    return answer;
+}
