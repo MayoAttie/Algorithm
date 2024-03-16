@@ -1,0 +1,47 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+void SetDanger(vector<vector<int>>& board, int x, int y)
+{
+    int dx[8] = {1,0,-1,0,1,1,-1,-1};
+    int dy[8] = {0,1,0,-1,1,-1,1,-1};
+    
+    for(int i=0; i<8; i++)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        
+        if(nx>=0 && nx<board.size() && ny>=0 && ny<board[0].size())
+        {
+            if(board[nx][ny] == 0)
+                board[nx][ny] = -1;
+        }
+    }
+}
+
+int solution(vector<vector<int>> board) 
+{
+    int answer = 0;
+
+    for(int i=0; i<board.size(); i++)
+    {
+        for(int j=0; j<board[i].size(); j++)
+        {
+            if(board[i][j] == 1)
+                SetDanger(board, i,j);
+        }
+    }
+    
+    for(int i=0; i<board.size(); i++)
+    {
+        for(int j=0; j<board[i].size(); j++)
+        {
+            if(board[i][j] == 0)
+                answer++;
+        }
+    }
+    
+    return answer;
+}
