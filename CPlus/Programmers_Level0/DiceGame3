@@ -1,0 +1,142 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <cmath>
+#include <algorithm>
+using namespace std;
+
+bool isMatch[4] = { false,false,false,false };
+int countMatch(int a, int b, int c, int d)
+{
+    int count = 0;
+    if (a == b && b == c && c == d)
+        count = 4;
+    else if (a == b && b == c)
+    {
+        isMatch[0] = true;
+        isMatch[1] = true;
+        isMatch[2] = true;
+        count = 3;
+    }
+    else if (a == b && b == d)
+    {
+        isMatch[0] = true;
+        isMatch[1] = true;
+        isMatch[3] = true;
+        count = 3;
+    }
+    else if (a == c && c == d)
+    {
+        isMatch[0] = true;
+        isMatch[2] = true;
+        isMatch[3] = true;
+        count = 3;
+    }
+    else if (b == c && c == d)
+    {
+        isMatch[1] = true;
+        isMatch[2] = true;
+        isMatch[3] = true;
+        count = 3;
+    }
+    else
+    {
+        if (a == b)
+        {
+            isMatch[0] = true;
+            isMatch[1] = true;
+            count = 2;
+        }
+        if (a == c)
+        {
+            isMatch[0] = true;
+            isMatch[2] = true;
+            count = 2;
+        }
+        if (a == d)
+        {
+            isMatch[0] = true;
+            isMatch[3] = true;
+            count = 2;
+        }
+        if (b == c)
+        {
+            isMatch[1] = true;
+            isMatch[2] = true;
+            count = 2;
+        }
+        if (b == d) 
+        {
+            isMatch[1] = true;
+            isMatch[3] = true;
+            count = 2;
+        }
+        if (c == d)
+        {
+            isMatch[2] = true;
+            isMatch[3] = true;
+            count = 2;
+        }
+    }
+    return count;
+}
+
+int solution(int a, int b, int c, int d)
+{
+    int answer = 0;
+    int cnt = countMatch(a, b, c, d);
+    map<int, int> dic = { {0,a},{1,b},{2,c},{3,d} };
+    if (cnt == 4)
+        answer = 1111 * a;
+    else if (cnt == 3)
+    {
+        int num1, num2;
+        for (int i = 0; i < 4; i++)
+        {
+            if (isMatch[i] == false)
+                num1 = dic[i];
+            else if (isMatch[i] == true)
+                num2 = dic[i];
+        }
+
+        answer = pow(10 * num2 + num1, 2);
+    }
+    else if (cnt == 2)
+    {
+        int trueCnt = 0;
+        int num1 = 0, num2 = 0, num3 = 0;
+        for (int i = 0; i < 4; i++)
+            if (isMatch[i] == true)
+                trueCnt++;
+        if (trueCnt == 4)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (num1 == 0)
+                    num1 = dic[i];
+                else if (num2 == 0 && dic[i] != num1)
+                    num2 = dic[i];
+            }
+            answer = (num1 + num2) * abs(num1 - num2);
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (isMatch[i])
+                    continue;
+                if (num1 == 0)
+                    num1 = dic[i];
+                else if (num2 == 0 && dic[i] != num1)
+                    num2 = dic[i];
+            }
+            answer = num1 * num2;
+        }
+    }
+    else
+    {
+        answer = min(dic[0], min(dic[1], min(dic[2], dic[3])));
+    }
+
+    return answer;
+}
