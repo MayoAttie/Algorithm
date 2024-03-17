@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+#include <set>
+using namespace std;
+
+int solution(vector<string> babbling) 
+{
+    int answer = 0;
+    set<string> babe = {"aya","ye","woo","ma"};
+    for(string i : babbling)
+    {
+        int len = i.size();
+        
+        for(string j : babe)
+        {
+            size_t it = i.find(j);
+            if(it != string::npos)
+            {
+                i.replace(it, j.size()," ");
+                len -= j.size();
+            }
+            if(len <= 0)
+            {
+                answer++;
+                break;                
+            }
+        }
+    }
+    return answer;
+}
