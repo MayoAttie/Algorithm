@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+    vector<int> arrA(N);
+    for(int i=0; i<N; i++)
+    {
+        cin >> arrA[i];
+    }
+    vector<int> arrB = arrA;
+    sort(arrB.begin(), arrB.end());
+
+    vector<int> arrP;
+    for(int i : arrA)
+    {
+        auto it = find(arrB.begin(), arrB.end(), i);
+        arrP.push_back(distance(arrB.begin(), it));
+        *it = -1;
+    }
+
+    for(int i : arrP)
+        cout << i << " ";
+}
