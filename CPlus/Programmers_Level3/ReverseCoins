@@ -1,0 +1,110 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+class ReverseCoin
+{
+    vector<vector<int>> beginning;  // 초기 상태의 동전 배열
+    vector<vector<int>> target;     // 목표 상태의 동전 배열
+    vector<vector<int>> flipped;    // 초기 상태를 반전시킨 배열
+    int row;                        // 배열의 행 수
+    int col;                        // 배열의 열 수
+
+public:
+    // 생성자: 초기 상태와 목표 상태의 동전 배열을 받아 초기화합니다.
+    ReverseCoin(vector<vector<int>> beginning, vector<vector<int>> target)
+    {
+        this->beginning = beginning;
+        this->target = target;
+        row = beginning.size();
+        col = beginning[0].size();
+
+        // 초기 상태의 배열을 반전시켜 flipped 배열에 저장합니다.
+        for (int i = 0; i < row; i++)
+        {
+            flipped.push_back(vector<int>());
+            for (int j = 0; j < col; j++)
+            {
+                if (beginning[i][j])
+                    flipped[i].push_back(0);
+                else
+                    flipped[i].push_back(1);
+            }
+        }
+    }
+
+    // 초기 상태를 목표 상태로 바꾸기 위한 최소한의 플립 횟수를 계산하는 함수
+    int solve()
+    {
+        int answer = INT_MAX;  // 최소 플립 횟수를 저장할 변수
+        // 모든 가능한 플립 조합을 시도합니다.
+        for (int i = 0; i < (1 << row); i++)
+        {
+            vector<vector<int>> rowReverse;  // 행을 반전시킨 배열
+            int cnt = 0;                      // 현재 플립 횟수
+
+            // 현재 행의 플립 상태를 반영하여 rowReverse 배열을 생성합니다.
+            for (int j = 0; j < row; j++)
+            {
+                int tmp = 1 << j;
+
+                if (i & tmp)
+                {
+                    rowReverse.push_back(flipped[j]);
+                    cnt++;
+                }
+                else
+                    rowReverse.push_back(beginning[j]);
+            }
+
+            // 각 열의 플립 상태를 확인하여 목표 상태와 일치하지 않는다면 반전시킵니다.
+            for (int j = 0; j < col; j++)
+            {
+                vector<int> curCol;
+                vector<int> targetCol;
+
+                for (int m = 0; m < row; m++)
+                {
+                    curCol.push_back(rowReverse[m][j]);
+                    targetCol.push_back(target[m][j]);
+                }
+
+                if (curCol != targetCol)
+                {
+                    ReverseColumn(rowReverse, j);
+                    cnt++;
+                }
+            }
+
+            // 현재 상태가 목표 상태와 일치한다면 최소 플립 횟수를 갱신합니다.
+            if (rowReverse == target)
+                answer = min(answer, cnt);
+        }
+
+        // 만약 최소 플립 횟수가 갱신되지 않았다면 초기값을 -1로 설정합니다.
+        if (answer == INT_MAX)
+            answer = -1;
+
+        return answer;
+    }
+
+private:
+    // 주어진 배열의 특정 열을 반전시키는 함수
+    void ReverseColumn(vector<vector<int>>& arr, int col)
+    {
+        for (int i = 0; i < arr.size(); i++)
+        {
+            arr[i][col] = (arr[i][col] == 1) ? 0 : 1;
+        }
+    }
+};
+
+int solution(vector<vector<int>> beginning, vector<vector<int>> target)
+{
+    int answer = 0;
+    ReverseCoin func(beginning, target);
+    answer = func.solve();
+    return answer;
+}
