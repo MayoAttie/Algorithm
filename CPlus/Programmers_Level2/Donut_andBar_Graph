@@ -1,0 +1,54 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class SearchGraph
+{
+    unordered_map<int, vector<int>> map;
+public:
+    SearchGraph(vector<vector<int>> edges)
+    {
+        for(auto i : edges)
+        {
+            int a = i[0];
+            int b = i[1];
+            
+            if(map.find(a) == map.end())
+                map[a] = {0,0};
+            if(map.find(b) == map.end())
+                map[b] = {0,0};
+            map[a][0]++;
+            map[b][1]++;
+        }
+    }
+    vector<int> solve()
+    {
+        vector<int> answer(4);
+        
+        for(auto i : map)
+        {
+            int key = i.first;
+            const vector<int>& val = i.second;
+            
+            if(val[0] >=2 && val[1] == 0)
+                answer[0] = key;
+            else if(val[0] ==0 &&val[1] >0)
+                answer[2]++;
+            else if(val[0]>=2 && val[1] >=2)
+                answer[3]++;
+        }
+        
+        answer[1] = map[answer[0]][0] - answer[2] - answer[3];
+        return answer;
+    }
+private:
+};
+
+vector<int> solution(vector<vector<int>> edges) 
+{
+    vector<int> answer;
+    SearchGraph func(edges);
+    answer = func.solve();
+    return answer;
+}
