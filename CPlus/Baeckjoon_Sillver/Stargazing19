@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<char>> matrix;
+
+void backtracking(int n, int x, int y)
+{
+	int len = (4 * n) - 3;
+	if (len == 1)
+	{
+		matrix[x][y] = '*';
+		return;
+	}
+	else
+	{
+		for (int i = 0; i < len; i++)
+		{
+			matrix[x][i + y] = '*';
+			matrix[i + y][x] = '*';
+			matrix[x + (len - 1)][i + y] = '*';
+			matrix[i + x][y + (len - 1)] = '*';
+		}
+
+		n--;
+		x += 2;
+		y += 2;
+		backtracking(n, x, y);
+		return;
+	}
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+	int len = (4 * N) - 3;
+	matrix.resize(len, vector<char>(len, ' '));
+	backtracking(N, 0, 0);
+
+	for (int i = 0; i < len; i++)
+	{
+		for (int j = 0; j < len; j++)
+		{
+			cout << matrix[i][j];
+		}
+		cout << '\n';
+	}
+}
