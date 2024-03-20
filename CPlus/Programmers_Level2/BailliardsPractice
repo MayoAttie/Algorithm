@@ -1,0 +1,63 @@
+#include <string>
+#include <vector>
+#include <cmath>
+#include <climits>
+using namespace std;
+
+class Billiards
+{
+    int m;
+    int n;
+    vector<vector<int>> balls;
+    pair<int, int> start;
+public:
+    Billiards(int m, int n, int startX, int startY, vector<vector<int>> balls)
+    {
+        this->balls = balls;
+        this->m = m;
+        this->n = n;
+        start.first = startX;
+        start.second = startY;
+    }
+    vector<int> solve()
+    {
+        vector<int> answer;
+        for (int i = 0; i < balls.size(); i++)
+        {
+            vector<int> end = { balls[i][0], balls[i][1] };
+            int dist = INT_MAX;
+            vector<int> tmp = calculMatrix(end);
+            for (int j : tmp)
+            {
+                if (j < dist)
+                    dist = j;
+            }
+            answer.push_back(dist);
+        }
+        return answer;
+    }
+private:
+    vector<int> calculMatrix(vector<int>& end)
+    {
+        vector<int> result;
+
+        if (start.first != end[0] || start.second > end[1])
+            result.push_back(pow(abs(start.first - end[0]), 2) + pow(abs(2 * n - start.second - end[1]), 2));
+        if (start.first != end[0] || start.second < end[1])
+            result.push_back(pow(abs(start.first - end[0]), 2) + pow(abs(start.second + end[1]), 2));
+        if (start.second != end[1] || start.first < end[0])
+            result.push_back(pow(abs(start.first + end[0]), 2) + pow(abs(start.second - end[1]), 2));
+        if (start.second != end[1] || start.first > end[0])
+            result.push_back(pow(abs(2 * m - start.first - end[0]), 2) + pow(abs(start.second - end[1]), 2));
+
+        return result;
+    }
+};
+
+vector<int> solution(int m, int n, int startX, int startY, vector<vector<int>> balls)
+{
+    vector<int> answer;
+    Billiards func(m, n, startX, startY, balls);
+    answer = func.solve();
+    return answer;
+}
