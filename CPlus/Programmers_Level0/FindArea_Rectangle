@@ -1,0 +1,22 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int solution(vector<vector<int>> dots) 
+{
+    int answer = 0;
+    pair<int,int> row = {INT_MAX, INT_MIN};
+    pair<int,int> col = {INT_MAX, INT_MIN};
+    for(auto i : dots)
+    {
+        row.first = min(row.first, i[0]);
+        row.second = max(row.second, i[0]);
+        col.first = min(col.first, i[1]);
+        col.second = max(col.second, i[1]);
+    }
+    int width = abs(row.second - row.first);
+    int height = abs(col.second - col.first);
+    return width * height;
+}
