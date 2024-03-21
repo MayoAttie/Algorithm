@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int width;
+int hegiht;
+
+int getDist(int dir, int dist)
+{
+	if (dir == 1)
+		return dist;
+	else if (dir == 2)
+		return width + hegiht + (width - dist);
+	else if (dir == 3)
+		return width + hegiht + width + (hegiht - dist);
+	else
+		return width + dist;
+}
+
+int main()
+{
+	cin >> width >> hegiht;
+	int n;
+	cin >> n;
+
+	vector<pair<int, int>> store(n);
+	for (int i = 0; i < n; i++)
+	{
+		cin >> store[i].first >> store[i].second;
+	}
+
+	int dir, dist;
+	cin >> dir >> dist;
+
+	int answer = 0;
+	int dist1 = getDist(dir, dist);
+	for (int i = 0; i < n; i++)
+	{
+		int dist2 = getDist(store[i].first, store[i].second);
+		int path1 = abs(dist1 - dist2);
+		int path2 = 2 * width + 2 * hegiht - path1;
+		answer += min(path1, path2);
+	}
+
+	cout << answer;
+}
