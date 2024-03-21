@@ -1,0 +1,34 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(vector<int> common) 
+{
+    int turm = abs(common[0]-common[1]);
+    bool isGeometric = false;
+    if(abs(common[1]-common[2]) != turm)
+        isGeometric = true;
+    if(common[0]>common[1])
+    {
+        if(isGeometric)
+        {
+            double ratio = static_cast<double>(common[1]/common[0]);
+            int next = common.back()*ratio;
+            return next;
+        }
+        else
+            return common.back()-turm;
+    }
+    else
+    {
+        if(isGeometric)
+        {
+            double ratio = static_cast<double>(common[1]/common[0]);
+            int next = common.back()*ratio;
+            return next;
+        }
+        else
+            return common.back()+turm;
+    }
+}

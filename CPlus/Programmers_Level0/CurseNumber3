@@ -1,0 +1,21 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+bool trueCheck(int n)
+{
+    return n % 3 == 0 || to_string(n).find("3") != string::npos;
+}
+
+int solution(int n) 
+{
+    int answer = 0;
+    for(int i=0; i<n; i++)
+    {
+        answer++;
+        while(trueCheck(answer))
+            answer++;
+    }
+    return answer;
+}
