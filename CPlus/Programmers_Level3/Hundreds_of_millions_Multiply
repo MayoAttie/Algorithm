@@ -1,0 +1,60 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Muls
+{
+    vector<int> starts;
+    vector<int> divisorList;
+    int e;
+public:
+    Muls(int e, vector<int> starts)
+    {
+        this->e = e;
+        this->starts = starts;
+        divisorList.resize(e + 1, 0);
+
+    }
+    vector<int> solve()
+    {
+        vector<int> dp(e + 1, 0);
+        vector<int> answer;
+        calcul(dp, answer);
+
+        for (int i : starts)
+        {
+            answer.push_back(dp[i]);
+        }
+
+        return answer;
+    }
+private:
+    void calcul(vector<int>& dp, vector<int>& answer)
+    {
+        for (int i = 1; i <= e; i++)
+        {
+            for (int j = i + 1; j <= e/i; j++)
+            {
+                int n = i * j;
+                if (n > e)
+                    break;
+                divisorList[n] += 1;
+            }
+        }
+        dp[e] = e;
+        for (int i = e - 1; i >= 1; i--)
+        {
+            if (divisorList[dp[i + 1]] <= divisorList[i])
+                dp[i] = i;
+            else
+                dp[i] = dp[i + 1];
+        }
+    }
+};
+
+vector<int> solution(int e, vector<int> starts)
+{
+    Muls func(e, starts);
+    return func.solve();
+}
