@@ -1,0 +1,103 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <climits>
+using namespace std;
+
+class floydWarshall
+{
+	const int INF = 987654321;
+	vector<vector<int>> graph;							// 비용 그래프
+	vector<vector<vector<int>>> logNodes;				// 이동간 방문 노드 로그
+	int n;
+public:
+	floydWarshall(int n, int m)
+	{
+		this->n = n;
+		graph.assign(n + 1, vector<int>(n + 1, INF));
+		logNodes.assign(n + 1, vector<vector<int>>(n + 1));
+		for (int i = 1; i <= n; ++i)
+            logNodes[i][i] = {i};
+		for (int i = 0; i < m; i++)
+		{
+			int a, b, c;
+			cin >> a >> b >> c;
+			if (graph[a][b] > c)
+			{
+				graph[a][b] = c;
+				logNodes[a][b] = { a,b };
+			}
+		}
+	}
+	void solution()
+	{
+		floydwarshall();
+		PrintValues();
+	}
+private:
+	void floydwarshall()
+	{
+		for (int mid = 1; mid <= n; mid++)
+		{
+			for (int src = 1; src <= n; src++)
+			{
+				for (int dest = 1; dest <= n; dest++) 
+				{
+					if (src == dest)
+						continue;
+					if (graph[src][dest] > graph[src][mid] + graph[mid][dest])
+					{
+						graph[src][dest] = graph[src][mid] + graph[mid][dest];
+						logNodes[src][dest] = logNodes[src][mid];
+						logNodes[src][dest].pop_back();
+						logNodes[src][dest].insert(logNodes[src][dest].end(), logNodes[mid][dest].begin(), logNodes[mid][dest].end());
+					}
+				}
+			}
+		}
+	}
+	void PrintValues()
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			for (int j = 1; j <= n; j++)
+			{
+				if (graph[i][j] == INF)
+					cout << 0 << " ";
+				else
+					cout << graph[i][j] << " ";
+			}
+			cout << '\n';
+		}
+
+		for (int i = 1; i <= n; i++)
+		{
+			for (int j = 1; j <= n; j++)
+			{
+				if (graph[i][j] == INF)
+					cout << 0 << '\n';
+				else
+				{
+					cout << logNodes[i][j].size() << " ";
+					for (int k = 0; k < logNodes[i][j].size(); k++)
+					{
+						cout << logNodes[i][j][k] << " ";
+					}
+					cout << '\n';
+				}
+			}
+		}
+	}
+};
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int n, m;
+	cin >> n >> m;
+	floydWarshall func(n, m);
+	func.solution();
+}
