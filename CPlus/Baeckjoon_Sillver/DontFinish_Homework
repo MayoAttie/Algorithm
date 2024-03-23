@@ -1,0 +1,42 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    stack<pair<int, int>> stk;
+
+    cin >> n;
+
+    int answer = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int type;
+        cin >> type;
+
+        int score, second;
+        if (type == 1)
+        {
+            cin >> score >> second;
+            stk.push({ second, score});
+        }
+        if (!stk.empty())
+        {
+            stk.top().first--;
+            if (stk.top().first == 0)
+            {
+                answer += stk.top().second;
+                stk.pop();
+            }
+        }
+    }
+
+    cout << answer << '\n';
+
+    return 0;
+}
