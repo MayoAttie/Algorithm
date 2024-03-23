@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(vector<int> cookie) 
+{
+    int n = cookie.size();
+    int answer = 0;
+
+    for (int i = 0; i < n - 1; i++) 
+    {
+        int left = i, right = i + 1;
+        int left_sum = cookie[left], right_sum = cookie[right];
+
+        while (true) 
+        {
+            if (left_sum == right_sum) 
+            {
+                answer = max(answer, left_sum);
+                left--;
+                right++;
+
+                if (left < 0 || right >= n)
+                    break;
+
+                left_sum += cookie[left];
+                right_sum += cookie[right];
+            } 
+            else if (left_sum < right_sum) 
+            {
+                left++;
+                if (left < 0)
+                    break;
+                left_sum += cookie[left];
+            } 
+            else 
+            {
+                right++;
+                if (right >= n)
+                    break;
+                right_sum += cookie[right];
+            }
+        }
+    }
+
+    return answer;
+}
