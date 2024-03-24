@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <numeric>
+using namespace std;
+
+long long answer = 0;
+vector<bool> visited;
+vector<vector<int>> graph;
+long long dfs(int x, vector<int>& a)
+{
+    long long now = a[x];
+    visited[x] = true;
+
+    for (int i : graph[x]) 
+    {
+        if (!visited[i]) 
+            now += dfs(i, a);
+    }
+
+    answer += abs(now);
+    return now;
+}
+
+long long solution(vector<int> a, vector<vector<int>> edges)
+{
+    answer = 0;
+
+    if (accumulate(a.begin(), a.end(), 0LL) != 0) 
+        return -1;
+
+    int length = a.size();
+    graph.resize(length);
+    for (auto edge : edges) 
+    {
+        int i = edge[0];
+        int j = edge[1];
+        graph[i].push_back(j);
+        graph[j].push_back(i);
+    }
+
+    visited.assign(length, false);
+    dfs(0, a);
+    return answer;
+}
