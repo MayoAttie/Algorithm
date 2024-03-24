@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int maxVal = 0;
+int n, k;
+vector<int> arr;
+
+void backtracking(int num)
+{
+    if (num > n)
+        return;
+    
+    maxVal = max(maxVal, num);
+    
+    for (int i = 0; i < k; i++)
+    {
+        backtracking(num * 10 + arr[i]);
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    cin >> n >> k;
+    arr.resize(k);
+    for (int i = 0; i < k; i++)
+    {
+        cin >> arr[i];
+    }
+    
+    backtracking(0);
+    cout << maxVal;
+}
