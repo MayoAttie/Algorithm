@@ -1,0 +1,132 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class SelectDice
+{
+    vector<vector<int>> dice;
+    vector<int> combi;
+    vector<vector<int>> diceCombi;
+    vector<int> score;
+    int len;
+public:
+    SelectDice(vector<vector<int>> dice)
+    {
+        len = dice.size();
+        this->dice = dice;
+        combi.resize(len/2);
+        calcuCombi(0, 0);
+    }
+
+    vector<int> solve()
+    {
+        vector<int> answer;
+        int maxWinCnt = 0;
+
+        for(int i = 0; i < diceCombi.size()/2; i++)
+        {
+            int myIdx = i;
+            int youIdx = diceCombi.size() - i - 1;
+            
+            vector<int> myCombi = diceCombi[myIdx];
+            vector<int> youCombi = diceCombi[youIdx];
+            
+            unordered_map<int, int> myMap = scoreCounter(myCombi, 0);
+            unordered_map<int, int> youMap = scoreCounter(youCombi, 0);
+            
+            int wins = 0;
+            int losses = 0;
+            
+            for(auto m : myMap)
+            {
+                for(auto y : youMap)
+                {
+                    if(m.first > y.first)
+                        wins += (m.second * y.second);
+                    else if(m.first < y.first)
+                        losses += (m.second * y.second);
+                }
+            }
+            
+            if(maxWinCnt < wins)
+            {
+                maxWinCnt = wins;
+                answer = myCombi;
+            }
+            if(maxWinCnt < losses)
+            {
+                maxWinCnt = losses;
+                answer = youCombi;
+            }
+        }
+        
+        for(int i = 0; i < answer.size(); i++)
+            answer[i]++;
+        
+        return answer;
+    }
+
+private:
+    void calcuCombi(int start, int depth)
+    {
+        if(depth == len/2)
+        {
+            diceCombi.push_back(combi);
+            return;
+        }
+        
+        for(int i = start; i < len; i++)
+        {
+            combi[depth] = i;
+            calcuCombi(i + 1, depth + 1);
+        }
+    }
+
+    unordered_map<int, int> scoreCounter(vector<int>& combi, int depth)
+    {
+        if(depth == len/2)
+        {
+            unordered_map<int, int> map;
+            for(int i : score)
+            {
+                if(map.find(i) == map.end())
+                    map[i] = 1;
+                else
+                    map[i]++;
+            }
+            score.clear();
+            return map;
+        }
+        
+        int idx = combi[depth];
+        
+        if(score.empty())
+        {
+            for(int i = 0; i < 6; i++)
+                score.push_back(dice[idx][i]);
+        }
+        else
+        {
+            int scoreLen = score.size();
+            for(int i = 0; i < scoreLen; i++)
+            {
+                int tmp = score.front();
+                score.erase(score.begin());
+                for(int j = 0; j < 6; j++)
+                    score.push_back(dice[idx][j] + tmp);
+            }
+        }
+        
+        return scoreCounter(combi, depth + 1);
+    }
+};
+
+vector<int> solution(vector<vector<int>> dice) 
+{
+    vector<int> answer;
+    SelectDice func(dice);
+    answer = func.solve();
+    return answer;
+}
