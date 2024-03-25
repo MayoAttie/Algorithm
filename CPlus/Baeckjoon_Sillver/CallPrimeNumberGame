@@ -1,0 +1,117 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <unordered_map>
+using namespace std;
+
+vector<int> find_primeNumber(int start, int end)
+{
+    vector<bool> isPrime(end + 1, true);
+    vector<int> primes;
+
+    isPrime[0] = isPrime[1] = false;
+
+    for (int i = 2; i * i <= end; ++i)
+    {
+        if (isPrime[i])
+        {
+            for (int j = i * i; j <= end; j += i)
+                isPrime[j] = false;
+        }
+    }
+
+    for (int i = start; i <= end; ++i)
+    {
+        if (isPrime[i])
+            primes.push_back(i);
+    }
+
+    return primes;
+}
+
+int main()
+{
+    int a1, a2;
+    cin >> a1 >> a2;
+    int b1, b2;
+    cin >> b1 >> b2;
+
+    vector<int> aArr = find_primeNumber(a1, a2);
+    vector<int> bArr = find_primeNumber(b1, b2);
+    unordered_map<int, int> totalArr;
+    for (int i : aArr)
+    {
+        if (totalArr.find(i) == totalArr.end())
+            totalArr[i] = 1;
+        else
+            totalArr[i]++;
+    }
+    for (int i : bArr)
+    {
+        if (totalArr.find(i) == totalArr.end())
+            totalArr[i] = 1;
+        else
+            totalArr[i]++;
+    }
+
+
+    bool a_turn = true;
+    while (true)
+    {
+        if (a_turn)
+        {
+            int select = -1;
+            for (int num : aArr)
+            {
+                if (totalArr[num] >= 2)
+                {
+                    select = num;
+                    bArr.erase(find(bArr.begin(), bArr.end(), select));
+                    break;
+                }
+            }
+            if (select == -1 && aArr.size()>0)
+                select = aArr[0];
+            
+            if (select != -1)
+            {
+                totalArr.erase(select);
+                aArr.erase(find(aArr.begin(), aArr.end(), select));
+            }
+            else
+            {
+                cout << "yj" << endl;
+                break;
+            }
+        }
+        else
+        {
+            int select = -1;
+            for (int num : bArr)
+            {
+                if (totalArr[num] >= 2)
+                {
+                    select = num;
+                    aArr.erase(find(aArr.begin(), aArr.end(), select));
+                    break;
+                }
+            }
+            if (select == -1 && bArr.size() > 0)
+                select = bArr[0];
+
+            if (select != -1)
+            {
+                totalArr.erase(select);
+                bArr.erase(find(bArr.begin(), bArr.end(), select));
+            }
+            else
+            {
+                cout << "yt" << endl;
+                break;
+            }
+        }
+
+        a_turn = !a_turn;
+    }
+}
