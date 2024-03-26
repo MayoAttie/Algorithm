@@ -1,0 +1,44 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+unordered_map<int, vector<int>> graph;
+unordered_map<int, bool> visited;
+
+pair<int,int> dfs(int n)
+{
+    visited[n] = true;
+    if(graph[n].empty())
+    {
+        return {1,0};
+    }
+    
+    int on = 1;
+    int off = 0;
+    for(int i : graph[n])
+    {
+        if(!visited[i])
+        {
+            pair<int,int> child = dfs(i);
+            on += min(child.first, child.second);
+            off += child.first;
+        }
+    }
+    return {on, off};
+}
+
+int solution(int n, vector<vector<int>> lighthouse) 
+{
+    for(auto& i : lighthouse)
+    {
+        int my = i[0];
+        int you = i[1]; 
+        graph[my].push_back(you);
+        graph[you].push_back(my);
+    }
+    pair<int,int> answer = dfs(1);
+    return min(answer.first, answer.second);
+}
