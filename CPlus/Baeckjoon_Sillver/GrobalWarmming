@@ -1,0 +1,104 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int dx[4] = { 1,0,-1,0 };
+int dy[4] = { 0,1,0,-1 };
+int x, y;
+
+void simulation(vector<vector<char>>& matrix)
+{
+	vector<pair<int, int>> downPos;
+	for (int i = 0; i < x; i++)
+	{
+		for (int j = 0; j < y; j++)
+		{
+			if (matrix[i][j] == 'X')
+			{
+				int cnt = 0;
+				for (int dir = 0; dir < 4; dir++)
+				{
+					int nx = i + dx[dir];
+					int ny = j + dy[dir];
+					if (0 <= nx && nx < x && 0 <= ny && ny < y)
+					{
+						if (matrix[nx][ny] == '.')
+							cnt++;
+					}
+					else
+						cnt++;
+				}
+				if (cnt >= 3)
+					downPos.push_back({ i,j });
+			}
+		}
+	}
+
+	if (!downPos.empty())
+	{
+		for (auto& i : downPos)
+		{
+			matrix[i.first][i.second] = '.';
+		}
+	}
+
+	int mapX1 = 0;
+	int mapY1 = y - 1;
+	int mapX2 = 0;
+	int mapY2 = 0;
+
+	for (int i = 0; i < x; i++)
+	{
+		if (find(matrix[i].begin(), matrix[i].end(), 'X') != matrix[i].end())
+		{
+			mapX1 = i;
+			break;
+		}
+	}
+
+	for (int i = x - 1; i >= 0; i--)
+	{
+		if (find(matrix[i].begin(), matrix[i].end(), 'X') != matrix[i].end())
+		{
+			mapX2 = i;
+			break;
+		}
+	}
+
+	for (int i = mapX1; i <= mapX2; i++)
+	{
+		for (int j = 0; j < y; j++)
+		{
+			if (matrix[i][j] == 'X')
+			{
+				mapY1 = min(mapY1, j);
+				mapY2 = max(mapY2, j);
+			}
+		}
+	}
+
+	for (int i = mapX1; i <= mapX2; i++)
+	{
+		for (int j = mapY1; j <= mapY2; j++)
+			cout << matrix[i][j];
+
+		cout << '\n';
+	}
+}
+
+int main()
+{
+	cin >> x >> y;
+	vector<vector<char>> matrix(x, vector<char>(y));
+	for (int i = 0; i < x; i++)
+	{
+		for (int j = 0; j < y; j++)
+		{
+			cin >> matrix[i][j];
+		}
+	}
+
+	simulation(matrix);
+}
