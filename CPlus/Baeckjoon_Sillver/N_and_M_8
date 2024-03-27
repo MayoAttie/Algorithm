@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+int N, M;
+vector<int> arr;
+vector<vector<int>> result;
+void generator(int cnt, vector<int>& selected, int idx)
+{
+	if (cnt == M)
+	{
+		vector<int> tmp(selected.begin(), selected.begin() + cnt);
+		string str;
+		for (int i : tmp)
+			str += to_string(i) + ' ';
+
+		result.push_back(tmp);
+
+		return;
+	}
+
+	for (int i = idx; i < N; i++)
+	{
+		selected[cnt] = arr[i];
+		generator(cnt + 1, selected, i);
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	cin >> N >> M;
+	arr.resize(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+
+	sort(arr.begin(), arr.end());
+
+	vector<int> selected(M);
+	generator(0, selected, 0);
+
+	for (const auto& tmp : result)
+	{
+		for (int i : tmp)
+		{
+			cout << i << ' ';
+		}
+		cout << '\n';
+	}
+}
