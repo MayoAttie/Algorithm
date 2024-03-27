@@ -1,0 +1,51 @@
+#include <iostream>	
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+		
+	int t;
+	cin >> t;
+
+	vector<int> answer;
+
+	for (int i = 0; i < t; i++)
+	{
+		int n;
+		cin >> n;
+
+		string first, second;
+		cin >> first >> second;
+
+		int result = 0;
+
+		vector<char> tmp;
+		for (int j = 0; j < n; j++)
+		{
+			if (first[j] != second[j])
+				tmp.push_back(first[j]);
+		}
+
+		int cntBlack = 0;
+		int cntWhite = 0;
+		for (char ch : tmp)
+		{
+			if (ch == 'B')
+				cntBlack++;
+			else
+				cntWhite++;
+		}
+
+		result = max(cntBlack, cntWhite);
+		answer.push_back(result);
+	}
+
+	for (auto i : answer)
+		cout << i << '\n';
+}
