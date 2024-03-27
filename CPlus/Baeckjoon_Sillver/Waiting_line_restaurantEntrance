@@ -1,0 +1,41 @@
+#include <iostream>
+#include <queue>
+#include <utility>
+using namespace std;
+
+int main() 
+{
+    int n;
+    cin >> n;
+
+    pair<int, int> maxValues = { -1, -1 }; 
+    queue<int> que;
+
+    while (n--) 
+    {
+        int type;
+        cin >> type;
+
+        if (type == 1) 
+        {
+            int num;
+            cin >> num;
+
+            que.push(num);
+            int len = que.size();
+
+            if (len > maxValues.first || (len == maxValues.first && num < maxValues.second))
+            {
+                maxValues = { len, num };
+            }
+        }
+        else if (type == 2) 
+        {
+            que.pop();
+        }
+    }
+
+    cout << maxValues.first << " " << maxValues.second;
+
+    return 0;
+}
