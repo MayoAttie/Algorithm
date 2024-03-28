@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+string SumString(string  n1, string n2)
+{
+	int carry=0;
+	int sum = 0;
+	
+	string result = "";
+
+	if (n1.size() > n2.size())
+	{
+		while (n1.size() != n2.size())
+			n2 = '0' + n2;
+	}
+	else
+	{
+		while (n1.size() != n2.size())
+			n1 = '0' + n1;
+	}
+
+	for (int i = n1.size()-1; i >= 0; i--)
+	{
+		sum = (n1[i] - '0') + (n2[i] - '0') + carry;
+
+		if (sum >= 10)
+		{
+			sum -= 10;
+			carry = 1;
+		}
+		else
+			carry = 0;
+
+		result = to_string(sum) + result;
+	}
+
+	if (carry != 0)
+		result = '1' + result;
+
+	return result;
+}
+
+int main()
+{
+	string num1;
+	string num2;
+
+	cin >> num1 >> num2;
+
+	string answer = SumString(num1, num2);
+
+	cout << answer << endl;
+}
