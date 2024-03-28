@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() 
+{
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> box(n);
+    vector<int> child(m);
+    priority_queue<int> que;
+
+    for (int i = 0; i < n; ++i) 
+    {
+        cin >> box[i];
+        que.push(box[i]);
+    }
+
+
+    for (int i = 0; i < m; ++i) 
+    {
+        cin >> child[i];
+        while (!que.empty())
+        {
+            int b = que.top();
+            que.pop();
+            if (b > child[i]) 
+            {
+                que.push(b - child[i]);
+                break;
+            }
+            else if (b == child[i]) 
+                break;
+            else 
+            {
+                cout << 0 << endl;
+                return 0;
+            }
+        }
+    }
+    cout << 1 << endl;
+    return 0;
+}
