@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+int parseTime(const string& timeStr) 
+{
+    int hours, minutes;
+    sscanf(timeStr.c_str(), "%d:%d", &hours, &minutes);
+    return hours * 60 + minutes;
+}
+
+int main() 
+{
+    string S, E, Q;
+    cin >> S >> E >> Q;
+
+    int start = parseTime(S);
+    int end = parseTime(E);
+    int query = parseTime(Q);
+
+    unordered_map<string, int> dic;
+    unordered_map<string, int> answer;
+
+    string time, name;
+    while (cin >> time >> name) 
+    {
+        int parsedTime = parseTime(time);
+        if (parsedTime <= start)
+            dic[name] = parsedTime;
+        else if (parsedTime >= end && parsedTime <= query) 
+        {
+            if (dic.find(name) != dic.end())
+                answer[name] = 1;
+        }
+    }
+
+    cout << answer.size();
+
+    return 0;
+}
