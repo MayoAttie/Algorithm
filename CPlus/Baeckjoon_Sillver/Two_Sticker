@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+    int H, W, N;
+    cin >> H >> W;
+    cin >> N;
+    int result = 0;
+    vector<pair<int, int>> arr;
+    for (int i = 0; i < N; i++) 
+    {
+        int r, c;
+        cin >> r >> c;
+        arr.push_back({r, c});
+    }
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = i + 1; j < N; j++) 
+        {
+            int r1 = arr[i].first;
+            int c1 = arr[i].second;
+            int r2 = arr[j].first;
+            int c2 = arr[j].second;
+
+            if ((r1 + r2 <= H && max(c1, c2) <= W) || (c1 + c2 <= W && max(r1, r2) <= H)) 
+                result = max(result, r1 * c1 + r2 * c2);
+            if ((c1 + r2 <= H && max(r1, c2) <= W) || (r1 + c2 <= W && max(c1, r2) <= H)) 
+                result = max(result, r1 * c1 + r2 * c2);
+            if ((r1 + c2 <= H && max(c1, r2) <= W) || (c1 + r2 <= W && max(r1, c2) <= H)) 
+                result = max(result, r1 * c1 + r2 * c2);
+            if ((c1 + c2 <= H && max(r1, r2) <= W) || (r1 + r2 <= W && max(c1, c2) <= H)) 
+                result = max(result, r1 * c1 + r2 * c2);
+        }
+    }
+    cout << result << endl;
+    return 0;
+}
