@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int T;
+	cin >> T;
+	while (T--)
+	{
+		int N;
+		cin >> N;
+
+		vector<int> sum(N);
+		cin >> sum[0];
+		int maxValue = sum[0];
+		for (int i = 1; i < N; i++)
+		{
+			int n;
+			cin >> n;
+			sum[i] = max(n, sum[i - 1] + n);
+			maxValue = max(maxValue, sum[i]);
+		}
+
+		cout << maxValue << '\n';
+	}
+}
