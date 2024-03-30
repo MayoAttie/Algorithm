@@ -1,0 +1,37 @@
+#include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+    int n;
+    cin >> n;
+    map<int, vector<int>> dic;
+    for (int i = 0; i < n; ++i) 
+    {
+        int a, b;
+        cin >> a >> b;
+        if (dic.find(b) == dic.end())
+            dic[b] = vector<int>{ a };
+        else 
+            dic[b].push_back(a);
+    }
+
+    int res = 0;
+    for (auto& pair : dic)
+    {
+        vector<int>& values = pair.second;
+        sort(values.begin(), values.end());
+        if (values.size() <= 1) 
+            continue;
+        res += abs(values[0] - values[1]) + abs(values.back() - values[values.size() - 2]);
+        for (int j = 1; j < values.size() - 1; ++j) 
+        {
+            res += min(abs(values[j] - values[j - 1]), abs(values[j] - values[j + 1]));
+        }
+    }
+    cout << res << endl;
+    return 0;
+}
