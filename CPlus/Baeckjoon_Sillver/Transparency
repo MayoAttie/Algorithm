@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+
+	vector<vector<int>> arr(100, vector<int>(100, 0));
+
+	for(int k=0; k<N; k++)
+	{
+		int x1, y1, x2, y2;
+		cin >> x1 >> y1 >> x2 >> y2;
+		for (int i = x1; i <= x2; i++)
+		{
+			for (int j = y1; j <= y2; j++)
+				arr[i - 1][j - 1]++;
+		}
+	}
+
+	int answer = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		for (int j = 0; j < 100; j++)
+			if (arr[i][j] > M)
+				answer++;
+	}
+
+	cout << answer; 
+}
