@@ -1,0 +1,95 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <sstream>
+
+using namespace std;
+
+const int INF = 987654321;
+
+struct Edge 
+{
+    int to;
+    int weight;
+    vector<int> route;
+
+    Edge(int t, int w, vector<int> r) : to(t), weight(w), route(r) {}
+
+    bool operator>(const Edge& other) const 
+    {
+        return weight > other.weight;
+    }
+};
+
+vector<int> visited;
+vector<vector<Edge>> graph;
+
+pair<string, string> dijkstra(int s, int e) 
+{
+    pair<string, string> ret;
+    priority_queue<Edge, vector<Edge>, greater<Edge>> que;
+    
+
+    que.push(Edge(s, 0, { s }));
+
+    while (!que.empty())
+    {
+        Edge cur = que.top();
+        que.pop();
+
+        if (cur.to == e) 
+        {
+            stringstream ss;
+            for (int i : cur.route)
+                ss << i << " ";
+            ret.first = to_string(cur.weight);
+            ret.second = to_string(cur.route.size()) + "\n" + ss.str();
+            break;
+        }
+
+        if (visited[cur.to])
+            continue;
+
+        visited[cur.to] = 1;
+
+        for (Edge& edge : graph[cur.to])
+        {
+            if (!visited[edge.to])
+            {
+                vector<int> new_route = cur.route;
+                new_route.push_back(edge.to);
+                que.push(Edge(edge.to, edge.weight + cur.weight, new_route));
+            }
+        }
+    }
+
+    return ret;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+    graph.resize(n + 1);
+
+    for (int i = 0; i < m; ++i) 
+    {
+        int s, e, c;
+        cin >> s >> e >> c;
+        graph[s].push_back(Edge(e, c, { s }));
+    }
+
+    int s, e;
+    cin >> s >> e;
+
+    visited.resize(graph.size(), 0);
+    
+    auto answer = dijkstra(s, e);
+    cout << answer.first << "\n" << answer.second;
+
+    return 0;
+}
