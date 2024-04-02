@@ -169,6 +169,7 @@
         "lotto": "cpp",
         "sudoku": "cpp",
         "recolorchessboard2": "cpp",
-        "xstddef": "c"
+        "xstddef": "c",
+        "submit": "c"
     }
 }
