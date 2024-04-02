@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+
+using namespace std;
+
+struct node
+{
+	map<string, node*> dic;
+};
+
+void dfs(node* cur, string line)
+{
+	for (auto i : cur->dic)
+	{
+		cout << line + i.first << '\n';
+		dfs(i.second, line + "--");
+	}
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	
+	node* head = new node;
+	
+
+	for (int i = 0; i < n; i++)
+	{
+		int k;
+		cin >> k;
+		
+		node* cur = head;
+		while (k--)
+		{
+			string str;
+			cin >> str;
+			if (cur->dic.find(str) == cur->dic.end())
+				cur->dic[str] = new node;
+			
+			cur = cur->dic[str];
+		}
+	}
+
+	dfs(head, "");
+}
