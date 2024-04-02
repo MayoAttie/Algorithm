@@ -1,0 +1,33 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+
+int main()
+{
+    int N, L;
+    cin >> N >> L;
+
+    int time = 0;
+    int now = 0;
+
+    for (int i = 0; i < N; i++)
+    {
+        int t, r, g;
+        cin >> t >> r >> g;
+
+        time += t - now;
+        now = t;
+
+        int cycle = r + g;
+        int remain = time % cycle;
+
+        if (remain <= r)
+            time += r - remain;
+    }
+
+    time += L - now; 
+    cout << time;
+
+}
