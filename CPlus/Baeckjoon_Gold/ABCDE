@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int N, M;
+vector<vector<int>> graph;
+vector<bool> visited;
+bool answer = false;
+
+void dfs(int now, int depth)
+{
+	if (depth == 4)
+	{
+		answer = true;
+		return;
+	}
+	for (int i = 0; i < graph[now].size(); i++)
+	{
+		int next = graph[now][i];
+		if (!visited[next])
+		{
+			visited[next] = true;
+			dfs(next, depth + 1);
+			visited[next] = false;
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	cin >> N >> M;
+	
+	graph.resize(N + 1);
+	visited.resize(N + 1);
+
+	for (int i = 0; i < M; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		visited.assign(N + 1, false);
+		visited[i] = true;
+		dfs(i, 0);
+		if (answer)
+			break;
+	}
+
+	cout << answer;
+}
