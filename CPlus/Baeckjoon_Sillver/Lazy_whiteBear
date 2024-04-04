@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <limits>
+
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N, K;
+    cin >> N >> K;
+
+    vector<int> arr(1000001, 0);
+    int left = numeric_limits<int>::max();
+    int right = 0;
+
+    for (int i = 0; i < N; i++) 
+    {
+        int g, x;
+        cin >> g >> x;
+        right = max(x, right);
+        left = min(x, left);
+        arr[x] = g;
+    }
+
+    int end = left;
+    int now = 0;
+    int ans = 0;
+
+    for (int start = left; start <= right; ++start) 
+    {
+        while (end < right + 1 && end - start <= K * 2) 
+        {
+            if (arr[end] == 0) 
+            {
+                end++;
+                continue;
+            }
+            now += arr[end];
+            end++;
+        }
+        ans = max(ans, now);
+        now -= arr[start];
+        if (end >= right)
+            break;
+    }
+    cout << ans << endl;
+
+    return 0;
+}
