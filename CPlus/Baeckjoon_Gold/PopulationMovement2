@@ -1,0 +1,96 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cmath>
+
+using namespace std;
+
+vector<vector<int>> graph;
+vector<vector<bool>> visited;
+int n, l, r;
+int dx[] = { 0, 0, 1, -1 };
+int dy[] = { 1, -1, 0, 0 };
+
+vector<pair<int, int>> bfs(int a, int b) 
+{
+    queue<pair<int, int>> q;
+    vector<pair<int, int>> temp;
+    q.push({ a, b });
+    temp.push_back({ a, b });
+    while (!q.empty()) 
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+        for (int i = 0; i < 4; ++i) 
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx >= 0 && nx < n && ny >= 0 && ny < n && !visited[nx][ny]) 
+            {
+                if (l <= abs(graph[nx][ny] - graph[x][y]) && abs(graph[nx][ny] - graph[x][y]) <= r) 
+                {
+                    visited[nx][ny] = true;
+                    q.push({ nx, ny });
+                    temp.push_back({ nx, ny });
+                }
+            }
+        }
+    }
+    return temp;
+}
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n >> l >> r;
+
+    graph.resize(n, vector<int>(n));
+    visited.resize(n, vector<bool>(n, false));
+
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < n; ++j) 
+        {
+            cin >> graph[i][j];
+        }
+    }
+
+    int result = 0;
+    while (true) 
+    {
+        int flag = 0;
+        for (int i = 0; i < n; ++i) 
+        {
+            for (int j = 0; j < n; ++j) 
+            {
+                if (!visited[i][j]) 
+                {
+                    visited[i][j] = true;
+                    vector<pair<int, int>> country = bfs(i, j);
+                    if (country.size() > 1) 
+                    {
+                        flag = 1;
+                        int number = 0;
+                        for (auto& p : country) 
+                            number += graph[p.first][p.second];
+                     
+                        number /= country.size();
+                        for (auto& p : country) 
+                            graph[p.first][p.second] = number;
+                    }
+                }
+            }
+        }
+        if (flag == 0) 
+            break;
+        
+        result++;
+        visited.assign(n, vector<bool>(n, false));
+    }
+    cout << result << '\n';
+
+    return 0;
+}
