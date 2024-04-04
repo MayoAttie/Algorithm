@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <algorithm>   
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    map<char, vector<string>> nums;
+    nums['0'] = { "***", "* *", "* *", "* *", "***" };
+    nums['1'] = { "  *", "  *", "  *", "  *", "  *" };
+    nums['2'] = { "***", "  *", "***", "*  ", "***" };
+    nums['3'] = { "***", "  *", "***", "  *", "***" };
+    nums['4'] = { "* *", "* *", "***", "  *", "  *" };
+    nums['5'] = { "***", "*  ", "***", "  *", "***" };
+    nums['6'] = { "***", "*  ", "***", "* *", "***" };
+    nums['7'] = { "***", "  *", "  *", "  *", "  *" };
+    nums['8'] = { "***", "* *", "***", "* *", "***" };
+    nums['9'] = { "***", "* *", "***", "  *", "***" };
+
+    vector<string> matrix(5);
+    for (int i = 0; i < 5; i++) 
+    {
+        getline(cin, matrix[i]);
+    }
+
+    int N = (matrix[0].length() / 4) + 1;
+
+    vector<bool> check(5, false);
+    vector<bool> check_all(10, false);
+    vector<int> ans_list;
+
+    for (int i = 0; i < N; ++i) 
+    {
+        for (int n = 0; n < 10; ++n) 
+        {
+            for (int j = 0; j < 5; ++j) 
+            {
+                if (matrix[j].substr(i * 4, 3) == nums['0' + n][j]) 
+                    check[j] = true;
+            }
+            if (all_of(check.begin(), check.end(), [](bool val) {return val; })) 
+            {
+                check_all[n] = true;
+                ans_list.push_back(n);
+            }
+            fill(check.begin(), check.end(), false);
+        }
+        if (any_of(check_all.begin(), check_all.end(), [](bool val) {return val; })) 
+        {
+            fill(check_all.begin(), check_all.end(), false);
+            continue;
+        }
+        else 
+        {
+            cout << "BOOM!!" << endl;
+            return 0;
+        }
+    }
+
+    int ans = 0;
+    for (int i = 1; i <= N; ++i) 
+        ans += ans_list[N - i] * static_cast<int>(pow(10, i - 1));
+
+    if (ans % 6 == 0) 
+        cout << "BEER!!" << endl;
+    else 
+        cout << "BOOM!!" << endl;
+
+    return 0;
+}
