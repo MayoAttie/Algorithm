@@ -170,6 +170,7 @@
         "sudoku": "cpp",
         "recolorchessboard2": "cpp",
         "xstddef": "c",
-        "submit": "c"
+        "submit": "c",
+        "n_and_m_12": "c"
     }
 }
