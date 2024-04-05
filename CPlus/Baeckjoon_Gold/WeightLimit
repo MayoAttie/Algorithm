@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <algorithm>
+
+using namespace std;
+int N, M;
+vector<vector<pair<int,int>>> graph;
+vector<bool> visited;
+
+bool bfs(int weight, int Start, int End)
+{
+	deque<int> que;
+	que.push_back(Start);
+	visited[Start] = true;
+
+	while (!que.empty())
+	{
+		int cur = que.front();
+		que.pop_front();
+		
+		for (auto& next : graph[cur])
+		{
+			int n_node = next.first;
+			int n_cost = next.second;
+
+			if (!visited[n_node] && n_cost >= weight)
+			{
+				visited[n_node] = true;
+				que.push_back(n_node);
+			}
+		}
+	}
+
+	return visited[End];
+}
+
+int main()
+{
+	cin >> N >> M;
+	graph.resize(N + 1);
+	visited.resize(N + 1, false);
+
+	for (int i = 0; i < M; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		graph[a].push_back({ b,c });
+		graph[b].push_back({ a,c });
+	}
+
+	int Start, End;
+	cin >> Start >> End;
+
+	int nLeft = 1;
+	int nRight = 1000000001;
+	
+	int answer = 0;
+	while (nLeft <= nRight)
+	{
+		int nMid = (nLeft + nRight) / 2;
+
+		fill(visited.begin(), visited.end(), false);
+
+		if (bfs(nMid, Start, End))
+		{
+			answer = nMid;
+			nLeft = nMid + 1;
+		}
+		else
+			nRight = nMid - 1;
+	}
+
+	cout << answer;
+}
