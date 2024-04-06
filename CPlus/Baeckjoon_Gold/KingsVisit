@@ -1,0 +1,118 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int node, edge, val, s, e, diff;
+int num_locations;
+int ka, kb;
+vector<int> loc;
+vector<vector<pair<int, int>>> graph;
+vector<vector<int>> road;
+vector<int> rSum;
+int dist[1001];
+
+const int MAX = 987654321;
+
+int popeLoc(int sum)
+{
+    ka = -1;
+    kb = -1;
+    for (int i = 0; i < num_locations - 1; i++)
+    {
+        if (sum <= rSum[i])
+        {
+            ka = loc[i];
+            kb = loc[i + 1];
+            return i;
+        }
+    }
+    return -1;
+}
+
+int Dijsktra(int start)
+{
+    int answer = -1;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({ diff, start });
+    dist[start] = diff;
+
+    while (!pq.empty())
+    {
+        int cur_cost = pq.top().first;
+        int cur_idx = pq.top().second;
+        pq.pop();
+        if (dist[cur_idx] < cur_cost)
+            continue;
+        if (cur_idx == e)
+        {
+            answer = cur_cost - diff;
+            break;
+        }
+        int pl = popeLoc(cur_cost);
+        for (int i = 0; i < graph[cur_idx].size(); i++)
+        {
+            int next = graph[cur_idx][i].first;
+            int next_cost = graph[cur_idx][i].second;
+            int waitTime = 0;
+            if ((cur_idx == ka && next == kb) || (cur_idx == kb && next == ka))
+                waitTime = rSum[pl] - cur_cost;
+
+            if (dist[next] > waitTime + cur_cost + next_cost)
+            {
+                dist[next] = waitTime + cur_cost + next_cost;
+                pq.push({ waitTime + cur_cost + next_cost, next });
+            }
+        }
+    }
+    return answer;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int num, a, b;
+
+    cin >> node >> edge >> s >> e >> diff >> num;
+
+    graph.resize(node + 1);
+    road.resize(node + 1, vector<int>(node + 1, 0));
+    rSum.resize(num);
+
+    for (int i = 1; i <= node; i++)
+        dist[i] = MAX;
+
+    for (int i = 0; i < num; i++)
+    {
+        cin >> val;
+        loc.push_back(val);
+    }
+
+    num_locations = loc.size();
+
+    for (int i = 0; i < edge; i++)
+    {
+        cin >> a >> b >> val;
+        graph[a].push_back({ b,val });
+        graph[b].push_back({ a,val });
+        road[a][b] = val;
+        road[b][a] = val;
+    }
+
+    int sum = 0;
+    for (int i = 0; i < num_locations - 1; i++)
+    {
+        a = loc[i];
+        b = loc[i + 1];
+        sum += road[a][b];
+        rSum[i] = sum;
+    }
+
+    int answer = Dijsktra(s);
+    cout << answer;
+    return 0;
+}
