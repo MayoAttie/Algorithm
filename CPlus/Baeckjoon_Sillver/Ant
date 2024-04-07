@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>	
+#include <string>
+
+using namespace std;
+
+string str1, str2;
+int T;
+
+void simulation(int n1, int n2)
+{
+	int time = 0;
+	reverse(str1.begin(), str1.end());
+	string ants = str1 + str2;
+
+
+
+	while (time < T)
+	{
+		for (int i = 0; i < ants.size()-1; i++)
+		{
+			if (str1.find(ants[i]) != string::npos && str2.find(ants[i + 1]) != string::npos)
+			{
+				swap(ants[i], ants[i + 1]);
+				i++;
+			}
+		}
+		time++;
+	}
+
+	cout << ants;
+}
+
+int main()
+{
+	int N1, N2;
+	cin >> N1 >> N2;
+	cin >> str1 >> str2;
+	cin >> T;
+
+	simulation(N1, N2);
+}
