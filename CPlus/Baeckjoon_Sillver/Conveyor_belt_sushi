@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() 
+{
+    int N, d, k, c;
+    cin >> N >> d >> k >> c;
+
+    vector<int> arr(N);
+    for (int i = 0; i < N; ++i) 
+    {
+        cin >> arr[i];
+    }
+
+    int answer = 0;
+    for (int i = 0; i < N; ++i) 
+    {
+        int eat_sushi = 1;
+        vector<int> check(d + 1, 0);
+        check[c] = 1;
+        for (int j = i; j < i + k; ++j) 
+        {
+            int sushi = arr[j % N];
+            if (!check[sushi]) 
+                eat_sushi += 1;
+            
+            check[sushi] += 1;
+        }
+        answer = max(answer, eat_sushi);
+    }
+
+    cout << answer << endl;
+
+    return 0;
+}
