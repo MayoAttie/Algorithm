@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>	
+
+using namespace std;
+
+int solution(vector<int>& arr, int N)
+{
+	if (arr.empty())
+		return 0;
+
+
+	vector<int> tail(N, 0);
+	int result = 1;
+
+	tail[0] = arr[0];
+
+	for (int i = 1; i < N; i++)
+	{
+		if (arr[i] < tail[0])
+			tail[0] = arr[i];
+		else if (arr[i] > tail[result - 1])
+			tail[result++] = arr[i];
+		else
+		{
+			int idx = lower_bound(tail.begin(), tail.begin() + result, arr[i]) - tail.begin();
+			tail[idx] = arr[i];
+		}
+	}
+
+	return result;
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N;
+	cin >> N;
+
+	vector<int>arr(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+	int answer = solution(arr, N);
+	cout << answer;
+	
+}
