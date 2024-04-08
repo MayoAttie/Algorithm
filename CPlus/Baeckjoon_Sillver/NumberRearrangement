@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+	string a, b;
+	cin >> a >> b;
+	
+
+	sort(a.begin(), a.end());
+	int nB = stoi(b);
+
+	int answer = -1;
+
+	do
+	{
+		if (a[0] != '0')
+		{
+			int tmp = stoi(a);
+			if (tmp <= nB && tmp > answer)
+				answer = tmp;
+		}
+	} while (next_permutation(a.begin(), a.end()));
+
+	cout << answer;
+}
