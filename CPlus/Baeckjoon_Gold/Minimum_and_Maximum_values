@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+vector<long long> nums;
+vector<vector<long long>> tree;
+
+void init(int now, int left, int right) 
+{
+    if (left == right) 
+    {
+        tree[now][0] = nums[left]; // 최소값
+        tree[now][1] = nums[left]; // 최대값
+        return;
+    }
+    int mid = (left + right) / 2;
+    init(now * 2, left, mid);
+    init(now * 2 + 1, mid + 1, right);
+    tree[now][0] = min(tree[now * 2][0], tree[now * 2 + 1][0]); // 왼쪽 자식의 최소값과 오른쪽 자식의 최소값 중 작은 값
+    tree[now][1] = max(tree[now * 2][1], tree[now * 2 + 1][1]); // 왼쪽 자식의 최대값과 오른쪽 자식의 최대값 중 큰 값
+}
+
+pair<long long, long long> query(int now, int start, int end, int left, int right) 
+{
+    if (start > right || end < left) 
+    {
+        return { LLONG_MAX, LLONG_MIN };
+    }
+    if (left <= start && end <= right) 
+    {
+        return { tree[now][0], tree[now][1] };
+    }
+    int mid = (start + end) / 2;
+
+    auto left_result = query(now * 2, start, mid, left, right);
+    auto right_result = query(now * 2 + 1, mid + 1, end, left, right);
+
+    long long min_val = min(left_result.first, right_result.first);
+    long long max_val = max(left_result.second, right_result.second);
+    
+    return { min_val, max_val };
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N, M;
+    cin >> N >> M;
+
+    nums.resize(N);
+    tree.resize(4 * N, vector<long long>(2));
+
+    for (int i = 0; i < N; ++i) 
+    {
+        cin >> nums[i];
+    }
+
+    init(1, 0, N - 1);
+
+    for (int i = 0; i < M; ++i) 
+    {
+        int a, b;
+        cin >> a >> b;
+        auto result = query(1, 0, N - 1, a - 1, b - 1);
+        cout << result.first << " " << result.second << '\n';
+    }
+
+    return 0;
+}
