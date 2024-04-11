@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int arr[14];
+
+int Junhyun(int N)
+{
+	int asset = 0;
+	int share = 0;
+
+	for (int i = 0; i < 14; i++)
+	{
+		if (arr[i] <= N)
+		{
+			share += N / arr[i];
+			N %= arr[i];
+		}
+	}
+
+	asset = N + (arr[13] * share);
+	return asset;
+}
+
+int Sungmin(int N)
+{
+	int asset = 0;
+	int share = 0;
+
+	for (int i = 3; i < 14; i++)
+	{
+		if (arr[i-3] < arr[i-2] && arr[i - 2] < arr[i - 1] && arr[i - 1] < arr[i] && share>0)
+		{
+			N += share * arr[i];
+			share = 0;
+		}
+		else if (arr[i - 3] > arr[i - 2] && arr[i - 2] > arr[i - 1] && arr[i - 1] > arr[i] && arr[i] <= N)
+		{
+			share = N / arr[i];
+			N = share * arr[i];
+		}
+	}
+
+	asset = N + (arr[13] * share);
+	return asset;
+}
+
+string simulation(int N)
+{
+	int B_num = Junhyun(N);
+	int T_num = Sungmin(N);
+
+	if (B_num > T_num)
+		return "BNP";
+	else if (B_num < T_num)
+		return "TIMING";
+	else
+		return "SAMESAME";
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	for (int i = 0; i < 14; i++)
+	{
+		cin >> arr[i];
+	}
+
+	cout << simulation(N);
+}
