@@ -1,0 +1,46 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N, H, T;
+	cin >> N >> H >> T;
+
+	bool isAnswer = true;
+	int cnt = 0;
+
+	priority_queue<int> pq;
+	for (int i = 0; i < N; i++)
+	{
+		int a;
+		cin >> a;
+		pq.push(a);
+	}
+
+	for (int i = 0; i < T; i++)
+	{
+		int cur = pq.top();
+		if (cur == 1 || cur < H)
+			break;
+		else
+		{
+			pq.pop();
+			pq.push(cur / 2);
+			cnt++;
+		}
+	}
+
+	int cur = pq.top();
+	if (cur >= H)
+		cout << "NO\n" << cur;
+	else
+		cout << "YES\n" << cnt;
+}
