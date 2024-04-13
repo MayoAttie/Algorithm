@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+const int INF = INT_MAX;
+
+vector<vector<pair<int, int>>> graph;
+
+vector<int> dijkstra(int start) 
+{
+    vector<int> distance(graph.size(), INF);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+    pq.push({ 0, start });
+    distance[start] = 0;
+
+    while (!pq.empty()) 
+    {
+        int curCost = pq.top().first;
+        int curNode = pq.top().second;
+        pq.pop();
+
+        if (distance[curNode] < curCost)
+            continue;
+
+        for (auto& next : graph[curNode])
+        {
+            int nextNode = next.first;
+            int nextCost = curCost + next.second;
+
+            if (nextCost < distance[nextNode])
+            {
+                distance[nextNode] = nextCost;
+                pq.push({ nextCost, nextNode });
+            }
+        }
+    }
+
+    return distance;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m, x;
+    cin >> n >> m >> x;
+
+    graph.resize(n + 1);
+
+    for (int i = 0; i < m; ++i) 
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+        graph[a].push_back({ b, c });
+    }
+
+    vector<vector<int>> result(n + 1);
+    for (int start = 1; start <= n; start++) 
+    {
+        result[start] = dijkstra(start);
+    }
+
+    vector<int> timeList(n + 1);
+    for (int i = 1; i <= n; ++i) 
+    {
+        timeList[i] = result[i][x] + result[x][i];
+    }
+
+    int answer = 0;
+    for (int i = 1; i <= n; ++i) 
+    {
+        answer = max(answer, timeList[i]);
+    }
+
+    cout << answer;
+
+    return 0;
+}
