@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> generateFibonacci(int max_number) 
+{
+    vector<int> fibonacci;
+    fibonacci.push_back(1);
+    fibonacci.push_back(1);
+    while (true) 
+    {
+        int next = fibonacci.back() + fibonacci[fibonacci.size() - 2];
+        if (next <= max_number) 
+            fibonacci.push_back(next);
+        else 
+            break;
+    }
+    return fibonacci;
+}
+
+int main() 
+{
+    int T;
+    cin >> T;
+
+    vector<int> arr = generateFibonacci(1e9);
+
+    for (int i = 0; i < T; i++) 
+    {
+        int n;
+        cin >> n;
+
+        vector<int> result;
+        for (int j = arr.size() - 1; j >= 0; j--) 
+        {
+            if (arr[j] <= n) 
+            {
+                n -= arr[j];
+                result.push_back(arr[j]);
+            }
+        }
+
+        for (auto it = result.rbegin(); it != result.rend(); it++) 
+        {
+            cout << *it << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
