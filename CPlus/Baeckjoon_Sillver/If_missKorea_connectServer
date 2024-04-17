@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+	string preTxt;
+	string postTxt;
+
+	string str;
+	cin >> str;
+	for (int i = 0; i < str.size(); i++)
+	{
+		if (str[i] == '*')
+		{
+			preTxt = str.substr(0, i);
+			postTxt = str.substr(i + 1);
+			break;
+		}
+	}
+
+	while (N--)
+	{
+		string word;
+		cin >> word;
+
+		if (word.size() < str.size() - 1)
+		{
+			cout << "NE\n";
+			continue;
+		}
+
+		if (word.substr(0, preTxt.size()) != preTxt)
+		{
+			cout << "NE\n";
+			continue;
+		}
+		else if (word.substr(word.size() - postTxt.size()) != postTxt)
+		{
+			cout << "NE\n";
+			continue;
+		}
+
+		cout << "DA\n";
+	}
+}
