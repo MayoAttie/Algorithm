@@ -1,0 +1,78 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+vector<vector<char>> board;
+int dx[4] = { 1,0,-1,0 };
+int dy[4] = { 0,1,0,-1 };
+int R, C;
+
+void solution()
+{
+    bool flag = false;
+    for (int i = 0; i < R; i++)
+    {
+        for (int j = 0; j < C; j++)
+        {
+            if (board[i][j] == 'W')
+            {
+                for (int d = 0; d < 4; d++)
+                {
+                    int nx = i + dx[d];
+                    int ny = j + dy[d];
+
+                    if (nx >= 0 && nx < R && ny >= 0 && ny < C && board[nx][ny] == 'S')
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            else if (board[i][j] == 'S')
+                continue;
+            else if (board[i][j] == '.')
+                board[i][j] = 'D';
+
+            if (flag)
+                break;
+        }
+        if (flag)
+            break;
+    }
+
+    if (flag)
+        cout << 0;
+    else
+    {
+        cout << 1 << '\n';
+        for (int i = 0; i < R; i++)
+        {
+            for (int j = 0; j < C; j++)
+            {
+                cout << board[i][j];
+            }
+            cout << '\n';
+        }
+    }
+}
+
+int main()
+{
+	cin >> R >> C;
+	board.resize(R, vector<char>(C));
+
+    for (int i = 0; i < R; i++) 
+    {
+        string row;
+        cin >> row;
+        for (int j = 0; j < C; j++) 
+        {
+            board[i][j] = row[j];
+        }
+    }
+    solution();
+	
+}
