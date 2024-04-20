@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <climits>
+using namespace std;
+
+int N, M;
+vector<pair<string, string>> arr;
+vector<bool> visited;
+
+int answer = INT_MAX;
+int result = 0;
+
+void backtracking(int cur, int cnt)
+{ 
+	if (cur == N)
+	{
+		vector<bool> tmp(M, false);
+
+		int nowCnt = 0;
+		for (int i = 0; i < N; i++)
+		{
+			if (visited[i])
+			{
+				string nowIdx = arr[i].second;
+				for (int j = 0; j < M; j++)
+				{
+					if (nowIdx[j] == 'Y' && !tmp[j])
+					{
+						tmp[j] = true;
+						nowCnt++;
+					}
+				}
+			}
+		}
+		if(result < nowCnt)
+		{
+			result = nowCnt;
+			answer = cnt;
+		}
+		else if (result == nowCnt)
+		{
+			result = nowCnt;
+			answer = min(answer, cnt);
+		}
+		return;
+	}
+	visited[cur] = true;
+	backtracking(cur + 1, cnt + 1);
+	visited[cur] = false;
+	backtracking(cur + 1, cnt);
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	cin >> N >> M;
+	arr.resize(N, {"",""});
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i].first >> arr[i].second;
+	}
+
+	visited.resize(N, false);
+	backtracking(0, 0);
+
+	if (answer == 0)
+		cout << -1;
+	else
+		cout << answer;
+
+}
