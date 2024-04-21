@@ -1,0 +1,129 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <math.h>
+using namespace std;
+
+bool checkConsecutive(vector<int>& arr)
+{
+    bool isConsecutive = true;
+    vector<int> tmp(arr);
+    sort(tmp.begin(), tmp.end());
+    for (int i = 1; i < arr.size(); i++)
+    {
+        if (abs(tmp[i - 1] - tmp[i]) != 1)
+        {
+            isConsecutive = false;
+            break;
+        }
+    }
+
+    return isConsecutive;
+}
+
+int main()
+{
+    vector<char> colors(5);
+    vector<int> cards(5);
+	map<char,int> colorMap;
+	map<int,int> cardMap;
+	for (int i = 0; i < 5; i++)
+	{
+		char c;
+		int n;
+		cin >> c >> n;
+		colors[i] = c;
+		cards[i] = n;
+        colorMap[c]++;
+        cardMap[n]++;
+	}
+
+    char maxColor;
+    int maxColorCount = 0;
+    for (auto it = colorMap.begin(); it != colorMap.end(); ++it)
+    {
+        if (it->second > maxColorCount) 
+        {
+            maxColorCount = it->second;
+            maxColor = it->first;
+        }
+    }
+
+    int maxNumber=0;
+    int maxNumberCount = 0;
+    int secondMaxNumber=0;
+    int secondMaxNumberCount = 0;
+
+    for (auto it = cardMap.begin(); it != cardMap.end(); ++it) 
+    {
+        if (it->second >= maxNumberCount) 
+        {
+            secondMaxNumberCount = maxNumberCount;
+            secondMaxNumber = maxNumber;
+            maxNumberCount = it->second;
+            maxNumber = it->first;
+        }
+        else if (it->second > secondMaxNumberCount && it->second != maxNumberCount) 
+        {
+            secondMaxNumberCount = it->second;
+            secondMaxNumber = it->first;
+        }
+    }
+
+    int answer = 0;
+    //1
+    if (maxColorCount == 5 && checkConsecutive(cards))
+    {
+        int maxVal = *max_element(cards.begin(), cards.end());
+        answer = maxVal + 900;
+    }
+    //2
+    else if (maxNumberCount == 4)
+    {
+        answer = maxNumber + 800;
+    }
+    //3
+    else if (maxNumberCount == 3 && secondMaxNumberCount == 2)
+    {
+        answer = (maxNumber * 10 + secondMaxNumber) + 700;
+    }
+    //4
+    else if (maxColorCount == 5)
+    {
+        int maxVal = *max_element(cards.begin(), cards.end());
+        answer = maxVal + 600;
+    }
+    //5
+    else if (checkConsecutive(cards))
+    {
+        int maxVal = *max_element(cards.begin(), cards.end());
+        answer = maxVal + 500;
+    }
+    //6
+    else if (maxNumberCount == 3)
+    {
+        answer = maxNumber + 400;
+    }
+    //7
+    else if (maxNumberCount == 2 && secondMaxNumberCount == 2)
+    {
+        int maxVal = max(maxNumber, secondMaxNumber);
+        int minVal = min(maxNumber, secondMaxNumber);
+        answer = (maxVal * 10 + minVal) + 300;
+    }
+    //8
+    else if (maxNumberCount == 2)
+    {
+        answer = maxNumber + 200;
+    }
+    //9
+    else
+    {
+        int maxVal = *max_element(cards.begin(), cards.end());
+        answer = maxVal + 100;
+    }
+
+    cout << answer;
+	
+}
