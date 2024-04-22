@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+#include <string>
+#include <sstream>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N, M;
+	cin >> N >> M;
+
+	unordered_set<string> set;
+	for (int i = 0; i < N; i++)
+	{
+		string tmp;
+		cin >> tmp;
+		set.insert(tmp);
+	}
+
+	cin.ignore(); 
+
+	for (int i = 0; i < M; i++)
+	{
+        string str;
+        getline(cin, str);
+
+        vector<string> vec;
+
+		if (str.find(',') != string::npos)
+		{
+			stringstream ss(str);
+			string token;
+			while (getline(ss, token, ','))
+			{
+				vec.push_back(token);
+			}
+		}
+		else
+		{
+			vec.push_back(str);
+		}
+
+
+		for (int j = 0; j < vec.size(); j++)
+		{
+			if (set.find(vec[j]) != set.end())
+			{
+				set.erase(vec[j]);
+			}
+		}
+
+		cout << set.size() << '\n';
+	}
+}
