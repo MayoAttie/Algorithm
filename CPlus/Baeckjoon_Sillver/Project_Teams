@@ -1,0 +1,34 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>	
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+	vector<int> arr(2 * N);
+	for (int i = 0; i < 2 * N; i++)
+	{
+		cin >> arr[i];
+	}
+
+	sort(arr.begin(), arr.end());
+
+	vector<int> teams;
+	int left = 0;
+	int right = arr.size() - 1;
+
+	while (left < right)
+	{
+		int num = arr[left] + arr[right];
+		teams.push_back(num);
+		left++;
+		right--;
+	}
+
+	sort(teams.begin(), teams.end());
+
+	cout << teams[0];
+}
