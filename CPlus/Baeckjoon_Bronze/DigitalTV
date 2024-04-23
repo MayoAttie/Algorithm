@@ -1,0 +1,50 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main() 
+{   
+    int n;
+    cin >> n;
+    vector<string> arr(n);
+
+    int idx1 = -1;
+    int idx2 = -1;
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+
+        if (arr[i] == "KBS1") 
+            idx1 = i;
+        else if (arr[i] == "KBS2") 
+            idx2 = i;
+    }
+
+    if (idx1 > idx2) 
+        idx2++;
+
+    string result;
+    for (int i = 0; i < idx1; i++) 
+    {
+        result += "1";
+    }
+    for (int i = 0; i < idx1; i++) 
+    {
+        result += "4";
+    }
+    for (int i = 0; i < idx2; i++) 
+    {
+        result += "1";
+    }
+    for (int i = 0; i < idx2 - 1; i++) 
+    {
+        result += "4";
+    }
+
+    cout << result << '\n';
+
+    return 0;
+}
