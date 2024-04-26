@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>    
+#include <string>
+using namespace std;
+
+vector<vector<bool>> visited(6, vector<bool>(6, false));
+
+bool check(string before, string move) 
+{
+    unordered_map<char, int> alp = { {'A', 0}, {'B', 1}, {'C', 2}, {'D', 3}, {'E', 4}, {'F', 5} };
+
+    int before_num = alp[before[0]];
+    int move_num = alp[move[0]];
+
+    if (abs(move_num - before_num) == 2 && abs(move[1] - before[1]) == 1 && !visited[move_num][move[1] - '1']) 
+        visited[move_num][move[1] - '1'] = true;
+    else if (abs(move_num - before_num) == 1 && abs(move[1] - before[1]) == 2 && !visited[move_num][move[1] - '1']) 
+        visited[move_num][move[1] - '1'] = true;
+    else 
+        return false;
+    
+    return true;
+}
+
+int main() 
+{
+    bool flag = true;
+    string before, start;
+    for (int i = 0; i < 36; ++i) 
+    {
+        string move;
+        cin >> move;
+        if (i == 0) 
+            start = move;
+        else 
+        {
+            if (!check(before, move)) 
+            {
+                flag = false;
+                break;
+            }
+        }
+        before = move;
+    }
+    if (!check(before, start)) 
+        flag = false;
+
+    if (flag) 
+    {
+        cout << "Valid";
+    }
+    else 
+    {
+        cout << "Invalid";
+    }
+
+    return 0;
+}
