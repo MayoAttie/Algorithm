@@ -1,0 +1,57 @@
+#include <iostream>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int tCase;
+	cin >> tCase;
+
+	while (tCase--)
+	{
+		int len;
+		cin >> len;
+
+		vector<string> arr1(len);
+		vector<string> arr2(len);
+
+		for (int i = 0; i < len; i++)
+		{
+			cin >> arr1[i];
+		}
+		for (int i = 0; i < len; i++)
+		{
+			cin >> arr2[i];
+		}
+
+		vector<int> idxList;
+		for (string i : arr1)
+		{
+			auto it = find(arr2.begin(), arr2.end(), i);
+			if (it != arr2.end())
+				idxList.push_back(distance(arr2.begin(), it));
+		}
+
+		vector<string> query(len);
+		for (int i = 0; i < len; i++)
+		{
+			cin >> query[i];
+		}
+
+		vector<string> answer;
+		for (int i : idxList)
+			answer.push_back(query[i]);
+		
+		for (string i : answer)
+			cout << i << " ";
+
+		cout << '\n';
+	}
+}
