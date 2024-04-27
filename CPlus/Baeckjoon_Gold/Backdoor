@@ -1,0 +1,81 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int N, M;
+
+vector<vector<pair<int, long long>>> graph;
+vector<int> invisible;
+vector<long long> dist;
+
+void dijkstra()
+{
+    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
+    pq.push({ 0, 0 });
+    dist[0] = 0;
+
+    while (!pq.empty())
+    {
+        int curNode = pq.top().second;
+        long long curTime = pq.top().first;
+        pq.pop();
+
+        if (curNode == N - 1)
+        {
+            cout << dist[curNode];
+            return;
+        }
+
+        if (dist[curNode] < curTime)
+            continue;
+
+        for (auto edge : graph[curNode])
+        {
+            int nextNode = edge.first;
+            long long nextTime = edge.second;
+
+            if (nextNode != N - 1 && invisible[nextNode])
+                continue;
+
+            if (dist[curNode] + nextTime < dist[nextNode])
+            {
+                dist[nextNode] = dist[curNode] + nextTime;
+                pq.push({ dist[nextNode], nextNode });
+            }
+        }
+    }
+
+    cout << -1;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N >> M;
+    invisible.resize(N);
+    graph.resize(N);
+    dist.resize(N, LLONG_MAX); 
+
+    for (int i = 0; i < N; i++)
+    {
+        cin >> invisible[i];
+    }
+
+    for (int i = 0; i < M; i++)
+    {
+        int a, b;
+        long long w;
+        cin >> a >> b >> w;
+        graph[a].push_back({ b, w });
+        graph[b].push_back({ a, w });
+    }
+
+    dijkstra();
+    return 0;
+}
