@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N, Q;
+	cin >> N>> Q;
+	vector<int> arr(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+	sort(arr.begin(), arr.end());
+
+	vector<long long> presum(N);
+	long long tmp = 0;
+	for (int i = 0; i < N; i++)
+	{
+		tmp += arr[i];
+		presum[i] = tmp;
+	}
+
+	for (int i = 0; i < Q; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		if (a == 1)
+			cout << presum[b - 1] << '\n';
+		else
+			cout << presum[b - 1] - (a > 1 ? presum[a - 2] : 0) << '\n';
+	}
+}
