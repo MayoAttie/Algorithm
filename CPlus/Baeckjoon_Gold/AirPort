@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+
+vector<int> parents;
+
+int find(int x)
+{
+	if (x == parents[x])
+		return x;
+	return parents[x] = find(parents[x]);
+}
+
+void unionSet(int x, int y)
+{
+	x = find(x);
+	y = find(y);
+	parents[y] = x;
+}
+
+int main()
+{
+	int g, p;
+	cin >> g >> p;
+	
+	vector<int> arr(p);
+	for (int i = 0; i < p; i++)
+	{
+		cin >> arr[i];
+	}
+
+	parents.resize(g + 1);
+
+	for (int i = 0; i <= g; i++)
+	{
+		parents[i] = i;
+	}
+
+	int cnt = 0;
+	for (int i : arr)
+	{
+		i = find(i);
+		if (i == 0)
+			break;
+		unionSet(i - 1, i);
+		cnt++;
+	}
+	cout << cnt;
+}
