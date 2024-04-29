@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+long long custom_pow(long long base, long long exp) 
+{
+    long long result = 1;
+    for (long long i = 0; i < exp; ++i) 
+    {
+        result *= base;
+    }
+    return result;
+}
+
+long long func() 
+{
+    long long n;
+    cin >> n;
+    string rst = "";
+
+    while (n != 0) 
+    {
+        long long l = n % 2;
+        rst += to_string(l);
+        n = n / 2;
+    }
+
+    string st = "";
+    for (long long i = rst.length() - 1; i >= 0; i--) 
+    {
+        st += rst[i];
+    }
+
+    long long l = st.length() - 1;
+    long long result = 0;
+
+    for (long long i = 0; i < st.length(); i++) 
+    {
+        if (st[i] == '1') 
+            result += custom_pow(3, l);
+        
+        l -= 1;
+    }
+
+    return result;
+}
+
+int main() 
+{
+    cout << func() << endl;
+    return 0;
+}
