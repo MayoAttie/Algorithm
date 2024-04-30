@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int MAX = 1000000;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+
+    bool primes[MAX] = { true, };
+    fill_n(primes, MAX, true);
+    primes[0] = primes[1] = false;
+
+    for (int i = 2; i * i < MAX; i++)
+    {
+        if (primes[i])
+        {
+            for (int j = i * i; j < MAX; j += i)
+            {
+                primes[j] = false;
+            }
+        }
+    }
+
+    while (true)
+    {
+        cin >> n;
+        if (n == 0)
+            break;
+
+        bool isPossible = false;
+
+        for (int i = 2; i <= n / 2; i++)
+        {
+            if (primes[i] && primes[n - i])
+            {
+                cout << n << " = " << i << " + " << n - i << '\n';
+                isPossible = true;
+                break;
+            }
+        }
+
+        if (!isPossible)
+            cout << "Goldbach's conjecture is wrong.\n";
+    }
+
+    return 0;
+}
