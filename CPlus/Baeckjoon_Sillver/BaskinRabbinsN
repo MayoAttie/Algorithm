@@ -1,0 +1,15 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	long long N, M;
+	cin >> N >> M;
+
+	long long result = N % (M + 1);
+	if (result == 1)
+		cout << "Can't win";
+	else
+		cout << "Can win";
+}
