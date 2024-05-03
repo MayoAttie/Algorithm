@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+int main()
+{
+	int n, cur;
+	cin >> n >> cur;
+
+	double inputs[2][2];
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 2; j++)
+		{
+			cin >> inputs[i][j];
+		}
+	}
+
+	double proba[2] = { 0 };
+	proba[cur] = 1.0;
+
+	for (int day = 0; day < n; day++)
+	{
+		double nextPro[2] = { 0 };
+		
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				nextPro[j] += proba[i] * inputs[i][j];
+			}
+		}
+
+		for (int i = 0; i < 2; i++)
+		{
+			proba[i] = nextPro[i];
+		}
+	}
+
+	cout << round(proba[0] * 1000) << '\n';
+	cout << round(proba[1] * 1000) << '\n';
+}
