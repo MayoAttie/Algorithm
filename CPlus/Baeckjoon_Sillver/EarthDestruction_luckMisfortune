@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+const int MOD = 1000000007;
+
+int main() 
+{
+    int n;
+    cin >> n;
+    n = n - 1;
+
+    long long num = 1;
+    for (int i = n; i > 1; i -= 2) 
+    {
+        num = (num * i) % MOD;
+    }
+
+    cout << num;
+
+    return 0;
+}
