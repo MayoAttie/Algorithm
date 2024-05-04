@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+unordered_map<char, int> map;
+string str;
+
+int backtracking(char pre, int cnt)
+{
+	int result = 0;
+
+	if (cnt == str.size())
+		return 1;
+
+	for (auto& i : map)
+	{
+		char ch = i.first;
+
+		if (ch == pre || map[ch] == 0)
+			continue;
+
+		map[ch] -= 1;
+		result += backtracking(ch, cnt + 1);
+		map[ch] += 1;
+	}
+
+	return result;
+}
+
+int main()
+{
+	cin >> str;
+
+	for (char ch : str)
+	{
+		map[ch]++;
+	}
+
+	int answer = backtracking('\0', 0);
+	cout << answer;
+}
