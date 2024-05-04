@@ -1,0 +1,114 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <tuple>
+using namespace std;
+
+int N, M;
+vector<vector<char>> graph;
+
+int dx[] = { -1, 1, 0, 0 };
+int dy[] = { 0, 0, -1, 1 };
+
+bool visited[10][10][10][10];
+
+void bfs(int rx, int ry, int bx, int by) 
+{
+    queue<tuple<int, int, int, int>> q;
+    q.push({ rx, ry, bx, by });
+    visited[rx][ry][bx][by] = true;
+    int count = 0;
+
+    while (!q.empty()) 
+    {
+        int size = q.size();
+        if (count > 10) 
+        {
+            cout << -1;
+            return;
+        }
+        for (int k = 0; k < size; ++k) 
+        {
+            int cur_rx, cur_ry, cur_bx, cur_by;
+            tie(cur_rx, cur_ry, cur_bx, cur_by) = q.front();
+            q.pop();
+
+            if (graph[cur_rx][cur_ry] == 'O') 
+            {
+                cout << count;
+                return;
+            }
+
+            for (int i = 0; i < 4; ++i) 
+            {
+                int nrx = cur_rx, nry = cur_ry;
+                while (graph[nrx + dx[i]][nry + dy[i]] != '#' && graph[nrx][nry] != 'O') 
+                {
+                    nrx += dx[i];
+                    nry += dy[i];
+                }
+                int nbx = cur_bx, nby = cur_by;
+                while (graph[nbx + dx[i]][nby + dy[i]] != '#' && graph[nbx][nby] != 'O') 
+                {
+                    nbx += dx[i];
+                    nby += dy[i];
+                }
+                if (graph[nbx][nby] == 'O')
+                    continue;
+                if (nrx == nbx && nry == nby) 
+                {
+                    if (abs(nrx - cur_rx) + abs(nry - cur_ry) > abs(nbx - cur_bx) + abs(nby - cur_by)) 
+                    {
+                        nrx -= dx[i];
+                        nry -= dy[i];
+                    }
+                    else 
+                    {
+                        nbx -= dx[i];
+                        nby -= dy[i];
+                    }
+                }
+                if (!visited[nrx][nry][nbx][nby]) 
+                {
+                    q.push({ nrx, nry, nbx, nby });
+                    visited[nrx][nry][nbx][nby] = true;
+                }
+            }
+        }
+        ++count;
+    }
+    cout << -1;
+}
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N >> M;
+    graph.resize(N, vector<char>(M));
+
+    int rx, ry, bx, by;
+    for (int i = 0; i < N; ++i) 
+    {
+        for (int j = 0; j < M; ++j) 
+        {
+            cin >> graph[i][j];
+            if (graph[i][j] == 'R') 
+            {
+                rx = i;
+                ry = j;
+            }
+            else if (graph[i][j] == 'B') {
+
+                bx = i;
+                by = j;
+            }
+        }
+    }
+
+    bfs(rx, ry, bx, by);
+
+    return 0;
+}
