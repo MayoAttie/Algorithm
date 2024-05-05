@@ -1,0 +1,71 @@
+o#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int wordInBook(string word, string book, int price) 
+{
+    int cnt = 0;
+    for (char w : word) 
+    {
+        size_t found = book.find(w);
+        if (found != string::npos) 
+        {
+            cnt++;
+            book[found] = ' ';
+            if (cnt == word.length()) 
+                return price;
+        }
+    }
+    return INT_MAX;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    string target;
+    cin >> target;
+
+    int N;
+    cin >> N;
+    vector<string> names(N);
+    vector<int> price(N);
+    for (int i = 0; i < N; i++)
+    {
+        cin >> price[i] >> names[i];
+    }
+
+    vector<int> result;
+
+    for (int i = 0; i < (1 << names.size()); ++i)
+    {
+        string str = "";
+        int sum = 0;
+        for (int j = 0; j < names.size(); ++j)
+        {
+            if (i & (1 << j)) 
+            {
+                str += names[j];
+                sum += price[j];
+            }
+        }
+        result.push_back(wordInBook(target, str, sum));
+    }
+
+    int answer = INT_MAX;
+    for (int price : result) 
+    {
+        if (price < answer)
+            answer = price;
+    }
+    if (answer == INT_MAX)
+        answer = -1;
+
+    cout << answer;
+
+    return 0;
+}
