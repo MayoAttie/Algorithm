@@ -1,0 +1,26 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+long long countStars(int N) 
+{
+    if (N < 5)
+        return 0;
+    else 
+    {
+        long long result = 1;
+        for (int i = N; i >= N - 4; --i) 
+        {
+            result *= i;
+        }
+        return result / 120; 
+    }
+}
+
+int main() 
+{
+    int N;
+    cin >> N;
+    cout << countStars(N);
+    return 0;
+}
