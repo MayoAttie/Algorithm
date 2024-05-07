@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+using namespace std;
+
+int n, m;
+vector<int> arr;
+vector<bool> visited;
+vector<int> tmp;
+set<vector<int>> answer;
+void generator() 
+{
+    if (tmp.size() == m)
+    {
+        if (answer.find(tmp) == answer.end())
+        {
+            answer.insert(tmp);
+        }
+        return;
+    }
+
+    for (int i = 0; i < n; i++) 
+    {
+        if (!visited[i])
+        {
+            visited[i] = true;
+            tmp.push_back(arr[i]);
+            generator();
+            visited[i] = false;
+            tmp.pop_back();
+        }
+    }
+}
+
+int main() 
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n >> m;
+    arr.resize(n);
+    visited.resize(n, false);
+
+    for (int i = 0; i < n; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    sort(arr.begin(), arr.end());
+
+    generator();
+
+    for (auto i : answer)
+    {
+        for (int j : i)
+        {
+            cout << j << " ";
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
