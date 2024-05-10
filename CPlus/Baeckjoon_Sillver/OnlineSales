@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+		
+	int n, m;
+	cin >> n >> m;
+
+	vector<int> arr(m);
+
+	for (int i = 0; i < m; i++)
+	{
+		cin >> arr[i];
+	}
+
+	sort(arr.begin(), arr.end());
+
+	int total = 0;
+	int target = 0;
+
+	for (int i = 0; i < m; i++)
+	{
+		int tmp = min(m - i, n);
+
+		if (total < arr[i] * tmp)
+		{
+			total = arr[i] * tmp;
+			target = arr[i];
+		}
+	}
+
+	cout << target << " " << total;
+}
