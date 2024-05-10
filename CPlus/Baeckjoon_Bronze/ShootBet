@@ -1,0 +1,15 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <bitset>
+using namespace std;
+int main() 
+{
+    int A, B;
+    cin >> A >> B;
+
+    int dec = stoi(bitset<32>(A ^ B).to_string(), nullptr, 2);
+    cout << dec;
+
+    return 0;
+}
