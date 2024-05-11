@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<int> visited;
+
+void bfs(int node) 
+{
+    deque<int> q;
+    q.push_back(node);
+    visited[node] = 0;
+
+    while (!q.empty()) 
+    {
+        node = q.front();
+        q.pop_front();
+
+        for (int n : graph[node]) 
+        {
+            if (visited[n] == -1)
+            {
+                q.push_back(n);
+                visited[n] = visited[node] + 1;
+            }
+        }
+    }
+}
+
+int main() 
+{
+    int N, K;
+    cin >> N >> K;
+
+    graph.resize(N + 1);
+    visited.resize(N + 1, -1);
+
+    for (int i = 0; i < K; ++i) 
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+
+    bool flag = true;
+    for (int i = 1; i <= N; ++i) 
+    {
+        visited.assign(N + 1, -1);
+        bfs(i);
+        if (*max_element(visited.begin(), visited.end()) > 6 || find(visited.begin() + 1, visited.end(), -1) != visited.end()) 
+        {
+            flag = false;
+            break;
+        }
+    }
+
+    if (flag)
+        cout << "Small World!";
+    else
+        cout << "Big World!";
+
+    return 0;
+}
