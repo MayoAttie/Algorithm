@@ -1,0 +1,29 @@
+#include <iostream>
+#include <queue>
+#include <map>
+#include <string>
+using namespace std;
+
+int main() {
+    string str;
+    cin >> str;
+
+    map<string, int> dic;
+    priority_queue<string, vector<string>, greater<string>> pq; 
+
+    for (int i = 0; i < str.size(); i++) 
+    {
+        string tmp = str.substr(0, i);
+        pq.push(tmp);
+        dic[tmp] = i;
+    }
+
+    while (!pq.empty()) 
+    {
+        string tmp = pq.top();
+        pq.pop();
+        cout << dic[tmp] << '\n'; 
+    }
+
+    return 0;
+}
