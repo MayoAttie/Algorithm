@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+string str;
+
+bool solution(string tmp) 
+{
+    if (tmp.size() == 1)
+        return true;
+
+    string left, right;
+    int mid = tmp.size()/2;
+
+    for (int i = 0; i < mid; i++)
+    {
+        left += tmp[i];
+    }
+
+    for (int i = 0; i < mid; i++)
+    {
+        if (tmp.size() % 2 == 1)
+            right += tmp[i + mid + 1];
+        else
+            right += tmp[i + mid];
+    }
+
+    if (left != right)
+        return false;
+    if (solution(left) && solution(right))
+        return true;
+
+    return false;
+}
+
+int main() 
+{
+    cin >> str;
+    if (solution(str)) 
+    {
+        cout << "AKARAKA";
+    }
+    else 
+    {
+        cout << "IPSELENTI";
+    }
+
+    return 0;
+}
