@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool soultion(vector<int>& arr) 
+{
+    vector<int> odd;
+    vector<int> even;
+    for (int i = 0; i < arr.size(); i++) 
+    {
+        if (arr[i] % 2 == 0)
+            even.push_back(arr[i]);
+        else
+            odd.push_back(arr[i]);
+    }
+    
+    if (odd.size() - even.size() > 1 || odd.size() - even.size() < 0)
+        return false;
+
+    return true;
+}
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    vector<int> arr(N);
+    for (int i = 0; i < N; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    if (soultion(arr))
+        cout << "1";
+    else
+        cout << "0";
+
+}
