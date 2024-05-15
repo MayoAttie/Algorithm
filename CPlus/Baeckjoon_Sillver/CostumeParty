@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() 
+{
+	int n, s;
+	cin >> n >> s;
+
+	vector<int> arr(n);
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> arr[i];
+	}
+
+	sort(arr.begin(), arr.end());
+
+
+	int left = 0;
+	int right = n - 1;
+	int answer = 0;
+
+	while (left < right)
+	{
+		if (arr[left] + arr[right] <= s)
+		{
+			answer += (right - left);
+			left++;
+		}
+		else
+			right--;
+	}
+
+	cout << answer;
+}
