@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    long long S, C;
+    cin >> S >> C;
+
+    vector<long long> arr(S);
+    for (int i = 0; i < S; i++)
+    {
+        cin >> arr[i];
+    }
+
+    long long left = 1;
+    long long right = *max_element(arr.begin(), arr.end());
+
+    long long result = 0;
+
+    while (left <= right)
+    {
+        long long mid = (left + right) / 2;
+        long long total = 0;
+
+        for (int p : arr)
+        {
+            total += p / mid;
+        }
+        if (total >= C)
+        {
+            result = mid;
+            left = mid + 1;
+        }
+        else
+            right = mid - 1;
+    }
+
+    long long answer = 0;
+    for (int i = 0; i < S; i++)
+    {
+        answer += arr[i];
+    }
+
+    cout << answer - result * C;
+
+    return 0;
+}
