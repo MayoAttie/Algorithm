@@ -1,0 +1,25 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    double k;
+    cin >> k;
+
+    int p = 1;
+    int q = 1;
+
+    while (abs((double)p / q - k) > pow(10, -6)) 
+    {
+        if ((double)p / q > k) 
+            q += 1;
+        else 
+            p += 1;
+    }
+
+    cout << "YES" << '\n';
+    cout << p << " " << q;
+
+    return 0;
+}
