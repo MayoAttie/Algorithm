@@ -1,0 +1,33 @@
+#include <iostream>
+#include <queue>
+#include <iomanip>
+using namespace std;
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    priority_queue<double, vector<double>, greater<double>> pq;
+
+    for (int i = 0; i < N; ++i) 
+    {
+        int a;
+        cin >> a;
+        pq.push(a);
+    }
+
+    while (pq.size() > 1) 
+    {
+        double first = pq.top();
+        pq.pop();
+        double second = pq.top();
+        pq.pop();
+
+        double aver = (first + second) / 2.0;
+        pq.push(aver);
+    }
+
+    cout << fixed << setprecision(6) << pq.top();
+    return 0;
+}
