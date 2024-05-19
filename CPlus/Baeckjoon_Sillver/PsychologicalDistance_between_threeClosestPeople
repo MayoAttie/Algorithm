@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <climits>
+#include <algorithm>
+
+using namespace std;
+
+int calculDist(const string& a, const string& b) 
+{
+    int dist = 0;
+    for (int i = 0; i < 4; i++) 
+    {
+        if (a[i] != b[i]) 
+            dist++;
+    }
+    return dist;
+}
+
+int main() 
+{
+    int T;
+    cin >> T;
+
+    while (T--) 
+    {
+        int N;
+        cin >> N;
+        vector<string> arr(N);
+        unordered_map<string, int> map;
+
+        for (int i = 0; i < N; i++) 
+        {
+            cin >> arr[i];
+            map[arr[i]]++;
+        }
+
+        bool found = false;
+
+        for (auto& entry : map)
+        {
+            if (entry.second >= 3) 
+            {
+                cout << 0 << endl;
+                found = true;
+                break;
+            }
+        }
+        if (found) continue;
+
+        if (N <= 3) 
+        {
+            int result = INT_MAX;
+            for (int i = 0; i < N; i++) 
+            {
+                for (int j = i + 1; j < N; j++) 
+                {
+                    for (int k = j + 1; k < N; k++) 
+                    {
+                        int dist = calculDist(arr[i], arr[j]);
+                        dist += calculDist(arr[j], arr[k]);
+                        dist += calculDist(arr[k], arr[i]);
+
+                        result = min(result, dist);
+                    }
+                }
+            }
+            cout << result << '\n';
+            continue;
+        }
+
+        int result = INT_MAX;
+
+        for (int i = 0; i < min(100, N); i++) 
+        {
+            for (int j = i + 1; j < min(100, N); j++) 
+            {
+
+                for (int k = j + 1; k < min(100, N); k++) 
+                {
+                    int dist = calculDist(arr[i], arr[j]);
+                    dist += calculDist(arr[j], arr[k]);
+                    dist += calculDist(arr[k], arr[i]);
+
+                    result = min(result, dist);
+                }
+            }
+        }
+
+        cout << result << '\n';
+    }
+
+    return 0;
+}
