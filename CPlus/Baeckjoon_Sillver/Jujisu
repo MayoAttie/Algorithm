@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N, M;
+	cin >> N >> M;
+
+	vector<vector<int>> board(N, vector<int>(M));
+	vector<vector<int>> presum(N, vector<int>(M));
+	
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			cin >> board[i][j];
+			
+		}
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			presum[i][j] = board[i][j];
+			if (i > 0)
+				presum[i][j] += presum[i - 1][j]; 
+			if (j > 0) 
+				presum[i][j] += presum[i][j - 1]; 
+			if (i > 0 && j > 0)
+				presum[i][j] -= presum[i - 1][j - 1];
+		}
+	}
+
+	int K;
+	cin >> K;
+
+	for (int i = 0; i < K; i++)
+	{
+		int sx, sy, ex, ey;
+		cin >> sx >> sy >> ex >> ey;
+		sx--; sy--; ex--; ey--;
+
+		int result = presum[ex][ey];
+		if (sx > 0)
+			result -= presum[sx - 1][ey];
+		if (sy > 0)
+			result -= presum[ex][sy - 1];
+		if (sx > 0 && sy > 0)
+			result += presum[sx - 1][sy - 1];
+
+		cout << result << '\n';
+	}
+}
