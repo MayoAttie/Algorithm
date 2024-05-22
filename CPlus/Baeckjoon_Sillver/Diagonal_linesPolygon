@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    if (4 <= N)
+    {
+        int len = 4;
+        if (4 > N - 4)
+            len = N - 4;
+
+        long long result = 1;
+        for (int i = 1; i <= len; i++)
+        {
+            result *= (N - i + 1);
+            result /= i;
+        }
+        cout << result;
+    }
+    else
+    {
+        cout << 0;
+    }
+
+
+    return 0;
+}

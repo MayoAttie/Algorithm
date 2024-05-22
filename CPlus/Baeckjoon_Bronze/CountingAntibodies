@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+
+
+int main() 
+{
+    int vk, jk, vl, Jl, vh, dh, jh;
+
+    cin >> vk >> jk >> vl >> Jl >> vh >> dh >> jh;
+
+    long long kc = static_cast<long long>(vk) * jk;
+    long long lc = static_cast<long long>(vl) * Jl;
+
+    long long hc = static_cast<long long>(vh) * dh * jh;
+
+    long long answer = (kc + lc) * hc;
+
+    cout << answer;
+
+    return 0;
+}

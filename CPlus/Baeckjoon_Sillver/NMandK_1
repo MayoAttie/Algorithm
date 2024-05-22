@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int dx[4] = { 1, 0, -1, 0 };
+int dy[4] = { 0, 1, 0, -1 };
+
+vector<vector<int>> arr;
+vector<pair<int, int>> selected;
+vector<vector<bool>> visited;
+int N, M, K;
+int answer = -987654321; 
+
+
+bool isValid(int x, int y) 
+{
+    if (x < 0 || x >= N || y < 0 || y >= M || visited[x][y]) 
+        return false;
+
+    for (int i = 0; i < 4; i++) 
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if (nx >= 0 && nx < N && ny >= 0 && ny < M && visited[nx][ny]) 
+            return false;
+    }
+    return true;
+}
+
+void backtracking(int depth, int sum) 
+{
+    if (depth == K) 
+    {
+        answer = max(answer, sum);
+        return;
+    }
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            if (isValid(i, j)) 
+            {
+                visited[i][j] = true;
+                selected.push_back({ i, j });
+                backtracking(depth + 1, sum + arr[i][j]);
+                selected.pop_back();
+                visited[i][j] = false;
+            }
+        }
+    }
+}
+
+int main() 
+{
+    cin >> N >> M >> K;
+
+    arr.resize(N, vector<int>(M));
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    visited.resize(N, vector<bool>(M, false));
+    backtracking(0, 0);
+
+    cout << answer;
+
+    return 0;
+}

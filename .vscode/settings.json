@@ -171,6 +171,7 @@
         "recolorchessboard2": "cpp",
         "xstddef": "c",
         "submit": "c",
-        "n_and_m_12": "c"
+        "n_and_m_12": "c",
+        "two_complement": "c"
     }
 }
