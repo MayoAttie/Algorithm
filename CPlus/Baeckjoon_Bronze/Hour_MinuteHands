@@ -1,0 +1,40 @@
+#include <iostream>
+#include <set>
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
+int main() 
+{
+
+    set<int> angles;
+    int hours = -6;
+    int minute = -6;
+
+    for (int i = 0; i < 24; i++) 
+    {
+        for (int j = 0; j < 60; j++) 
+        {
+            minute = (minute + 6) % 360;
+
+            if (minute % 72 == 0)
+                hours = (hours + 6) % 360;
+            
+            int angle = (hours - minute + 360) % 360;
+            int reverseAng = 360 - angle;
+            angles.insert(min(angle, reverseAng));
+        }
+    }
+
+    int num;
+    while (cin >> num)
+    {
+        if (angles.find(num) != angles.end())
+            cout << 'Y' << '\n';
+        else
+            cout << 'N' << '\n';
+    }
+
+    return 0;
+}
