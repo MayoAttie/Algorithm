@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+int M, N;
+
+bool isPossible(const vector<int>& arr, int len)
+{
+	if (len == 0) 
+		return false;
+	int count = 0;
+	for (int snack : arr)
+	{
+		count += snack / len;
+		if (count >= M)
+		{
+			return true;
+		}
+	}
+	return count >= M;
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	cin >> M >> N;
+	vector<int> arr(N);
+
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+
+	sort(arr.begin(), arr.end());
+
+	int left = 1;  
+	int right = *max_element(arr.begin(), arr.end());
+
+	int answer = 0;
+	while (left <= right)
+	{
+		int mid = (left + right) / 2;
+
+		if (isPossible(arr, mid))
+		{
+			answer = mid;
+			left = mid + 1;
+		}
+		else
+			right = mid - 1;
+	}
+
+	cout << answer << endl;
+}
