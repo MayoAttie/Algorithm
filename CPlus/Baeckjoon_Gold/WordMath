@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+vector<string> words;
+map<char, int> assigned;
+
+bool compare(pair<char, int>& a, pair<char, int>& b)
+{
+    return a.second > b.second;
+}
+
+int calculate_sum(const vector<string>& words)
+{
+    int total_sum = 0;
+    for (const string& word : words)
+    {
+        int num = 0;
+        for (char ch : word)
+        {
+            num = num * 10 + assigned[ch];
+        }
+        total_sum += num;
+    }
+    return total_sum;
+}
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    words.resize(N);
+
+    for (int i = 0; i < N; ++i)
+    {
+        cin >> words[i];
+    }
+
+    map<char, int> dic;
+    for (const string& str : words)
+    {
+        int len = str.size();
+        for (int i = 0; i < len; ++i)
+        {
+            char ch = str[i];
+            int pw = 1;
+            for (int j = 0; j < len - i - 1; ++j)
+            {
+                pw *= 10;
+            }
+            dic[ch] += pw;
+        }
+    }
+
+    vector<pair<char, int>> sorted(dic.begin(), dic.end());
+    sort(sorted.begin(), sorted.end(), compare);
+
+    int cur = 9;
+    for (const auto& i : sorted)
+    {
+        assigned[i.first] = cur--;
+    }
+
+    int answer = calculate_sum(words);
+    cout << answer << endl;
+
+    return 0;
+}
