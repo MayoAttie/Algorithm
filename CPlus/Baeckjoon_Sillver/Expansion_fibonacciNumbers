@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+const int MOD = 1000000000;
+
+int main() 
+{
+    int n;
+    cin >> n;
+
+    int abs_n = abs(n);
+    vector<int> dp(2 * abs_n + 1);
+
+    dp[abs_n] = 0;  
+    dp[abs_n + 1] = 1;  
+
+
+    for (int i = abs_n + 2; i <= 2 * abs_n; ++i) 
+    {
+        dp[i] = (dp[i - 1] + dp[i - 2]) % MOD;
+    }
+
+    for (int i = abs_n - 1; i >= 0; --i) 
+    {
+        dp[i] = (dp[i + 2] - dp[i + 1]) % MOD;
+    }
+
+    int fib_n = (n >= 0) ? dp[abs_n + n] : dp[abs_n + n];
+
+    if (fib_n > 0) 
+        cout << 1 << '\n';
+    else if (fib_n == 0) 
+        cout << 0 << '\n';
+    else 
+        cout << -1 << '\n';
+
+    cout << abs(fib_n) % MOD << '\n';
+
+    return 0;
+}
