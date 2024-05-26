@@ -1,0 +1,31 @@
+#include <iostream>
+#include <map>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    map<string, int> dic;
+    string arr[] = { "Re", "Pt", "Cc", "Ea", "Tb", "Cm", "Ex" };
+    int total = 0;
+
+    for (int i = 0; i < 24; i++)
+    {
+        string a;
+        if (!(cin >> a)) 
+            break;
+        dic[a]++;
+        total++;
+    }
+
+    for (const auto& i : arr)
+    {
+        int count = dic[i];
+        double ratio = static_cast<double>(count) / total;
+        cout << i << ' ' << count << ' ' << fixed << setprecision(2) << ratio << '\n';
+    }
+
+    cout << "Total " << total << " 1.00" << endl;
+
+    return 0;
+}
