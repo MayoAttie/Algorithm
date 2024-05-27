@@ -1,0 +1,38 @@
+#include <iostream>	
+#include <vector>	
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int T;
+	cin >> T;
+
+	while (T--)
+	{
+		int len, n;
+		cin >> len >> n;
+
+		vector<int> arr(n);
+		for (int i = 0; i < n; i++)
+		{
+			cin >> arr[i];
+		}
+
+
+		int minTime = 0;
+		int maxTime = 0;
+
+		for (int i = 0; i < n; i++) 
+		{
+			int distToStart = arr[i];
+			int distToEnd = len - arr[i];
+
+			minTime = max(minTime, min(distToStart, distToEnd));
+			maxTime = max(maxTime, max(distToStart, distToEnd));
+		}
+
+		cout << minTime << ' ' << maxTime << '\n';
+	}
+}
