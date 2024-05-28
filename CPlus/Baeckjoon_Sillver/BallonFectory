@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+
+	vector<int> arr(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> arr[i];
+	}
+
+	long long left = 1;
+	long long right = *max_element(arr.begin(), arr.end()) * static_cast<long long>(M);
+	long long answer = right;
+
+	while (left <= right)
+	{
+		long long mid = (left + right) / 2;
+
+		bool possible = false;
+		long long total = 0;
+
+		for (int i = 0; i < N; i++)
+		{
+			total += mid / arr[i];
+			if (total >= M)
+			{
+				possible = true;
+				break;
+			}
+		}
+
+		if (possible)
+		{
+			answer = mid;
+			right = mid - 1;
+		}
+		else
+			left = mid + 1;
+	}
+
+	cout << answer;
+}
