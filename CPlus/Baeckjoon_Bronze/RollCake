@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+int main()
+{
+    int L, N;
+    cin >> L >> N;
+
+    vector<int> cake(L + 1, -1);
+
+    int maxLongIdx = -1;
+    int maxLongSize = -1;
+    int realLongIdx = -1;
+    int realLongSize = -1;
+
+    int index = 1;
+    while (N--)
+    { 
+        int start, end;
+        cin >> start >> end;
+
+        if (end - start > maxLongSize)
+        {
+            maxLongSize = end - start;
+            maxLongIdx = index;
+        }
+
+        for (int i = start; i <= end; i++)
+        {
+            if (cake[i] == -1)
+            {
+                cake[i] = index;
+            }
+        }
+            
+        index++;
+    }
+
+    map<int, int> dic;
+    for (int i = 1; i <= L; i++)
+    {
+        if (cake[i] != -1)
+            dic[cake[i]]++;
+    }
+
+    for (auto i : dic)
+    {
+        if (i.second > realLongSize)
+        {
+            realLongSize = i.second;
+            realLongIdx = i.first;
+        }
+    }
+
+    cout << maxLongIdx << '\n' << realLongIdx;
+    return 0;
+}
