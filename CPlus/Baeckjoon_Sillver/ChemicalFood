@@ -1,0 +1,67 @@
+#include <iostream>	
+#include <vector>
+#include <stack>
+#include <map>
+#include <string>
+using namespace std;
+
+int main()
+{
+	map<char, int> dic = { {'H',1},{'C',12},{'O',16} };
+	
+	string str;
+	cin >> str;
+	
+	stack<pair<char, int>> stk;
+	int n = str.size();
+
+	for (int i = 0; i < n; i++)
+	{
+		char ch = str[i];
+
+		if (ch == '(')
+		{
+			stk.push({ ch,0 });
+		}
+		else if (ch == ')')
+		{
+			vector<pair<char, int>> tmp;
+			while (!stk.empty() && stk.top().first != '(')
+			{
+				tmp.push_back(stk.top());
+				stk.pop();
+			}
+			stk.pop();
+
+			int mul = 1;
+			if (i + 1 < n && isdigit(str[i + 1]))
+				mul = str[++i] - '0';
+
+			for (auto& j : tmp)
+				j.second *= mul;
+
+			for (auto& j : tmp)
+				stk.push(j);
+		}
+		else if (isalpha(ch))
+		{
+			int cnt = 1;
+			if (i + 1 < n && isdigit(str[i + 1]))
+				cnt = str[++i] - '0';
+
+			stk.push({ ch, cnt });
+		}
+	}
+
+	int answer = 0;
+
+	while (!stk.empty())
+	{
+		char element = stk.top().first;
+		int cnt = stk.top().second;
+		answer += dic[element] * cnt;
+		stk.pop();
+	}
+
+	cout << answer;
+}
