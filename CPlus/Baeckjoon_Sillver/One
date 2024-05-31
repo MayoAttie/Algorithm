@@ -1,0 +1,37 @@
+#include <iostream>
+
+using namespace std;
+
+void solution(int n) 
+{
+    long long num = 1;
+    int length = 1;
+
+    while (true) 
+    {
+        if (num % n == 0) 
+        {
+            cout << length << '\n';
+            return;
+        }
+        num = num * 10 + 1;
+        num %= n;
+        length++;
+    }
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+
+    int n;
+    while (cin >> n) 
+    {
+        solution(n);
+    }
+
+    return 0;
+}
