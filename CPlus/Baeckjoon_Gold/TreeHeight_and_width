@@ -1,0 +1,82 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <map>
+using namespace std;
+
+vector<pair<int, int>> graph;
+map<int, pair<int, int>> levels;
+int cur = 1;
+
+void inOrder(int node, int l)
+{
+    if (node == -1)
+        return;
+
+    inOrder(graph[node].first, l + 1);
+
+    if (levels.find(l) == levels.end())
+        levels[l] = { cur, cur };
+    else
+    {
+        levels[l].first = min(levels[l].first, cur);
+        levels[l].second = max(levels[l].second, cur);
+    }
+
+    cur++;
+    inOrder(graph[node].second, l + 1);
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    graph.resize(n + 1);
+
+    vector<bool> isChild(n + 1, false);
+
+    for (int i = 0; i < n; i++)
+    {
+        int node, l, r;
+        cin >> node >> l >> r;
+        graph[node].first = l;
+        graph[node].second = r;
+        if (l != -1)
+            isChild[l] = true;
+        if (r != -1)
+            isChild[r] = true;
+    }
+
+    int root = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        if (!isChild[i])
+        {
+            root = i;
+            break;
+        }
+    }
+
+    inOrder(root, 1);
+
+    int maxLevel = 1;
+    int maxWidth = 1;
+
+    for (auto i : levels)
+    {
+        int l = i.first;
+        int minCol = i.second.first;
+        int maxCol = i.second.second;
+        int w = maxCol - minCol + 1;
+
+        if (w > maxWidth)
+        {
+            maxWidth = w;
+            maxLevel = l;
+        }
+    }
+
+    cout << maxLevel << " " << maxWidth;
+}
