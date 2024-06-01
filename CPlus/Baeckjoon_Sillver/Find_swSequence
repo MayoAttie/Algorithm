@@ -1,0 +1,26 @@
+#include <iostream>
+#include <vector>   
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    int num = 1;
+
+    vector<int>answer;
+
+    for (int i = 1; i <= n; i++)
+    {
+        answer.push_back(num);
+        if (i % 2 == 0) 
+            num -= n - i;
+        else 
+            num += n - i;
+    }
+
+    for (int i : answer)
+    {
+        cout << i << ' ';
+    }
+}
