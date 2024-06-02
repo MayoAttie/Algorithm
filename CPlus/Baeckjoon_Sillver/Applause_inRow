@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> matrix;
+
+int SlideWindow(int N, int M, int A) 
+{
+    vector<vector<int>> row_sums(N, vector<int>(M - A + 1, 0));
+
+    for (int i = 0; i < N; i++) 
+    {
+        int init = 0;
+        for (int j = 0; j < A; j++) 
+        {
+            init += matrix[i][j];
+        }
+        row_sums[i][0] = init;
+
+        for (int j = 1; j <= M - A; j++) 
+        {
+            row_sums[i][j] = row_sums[i][j - 1] - matrix[i][j - 1] + matrix[i][j + A - 1];
+        }
+    }
+
+    int result = 0;
+
+    for (int j = 0; j <= M - A; j++) 
+    {
+        int cur = 0;
+        for (int i = 0; i < N; i++) 
+        {
+            cur += row_sums[i][j];
+        }
+        result = max(result, cur);
+    }
+
+    return result;
+}
+
+int main() 
+{
+    int N, M;
+    cin >> N >> M;
+
+    matrix.resize(N, vector<int>(M));
+
+    for (int i = 0; i < N; ++i) 
+    {
+        for (int j = 0; j < M; ++j) 
+        {
+            cin >> matrix[i][j];
+        }
+    }
+
+    int A;
+    cin >> A;
+
+    cout << SlideWindow(N, M, A);
+
+    return 0;
+}
