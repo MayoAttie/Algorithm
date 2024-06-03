@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+int main() 
+{
+    int N,M,len,num;
+    cin >> N;
+
+    vector<set<int>> majors(N);
+    for (int i = 0; i < N; i++)
+    {
+        cin >> len;
+        for (int j = 0; j < len; j++)
+        {
+            cin >> num;
+            majors[i].insert(num);
+        }
+    }
+    
+    cin >> M;
+    vector<set<int>> student(M);
+    for (int i = 0; i < M; i++)
+    {
+        cin >> len;
+        for (int j = 0; j < len; j++)
+        {
+            cin >> num;
+            student[i].insert(num);
+        }
+    }
+
+    for (auto i : student)
+    {
+        int count = 0;
+        for (auto j : majors)
+        {
+            bool isPossible = true;
+            for (int time : j)
+            {
+                if (i.find(time) == i.end())
+                {
+                    isPossible = false;
+                    break;
+                }
+            }
+
+            if (isPossible)
+                count++;
+        }
+        cout << count << '\n';
+    }
+
+    return 0;
+}
