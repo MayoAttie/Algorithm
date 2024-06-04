@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>	
+
+using namespace std;
+
+
+bool isArithmeticSequence(vector<int>& A) 
+{
+    int n = A.size();
+    if (n < 2) 
+    {
+        return true;
+    }
+
+    int differ = A[1] - A[0];
+
+    for (int i = 1; i < n - 1; ++i) 
+    {
+        if (A[i + 1] - A[i] != differ)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<int> A(N);
+	for (int i = 0; i < N; i++)
+	{
+		cin >> A[i];
+	}
+
+    if (isArithmeticSequence(A))
+    {
+        cout << "YES\n";
+        for (int i = 0; i < N; i++)
+        {
+            cout << A[i] << " ";
+        }
+        cout << '\n';
+        for (int i = 0; i < N; i++)
+        {
+            cout <<  "0 ";
+        }
+    }
+    else
+    {
+        cout << "NO";
+    }
+	
+}
