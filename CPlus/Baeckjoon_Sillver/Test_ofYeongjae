@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int ans[10];
+vector<int> now;  
+int cnt = 0;  
+
+void dfs(int depth) 
+{
+    if (depth == 10) 
+    {
+        int score = 0;
+        for (int j = 0; j < 10; j++) 
+        {
+            if (now[j] == ans[j])
+                score++;
+        }
+        
+        if (score >= 5)
+            cnt++;
+        
+        return;
+    }
+    for (int i = 1; i <= 5; i++) 
+    {
+        if (depth > 1 && now[depth - 2] == now[depth - 1] && now[depth - 1] == i)
+            continue;
+        
+        now.push_back(i);
+        dfs(depth + 1);
+        now.pop_back();
+    }
+}
+
+int main() 
+{
+    for (int i = 0; i < 10; i++) 
+    {
+        cin >> ans[i];
+    }
+    dfs(0);
+    cout << cnt;
+    return 0;
+}
