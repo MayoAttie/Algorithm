@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+#include <algorithm> 
+
+using namespace std;
+
+int getGcd(int a, int b) 
+{
+    while (b != 0) 
+    {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int getLcm(int a, int b) 
+{
+    return (a / getGcd(a, b)) * b;
+}
+
+int main() 
+{
+    string f, t;
+    cin >> f >> t;
+
+    int flen = f.size();
+    int tlen = t.size();
+
+    int len = getLcm(flen, tlen);
+
+    string ff, tt;
+    while (ff.size() < len) 
+        ff += f;
+    while (tt.size() < len) 
+        tt += t;
+
+    if (ff == tt)
+        cout << 1 ;
+    else 
+        cout << 0 ;
+
+    return 0;
+}
