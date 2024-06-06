@@ -1,0 +1,23 @@
+#include <iostream>
+#include <vector>	
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<int> dp(N + 1, 0);
+
+	for (int i = 2; i <= N; i++)
+	{
+		for (int j = 1; j <= i; j++)
+		{
+			int cur = j * (i - j) + dp[j] + dp[i - j];
+			dp[i] = max(dp[i], cur);
+		}
+	}
+
+	cout << dp[N];
+}
