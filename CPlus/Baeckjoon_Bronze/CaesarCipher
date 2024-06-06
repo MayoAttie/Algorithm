@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int  main()
+{
+	string str;
+	cin >> str;
+
+	string answer = "";
+
+	for (char ch : str)
+	{
+		int n = ch - 'A';
+
+		if (n >= 3)
+			n -= 3;
+		else
+			n = 26 - (3-n);
+
+		char cCh = 'A' + n;
+		answer += cCh;
+	}
+
+	cout << answer;
+}
