@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int score_jem[9];
+	int score_enemy[9];
+
+	int preSum_jem = 0;
+	int preSum_enemy = 0;
+	
+	for (int i = 0; i < 9; i++) 
+	{
+		cin >> score_jem[i];
+	}
+	for (int i = 0; i < 9; i++)
+	{
+		cin >> score_enemy[i];
+	}
+
+	int total[18];
+
+	for (int i = 0; i < 9; i++)
+	{
+		total[i * 2] = score_jem[i];
+		total[i * 2 + 1] = score_enemy[i];
+	}
+	
+
+	bool isWin = false;
+
+	for (int i = 0; i < 18; i++)
+	{
+		if (i % 2 == 0)
+			preSum_jem += total[i];
+		else
+			preSum_enemy += total[i];
+
+		if (preSum_jem > preSum_enemy)
+			isWin = true;
+	}
+
+
+	if (isWin)
+		cout << "Yes";
+	else
+		cout << "No";
+}
