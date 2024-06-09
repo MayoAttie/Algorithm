@@ -1,0 +1,23 @@
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main()
+{
+	int N, answer = 0;
+	cin >> N;
+
+	unordered_set<int> set;
+	for (int i = 0; i < N; i++)
+	{
+		int a;
+		cin >> a;
+		if (set.find(a) == set.end())
+			set.insert(a);
+		else
+			answer++;
+	}
+
+	cout << answer;
+}
