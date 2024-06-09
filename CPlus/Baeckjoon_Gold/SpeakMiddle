@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int N;
+	cin >> N;
+
+	priority_queue<int> maxque;
+	priority_queue<int, vector<int>, greater<int>> minque;
+
+	while (N--)
+	{
+		int a;
+		cin >> a;
+
+		if (maxque.size() == minque.size())
+			maxque.push(a);
+		else
+			minque.push(a);
+
+		if (!maxque.empty() && !minque.empty()&& maxque.top() > minque.top())
+		{
+			int max_val, min_val;
+			max_val = maxque.top();
+			min_val = minque.top();
+			maxque.pop();
+			minque.pop();
+			maxque.push(min_val);
+			minque.push(max_val);
+		}
+
+		cout << maxque.top() << '\n';
+	}
+}
