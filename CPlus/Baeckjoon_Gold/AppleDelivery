@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+vector<vector<pair<int, int>>> graph;
+const long long INF = LLONG_MAX;
+
+vector<long long> dijkstra(int start)
+{
+    int len = graph.size();
+    vector<long long> dist(len, INF);
+    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
+    dist[start] = 0;
+    pq.push({ 0, start });
+
+    while (!pq.empty())
+    {
+        int curNode = pq.top().second;
+        long long curCost = pq.top().first;
+        pq.pop();
+
+        if (curCost > dist[curNode])
+            continue;
+
+        for (auto& i : graph[curNode])
+        {
+            int nextNode = i.first;
+            long long nextCost = i.second;
+
+            if (dist[curNode] + nextCost < dist[nextNode])
+            {
+                dist[nextNode] = dist[curNode] + nextCost;
+                pq.push({ dist[nextNode], nextNode });
+            }
+        }
+    }
+
+    return dist;
+}
+
+int main()
+{
+    int c, p, pb, pa1, pa2;
+    cin >> c >> p >> pb >> pa1 >> pa2;
+
+    graph.resize(p + 1);
+
+    for (int i = 0; i < c; i++)
+    {
+        int u, v, cost;
+        cin >> u >> v >> cost;
+        graph[u].push_back({ v, cost });
+        graph[v].push_back({ u, cost });
+    }
+
+    vector<long long> distPb = dijkstra(pb);
+    vector<long long> distPa1 = dijkstra(pa1);
+    vector<long long> distPa2 = dijkstra(pa2);
+
+    long long num1 = distPb[pa1] + distPa1[pa2];
+    long long num2 = distPb[pa2] + distPa2[pa1];
+
+    long long answer = min(num1, num2);
+    cout << answer;
+
+    return 0;
+}
