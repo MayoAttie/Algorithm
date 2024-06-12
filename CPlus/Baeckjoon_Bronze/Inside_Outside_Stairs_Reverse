@@ -1,0 +1,26 @@
+#include <iostream>
+#include <map>
+using namespace std;
+
+int main()
+{
+    map<string, string> dic = 
+    {
+        {"fdsajkl;", "in-out"},
+        {"jkl;fdsa", "in-out"},
+        {"asdf;lkj", "out-in"},
+        {";lkjasdf", "out-in"},
+        {"asdfjkl;", "stairs"},
+        {";lkjfdsa", "reverse"}
+    };
+
+    string str;
+    cin >> str;
+
+    if (dic.find(str) == dic.end())
+        cout << "molu";
+    else
+        cout << dic[str];
+
+    return 0;
+}
