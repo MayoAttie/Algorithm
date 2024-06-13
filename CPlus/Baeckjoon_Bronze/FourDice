@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	int maxValue= -1;
+
+	while (N--)
+	{
+		vector<int> arr(4);
+		map<int, int> dic;
+		int high = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			cin >> arr[i];
+			high = max(high, arr[i]);
+			dic[arr[i]]++;
+		}
+
+		int cnt = 0;
+		int cntVal = 0;
+		int cnt2 = 0;
+		int cntVal2 = 0;
+		for (auto i : dic) 
+		{
+			if (i.second > cnt) 
+			{
+				cnt2 = cnt;
+				cntVal2 = cntVal;
+				cnt = i.second;
+				cntVal = i.first;
+			}
+			else if (i.second > cnt2) 
+			{
+				cnt2 = i.second;
+				cntVal2 = i.first;
+			}
+		}
+
+		int score = 0;
+		if (cnt >= 4)
+			score = (cntVal * 5000) + 50000;
+		else if (cnt == 3)
+			score = (cntVal * 1000) + 10000;
+		else if (cnt == 2)
+		{
+			if (cnt2 == 2)
+				score = (cntVal * 500) + (cntVal2 * 500) + 2000;
+			else
+				score = (cntVal * 100) + 1000;
+		}
+		else
+			score = high * 100;
+
+
+		maxValue = max(maxValue, score);
+	}
+
+	cout << maxValue;
+}
