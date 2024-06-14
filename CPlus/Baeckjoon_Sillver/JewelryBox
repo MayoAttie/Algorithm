@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int needCount(const vector<int>& arr, int maxVal) 
+{
+    int cnt = 0;
+    for (int i : arr) 
+    {
+        cnt += (i + maxVal - 1) / maxVal;
+    }
+    return cnt;
+}
+
+int main() 
+{
+    int N, M;
+    cin >> N >> M;
+
+    vector<int> arr(M);
+    int right = 0;
+    for (int i = 0; i < M; i++) 
+    {
+        cin >> arr[i];
+        right = max(right, arr[i]);
+    }
+
+    int left = 1;
+    int answer = right;
+
+    while (left <= right) 
+    {
+        int mid = (left + right) / 2;
+        if (needCount(arr, mid) <= N)
+        {
+            answer = mid;
+            right = mid - 1;
+        }
+        else 
+            left = mid + 1;
+        
+    }
+
+    cout << answer;
+    return 0;
+}
