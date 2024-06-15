@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+// 다음 순열을 찾는 함수
+bool next_permutation(string& str) 
+{
+    int n = str.size();
+    int k = -1;
+
+    for (int i = n - 2; i >= 0; i--) 
+    {
+        if (str[i] < str[i + 1]) 
+        {
+            k = i;
+            break;
+        }
+    }
+
+    if (k == -1) 
+        return false;
+
+    int l = -1;
+    for (int i = n - 1; i > k; i--) 
+    {
+        if (str[i] > str[k]) 
+        {
+            l = i;
+            break;
+        }
+    }
+
+    swap(str[k], str[l]);
+
+    reverse(str.begin() + k + 1, str.end());
+
+    return true;
+}
+
+int main() 
+{
+    string input;
+    while (cin >> input) 
+    {
+        int idx;
+        cin >> idx;
+
+        string str = input;
+        int count = 1; 
+
+        while (count < idx) 
+        {
+            if (!next_permutation(str)) 
+                break;  
+            count++;
+        }
+
+        if (count == idx) 
+            cout << input << ' ' << idx << " = " << str << '\n';
+        else 
+            cout << input << ' ' << idx << " = No permutation\n";
+        
+    }
+    return 0;
+}
