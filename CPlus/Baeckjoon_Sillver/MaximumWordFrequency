@@ -1,0 +1,34 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>	
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+bool comparer(pair<string, int>& a, pair<string, int>& b)
+{
+	if (a.second != b.second)
+		return a.second > b.second;
+	return a.first > b.first;
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	
+	unordered_map<string, int> map;
+	for (int i = 0; i < n; i++)
+	{
+		string str;
+		cin >> str;
+		map[str]++;
+	}
+
+	vector<pair<string, int>> tmp(map.begin(), map.end());
+	sort(tmp.begin(), tmp.end(), comparer);
+
+	cout << tmp[0].first << ' ' << tmp[0].second;
+	
+}
