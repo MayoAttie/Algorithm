@@ -1,0 +1,16 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int a, b, c;
+	cin >> a >> b >> c;
+	int answer = 0;
+	if (c % 2 == 0)
+		answer = a;
+	else
+		answer = a ^ b;
+	cout << answer;
+}
