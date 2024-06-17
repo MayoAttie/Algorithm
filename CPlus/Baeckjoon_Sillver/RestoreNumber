@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+
+
+int main() 
+{
+    using namespace std;
+
+    int T;
+    cin >> T;
+    
+    while (T--)
+    {
+        int N;
+        cin >> N;
+
+        map<int, int> dic;
+        while (N % 2 == 0)
+        {
+            dic[2]++;
+            N /= 2;
+        }
+
+        for (int i = 3; i * i <= N; i++)
+        {
+            while (N%i == 0)
+            {
+                dic[i]++;
+                N /= i;
+            }
+        }
+
+        if (N > 2)
+            dic[N]++;
+
+        for (auto i : dic)
+        {
+            cout << i.first << ' ' << i.second << '\n';
+        }
+    }
+
+    return 0;
+}
