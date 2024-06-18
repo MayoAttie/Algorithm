@@ -1,0 +1,48 @@
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string happy = ":-)";
+    string sad = ":-(";
+
+    string input;
+    getline(cin, input);  
+
+    map<string, int> counter;
+    counter.insert({ happy, 0 });
+    counter.insert({ sad, 0 });
+
+    size_t it = input.find(happy);
+    while (it != string::npos)
+    {
+        counter[happy]++;
+        it = input.find(happy, it + happy.length());
+    }
+
+    it = input.find(sad);
+    while (it != string::npos)
+    {
+        counter[sad]++;
+        it = input.find(sad, it + sad.length());
+    }
+
+    int nSad = counter[sad];
+    int nHappy = counter[happy];  
+
+    if (nHappy == 0 && nSad == 0)
+        cout << "none";
+    else
+    {
+        if (nSad == nHappy)
+            cout << "unsure";
+        else if (nSad > nHappy)
+            cout << "sad";
+        else
+            cout << "happy";
+    }
+
+    return 0;
+}
