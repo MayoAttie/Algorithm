@@ -1,0 +1,47 @@
+#include <iostream>	
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int N, L, W, H;
+
+
+bool canFit(double A) 
+{
+	long long countL = static_cast<long long>(L / A);
+	long long countW = static_cast<long long>(W / A);
+	long long countH = static_cast<long long>(H / A);
+
+	return countL * countW * countH >= N;
+}
+
+int main()
+{
+	cin >> N >> L >> W >> H;
+
+	double left = 0;
+	double right = min(L,min(W,H));
+
+	int cnt = 0;
+
+	double answer;
+	while (left <= right)
+	{
+		if (cnt == 150)
+			break;
+
+		double mid = (left + right) / 2; 
+		if (canFit(mid))
+		{
+			left = mid;
+			answer = mid;
+		}
+		else
+			right = mid;
+
+		cnt++;
+	}
+
+	cout.precision(30);
+	cout << answer;
+}
