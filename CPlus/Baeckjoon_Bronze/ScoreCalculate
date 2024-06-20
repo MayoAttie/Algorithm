@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>	
+
+using namespace  std;
+
+
+int main()
+{
+
+	int n;
+	cin >> n;
+
+	vector<int> arr(n);
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> arr[i];
+	}
+
+	int isContinue = 1;
+
+	int answer = arr[0];
+	int last = arr[0];
+
+	for(int i = 1; i < n; i++)
+	{
+
+		if (arr[i] == 0)
+		{
+			isContinue = 1;
+			last = arr[i];
+			continue;
+		}
+
+		if(arr[i] == last)
+			isContinue++;
+		else
+			isContinue = 1;
+		last = arr[i];
+		answer += isContinue;
+	}
+
+	cout << answer;
+
+	return 0;
+}
