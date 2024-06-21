@@ -1,0 +1,71 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main()
+{
+	vector<int> cards1(10);
+	vector<int> cards2(10);
+
+	for (int i = 0; i < 10; i++)
+	{
+		cin >> cards1[i];
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		cin >> cards2[i];
+	}
+	int scoreA = 0;
+	int scoreB = 0;
+	vector<char> wins(10);
+
+	for (int i = 0; i < 10; i++)
+	{
+		if (cards1[i] > cards2[i])
+		{
+			scoreA += 3;
+			wins[i] = 'A';
+		}
+		else if (cards1[i] < cards2[i])
+		{
+			scoreB += 3;
+			wins[i] = 'B';
+		}
+		else
+		{
+			scoreA++;
+			scoreB++;
+			wins[i] = 'D';
+		}
+	}
+
+	cout << scoreA << ' ' << scoreB << '\n';
+	
+	int D = count(wins.begin(), wins.end(), 'D');
+	
+	if (scoreA > scoreB)
+		cout << "A";
+	else if (scoreA < scoreB)
+		cout << "B";
+	else
+	{
+		if (D == 10)
+			cout << "D";
+		else
+		{
+			for (int i = 9; i >= 0; i--)
+			{
+				if (wins[i] != 'D')
+				{
+					cout << wins[i];
+					break;
+				}
+			}
+		}
+	}
+
+	
+	return 0;
+}
