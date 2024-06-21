@@ -1,0 +1,27 @@
+#include <iostream>
+#include <algorithm>
+#include <map>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	map<int, int> dic;
+	int sum = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		int a;
+		cin >> a;
+		sum += a;
+		dic[a]++;
+	}
+
+	cout << sum / 10 << '\n';
+	vector<pair<int,int>> tmp(dic.begin(), dic.end());
+
+	sort(tmp.begin(), tmp.end(), [](pair<int, int>& a, pair<int, int>& b) {return a.second > b.second; });
+
+	cout << tmp[0].first;
+
+	return 0;
+}
