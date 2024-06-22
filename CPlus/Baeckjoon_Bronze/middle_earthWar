@@ -1,0 +1,46 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    int T;
+    cin >> T;
+    int idx = 1;
+
+    int humanOffset[] = { 1, 2, 3, 3, 4, 10 };
+    int monsterOffset[] = { 1, 2, 2, 2, 3, 5, 10 };
+
+    while (T--) 
+    {
+        int humans = 0;
+        int monsters = 0;
+
+        for (int i = 0; i < 6; i++) 
+        {
+            int num;
+            cin >> num;
+            humans += num * humanOffset[i];
+        }
+
+        for (int i = 0; i < 7; i++) 
+        {
+            int num;
+            cin >> num;
+            monsters += num * monsterOffset[i];
+        }
+
+        string answer = "Battle " + to_string(idx) + ": ";
+        if (humans > monsters)
+            answer += "Good triumphs over Evil";
+        else if (humans < monsters)
+            answer += "Evil eradicates all trace of Good";
+        else
+            answer += "No victor on this battle field";
+
+        cout << answer << '\n';
+        idx++;
+    }
+}
