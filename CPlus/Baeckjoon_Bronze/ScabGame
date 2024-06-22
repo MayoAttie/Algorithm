@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    while (N--)
+    {
+        int a_size, b_size;
+        cin >> a_size;
+        vector<int> A(a_size);
+        for (int i = 0; i < a_size; i++)
+        {
+            cin >> A[i];
+        }
+
+        cin >> b_size;
+        vector<int> B(b_size);
+        for (int i = 0; i < b_size; i++)
+        {
+            cin >> B[i];
+        }
+
+        bool isWin = false;
+        for (int i = 4; i >= 1; i--)
+        {
+            int a = count(A.begin(), A.end(), i);
+            int b = count(B.begin(), B.end(), i);
+
+            if (a > b)
+            {
+                cout << "A" << '\n';
+                isWin = true;
+                break;
+            }
+            else if (a < b)
+            {
+                cout << "B" << '\n';
+                isWin = true;
+                break;
+            }
+        }
+
+        if (!isWin)
+            cout << "D" << '\n';
+    }
+
+
+}
