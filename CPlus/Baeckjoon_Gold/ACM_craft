@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+const int MAX = 1001;
+int N, K, W;
+
+int topologySort(int N, vector<int>& times, vector<vector<int>>& graph, vector<int>& inDegree) 
+{
+    vector<int> totalTime(N + 1, 0);
+    queue<int> que;
+
+    for (int i = 1; i <= N; i++) 
+    {
+        if (inDegree[i] == 0) 
+        {
+            que.push(i);
+            totalTime[i] = times[i];
+        }
+    }
+
+    while (!que.empty())
+    {
+        int cur = que.front();
+        que.pop();
+
+        for (int next : graph[cur]) 
+        {
+            totalTime[next] = max(totalTime[next], totalTime[cur] + times[next]);
+            if (--inDegree[next] == 0) 
+                que.push(next);
+        }
+    }
+
+    return totalTime[W];
+}
+
+int main() 
+{
+    int T;
+    cin >> T;
+    while (T--) 
+    {
+        cin >> N >> K;
+
+        vector<int> times(N + 1);
+        vector<vector<int>> graph(N + 1);
+        vector<int> inDegree(N + 1, 0);
+
+        for (int i = 1; i <= N; i++) 
+        {
+            cin >> times[i];
+        }
+
+        for (int i = 0; i < K; i++) 
+        {
+            int x, y;
+            cin >> x >> y;
+            graph[x].push_back(y);
+            inDegree[y]++;
+        }
+
+        cin >> W;
+
+        int result = topologySort(N, times, graph, inDegree);
+        cout << result << '\n';
+    }
+    return 0;
+}
