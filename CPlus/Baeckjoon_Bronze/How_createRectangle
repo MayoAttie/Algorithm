@@ -1,0 +1,21 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    int total = 0;  
+
+    for (int i = 1; i <= N; i++) 
+    {  
+        for (int j = i; j <= N / i; j++) 
+            total++;
+    }
+
+    cout << total;
+
+    return 0;
+}
