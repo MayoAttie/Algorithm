@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>	
+
+using namespace std;
+
+int cnt = 0;
+
+int dir[4][2] = { {0,1},{1,0},{0,-1},{-1,0} };
+
+
+void simulation(vector<vector<bool>>& arr, int M, int N)
+{
+	int x = 0;
+	int y = 0;
+	int d = 0;
+	int filled = 0;
+
+	while (filled < M*N)
+	{
+		arr[x][y] = true;
+		filled++;
+
+		int nx = x + dir[d][0];
+		int ny = y + dir[d][1];
+
+		if(nx<0 || nx>=M || ny<0 || ny>= N || arr[nx][ny])
+		{
+			d = (d + 1) % 4;
+			if (filled < M * N)
+				cnt++;
+		}
+
+		x += dir[d][0];
+		y += dir[d][1];
+	}
+}
+
+int main()
+{
+	int M, N;
+	cin >> M >> N;
+
+	vector<vector<bool>> arr(M, vector<bool>(N,false));
+	
+	simulation(arr, M, N);
+
+	cout << cnt;
+
+	return 0;
+}
