@@ -1,0 +1,45 @@
+#include <iostream>	
+#include <vector>
+#include <string>
+using namespace  std;
+
+bool solution(string& N)
+{
+	int len = N.size();
+	if (len == 0)
+		return false;
+
+	for (int i = 1; i < len; i++)
+	{
+		long long left = 1;
+		long long right = 1;
+
+		for (int j = 0; j < i; j++)
+		{
+			left *= (N[j] - '0');
+		}
+		for (int j = i; j < len; j++)
+		{
+			right *= (N[j] - '0');
+		}
+
+		if (left == right)
+			return true;
+	}
+
+	return false;
+}
+
+int main()
+{
+	string N;
+	cin >> N;
+
+	if (solution(N))
+		cout << "YES";
+	else
+		cout << "NO";
+	
+
+	return 0;
+}
