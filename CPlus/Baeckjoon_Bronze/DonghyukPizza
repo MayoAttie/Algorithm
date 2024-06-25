@@ -1,0 +1,39 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+int main()
+{
+    int idx = 1;
+
+    while (true) 
+    {
+        int r, w, l;
+
+        cin >> r;
+        if (r == 0) 
+            break;
+
+        cin >> w >> l;
+
+        double table = sqrt(w * w + l * l);
+        double pizza = 2 * r;
+
+        if (table <= pizza)
+        {
+            cout << "Pizza " << idx << " fits on the table.\n";
+        }
+        else 
+        {
+            cout << "Pizza " << idx << " does not fit on the table.\n";
+        }
+
+        idx++;
+    }
+
+    return 0;
+}
