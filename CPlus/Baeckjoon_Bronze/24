@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <iomanip>
+using namespace std;
+
+
+int timeToSeconds(string time) 
+{
+    int h = stoi(time.substr(0, 2));
+    int m = stoi(time.substr(3, 2));
+    int s = stoi(time.substr(6, 2));
+    return h * 3600 + m * 60 + s;
+}
+
+string secondsToTime(int time) 
+{
+    int h = time / 3600;
+    int m = (time % 3600) / 60;
+    int s = time % 60;
+
+    stringstream ss;
+    ss << setfill('0') << setw(2) << h << ":"
+        << setfill('0') << setw(2) << m << ":"
+        << setfill('0') << setw(2) << s;
+    return ss.str();
+}
+
+
+int main()
+{
+    string startTime;
+    string endTime;
+
+    cin >> startTime >> endTime;
+     
+    int sTime = timeToSeconds(startTime);
+    int eTime = timeToSeconds(endTime);
+    int Time = 24 * 3600;
+
+    int tmp = (eTime - sTime + Time) % Time;
+
+    cout << secondsToTime(tmp);
+
+    return 0;
+}
