@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+using namespace std;
+
+
+int main()
+{
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        string A, B;
+        cin >> A >> B;
+
+        if (A.size() != B.size())
+        {
+            cout << "Impossible\n";
+            continue;
+        }
+
+        map<char, int> countA, countB;
+
+        for (char c : A) countA[c]++;
+        for (char c : B) countB[c]++;
+
+        bool isPossible = true;
+        for (auto& pair : countA) 
+        {
+            if (countB[pair.first] != pair.second) 
+            {
+                isPossible = false;
+                break;
+            }
+        }
+
+        cout << (isPossible ? "Possible\n" : "Impossible\n");
+    }
+
+
+    return 0;
+}
