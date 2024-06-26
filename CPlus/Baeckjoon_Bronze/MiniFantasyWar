@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+
+int main()
+{
+    int T;
+    cin >> T;
+    while (T--)
+    {
+        int hp, mp, atk, def;
+        cin >> hp >> mp >> atk >> def;
+        int eHp, eMp, eAtk, eDef;
+        cin >> eHp >> eMp >> eAtk >> eDef;
+
+        hp = max(1, hp + eHp);
+        mp = max(1, mp + eMp);
+        atk = max(0, atk + eAtk);
+        def = def + eDef;  
+
+        int power = 1 * hp + 5 * mp + 2 * atk + 2 * def;
+
+        cout << power << '\n';
+    }
+
+
+    return 0;
+}
