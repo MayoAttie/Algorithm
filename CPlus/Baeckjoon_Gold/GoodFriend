@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <set>
+using namespace std;
+
+int main()
+{
+    int N, K;
+    cin >> N >> K;
+
+    vector<string> arr(N);
+    vector<int> cnt(21, 0);
+    for (int i = 0; i < N; i++)
+    {
+        cin >> arr[i];
+    }
+
+    long long answer = 0;
+    int start = 0;
+
+    for (int end = 0; end < N; end++)
+    {
+        if (end - start > K)
+        {
+            cnt[arr[start].size()]--;
+            start++;    
+        }
+
+        answer += cnt[arr[end].size()];
+
+        cnt[arr[end].size()]++;
+    }
+
+    cout << answer;
+
+    return 0;
+}
