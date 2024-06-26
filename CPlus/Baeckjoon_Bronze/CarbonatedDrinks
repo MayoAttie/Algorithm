@@ -1,0 +1,23 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int e, f, c;
+    cin >> e >> f >> c;
+
+    int cnt = e + f;
+    int answer = 0;
+    while (cnt>=c)
+    {
+        int tmp = cnt / c;
+        int remain = cnt % c;
+        answer += tmp;
+        cnt = remain + tmp;
+    }
+    cout << answer;
+
+    return 0;
+}
