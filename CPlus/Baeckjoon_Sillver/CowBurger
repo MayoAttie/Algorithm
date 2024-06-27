@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <numeric>
+#include <algorithm>        
+using namespace std;
+
+int main()
+{
+    int B, C, D;
+    cin >> B >> C >> D;
+
+    vector<int> burger(B);
+    vector<int> side(C);
+    vector<int> drink(D);
+
+    for (int i = 0; i < B; i++) cin >> burger[i];
+    for (int i = 0; i < C; i++) cin >> side[i];
+    for (int i = 0; i < D; i++) cin >> drink[i];
+
+    int total = accumulate(burger.begin(), burger.end(), 0) +
+        accumulate(side.begin(), side.end(), 0) +
+        accumulate(drink.begin(), drink.end(), 0);
+
+    cout << total << '\n';
+
+    sort(burger.rbegin(), burger.rend());
+    sort(side.rbegin(), side.rend());
+    sort(drink.rbegin(), drink.rend());
+
+    int cnt = min({ B, C, D });
+
+    double reTotal = 0;
+
+    for (int i = 0; i < cnt; i++)
+    {
+        reTotal += (burger[i] + side[i] + drink[i]) * 0.9;
+    }
+
+    for (int i = cnt; i < B; i++) 
+        reTotal += burger[i];
+    for (int i = cnt; i < C; i++) 
+        reTotal += side[i];
+    for (int i = cnt; i < D; i++) 
+        reTotal += drink[i];
+
+    cout << static_cast<int>(reTotal);
+    return 0;
+}
