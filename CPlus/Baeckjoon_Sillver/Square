@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>        
+using namespace std;
+
+int getDist(pair<int, int>& p1, pair<int, int>& p2)
+{
+    int dist1 = p1.first - p2.first;
+    int dist2 = p1.second - p2.second;
+
+    return dist1 * dist1 + dist2 * dist2;
+}
+
+int main()
+{
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        pair<int, int> pos1, pos2, pos3, pos4;
+
+        cin >> pos1.first >> pos1.second >> pos2.first >> pos2.second >> pos3.first >> pos3.second >> pos4.first >> pos4.second;
+
+        vector<int> dist;
+        dist.push_back(getDist(pos1, pos2));
+        dist.push_back(getDist(pos1, pos3));
+        dist.push_back(getDist(pos1, pos4));
+        dist.push_back(getDist(pos2, pos3));
+        dist.push_back(getDist(pos2, pos4));
+        dist.push_back(getDist(pos3, pos4));
+       
+        sort(dist.begin(), dist.end());
+
+        bool isSquare = dist[0] == dist[1] && dist[1] == dist[2] && dist[2] == dist[3] &&
+            dist[4] == dist[5] && dist[5] == dist[0] * 2;
+
+        if (isSquare)
+            cout << 1 << '\n';
+        else
+            cout << 0 << '\n';
+    }
+
+
+    return 0;
+}
