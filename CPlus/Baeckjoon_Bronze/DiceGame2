@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+    int N;
+    cin >> N;
+
+    int scoreC = 100;
+    int scoreS = 100;
+
+    while (N--)
+    {
+        int c, s;
+        cin >> c >> s;
+
+        if (c > s)
+            scoreS -= c;
+        else if (c < s)
+            scoreC -= s;
+    }
+
+    cout << scoreC << '\n' << scoreS;
+
+    return 0;
+}
