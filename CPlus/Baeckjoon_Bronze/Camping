@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+    int L, P, V;
+
+    int idx = 1;
+    while (true)
+    {
+        cin >> L >> P >> V;
+        
+        if (L == 0 &&  P == 0 && V == 0)
+            break;
+
+        int value = (V / P) * L;
+        int remain = V % P;
+        remain = min(remain, L);
+
+        int cnt = value + remain;
+
+        cout << "Case " << idx << ": " << cnt << '\n';
+        idx++;
+    }
+
+
+    return 0;
+}
