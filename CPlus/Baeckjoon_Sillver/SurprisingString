@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+
+int main()
+{
+    string str;
+    while (true)
+    {
+        cin >> str;
+
+        if (str == "*")
+            break;
+
+        bool isPossible = true;
+        for (int i = 0; i < str.size() && isPossible; i++)
+        {
+            unordered_set<string> set;
+
+            for (int j = 0; j < str.size() - i - 1 && isPossible; j++)
+            {
+                string tmp = "";
+                tmp += str[j];
+                tmp += str[j + i + 1];
+                if (set.find(tmp) != set.end())
+                    isPossible = false;
+                else
+                    set.insert(tmp);
+            }
+        }
+
+        if (isPossible)
+            std::cout << str << " is surprising.\n";
+        else
+            std::cout << str << " is NOT surprising.\n";
+            
+    }
+
+
+    return 0;
+}
