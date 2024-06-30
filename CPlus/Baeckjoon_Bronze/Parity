@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string str;
+    while (true)
+    {
+        cin >> str;
+
+        if (str == "#")
+            break;
+
+        string answer ="";
+        int nOne = 0;
+        char parity;
+        for (char ch : str)
+        {
+            if (ch == '1')
+            {
+                nOne++;
+                answer += ch;
+            }
+            else if (ch == '0')
+                answer += ch;
+            else
+                parity = ch;
+        }
+
+        if (parity == 'e')
+        {
+            if (nOne % 2 == 0)
+                answer += '0';
+            else
+                answer += '1';
+                
+        }
+        else if (parity == 'o')
+        {
+            if (nOne % 2 == 0)
+                answer += '1';
+            else
+                answer += '0';
+        }
+
+        cout << answer <<'\n';
+    }
+
+
+
+    return 0;
+}
