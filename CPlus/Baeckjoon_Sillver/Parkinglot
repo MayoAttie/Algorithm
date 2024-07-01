@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+int main()
+{
+    int N, M, answer = 0;
+    cin >> N >> M;
+
+    vector<int> weight(M);
+    vector<int> price(N);
+    vector<int> parking(N, -1);
+
+    for (int i = 0; i < N; i++)
+        cin >> price[i];
+
+    for (int i = 0; i < M; i++)
+        cin >> weight[i];
+
+    queue<int> que;
+
+    for (int i = 0; i < M * 2; i++)
+    {
+        int idx;
+        bool isOut = false;
+        cin >> idx;
+        
+        if (idx < 0)
+            isOut = true;
+
+        if (!isOut)
+        {
+            idx--;
+
+            int spot = -1;
+            for (int j = 0; j < N; j++)
+            {
+                if (parking[j] == -1)
+                {
+                    spot = j;
+                    break;
+                }
+            }
+
+            if (spot != -1)
+            {
+                parking[spot] = idx;
+                answer += price[spot] * weight[idx];
+            }
+            else
+                que.push(idx);
+        }
+        else
+        {
+            idx = -idx - 1;
+
+            for (int j = 0; j < N; j++)
+            {
+                if (parking[j] == idx)
+                {
+                    parking[j] = -1;
+                    if (!que.empty())
+                    {
+                        int wait = que.front();
+                        que.pop();
+                        parking[j] = wait;
+                        answer += price[j] * weight[wait];
+                    }
+                    break;
+                }
+            }
+            
+        }
+    }
+    
+    cout << answer;
+
+    return 0;
+}
