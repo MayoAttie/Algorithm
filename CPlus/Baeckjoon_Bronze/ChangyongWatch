@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+vector<int> getTime(int second)
+{
+    vector<int> result;
+    
+    int hour = second / 3600;
+    int min = (second % 3600) / 60;
+    int sec = second % 60;
+
+    result.push_back(hour);
+    result.push_back(min);
+    result.push_back(sec);
+
+    return result;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int h, m, s, q;
+    cin >> h >> m >> s >> q;
+
+    int time = (h * 3600) + (m * 60) + s;
+    while (q--)
+    {
+        int T;
+        cin >> T;
+        if (T == 1)
+        {
+            int val;
+            cin >> val;
+            time = (time+val) % 86400;
+        }
+        else if (T == 2)
+        {
+            int val;
+            cin >> val;
+            time = (time - val) % 86400;
+            if (time < 0)
+                time += 24 * 3600;
+        }
+        else if (T == 3)
+        {
+            vector<int> tmp = getTime(time);
+            cout << tmp[0] << ' ' << tmp[1] << ' ' << tmp[2] << '\n';
+        }
+    }
+    return 0;
+}
