@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int solution(vector<int>& n)
+{
+    int minNum = 0;
+    for (int i : n) 
+        minNum = minNum * 10 + i;
+
+    for (int i = 1; i < 4; i++) 
+    {
+        vector<int> arr(n.begin() + i, n.end());
+        arr.insert(arr.end(), n.begin(), n.begin() + i);
+
+        int tmp = 0;
+        for (int i : arr)
+            tmp = tmp * 10 + i;
+
+        minNum = min(minNum, tmp);
+    }
+    return minNum;
+}
+
+int main() 
+{
+    vector<int> arr(4);
+    for (int i = 0; i < 4; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    int minNum = solution(arr);
+    int cnt = 1;
+    
+    for (int i = 1111; i < minNum; i++) 
+    {
+        string str = to_string(i);
+        if (str.find('0') == string::npos)
+        {
+            vector<int> vec;
+            
+            for (char i : str)
+                vec.push_back(i - '0');
+         
+            if (i == solution(vec))
+                cnt++;
+        }
+    }
+    
+    cout << cnt;
+
+    return 0;
+}
