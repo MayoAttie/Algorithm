@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <iomanip>
+
+using namespace std;
+
+int main()
+{
+    string mon, comma, time;
+    int day, year, hour, minute;
+
+    cin >> mon >> day >> comma >> year >> time;
+
+    hour = stoi(time.substr(0, 2));
+    minute = stoi(time.substr(3, 2));
+
+    vector<string> months = { "January", "February", "March", "April", "May", "June",
+                                  "July", "August", "September", "October", "November", "December" };
+    vector<int> monDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+    if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) 
+        monDays[1] = 29;
+
+    int maxTotal = 0;
+    for (int days : monDays)
+    {
+        maxTotal += days * 24 * 60;
+    }
+
+    int idx = 0;
+    for (int i = 0; i < months.size(); ++i)
+    {
+        if (months[i] == mon)
+        {
+            idx = i;
+            break;
+        }
+    }
+
+    int now = 0;
+    
+    for (int i = 0; i < idx; ++i)
+    {
+        now += monDays[i] * 24 * 60;
+    }
+
+    now += (day - 1) * 24 * 60;
+    now += hour * 60;
+    now += minute;
+
+    double answer = static_cast<double>(now) / maxTotal * 100;
+
+    cout << fixed << setprecision(9) << answer;
+
+    return 0;
+}
