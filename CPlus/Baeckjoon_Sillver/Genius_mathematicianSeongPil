@@ -1,0 +1,40 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <stack>
+using namespace std;
+
+int main()
+{
+    string str;
+    cin >> str;
+    
+    stack<double> stk;
+    
+    for (char ch : str)
+    {
+        if (isdigit(ch))
+            stk.push(ch - '0');
+        else
+        {
+            double val2 = stk.top();
+            stk.pop();
+            double val1 = stk.top();
+            stk.pop();
+
+            if (ch == '+')
+                stk.push(val1 + val2);
+            else if (ch == '-')
+                stk.push(val1 - val2);
+            else if (ch == '*')
+                stk.push(val1 * val2);
+            else if (ch == '/')
+                stk.push(val1 / val2);
+        }
+    }
+
+    cout << stk.top();
+
+    return 0;
+}
