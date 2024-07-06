@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+
+int main() 
+{
+    int n;
+    cin >> n;
+
+    string answer;
+    cin >> answer;
+
+    string sang;
+    string chang;
+    string hyeon;
+
+    char sangArr[3] = { 'A','B','C' };
+    char changArr[4] = { 'B','A','B','C' };
+    char hyeonArr[6] = { 'C','C','A','A','B','B'};
+    
+    for (int i = 0; i < n; i++)
+    {
+        sang += sangArr[i % 3];
+        chang += changArr[i % 4];
+        hyeon += hyeonArr[i % 6];
+    }
+
+    int sangScore=0;
+    int changScore = 0;
+    int hyeonScore = 0;
+    
+    for (int i = 0; i < n; i++)
+    {
+        if (sang[i] == answer[i])
+            sangScore++;
+        if (chang[i] == answer[i])
+            changScore++;
+        if (hyeon[i] == answer[i])
+            hyeonScore++;
+    }
+
+    int maxScore = max(sangScore, max(changScore, hyeonScore));
+
+    cout << maxScore << '\n';
+    if (sangScore == maxScore)
+        cout << "Adrian" << '\n';
+    if (changScore == maxScore)
+        cout << "Bruno" << '\n';
+    if (hyeonScore == maxScore)
+        cout << "Goran" << '\n';
+
+   
+    return 0;
+}
