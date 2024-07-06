@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+vector<string> arr;
+int n;
+
+pair<int, int> getHead() 
+{
+    for (int i = 0; i < n; i++) 
+    {
+        for (int j = 0; j < n; j++) 
+        {
+            if (arr[i][j] == '*')
+                return { i, j };
+        }
+    }
+    return { -1, -1 };
+}
+
+int getLeftHand(int x, int y) 
+{
+    int cnt = 0;
+    for (int i = y - 1; i >= 0; i--) 
+    {
+        if (arr[x][i] == '_')
+            break;
+        cnt++;
+    }
+    return cnt;
+}
+
+int getRightHand(int x, int y) 
+{
+    int cnt = 0;
+    for (int i = y + 1; i < n; i++) 
+    {
+        if (arr[x][i] == '_')
+            break;
+        cnt++;
+    }
+    return cnt;
+}
+
+int getMid(int x, int y) 
+{
+    int cnt = 0;
+    for (int i = x; i < n; i++) 
+    {
+        cnt++;
+        if (arr[i][y] == '_')
+            break;
+    }
+    return cnt - 1;
+}
+
+int getLeg(int x, int y) 
+{
+    int cnt = 0; 
+    for (int i = x; i < n; i++) 
+    {
+        if (arr[i][y] == '_')
+            break;
+        cnt++;
+    }
+    return cnt;
+}
+
+int main() 
+{
+    cin >> n;
+    arr.resize(n);
+    for (int i = 0; i < n; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    pair<int, int> head = getHead();
+    int x = head.first;
+    int y = head.second;
+
+    int left = getLeftHand(x + 1, y);
+    int right = getRightHand(x + 1, y);
+    int mid = getMid(x + 2, y);
+    int leftLeg = getLeg(x + mid + 2, y - 1);
+    int rightLeg = getLeg(x + mid + 2, y + 1);
+
+    cout << x + 2 << ' ' << y + 1 << '\n';
+    cout << left << ' ' << right << ' ' << mid << ' ' << leftLeg << ' ' << rightLeg << ' ';
+
+    return 0;
+}
