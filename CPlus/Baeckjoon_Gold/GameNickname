@@ -1,0 +1,74 @@
+#include <iostream>
+#include <unordered_map>
+#include <unordered_set>
+#include <string>
+using namespace std;
+
+struct Node
+{
+    unordered_map<char, Node*> map;
+    int cnt = 0;
+};
+
+Node* root;
+
+string Insert(string& word, unordered_map<string, int>& countMap)
+{
+    Node* curNode = root;
+    int len = word.size();
+    bool flag = false;
+
+    for (int i = 0; i < word.size(); i++)
+    {
+        char ch = word[i];
+
+        if (curNode->map.find(ch) == curNode->map.end())
+        {
+            curNode->map[ch] = new Node;
+
+            if (!flag)
+            {
+                len = i + 1;
+                flag = true;
+                curNode->cnt++;
+            }
+        }
+        curNode = curNode->map[ch];
+    }
+
+    if (countMap.find(word) == countMap.end())
+    {
+        countMap[word] = 1;
+        return word.substr(0, len);
+    }
+    else
+    {
+        countMap[word]++;
+        return word.substr(0, len) + to_string(countMap[word]);
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    root = new Node();
+    unordered_map<string, int> countMap;
+
+    for (int i = 0; i < n; i++)
+    {
+        string str;
+        cin >> str;
+
+        string result = Insert(str, countMap);
+        cout << result << '\n';
+    }
+
+
+    return 0;
+}
