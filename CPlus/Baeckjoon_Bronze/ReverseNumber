@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    vector<int> arr(N);
+    for (int t = 0; t < N; t++)
+    {
+        int num;
+        cin >> num;
+
+        string sNum = to_string(num);
+        string rsNum = sNum;
+        reverse(rsNum.begin(), rsNum.end());
+
+        int sum = stoi(sNum) + stoi(rsNum);
+       
+        string sSum = to_string(sum);
+        string rsSum = sSum;
+        reverse(rsSum.begin(), rsSum.end());
+
+        if (sSum == rsSum)
+            cout << "YES\n";
+        else
+            cout << "NO\n";
+    }
+
+    return 0;
+}
