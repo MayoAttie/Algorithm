@@ -1,0 +1,95 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int N, M, X, Y, K;
+vector<vector<int>> board;
+vector<int> cmd;
+
+int dice[6] = { 0, };
+int dx[4] = { 0, 0, -1, 1 };
+int dy[4] = { 1, -1, 0, 0 };
+
+void roll(int dir) 
+{
+    int a = dice[0], b = dice[1], c = dice[2], d = dice[3], e = dice[4], f = dice[5];
+    if (dir == 1)
+    {
+        dice[0] = d;
+        dice[2] = a;
+        dice[3] = f;
+        dice[5] = c;
+    }
+    else if (dir == 2) 
+    { 
+        dice[0] = c;
+        dice[2] = f;
+        dice[3] = a;
+        dice[5] = d;
+    }
+    else if (dir == 3)
+    { 
+        dice[0] = e;
+        dice[1] = a;
+        dice[4] = f;
+        dice[5] = b;
+    }
+    else if (dir == 4)
+    { 
+        dice[0] = b;
+        dice[1] = f;
+        dice[4] = a;
+        dice[5] = e;
+    }
+}
+
+int main() 
+{
+    cin >> N >> M >> X >> Y >> K;
+
+    board.resize(N, vector<int>(M));
+    cmd.resize(K);
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            cin >> board[i][j];
+        }
+    }
+    for (int i = 0; i < K; i++)
+    {
+        cin >> cmd[i];
+    }
+
+    for (int i = 0; i < K; i++)
+    {
+        int dir = cmd[i];
+        int nx = X + dx[dir - 1];
+        int ny = Y + dy[dir - 1];
+
+        if (nx >= 0 && nx < N && ny >= 0 && ny < M)
+        {
+            X = nx;
+            Y = ny;
+
+            roll(dir);
+
+            if (board[X][Y] == 0)
+                board[X][Y] = dice[5];
+            else 
+            {
+                dice[5] = board[X][Y];
+                board[X][Y] = 0;
+            }
+
+            cout << dice[0] << '\n';
+        }
+    }
+    
+
+
+    return 0;
+}
