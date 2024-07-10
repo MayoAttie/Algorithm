@@ -1,0 +1,87 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct node 
+{
+    int x, y, cost;
+    bool operator<(const node& b) const 
+    {
+        return this->cost > b.cost;
+    }
+};
+
+const int INF = 987654321;
+int N, M;
+int answer = -1;
+vector<vector<int>> graph;
+vector<vector<int>> dist;
+int dx[4] = { 1,0,-1,0 };
+int dy[4] = { 0,1,0,-1 };
+
+void dijkstra() 
+{
+    if (graph[0][0] == -1 || graph[N - 1][M - 1] == -1) 
+        return;
+    
+    priority_queue<node> priQ;
+    priQ.push({ 0, 0, graph[0][0] });
+    dist[0][0] = graph[0][0];
+
+    while (!priQ.empty()) 
+    {
+        int curX = priQ.top().x;
+        int curY = priQ.top().y;
+        int curCost = priQ.top().cost;
+        priQ.pop();
+
+        if (curX == N - 1 && curY == M - 1) 
+        {
+            answer = curCost;
+            return;
+        }
+
+        if (curCost > dist[curX][curY]) 
+            continue;
+
+        for (int i = 0; i < 4; i++) 
+        {
+            int nx = curX + dx[i];
+            int ny = curY + dy[i];
+            if (nx >= 0 && nx < N && ny >= 0 && ny < M && graph[nx][ny] != -1) 
+            {
+                int newCost = curCost + (graph[nx][ny] == 0 ? 0 : graph[nx][ny]);
+                if (newCost < dist[nx][ny]) 
+                {
+                    dist[nx][ny] = newCost;
+                    priQ.push({ nx, ny, newCost });
+                }
+            }
+        }
+    }
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> N >> M;
+    graph.resize(N, vector<int>(M));
+    dist.resize(N, vector<int>(M, INF));
+
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            cin >> graph[i][j];
+        }
+    }
+
+    dijkstra();
+    cout << answer;
+    return 0;
+}
