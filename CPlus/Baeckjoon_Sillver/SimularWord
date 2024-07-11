@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+bool isPossible(string str1, string str2)
+{
+    if (str1.size() != str2.size())
+        return false;
+
+    map<char, char>dic;
+    map<char, bool>used;
+
+    for (int i = 0; i < str1.size(); i++)
+    {
+        if (dic.find(str1[i]) == dic.end())
+        {
+            if (used[str2[i]])
+                return false;
+            
+            dic[str1[i]] = str2[i];
+            used[str2[i]] = true;
+        }
+        else if (dic[str1[i]] != str2[i])
+            return false;
+    }
+    return true;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    vector<string> arr(N);
+    for (int i = 0; i < N; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int answer = 0;
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = i + 1; j < N; j++)
+        {
+            if (isPossible(arr[i], arr[j]))
+                answer++;
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
