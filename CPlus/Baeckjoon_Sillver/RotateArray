@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) 
+    {
+        int N, angle;
+        cin >> N >> angle;
+
+        vector<vector<int>> arr(N, vector<int>(N));
+        for (int i = 0; i < N; i++) 
+        {
+            for (int j = 0; j < N; j++) 
+            {
+                cin >> arr[i][j];
+            }
+        }
+
+        if (angle < 0) 
+            angle += 360;
+
+        if (angle == 360 || angle == 0) 
+        {
+            for (int i = 0; i < N; i++) 
+            {
+                for (int j = 0; j < N; j++) 
+                {
+                    cout << arr[i][j] << ' ';
+                }
+                cout << '\n';
+            }
+        }
+        else 
+        {
+            int cnt = angle / 45;
+            vector<vector<int>> result(N, vector<int>(N));
+
+            for (int c = 0; c < cnt; c++)
+            {
+                for (int i = 0; i < N; i++) 
+                {
+                    for (int j = 0; j < N; j++) 
+                    {
+                        if (i == j) 
+                            result[i][j] = arr[N / 2][j];
+                        else if (i == N / 2) 
+                            result[i][j] = arr[N - 1 - j][j];
+                        else if (i + j == N - 1) 
+                            result[i][j] = arr[i][N / 2];
+                        else if (j == N / 2) 
+                            result[i][j] = arr[i][i];
+                        else 
+                            result[i][j] = arr[i][j];
+                    }
+                }
+
+                arr = result;
+            }
+
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    cout << result[i][j] << ' ';
+                }
+                cout << '\n';
+            }
+        }
+    }
+
+    return 0;
+}
