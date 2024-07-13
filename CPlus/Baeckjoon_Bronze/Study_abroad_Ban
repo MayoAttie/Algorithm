@@ -1,0 +1,25 @@
+#include <iostream>
+#include <string>
+#include <unordered_set>
+
+using namespace std;
+
+int main() 
+{
+    string word;
+    cin >> word;
+
+    unordered_set<char> cambridge_letters{ 'C', 'A', 'M', 'B', 'R', 'I', 'D', 'G', 'E' };
+
+    string result;
+
+    for (char c : word) 
+    {
+        if (cambridge_letters.find(c) == cambridge_letters.end()) 
+            result += c;
+    }
+
+    cout << result;
+
+    return 0;
+}
