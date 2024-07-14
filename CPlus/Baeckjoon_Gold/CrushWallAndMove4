@@ -1,0 +1,108 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+using namespace std;
+
+int N, M;
+int tmp;
+int idx = 1;
+vector<vector<int>> arr;
+vector<vector<int>> visited;
+vector<int> loc;
+int dx[4] = { 1, 0, -1, 0 };
+int dy[4] = { 0, 1, 0, -1 };
+
+void bfs(int x, int y, int cidx) 
+{
+    queue<pair<int, int>> q;
+    q.push({ x, y });
+    visited[x][y] = cidx;
+    tmp = 1;
+
+    while (!q.empty()) 
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+
+        for (int i = 0; i < 4; i++) 
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx >= 0 && ny >= 0 && nx < N && ny < M)
+            {
+                if (visited[nx][ny] == 0 && arr[nx][ny] == 0)
+                {
+                    q.push({ nx, ny });
+                    visited[nx][ny] = cidx;
+                    tmp++;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> N >> M;
+    arr.resize(N, vector<int>(M));
+    visited.resize(N, vector<int>(M,0));
+    string x;
+    for (int i = 0; i < N; i++)
+    {
+        cin >> x;
+        for (int j = 0; j < M; j++)
+        {
+            arr[i][j] = x[j] - '0';
+        }
+    }
+
+    loc.push_back(-1); 
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            if (arr[i][j] == 0 && visited[i][j] == 0)
+            {
+                tmp = 0;
+                bfs(i, j, idx);
+                loc.push_back(tmp);
+                idx++;
+            }
+        }
+    }
+
+    vector<bool> chk_loc(loc.size(), false);
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            if (arr[i][j] == 1) 
+            {
+                for (int k = 0; k < 4; k++) 
+                {
+                    int nx = i + dx[k];
+                    int ny = j + dy[k];
+                    if (nx >= 0 && ny >= 0 && nx < N && ny < M)
+                    {
+                        if (!chk_loc[visited[nx][ny]] && arr[nx][ny] == 0)
+                        {
+                            arr[i][j] += loc[visited[nx][ny]];
+                            chk_loc[visited[nx][ny]] = true;
+                        }
+                    }
+                }
+                fill(chk_loc.begin(), chk_loc.end(), false);
+            }
+            cout << arr[i][j] % 10;
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
