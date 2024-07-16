@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int main() 
+{
+    vector<string> arr;
+
+    for (int i = 0; i < 8; i++)
+    {
+        string input;
+        getline(cin, input);
+        arr.push_back(input);
+    }
+
+    sort(arr.begin(), arr.end());
+
+    int redScore = 0;
+    int blueScore = 0;
+    int score[8] = {10,8,6,5,4,3,2,1};
+    for (int i = 0; i < 8; i++)
+    {
+        char type = arr[i].substr(arr[i].size() - 1, 1)[0];
+        if (type == 'R')
+            redScore += score[i];
+        else
+            blueScore += score[i];
+    }
+
+    if (redScore > blueScore)
+        cout << "Red";
+    else
+        cout << "Blue";
+
+    return 0;
+}
