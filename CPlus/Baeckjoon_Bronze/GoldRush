@@ -1,0 +1,33 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    int t;
+    cin >> t;
+    while (t--) 
+    {
+        int n;
+        long long a, b;
+        cin >> n >> a >> b;
+
+        int days = 0;
+        long long total = 1LL << n;
+
+        while (a > 0 && b > 0) 
+        {
+            if (a > b) 
+                a -= (total / 2);
+            else 
+                b -= (total / 2);
+            
+            total /= 2;
+            days++;
+        }
+
+
+        cout << days << '\n';
+    }
+    return 0;
+}
