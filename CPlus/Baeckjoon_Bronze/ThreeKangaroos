@@ -1,0 +1,15 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int a, b, c;
+	while (cin >> a >> b >> c)
+	{
+		int answer = max(b - a, c - b);
+		cout << answer-1 <<'\n';
+	}
+}

@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> MergeArr(vector<int>& arrA, vector<int>& arrB);
+
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+
+    vector<int> arrA(N);
+    vector<int> arrB(M);
+
+    for(int i=0; i<N; i++)
+        cin >> arrA[i];
+    for(int i=0; i<M; i++)
+        cin >> arrB[i];
+
+    vector<int> result = MergeArr(arrA,arrB);
+
+    for(int i=0; i<result.size(); i++)
+        cout << result[i] << " ";
+}
+
+vector<int> MergeArr(vector<int>& arrA, vector<int>& arrB)
+{
+    vector<int> result;
+    int i=0; 
+    int j=0;
+
+    while(i<arrA.size() && j<arrB.size())
+    {
+        if(arrA[i] < arrB[j])
+        {
+            result.push_back(arrA[i]);
+            i++;
+        }
+        else
+        {
+            result.push_back(arrB[j]);
+            j++;
+        }
+    }
+
+    while(i<arrA.size())
+    {
+        result.push_back(arrA[i]);
+        i++;
+    }
+    while(j<arrB.size())
+    {
+        result.push_back(arrB[j]);
+        j++;
+    }
+
+    return result;
+}

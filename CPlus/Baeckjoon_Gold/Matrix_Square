@@ -74,7 +74,7 @@ int main()
     {
         for (int j = 0; j < N; j++)
         {
-            cin >> arr[i][j];
+            cin >> arr[i][j]; 
         }
     }
 

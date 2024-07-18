@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+bool comparer(const pair<int, int>& a, const pair<int, int>& b)
+{  
+    if (a.first != b.first)
+        return a.first > b.first;
+    else
+        a.second < b.second;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    vector<pair<int, int>> arr(N);
+    for (int i = 0; i < N; i++)
+    {
+        cin >> arr[i].first >> arr[i].second;
+    }
+    
+    sort(arr.begin(), arr.end(), comparer);
+
+    int cnt = 0;
+    int score = arr[4].first;
+    for (int i = 5; i < N; i++)
+    {
+        if (arr[i].first == score)
+            cnt++;
+        else
+            break;
+    }
+
+    cout << cnt;
+
+    
+
+    return 0;
+}

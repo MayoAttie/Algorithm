@@ -29,7 +29,7 @@ int main()
 
     int com = arr[0];
 
-    for (int i = 1; i < n; ++i) s
+    for (int i = 1; i < n; ++i) setvbuf
     {
         com = gcd(com, arr[i]);
     }
