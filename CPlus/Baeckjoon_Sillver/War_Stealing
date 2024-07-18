@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        int N;
+        cin >> N;
+
+        unordered_map<long long, int> map;
+
+        long long maxCnt = 0;
+        long long maxVal = 0;
+
+        for (int i = 0; i < N; i++)
+        {
+            long long n;
+            cin >> n;
+            map[n]++;
+
+            if (map[n] > maxCnt)
+            {
+                maxCnt = map[n];
+                maxVal = n;
+            }
+        }
+
+        if (maxCnt > N / 2)
+            cout << maxVal << '\n';
+        else
+            cout << "SYJKGW\n";
+    }
+
+    return 0;
+}
