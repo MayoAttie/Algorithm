@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int yt, yj;
+    cin >> yt >> yj;
+
+    bool isYt = true;
+    while (yt < 5 && yj < 5)
+    {
+        if (isYt)
+            yj += yt;
+        else
+            yt += yj;
+        isYt = !isYt;
+
+        if (yt >= 5) 
+        {
+            cout << "yj";
+            return 0;
+        }
+
+        if (yj >= 5) {
+            cout << "yt";
+            return 0;
+        }
+    }
+
+    cout << (yt >= 5 ? "yj" : "yt");
+
+    return 0;
+}
