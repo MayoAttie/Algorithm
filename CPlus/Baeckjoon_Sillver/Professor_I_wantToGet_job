@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+    vector<vector<int>> arr(N, vector<int>(N));
+    pair<int, int>  master, my;
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            cin >> arr[i][j];
+
+            if (arr[i][j] == 5)
+                master = { i,j };
+            else if (arr[i][j] == 2)
+                my = { i,j };
+        }
+    }
+
+    int x1 = min(master.first, my.first);
+    int x2 = max(master.first, my.first);
+    int y1 = min(master.second, my.second);
+    int y2 = max(master.second, my.second);
+
+    
+    int cnt = 0;
+
+    for (int x = x1; x <= x2; x++)
+    {
+        for (int y = y1; y <= y2; y++)
+        {
+            if (arr[x][y] == 1)
+                cnt++;
+        }
+    }
+
+    if (cnt >= 3 && (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) >= 25)
+        cout << 1;
+    else
+        cout << 0;
+
+
+    return 0;
+}
