@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+string triangle(string ans, int n, int m) 
+{
+    if (n == 1) 
+        return "*";
+    else 
+    {
+        string tmp = triangle(ans, n - 1, m - 1);
+        vector<string> lines;
+        size_t pos = 0;
+        string line;
+        while ((pos = tmp.find('\n')) != string::npos) 
+        {
+            line = tmp.substr(0, pos);
+            lines.push_back(line);
+            tmp.erase(0, pos + 1);
+        }
+        if (!tmp.empty()) 
+            lines.push_back(tmp);
+
+        for (const auto& l : lines) 
+            ans += l + l + string((1 << m) - 2 * l.length(), ' ') + '\n';
+
+        for (size_t i = 0; i < lines.size() - 1; ++i) 
+        {
+            ans += lines[i] + string((1 << m) - lines[i].length(), ' ') + '\n';
+        }
+        ans += lines.back() + string((1 << m) - lines.back().length(), ' ');
+
+        return ans;
+    }
+}
+
+int main() 
+{
+    int n;
+    cin >> n;
+    string answer = triangle("", n + 1, n);
+
+    for (int i = 0; i < (1 << (n * 2)); i += ((1 << n) + 1)) 
+    {
+        string str = answer.substr(i, (1 << n));
+        int start = -1;
+        for (int s = str.length() - 1; s >= 0; --s) 
+        {
+            if (str[s] == '*') 
+            {
+                start = s;
+                break;
+            }
+        }
+        for (int s = 0; s <= start; ++s) 
+        {
+            cout << str[s];
+        }
+        cout << endl;
+    }
+    return 0;
+}
