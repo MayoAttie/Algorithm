@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int T;
+    cin >> T;
+    while (T--)
+    {
+        int scoreN = 0;
+        int scoreM = 0;
+        double x, y, score;
+        for (int i = 0; i < 3; i++)
+        {
+            cin >> x >> y;
+            score = hypot(x, y);
+            if (score <= 3)
+                scoreN += 100;
+            else if (score <= 6)
+                scoreN += 80;
+            else if (score <= 9)
+                scoreN += 60;
+            else if (score <= 12)
+                scoreN += 40;
+            else if (score <= 15)
+                scoreN += 20;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            cin >> x >> y;
+            score = hypot(x, y);
+            if (score <= 3)
+                scoreM += 100;
+            else if (score <= 6)
+                scoreM += 80;
+            else if (score <= 9)
+                scoreM += 60;
+            else if (score <= 12)
+                scoreM += 40;
+            else if (score <= 15)
+                scoreM += 20;
+        }
+
+        cout << "SCORE: " << scoreN << " to " << scoreM;
+        if (scoreN > scoreM)
+            cout << ", PLAYER 1 WINS.\n";
+        else if (scoreN < scoreM)
+            cout << ", PLAYER 2 WINS.\n";
+        else
+            cout << ", TIE.\n";
+    }
+
+    return 0;
+}
