@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+using namespace std;
+
+
+int main() 
+{
+    int burger1, burger2;
+    int limit;
+    cin >> burger1 >> burger2 >> limit;
+
+    pair<int, int> maxVal = { 0,limit };
+
+    for (int i = 0; i <= limit; i += burger1)
+    {
+        for (int j = 0; j <= limit; j += burger2)
+        {
+            int val = (i / burger1) + (j / burger2);
+            int coke = limit - i - j;
+
+            if (coke < 0)
+                continue;
+            
+            if (coke < maxVal.second || (coke == maxVal.second && val > maxVal.first))
+            {
+                maxVal = { val, coke };
+            }
+        }
+    }
+
+    cout << maxVal.first << ' ' << maxVal.second;
+
+
+    return 0;
+}
