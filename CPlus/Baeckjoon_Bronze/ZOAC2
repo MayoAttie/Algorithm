@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+using namespace std;
+
+
+int main() 
+{
+    string str;
+    cin >> str;
+
+    char cur = 'A';
+    int answer = 0;
+
+    for (char i : str)
+    {
+        int dist = abs(i - cur);
+        int rever = 26 - dist;
+        answer += min(dist, rever);
+
+        cur = i;
+    }
+
+    cout << answer;
+
+    return 0;
+}
