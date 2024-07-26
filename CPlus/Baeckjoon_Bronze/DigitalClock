@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int getTimeInt(string str)
+{
+    return stoi(str.substr(0, 2)) * 10000 + stoi(str.substr(3, 2)) * 100 + stoi(str.substr(6, 2));
+}
+
+bool isTimeInt(int time)
+{
+    int hh = time / 10000;
+    int mmss = time % 10000;
+    int mm = mmss / 100;
+    int ss = mmss % 100;
+    return hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59 && ss >= 0 && ss <= 59;
+        
+}
+
+int cntFunc(int start, int end) 
+{
+    int count = 0;
+    for (int i = start; i <= end; i++) 
+    {
+        if (isTimeInt(i) && i % 3 == 0) 
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+
+int main() 
+{
+    for (int i = 0; i < 3; i++)
+    {
+        string start;
+        string end;
+
+        cin >> start >> end;
+        int nS = getTimeInt(start);
+        int nE = getTimeInt(end);
+
+        int answer = 0;
+
+        if (nS <= nE)
+            answer = cntFunc(nS, nE);
+        else
+            answer = cntFunc(nS, 235959) + cntFunc(0, nE);
+
+        cout << answer << '\n';
+
+    }
+    return 0;
+}
