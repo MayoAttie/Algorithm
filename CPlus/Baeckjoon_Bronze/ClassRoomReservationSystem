@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int rooms, reser;
+    cin >> rooms >> reser;
+
+    vector<pair<int, int>> arr(rooms, {-1,-1});
+
+    for (int i = 0; i < reser; i++)
+    {
+        int idx, s, e;
+        cin >> idx >> s >> e;
+        idx--;
+        
+        if (arr[idx].second <= s)
+        {
+            cout << "YES\n";
+            arr[idx].first = s;
+            arr[idx].second = e;
+        }
+        else
+        {
+            cout << "NO\n";
+        }
+        
+    }
+
+    return 0;
+}
