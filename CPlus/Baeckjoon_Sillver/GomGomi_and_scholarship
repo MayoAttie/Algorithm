@@ -1,0 +1,50 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    long long A, B, C, X, Y, Z;
+    cin >> A >> B >> C >> X >> Y >> Z;
+
+    // X->Y, Y->Z, Z->X Possible
+    // convert need three coupon
+    // max Value, to eating food by Students(A,B,C)
+
+    long long answer = 0;
+
+    for (int i = 0; i < 3; i++)
+    {
+        long long chicken = min(A, X);
+        answer += chicken;
+        A -= chicken;
+        X -= chicken;
+
+        long long pizza = min(B, Y);
+        answer += pizza;
+        B -= pizza;
+        Y -= pizza;
+
+        long long burger = min(C, Z);
+        answer += burger;
+        C -= burger;
+        Z -= burger;
+
+        long long newX = Z / 3;
+        long long newY = X / 3;
+        long long newZ = Y / 3;
+        X = newX;
+        Y = newY;
+        Z = newZ;
+    }
+
+    cout << answer;
+    
+    
+    return 0;
+}
