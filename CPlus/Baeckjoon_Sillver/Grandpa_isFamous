@@ -1,0 +1,67 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+#include <unordered_map>
+using namespace std;
+
+
+bool comparer(const pair<int, int>& a, const pair<int, int>& b)
+{
+    if (a.second != b.second)
+        return a.second > b.second;
+    else
+        return a.first < b.first;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m;
+    while (cin >> n >>m)
+    {
+        if (n == 0 && m == 0)
+            break;
+
+        unordered_map<int, int> map;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                int a;
+                cin >> a;
+                map[a]++;
+            }
+        }
+
+        vector<pair<int, int>> arr(map.begin(), map.end());
+        sort(arr.begin(), arr.end(),comparer);
+
+        int secondVal = arr[0].second;
+        for (int i = 1; i < arr.size(); i++)
+        {
+            if (arr[i].second != secondVal)
+            {
+                secondVal = arr[i].second;
+                break;
+            }
+        }
+
+        for (int i = 1; i < arr.size(); i++)
+        {
+            if (arr[i].second == secondVal)
+            {
+                cout << arr[i].first << ' ';
+            }
+            else
+                break;
+        }
+        cout << '\n';
+    }
+    
+    
+    return 0;
+}
