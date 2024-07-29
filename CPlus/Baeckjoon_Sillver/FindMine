@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int dx[8] = { 1, 0, -1, 0, 1, 1, -1, -1 };
+int dy[8] = { 0, 1, 0, -1, -1, 1, 1, -1 };
+
+int r, c;
+
+char findMine(vector<vector<char>>& arr, int x, int y) 
+{
+    int cnt = 0;
+    for (int i = 0; i < 8; i++) 
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if (nx >= 0 && nx < r && ny >= 0 && ny < c && arr[nx][ny] == '*')
+            cnt++;
+    }
+    return cnt + '0';
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    while (cin >> r >> c) 
+    {
+        if (r == 0 && c == 0)
+            break;
+
+        vector<vector<char>> arr(r, vector<char>(c));
+        for (int i = 0; i < r; i++) 
+        {
+            for (int j = 0; j < c; j++) 
+            {
+                cin >> arr[i][j];
+            }
+        }
+
+        for (int i = 0; i < r; i++) 
+        {
+            string str = "";
+            for (int j = 0; j < c; j++) 
+            {
+                if (arr[i][j] == '.')
+                    str += findMine(arr, i, j);
+                else
+                    str +=  arr[i][j];
+            }
+            cout << str << '\n';
+        }
+    }
+
+    return 0;
+}
