@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int rgbConvert(int r, int g, int b)
+{
+    return 2126 * r + 7152 * g + 722 * b;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int x, y;
+    cin >> x >> y;
+    vector<vector<int>> arr(x, vector<int>(y));
+    
+    for (int i = 0; i < x; i++)
+    {
+        for (int j = 0; j < y; j++)
+        {
+            int r, g, b;
+            cin >> r >> g >> b;
+            int tmp = rgbConvert(r, g, b);
+
+            if (tmp >= 0 && tmp < 510000)
+                cout << '#';
+            else if (tmp >= 510000 && tmp < 1020000)
+                cout << 'o';
+            else if (tmp >= 1020000 && tmp < 1530000)
+                cout << '+';
+            else if (tmp >= 1530000 && tmp < 2040000)
+                cout << '-';
+            else
+                cout << '.';
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
