@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+#include <string>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    string str;
+    cin >> str;
+
+    int robot;
+
+    for (int i = 0; i < str.size(); i++)
+    {
+        if (str[i] == '@')
+        {
+            robot = i;
+            break;
+        }
+    }
+
+    bool haveBox = false;
+    for (int i = robot-1; i >=0; i--)
+    {
+        if (str[i] == '#')
+        {
+            haveBox = true;
+        }
+        if (str[i] == '!' && haveBox == true)
+        {
+            cout << abs(robot - i)-1;
+            return 0;
+        }
+    }
+    haveBox = false;
+    for (int i = robot+1; i < str.size(); i++)
+    {
+        if (str[i] == '#')
+            haveBox = true;
+        if (str[i] == '!' && haveBox == true)
+        {
+            cout << abs(robot - i)-1;
+            return 0;
+        }
+    }
+
+    cout << -1;
+
+    return 0;
+}
