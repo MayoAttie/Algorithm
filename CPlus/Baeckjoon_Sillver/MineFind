@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+#include <string>
+using namespace std;
+
+int n;
+
+int getMineNum(vector<vector<char>>& arr, int x, int y)
+{
+    int dx[8] = { 1,0,-1,0,1,1,-1,-1 };
+    int dy[8] = { 0,1,0,-1,1,-1,1,-1 };
+    int cnt = 0;
+
+    for (int i = 0; i < 8; i++)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+
+        if (nx >= 0 && nx < n && ny >= 0 && ny < n)
+        {
+            if (arr[nx][ny] == '*')
+            {
+                cnt++;
+            }
+        }
+    }
+    return cnt;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> n;
+
+    vector<vector<char>> arr(n, vector<char>(n));
+    vector<vector<char>> revealed(n, vector<char>(n));
+    bool mineRevealed = false;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> revealed[i][j];
+            if (revealed[i][j] == 'x' && arr[i][j] == '*')
+            {
+                mineRevealed = true;
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (mineRevealed && arr[i][j] == '*')
+            {
+                cout << '*';
+            }
+            else if (revealed[i][j] == 'x')
+            {
+                cout << getMineNum(arr, i, j);
+            }
+            else
+            {
+                cout << '.';
+            }
+        }
+        cout << '\n';
+    }
+
+    
+
+    return 0;
+}
