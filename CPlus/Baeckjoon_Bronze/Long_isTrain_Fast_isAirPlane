@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int m, a, b;
+    
+    while (cin >> m >> a >> b)
+    {
+        if (m == 0 && a == 0 && b == 0)
+            break;
+
+        double aTime = static_cast<double>(m) / a;
+        double bTime = static_cast<double>(m) / b;
+
+        double differ = fabs(aTime - bTime) * 3600;
+
+        int total = round(differ);
+
+        int hour = total / 3600;
+        total %= 3600;
+        int min = total / 60;
+        int sec = total % 60;
+
+        cout << hour << ":" << setw(2) << setfill('0') << min << ":" << setw(2) << setfill('0') << sec << "\n";
+    }
+
+
+
+    
+
+    return 0;
+}
