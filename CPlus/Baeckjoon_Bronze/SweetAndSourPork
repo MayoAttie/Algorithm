@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    while (n--)
+    {
+        string input;
+        cin >> input;
+        
+        int len = input.size();
+
+        string str1, str2;
+        if (len % 2 == 0)
+        {
+            for (int i = 0; i < len; i += 2)
+                str1 += input[i];
+            for (int i = 1; i <= len; i += 2)
+                str2 += input[i];
+        }
+        else
+        {
+            for (int i = 0; i < len; i += 2)
+                str1 += input[i];
+            for (int i = 1; i < len; i += 2)
+                str2 += input[i];
+
+            string tmp = str1;
+            str1 += str2;
+            str2 += tmp;
+        }
+
+
+        cout << str1 << '\n';
+        cout << str2 << '\n';
+    }
+    
+    return 0;
+}
