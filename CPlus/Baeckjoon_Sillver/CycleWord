@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <deque>
+#include <unordered_set>
+using namespace std;
+
+string rotateWord(string str1, string str2)
+{
+    if (str1.size() != str2.size()) 
+        return str2;
+
+    deque<char> dq(str2.begin(), str2.end());
+    for (int i = 0; i < dq.size(); i++)
+    {
+        char cur = dq.back();
+        dq.pop_back();
+        dq.push_front(cur);
+        string tmp(dq.begin(), dq.end());
+        if (str1 == tmp)
+            return tmp;
+    }
+
+    return string(dq.begin(), dq.end());
+    
+}
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n;
+    cin >> n;
+
+    vector<string> arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i; j < n; j++)
+        {
+            if (arr[i] != arr[j])
+                arr[j] = rotateWord(arr[i], arr[j]);
+        }
+    }
+
+    unordered_set<string> set(arr.begin(), arr.end());
+
+    cout << set.size();
+
+
+    return 0;
+
+}
