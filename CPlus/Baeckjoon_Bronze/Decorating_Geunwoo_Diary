@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n;
+    cin >> n;
+
+    int card = 1;
+
+    if (n <= 10)
+        cout << 1;
+    else
+    {
+        while (n>=card)
+        {
+            card = stoi(to_string(card) + '1');
+        }
+        cout << to_string(card / 10).size();
+    }
+
+
+    return 0;
+
+}
