@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+
+    while (cin >> n) 
+    {
+        if (n == 0)
+            break;
+
+        cin.ignore();
+
+        string str;
+        getline(cin, str);
+
+        int result = 0;
+        vector<int> page(n + 1, 0);
+
+        stringstream ss(str);
+        string tmp;
+
+        while (getline(ss, tmp, ',')) 
+        {
+            int start, end;
+            if (tmp.find('-') == string::npos) 
+                start = end = stoi(tmp);
+            else 
+            {
+                int it = tmp.find('-');
+                start = stoi(tmp.substr(0, it));
+                end = stoi(tmp.substr(it + 1));
+            }
+
+            if (start > end)
+                continue;
+            else 
+            {
+                for (int i = start; i <= end; i++) 
+                {
+                    if (i >= 1 && i <= n)
+                        page[i] = 1;
+                }
+            }
+        }
+
+        for (int i = 1; i <= n; i++) 
+        {
+            result += page[i];
+        }
+        cout << result << '\n';
+    }
+
+    return 0;
+}
