@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+
+    cin >> n;
+
+    vector<vector<vector<char>>> arr(n, vector<vector<char>>(5, vector<char>(7)));
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            for (int k = 0; k < 7; k++)
+            {
+                cin >> arr[i][j][k];
+            }
+        }
+    }
+
+    int answer = 987654321;
+    pair<int, int> result;
+
+
+    for(int i=0; i<n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+
+            int cnt = 0;
+
+            for (int x = 0; x < 5; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    if (arr[i][x][y] != arr[j][x][y])
+                        cnt++;
+                }
+            }
+
+            if (cnt < answer)
+            {
+                answer = cnt;
+                result.first = i+1;
+                result.second = j+1;
+            }
+
+        }
+    }
+
+    cout << result.first << ' ' << result.second;
+
+    
+
+    return 0;
+}
