@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <map>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    vector<int> arr(3);
+    cin >> N;
+    int result = 0;
+
+    for (int i = 0; i < N; i++) 
+    {
+        cin >> arr[0] >> arr[1] >> arr[2];
+
+        if (arr[0] == -1 && arr[1] == -1 && arr[2] == -1)
+            continue; 
+
+        for (int j = 0; j < 3; j++) 
+        {  
+            if (arr[j] == -1)
+                arr[j] = 121;
+        }
+
+        if (arr[0] <= arr[1] && arr[1] <= arr[2])
+            result++;
+    }
+
+    cout << result;
+    
+
+    return 0;
+}
