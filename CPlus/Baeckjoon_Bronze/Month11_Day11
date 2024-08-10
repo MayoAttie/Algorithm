@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <map>
+using namespace std;
+
+bool isLeap(int year)
+{
+    if (year % 400 == 0) 
+        return true; 
+    else if (year % 100 == 0) 
+        return false; 
+    else if (year % 4 == 0) 
+        return true;
+    else 
+        return false; 
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    int leapYear[12] = { 31,29,31,30,31,30,31,31,30,31,30,31 };
+    int years[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+    while (n--)
+    {
+        int year, mon;
+        cin >> year >> mon;
+
+        string result = "";
+        if (isLeap(year))
+        {
+            if (mon == 1)
+            {
+                if (isLeap(year - 1))
+                    result = to_string(year - 1) + " 12 " + to_string(leapYear[11]) + '\n';
+                else
+                    result = to_string(year - 1) + " 12 " + to_string(leapYear[11]) + '\n';
+            }
+            else
+                result = to_string(year) + " " + to_string(mon - 1) + " " + to_string(leapYear[mon - 2]) + '\n';
+                
+        }
+        else
+        {
+            if (mon == 1)
+            {
+                if (isLeap(year - 1))
+                    result = to_string(year - 1) + " 12 " + to_string(years[11]) + '\n';
+                else
+                    result = to_string(year - 1) + " 12 " + to_string(years[11]) + '\n';
+            }
+            else
+                result = to_string(year) + " " + to_string(mon - 1) + " " + to_string(years[mon - 2]) + '\n';
+        }
+
+        cout << result;
+    }
+
+    return 0;
+}
