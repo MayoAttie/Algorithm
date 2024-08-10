@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <map>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m, k, x, result;
+    cin >> n >> m >> k;
+
+    x = k - 3;
+
+    while (x < 0) 
+        x += n;
+
+    if ((m + x) % n == 0) 
+        result = n;
+    else 
+        result = (m + x) % n;
+
+    cout << result;
+    
+    return 0;
+}
