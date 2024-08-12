@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <map>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    double num;
+    cin >> num;
+
+    double n = sqrt(num / 2);
+    double ln = 2 * n;
+
+    cout << (4 * ln);
+    
+
+    return 0;
+}
