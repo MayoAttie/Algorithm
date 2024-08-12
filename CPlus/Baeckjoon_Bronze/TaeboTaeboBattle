@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <map>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    string str;
+    cin >> str;
+
+    int left = 0;
+    int right = 0;
+    bool isLeft = true;
+    for (char ch : str)
+    {
+        if (ch == '@')
+        {
+            if (isLeft)
+                left++;
+            else
+                right++;
+        }
+
+        if (ch == ')')
+            isLeft = false;
+    }
+
+    cout << left << ' ' << right;
+    
+
+    return 0;
+}
