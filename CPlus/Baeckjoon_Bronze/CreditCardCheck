@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <numeric>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        string card;
+        cin >> card;
+
+        for (int i = card.size()-1; i>=0; i--)
+        {
+            if (i % 2 == 0)
+            {
+                int n = card[i] - '0';
+                n *= 2;
+                if (n >= 10)
+                {
+                    int tmp = n / 10;
+                    tmp += n % 10;
+                    n = tmp;
+                }
+                card[i] = (n + '0');
+            }
+        }
+
+        int result = 0;
+        for (int i = 0; i < card.size(); i++)
+        {
+            result += card[i] - '0';
+        }
+        if (result % 10 == 0)
+            cout << "T\n";
+        else
+            cout << "F\n";
+        
+    }
+
+    return 0;
+}
