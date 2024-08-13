@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <numeric>
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> N(n);
+    vector<int> M(m);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> N[i];
+    }
+    for (int i = 0; i < m; i++)
+    {
+        cin >> M[i];
+    }
+    int answer = 0;
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (N[j] >= M[i])
+            {
+                N[j] -= M[i];
+                break;
+            }
+            else
+            {
+                answer += N[j];
+                N[j] = 0;
+            }
+        }
+    }
+
+    answer += accumulate(N.begin(), N.end(), 0);
+    cout << answer;
+
+    return 0;
+}
