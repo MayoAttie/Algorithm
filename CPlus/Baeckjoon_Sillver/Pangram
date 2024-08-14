@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <cctype>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int T;
+    cin >> T;
+    cin.ignore();
+
+    int idx = 1;
+    while (T--)
+    {
+        string str;
+        getline(cin, str);
+
+        transform(str.begin(), str.end(), str.begin(), [](unsigned char ch) { return tolower(ch); });
+
+        unordered_map<char, int> map;
+        for (char ch : str)
+        {
+            if (isalpha(ch))
+            {
+                map[ch]++;
+            }
+        }
+
+        cout << "Case " << idx << ": ";
+        if (map.size() >= 26)
+        {
+            int minFreq = INT_MAX;
+            for (const auto& pair : map)
+            {
+                minFreq = min(minFreq, pair.second);
+            }
+
+            if (minFreq >= 3)
+                cout << "Triple pangram!!!\n";
+            else if (minFreq >= 2)
+                cout << "Double pangram!!\n";
+            else
+                cout << "Pangram!\n";
+        }
+        else
+        {
+            cout << "Not a pangram\n";
+        }
+        idx++;
+    }
+
+    return 0;
+}
