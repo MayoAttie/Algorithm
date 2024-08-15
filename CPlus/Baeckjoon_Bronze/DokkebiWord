@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+bool isGather(char ch)
+{
+    return ch == 'a' || ch == 'e' || ch == 'o' || ch == 'u' || ch == 'i';
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    string str;
+    while (cin >> str)
+    {
+        if (str == "#")
+            break;
+
+
+        string front = "";
+        int idx = 0;
+
+        while (idx <str.size() && !isGather(str[idx]))
+        {
+            front += str[idx];
+            idx++;
+        }
+
+        front += "ay";
+        cout << (str.substr(idx) + front) <<'\n';
+    }
+
+    return 0;
+}
