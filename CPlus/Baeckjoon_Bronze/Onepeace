@@ -1,0 +1,34 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    string str, cyper;
+    cin >> str >> cyper;
+
+    int idx = 0;
+    int answer = 0;
+    while (idx < str.size())
+    {
+        int it = str.find(cyper, idx);
+        if (it != string::npos)
+        {
+            answer++;
+            idx = it + 1;
+        }
+        else
+            break;
+    }
+
+    cout << answer;
+
+    return 0;
+}
