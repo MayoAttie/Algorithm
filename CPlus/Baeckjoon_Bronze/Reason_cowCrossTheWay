@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    vector<int> cows(101, -1);
+
+    int answer = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        int cow, dir;
+        cin >> cow >> dir;
+
+        if (cows[cow] != -1 && cows[cow] != dir)
+        {
+            answer++;
+        }
+        cows[cow] = dir;
+    }
+
+    cout << answer;
+
+    return 0;
+}
