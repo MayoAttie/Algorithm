@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n,m;
+    cin >> n>>m;
+
+    vector<pair<int, int>> limited(n);
+    vector<pair<int, int>> speed(m);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> limited[i].first >> limited[i].second;
+    }
+    for (int i = 0; i < m; i++)
+    {
+        cin >> speed[i].first >> speed[i].second;
+    }
+
+    int maxVal = 0;
+    int limitIdx = 0;
+    int speedIdx = 0;
+    int limitPos = 0;
+    int speedPos = 0;
+
+    while (limitIdx <n && speedIdx <m)
+    {
+        int limitLen = limited[limitIdx].first - limitPos;
+        int speedLen = speed[speedIdx].first - speedPos;
+
+        int len = min(limitLen, speedLen);
+
+        int limitSpeed = limited[limitIdx].second;
+        int speedSpeed = speed[speedIdx].second;
+
+        if (speedSpeed > limitSpeed)
+            maxVal = max(maxVal, speedSpeed - limitSpeed);
+
+        limitPos += len;
+        speedPos += len;
+
+        if (limitPos == limited[limitIdx].first)
+        {
+            limitIdx++;
+            limitPos = 0;
+        }
+
+        if (speedPos == speed[speedIdx].first)
+        {
+            speedIdx++;
+            speedPos = 0;
+        }
+    }
+
+    cout << maxVal;
+
+    return 0;
+}
