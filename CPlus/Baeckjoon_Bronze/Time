@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <iomanip>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, k;
+    cin >> n >> k;
+
+    int answer = 0;
+    string k_str = to_string(k);
+
+    for (int h = 0; h <= n; h++)
+    {
+        for (int m = 0; m < 60; m++)
+        {
+            for (int s = 0; s < 60; s++)
+            {
+                string time_str =
+                    (h < 10 ? "0" : "") + to_string(h) + (m < 10 ? "0" : "") + to_string(m) + (s < 10 ? "0" : "") + to_string(s);
+                if (time_str.find(k_str) != string::npos)
+                    answer++;
+            }
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
