@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> arr(n, vector<int>(m));
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        sort(arr[i].begin(), arr[i].end());
+    }
+
+    vector<int> scores(n, 0);
+
+    for (int i = 0; i < m; i++)
+    {
+        int maxVal = 0;
+        for (int j = 0; j < n; j++)
+        {
+            maxVal = max(maxVal, arr[j][i]);
+        }
+
+        for (int j = 0; j < n; j++)
+        {
+            if (maxVal == arr[j][i])
+                scores[j]++;
+        }
+    }
+
+    int result = *max_element(scores.begin(), scores.end());
+    for (int i = 0; i < n; i++)
+    {
+        if (result == scores[i])
+            cout << i + 1 << ' ';
+    }
+
+    return 0;
+}
+
