@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <iomanip>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int type;
+    string str;
+    cin >> type >> str;
+
+    string type1 = "";
+    string type2 = "";
+    string type3 = "";
+
+    if (type == 1) 
+    {
+        type1 = str;
+        type3 = str;
+        type3[0] = toupper(type3[0]);  
+
+        for (char ch : str)
+        {
+            if (isupper(ch))
+            {
+                type2 += '_';
+                type2 += tolower(ch);
+            }
+            else
+                type2 += ch;
+        }
+    }
+    else if (type == 2) 
+    {
+        bool isUnderbar = false;
+        type2 = str;
+        for (char ch : str)
+        {
+            if (ch == '_')
+            {
+                isUnderbar = true;
+            }
+            else
+            {
+                if (isUnderbar)
+                {
+                    type1 += toupper(ch);
+                    type3 += toupper(ch);
+                    isUnderbar = false;
+                }
+                else
+                {
+                    type1 += ch;
+                    type3 += ch;
+                }
+            }
+        }
+        type3[0] = toupper(type3[0]);  
+    }
+    else 
+    {
+        type1 = str;
+        type3 = str;
+        type1[0] = tolower(type1[0]); 
+
+        for (char ch : str)
+        {
+            if (isupper(ch))
+            {
+                if (!type2.empty())
+                    type2 += '_';
+                type2 += tolower(ch);
+            }
+            else
+                type2 += ch;
+        }
+    }
+
+    cout << type1 << '\n' << type2 << '\n' << type3;
+
+    return 0;
+}
