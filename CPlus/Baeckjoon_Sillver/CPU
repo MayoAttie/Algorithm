@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <bitset>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    vector<string> opcodes = 
+    {
+        "ADD", "ADDC",
+        "SUB", "SUBC",
+        "MOV", "MOVC",
+        "AND", "ANDC",
+        "OR", "ORC",
+        "NOT", "DUMMY",
+        "MULT", "MULTC",
+        "LSFTL", "LSFTLC",
+        "LSFTR", "LSFTRC",
+        "ASFTR", "ASFTRC",
+        "RL", "RLC",
+        "RR", "RRC"
+    };
+
+    for (int i = 0; i < n; i++) 
+    {
+        int mc = 0;
+        string opcode;
+        int rD, rA, rB;
+        cin >> opcode >> rD >> rA >> rB;
+
+        int code = find(opcodes.begin(), opcodes.end(), opcode) - opcodes.begin();
+        mc += code * (1 << 11);
+        mc += rD * (1 << 7);
+        mc += rA * (1 << 4);
+        mc += rB * (1 << (1 - code % 2));
+
+        cout << bitset<16>(mc).to_string() << '\n';
+    }
+
+
+    return 0;
+}
+
