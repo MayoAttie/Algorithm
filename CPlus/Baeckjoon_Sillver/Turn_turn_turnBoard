@@ -1,0 +1,70 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <bitset>
+using namespace std;
+
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n, m;
+        cin >> n >> m;
+
+        string str1, str2;
+        vector<int> arr(n);
+        int answer = 0;
+
+        for (int i = 0; i < m; i++)
+        {
+            char ch;
+            cin >> ch;
+            str1 += ch;
+        }
+        for (int i = 0; i < m; i++)
+        {
+            char ch;
+            cin >> ch;
+            str2 += ch;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+        }
+
+        int x = stoi(str1);
+        int y = stoi(str2);
+
+        for (int i = 0; i < n; i++)
+        {
+            string str3;
+            for (int j = 0; j < m; j++)
+            {
+                str3 += to_string(arr[(i + j) % n]);
+            }
+            int z = stoi(str3);
+
+            if (x <= z && z <= y)
+                answer++;
+        }
+        cout << answer << '\n';
+    }
+
+    
+
+    return 0;
+}
+
+v
