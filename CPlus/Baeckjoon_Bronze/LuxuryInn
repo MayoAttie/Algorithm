@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <bitset>
+using namespace std;
+
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int aAtk, aHp;
+    int bAtk, bHp;
+
+    cin >> aAtk >> aHp >> bAtk >> bHp;
+
+    while (true)
+    {
+        aHp -= bAtk;
+        bHp -= aAtk;
+
+        if (aHp <= 0 || bHp <= 0)
+            break;
+    }
+
+    if (aHp <= 0 && bHp <= 0)
+        cout << "DRAW";
+    else if (aHp <= 0)
+        cout << "PLAYER B";
+    else if (bHp <= 0)
+        cout << "PLAYER A";
+    
+
+    return 0;
+}
+
