@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <deque>
+using namespace std;
+
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        string str, p;
+        cin >> str >> p;
+
+        int cnt = 0;
+        size_t i = 0;
+
+        while (i < str.length())
+        {
+            size_t pos = str.find(p, i);
+
+            if (pos != string::npos && pos == i)
+                i += p.length();
+            else
+                i++;
+            cnt++;
+        }
+
+
+        cout << cnt << "\n";
+    }
+
+
+
+    return 0;
+}
+
