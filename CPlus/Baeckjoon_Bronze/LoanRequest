@@ -1,0 +1,69 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <deque>
+using namespace std;
+
+struct book
+{
+    int start;
+    int end;
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, num;
+    cin >> n;
+    vector<pair<int, int>> arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i].first >> arr[i].second;
+    }
+    cin >> num;
+
+    vector<book> books(num, { -1, -1 }); 
+
+    sort(arr.begin(), arr.end());
+
+    bool isAnswer = true;
+    for (int i = 0; i < n; i++)
+    {
+        int start = arr[i].first;
+        int end = arr[i].second;
+        bool isPossible = false;
+        
+        for (int j = 0; j < num; j++)
+        {
+            if (books[j].end <= start) 
+            { 
+                books[j].start = start;
+                books[j].end = end;
+                isPossible = true;
+                break;
+            }
+        }
+
+        if (!isPossible)
+        {
+            isAnswer = false;
+            break;
+        }
+    }
+
+    if (isAnswer)
+        cout << 1;
+    else
+        cout << 0;
+        
+
+    return 0;
+}
+
