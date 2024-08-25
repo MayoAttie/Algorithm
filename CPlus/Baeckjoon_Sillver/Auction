@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <deque>
+using namespace std;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+
+    map<int, vector<string>> dic;
+
+    for (int i = 0; i < m; i++)
+    {
+        string str;
+        int a;
+        cin >> str >> a;
+        if (a <= n)
+            dic[a].push_back(str);
+    }
+
+
+    int minCnt = 987654321;
+    int minKey = 987654321;
+
+    for (auto& i : dic)
+    {
+        int cur = i.first;
+        int curArrSize = i.second.size();
+
+        if (curArrSize < minCnt)
+        {
+            minCnt = curArrSize;
+            minKey = cur;
+        }
+        else if (curArrSize == minCnt)
+        {
+            if (cur < minKey)
+                minKey = cur;
+        }
+    }
+
+    cout << dic[minKey][0] << " " << minKey;
+
+    return 0;
+}
+
