@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <deque>
+using namespace std;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, k;
+    long long answer = 0;
+    cin >> n >> k;
+
+    vector<long long> data(n);
+    vector<long long> dp(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> data[i];
+    }
+
+    dp[0] = data[0];
+
+    for (int i = 1; i < n; i++)
+    {
+        dp[i] = dp[i - 1] + data[i];
+    }
+
+    sort(dp.begin(), dp.end(), greater<long long>()); 
+
+    for (int i = 0; i < k; i++)
+        answer += dp[i];
+
+    cout << answer;
+
+
+    return 0;
+}
+
