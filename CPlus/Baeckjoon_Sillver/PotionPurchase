@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int n;
+vector<int> costs;
+vector<vector<pair<int, int>>> sales;
+int minCost = INT_MAX;
+
+void backtracking(vector<int>& cur, vector<bool>& visited, int depth) 
+{
+    if (depth == n) 
+    { 
+        int total = 0;
+        vector<int> tmp = costs;
+
+        for (int i = 0; i < n; i++) 
+        {
+            int idx = cur[i];
+            total += tmp[idx];
+
+            for (int j = 0; j < sales[idx].size(); j++) 
+            {
+                int x = sales[idx][j].first;
+                int y = sales[idx][j].second;
+
+                tmp[x] -= y;
+                tmp[x] = max(1, tmp[x]); 
+            }
+        }
+
+        minCost = min(minCost, total);
+        return;
+    }
+
+    for (int i = 0; i < n; i++) 
+    {
+        if (visited[i]) continue; 
+        visited[i] = true;
+        cur[depth] = i;
+        backtracking(cur, visited, depth + 1);
+        visited[i] = false;
+    }
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> n;
+    costs.resize(n);
+    sales.resize(n);
+
+    for (int i = 0; i < n; i++) 
+    {
+        cin >> costs[i];
+    }
+
+    for (int i = 0; i < n; i++) 
+    {
+        int cnt;
+        cin >> cnt;
+        for (int j = 0; j < cnt; j++) 
+        {
+            int to, val;
+            cin >> to >> val;
+            sales[i].push_back({ to - 1, val });
+        }
+    }
+
+    vector<int> cur(n);
+    vector<bool> visited(n, false);
+    backtracking(cur, visited, 0);
+
+    cout << minCost << "\n";
+    return 0;
+}
