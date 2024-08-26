@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <deque>
+using namespace std;
+
+int p, m;
+
+int findRoom(vector<pair<int, vector<pair<int, string>>>>& rooms, int level) 
+{
+    for (int i = 0; i < rooms.size(); i++) 
+    {
+        if (rooms[i].first - 10 <= level && rooms[i].first + 10 >= level) 
+        {
+            if (rooms[i].second.size() >= m)
+                continue;  
+            return i; 
+        }
+    }
+    return -1;  
+}
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> p >> m;
+
+
+    vector<pair<int, string>> players(p);
+
+    for (int i = 0; i < p; i++) 
+    {
+        cin >> players[i].first >> players[i].second;
+    }
+
+    vector<pair<int, vector<pair<int, string>>>> rooms;
+
+    for (int i = 0; i < p; i++) 
+    {
+        int idx = findRoom(rooms, players[i].first);
+        if (idx == -1) 
+        {
+            vector<pair<int, string>> tmp = { players[i] };
+            rooms.push_back({ players[i].first, tmp });
+        }
+        else 
+            rooms[idx].second.push_back(players[i]);
+    }
+
+    for (auto& room : rooms) 
+    {
+        sort(room.second.begin(), room.second.end(), [](const pair<int, string>& a, const pair<int, string>& b) 
+            {   return a.second < b.second; });
+
+        if (room.second.size() == m) 
+            cout << "Started!\n";
+        else 
+            cout << "Waiting!\n";
+
+        for (auto& i : room.second) 
+            cout << i.first << " " << i.second << "\n";
+    }
+    
+
+
+    return 0;
+}
+
