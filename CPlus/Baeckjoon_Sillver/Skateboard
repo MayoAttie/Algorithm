@@ -1,0 +1,41 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N, result = 0;
+    cin >> N; 
+
+    for (int i = 0; i < N; ++i) 
+    {
+        vector<int> arr(7);
+
+        for (int j = 0; j < 7; ++j) 
+        {
+            cin >> arr[j];
+        }
+
+        vector<int> Run(arr.begin(), arr.begin() + 2);
+        vector<int> Trick(arr.begin() + 2, arr.end());
+
+        sort(Run.begin(), Run.end(), greater<int>());
+        sort(Trick.begin(), Trick.end(), greater<int>());
+
+        result = max(result, Run[0] + Trick[0] + Trick[1]);
+    }
+
+    cout << result; 
+
+    return 0;
+}
