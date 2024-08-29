@@ -1,0 +1,50 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+
+    int cur = 0;
+    bool isReverse = false;
+
+    for (int i = 1; i <= n; i++)
+    {
+        string cmd;
+        int num;
+        cin >> cmd >> num;
+
+        bool isHourGlass = (cmd[0] == 'H');
+        cur += (isReverse ? -1 : 1);
+
+        if (cur < 1)
+            cur = 12;
+        if (cur > 12)
+            cur = 1;
+
+        bool clap = false;
+
+        if (isHourGlass && cur != num)
+            isReverse = !isReverse;
+
+        if (cur == num && !isHourGlass)
+            clap = true;
+
+        cout << cur << ' ' << (clap ? "YES" : "NO") << '\n';
+    }
+
+    return 0;
+}
