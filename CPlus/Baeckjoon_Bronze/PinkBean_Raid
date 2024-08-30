@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    vector<int> cooltime(3);
+    vector<int> damage(3);
+
+    for (int i = 0; i < 3; i++)
+    {
+        cin >> cooltime[i] >> damage[i];
+    }
+
+    int hp;
+    cin >> hp;
+
+    int time = 0;
+    while (hp>0)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (time % cooltime[i] == 0)
+            {
+                hp -= damage[i];
+            }
+        }
+
+        time++;
+    }
+
+    cout << time-1;
+
+    return 0;
+}
