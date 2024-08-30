@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+struct student
+{
+    int score;
+    int year;
+    string name;
+};
+
+bool comparer(student& a, student& b)
+{
+    return a.score > b.score;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    vector<student> arr(3);
+    for (int i = 0; i < 3; i++)
+    {
+        cin >> arr[i].score >> arr[i].year >> arr[i].name;
+    }
+
+
+    string str1 = "";
+    vector<int> years;
+    for (int i = 0; i < 3; i++)
+    {
+        int tmp = arr[i].year % 100;
+        years.push_back(tmp);
+    }
+    sort(years.begin(), years.end());
+    for (int i = 0; i < 3; i++)
+    {
+        str1 += to_string(years[i]);
+    }
+
+    string str2 = "";
+    sort(arr.begin(), arr.end(), comparer);
+    for (int i = 0; i < 3; i++)
+    {
+        str2 += arr[i].name[0];
+    }
+
+    cout << str1 << '\n' << str2;
+    
+
+
+    return 0;
+}
