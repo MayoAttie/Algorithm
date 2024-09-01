@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n;
+    cin >> n;
+
+    vector<pair<int, int>> arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        if (a > b)
+        {
+            arr[i].first = b;
+            arr[i].second = a;
+        }
+        else
+        {
+            arr[i].first = a;
+            arr[i].second = b;
+        }
+        
+    }
+
+    string answer = "Wa-pa-pa-pa-pa-pa-pow!";
+    string dontAnswer = "Woof-meow-tweet-squeek";
+    if (n != 3)
+        cout << dontAnswer;
+    else
+    {
+        sort(arr.begin(), arr.end());
+        if (arr[0].first == 1 && arr[0].second == 3)
+        {
+            if (arr[1].first == 1 && arr[1].second == 4)
+            {
+                if (arr[2].first == 3 && arr[2].second == 4)
+                {
+                    cout << answer;
+                }
+                else
+                    cout << dontAnswer;
+            }
+            else
+                cout << dontAnswer;
+        }
+        else
+            cout << dontAnswer;
+    }
+
+    return 0;
+}
