@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	long long num;
+	int first;
+	cin >> num >> first;
+
+	//push : 0, pull:1
+
+	if (num > 5) 
+	{
+		cout << "Love is open door";
+		return 0;
+	}
+	int current = first;
+	for (int i = 2; i <= num; i++) 
+	{
+		current = 1 - current;
+		cout << current << '\n';
+	}
+
+	
+}
