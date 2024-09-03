@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    unordered_map<string, string> map
+        = {
+        {"a", "as"},
+        {"i", "ios"},
+        {"y", "ios"},
+        {"l", "les"},
+        {"n", "anes"},
+        {"ne", "anes"},
+        {"o", "os"},
+        {"r", "res"},
+        {"t", "tas"},
+        {"u", "us"},
+        {"v", "ves"},
+        {"w", "was"}
+    };
+
+    int n;
+    cin >> n;
+    while (n--)
+    {
+        string word;
+        cin >> word;
+
+        string answer = word;
+
+        string last = word.substr(word.size() - 1);
+        string lasTwo = word.substr(word.size() - 2);
+
+        if (map.find(lasTwo) != map.end())
+        {
+            string tmp = map[lasTwo];
+            answer.erase(answer.begin() + answer.size() - 2);
+            answer.erase(answer.begin() + answer.size() - 1);
+            answer += tmp;
+        }
+        else if (map.find(last) != map.end())
+        {
+            string tmp = map[last];
+            answer.erase(answer.begin() + answer.size() - 1);
+            answer += tmp;
+        }
+        else
+        {
+            answer += "us";
+        }
+        cout << answer << '\n';
+    }
+
+
+    return 0;
+}
