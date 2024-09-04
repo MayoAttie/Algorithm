@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+bool isPrime(int n) 
+{
+    if (n < 2) 
+        return false;
+    for (int i = 2; i * i <= n; i++) 
+    {
+        if (n % i == 0) 
+            return false;
+    }
+    return true;
+}
+
+bool isPalindrome(int n)
+{
+    string sN =to_string(n);
+    string rStr = sN;
+    reverse(rStr.begin(), rStr.end());
+    return sN == rStr;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n;
+    cin >> n;
+
+    while (true)
+    {
+        if (isPrime(n) && isPalindrome(n))
+        {
+            cout << n;
+            break;
+        }
+        n++;
+    }
+    
+    
+
+    return 0;
+}
