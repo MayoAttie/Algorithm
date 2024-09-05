@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> used(m);
+    for (int i = 0; i < m; i++)
+    {
+        int a;
+        cin >> a;
+        used[i] = --a;
+    }
+
+    vector<vector<int>> costs(n, vector<int>(n));
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> costs[i][j];
+        }
+    }
+
+    int answer = 0;
+    int cur = used[0];
+    for (int k = 1; k < m; k++)
+    {
+        int target = used[k];
+
+        for (int i = 0; i < n; i++)
+        {
+            if (i == target)
+                answer += costs[cur][i];
+        }
+        cur = target;
+    }
+
+    cout << answer;
+    
+
+    return 0;
+}
