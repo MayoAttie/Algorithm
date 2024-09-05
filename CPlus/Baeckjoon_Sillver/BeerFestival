@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+bool comapere(pair<int, int>& a, pair<int, int>& b)
+{
+    if (a.first != b.first)
+        a.first < b.first;
+    else
+        a.second > b.second;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n, k;
+    long long m;
+    cin >> n >> m >> k;
+    
+    vector<pair<int, int>> beers(k);
+    for (int i = 0; i < k; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        beers[i] = { b,a };
+    }
+    
+    sort(beers.begin(), beers.end());
+    long long sum = 0;
+    priority_queue<long long> pq;
+    int answer = -1;
+    for (int i = 0; i < k; i++)
+    {
+        pq.push(-beers[i].second);
+        sum += beers[i].second;
+
+        if (pq.size() > n)
+        {
+            sum += pq.top();
+            pq.pop();
+        }
+
+        if (pq.size() == n && sum >= m)
+        {
+            answer = beers[i].first;
+            break;
+        }
+    }
+    cout << answer; 
+
+
+    return 0;
+}
