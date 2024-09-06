@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+using namespace std;
+int n;
+vector<vector<int>> tree;
+vector<int> arr;
+vector<bool> visited;
+vector<vector<int>> dp;
+
+void dfs(int cur)
+{
+    visited[cur] = true;
+
+    dp[cur][0] = 0;       
+    dp[cur][1] = arr[cur];
+
+    for (int i = 0; i < tree[cur].size(); i++)
+    {
+        int next = tree[cur][i];
+        if (!visited[next])
+        {
+            dfs(next);  
+            dp[cur][0] += max(dp[next][0], dp[next][1]);
+            dp[cur][1] += dp[next][0];                  
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> n;
+
+    arr.resize(n + 1);
+    tree.resize(n + 1);
+    visited.resize(n + 1, false);
+    dp.resize(n + 1, vector<int>(2));
+
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        tree[a].push_back(b);
+        tree[b].push_back(a);
+    }
+
+    dfs(1);
+
+    cout << max(dp[1][0], dp[1][1]) << '\n';
+
+    return 0;
+}
