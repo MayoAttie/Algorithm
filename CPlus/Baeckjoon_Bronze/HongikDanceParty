@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    vector<string> arr(5);
+    for (int i = 0; i < 5; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    vector<string> photo(5, "");
+
+    for (int i = 0; i < arr[0].length(); i++) 
+    {
+        string str = "";
+        for (int j = 0; j < 5; j++) 
+            str += arr[j][i];
+
+
+        if (str == ".omln") 
+        {
+            photo[0] += 'o';
+            photo[1] += 'w';
+            photo[2] += 'l';
+            photo[3] += 'n';
+            photo[4] += '.';
+        }
+        else if (str == "owln.")
+        {
+            photo[0] += '.';
+            photo[1] += 'o';
+            photo[2] += 'm';
+            photo[3] += 'l';
+            photo[4] += 'n';
+        }
+        else 
+        {
+            photo[0] += '.';
+            photo[1] += '.';
+            photo[2] += 'o';
+            photo[3] += 'L';
+            photo[4] += 'n';
+        }
+    }
+
+    for (string p : photo) 
+    {
+        cout << p << '\n';
+    }
+
+
+    return 0;
+}
