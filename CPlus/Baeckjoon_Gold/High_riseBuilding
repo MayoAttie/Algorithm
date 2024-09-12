@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+double slope(int x1, int y1, int x2, int y2) 
+{
+    return static_cast<double>(y2 - y1) / (x2 - x1);
+}
+
+int main() 
+{
+    int N;
+    cin >> N;
+
+    vector<int> arr(N);
+    for (int i = 0; i < N; i++) 
+    {
+        cin >> arr[i];
+    }
+
+    int answer = 0;
+
+    for (int i = 0; i < N; i++) 
+    {
+        int x1 = i + 1;
+        int y1 = arr[i];
+
+        double curSlope = -1e9;
+        int cnt = 0;
+
+        for (int j = i + 1; j < N; j++)
+        {
+            int x2 = j + 1;
+            int y2 = arr[j];
+            double slope_right = slope(x1, y1, x2, y2);
+
+            if (curSlope < slope_right)
+            {
+                curSlope = slope_right;
+                cnt++;
+            }
+        }
+
+        curSlope = 1e9;
+
+        for (int j = i - 1; j >= 0; j--)
+        {
+            int x2 = j + 1;
+            int y2 = arr[j];
+            double slope_left = slope(x1, y1, x2, y2);
+
+            if (curSlope > slope_left)
+            {
+                curSlope = slope_left;
+                cnt++;
+            }
+        }
+
+        if (cnt > answer)
+            answer = cnt;
+    }
+
+    cout << answer;
+    return 0;
+}
