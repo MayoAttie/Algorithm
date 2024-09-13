@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+
+
+int main() 
+{
+
+    int N;
+    cin >> N;
+
+    int cnt = 0;  
+    int number = 1; 
+
+    while (true) 
+    {
+        cnt++;
+
+        if (number == N) 
+        {
+            cout << cnt;
+            break;
+        }
+
+        if (to_string(number).find("50") != string::npos) 
+        {
+            cnt++;
+            if (number == N) 
+            {
+                cout << cnt;
+                break;
+            }
+        }
+        number++;
+    }
+
+    return 0;
+}
