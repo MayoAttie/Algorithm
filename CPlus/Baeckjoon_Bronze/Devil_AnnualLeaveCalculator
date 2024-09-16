@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+
+int main()
+{
+    int startYear, startMon, startDay;
+    int endYear, endMon, endDay;
+
+    cin >> startYear >> startMon >> startDay;
+    cin >> endYear >> endMon >> endDay;
+
+    int total = ((endYear - startYear) * 360) + ((endMon - startMon) * 30) + (endDay - startDay);
+
+    int year = total / 360;
+    int yearVac = 0;
+    for (int i = 1; i <= year; i++)
+    {
+        int tmp = (i - 1) / 2;
+        yearVac += (tmp + 15);
+    }
+    
+    int mon = total / 30;
+    int monVac = min(mon, 36);
+    
+    cout << yearVac << ' ' << monVac << '\n' << total<<"days";
+
+
+    return 0;
+}
