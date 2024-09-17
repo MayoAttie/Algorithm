@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+int main()
+{
+    vector<vector<char>>cinema(10, vector<char>(20, '.'));
+
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
+    {
+        string pos;
+        cin >> pos;
+        
+        int y = pos[0] - 'A';
+        int x=0;
+        if (pos.size() == 2)
+            x= pos[1] - '0';
+        else
+        {
+            x = pos[1] - '0';
+            x *= 10;
+            x += pos[2] - '0';
+        }
+        x--;
+        cinema[y][x] = 'o';
+    }
+
+
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            cout << cinema[i][j];
+        }
+        cout << '\n';
+    }
+    
+
+    return 0;
+}
