@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+int main()
+{
+
+    long long n;
+    cin >> n;
+
+    vector<long long> sizes(6);
+
+    for (int i = 0; i < 6; i++)
+    {
+        cin >> sizes[i];
+    }
+
+    long long setT, setPen;
+    cin >> setT >> setPen;
+
+    long long resultT=0;
+    long long resultPenSet = 0;
+    long long resultPen = 0;
+
+    for (int i = 0; i < 6; i++)
+    {
+        if (sizes[i] == 0)
+            continue;
+
+        if (sizes[i] % setT == 0)
+            resultT += sizes[i] / setT;
+        else
+            resultT += sizes[i] / setT + 1;
+    }
+
+    resultPenSet = n / setPen;
+    resultPen = n % setPen;
+
+    cout << resultT << '\n' << resultPenSet << ' ' << resultPen;
+
+    return 0;
+}
