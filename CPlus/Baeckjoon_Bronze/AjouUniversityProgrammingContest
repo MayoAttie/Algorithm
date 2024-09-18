@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+void Update(int& idx, int i, int& cost, int a, int& submit, int b, int& upload, int c)
+{
+    idx = i;
+    cost = a;
+    submit = b;
+    upload = c;
+}
+
+int main()
+{
+
+    int n;
+    cin >> n;
+
+    int firstIdx = -1;
+    int cost = -1;
+    int submit = 987654321;
+    int uploadTime = 987654321;
+
+    for (int i = 1; i <= n; i++)
+    {
+        int a, b, c;
+        cin >> a>> b >> c;
+
+        if (a != cost)
+        {
+            if (a > cost)
+            {
+                Update(firstIdx, i, cost, a, submit, b, uploadTime, c);
+                continue;
+            }
+        }
+        else
+        {
+            if (submit != b)
+            {
+                if (submit > b)
+                {
+                    Update(firstIdx, i, cost, a, submit, b, uploadTime, c);
+                    continue;
+                }
+            }
+            else
+            {
+                if (uploadTime > c)
+                {
+                    Update(firstIdx, i, cost, a, submit, b, uploadTime, c);
+                    continue;
+                }
+            }
+        }
+    }
+
+    cout << firstIdx;
+
+
+    return 0;
+}
