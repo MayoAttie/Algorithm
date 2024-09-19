@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+int sh, sm, eh, em, n;
+
+string intToTime(int m)
+{
+    int hour = m / 60;
+    int min = m % 60;
+
+    string h = (hour < 10) ? "0" + to_string(hour) : to_string(hour);
+    string mm = (min < 10) ? "0" + to_string(min) : to_string(min);
+    return h + ":" + mm;
+}
+
+bool haveN(string t)
+{
+    for (char ch : t)
+    {
+        if (ch - '0' == n)
+            return true;
+    }
+    return false;
+}
+
+int main()
+{
+    cin >> sh >> sm >> eh >> em >> n;
+
+    int start = sh * 60 + sm;
+    int end = eh * 60 + em;
+
+    int answer = 0;
+    for (int i = start; i <= end; i++)
+    {
+        string cur = intToTime(i);
+        if (haveN(cur))
+            answer++;
+    }
+    cout << answer;
+    return 0;
+}
