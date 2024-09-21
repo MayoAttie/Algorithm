@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    int total = 0;;
+    int maxCnt   = 0;;
+    string ansName = "";
+
+    for (int i = 0; i < n; i++)
+    {
+        string name;
+        cin >> name;
+        int cost, have, cnt = 0;
+        cin >> cost >> have;
+
+        while (cost <= have)
+        {
+            have -= cost;
+            have += 2;
+            cnt++;
+        }
+        total += cnt;
+        if (maxCnt < cnt)
+        {
+            maxCnt = cnt;
+            ansName = name;
+        }
+    }
+
+    cout << total << '\n' << ansName;
+
+    return 0;
+}
