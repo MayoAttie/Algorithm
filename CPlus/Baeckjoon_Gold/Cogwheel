@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <bitset>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+void rotate(string& cog, int dir)
+{
+    if (dir == 1)
+    {
+        cog = cog.back() + cog.substr(0, 7);
+    }
+    else
+    {
+        cog = cog.substr(1) + cog.front();
+    }
+}
+
+int main()
+{
+    string cogs[4];
+    cin >> cogs[0] >> cogs[1] >> cogs[2] >> cogs[3];
+
+    int n;
+    cin >> n;
+
+    while (n--)
+    {   
+        int idx, dir;
+        cin >> idx >> dir;
+        idx--;
+        // dir == 1 시계방향 , dir == -1 반시계방향
+        
+        vector<int> tmp(4, 0);
+        tmp[idx] = dir;
+
+        for (int i = idx; i < 3; i++)
+        {
+            if (cogs[i][2] != cogs[i + 1][6])
+                tmp[i + 1] = -tmp[i];
+            else
+                break;
+        }
+
+        for (int i = idx; i > 0; i--)
+        {
+            if (cogs[i][6] != cogs[i - 1][2])
+                tmp[i - 1] = -tmp[i];
+            else
+                break;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (tmp[i] != 0)
+                rotate(cogs[i], tmp[i]);
+        }
+    }
+       
+    int score = 0;
+    if (cogs[0][0] == '1') score += 1;
+    if (cogs[1][0] == '1') score += 2;
+    if (cogs[2][0] == '1') score += 4;
+    if (cogs[3][0] == '1') score += 8;
+
+    cout << score;
+
+    return 0;
+}
