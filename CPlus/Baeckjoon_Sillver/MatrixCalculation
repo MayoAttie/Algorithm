@@ -1,0 +1,41 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <bitset>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+int main()
+{
+    int n, m, q;
+    cin >> n >> m >> q;
+
+    vector<int> row(n, 0);
+    vector<int> col(m, 0);
+
+    for (int i = 0; i < q; i++)
+    {
+        int type, idx, val;
+        cin >> type >> idx >> val;
+
+        idx--;
+        if (type == 1)
+            row[idx] += val;
+        else
+            col[idx] += val;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cout << row[i] + col[j] << ' ';
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
