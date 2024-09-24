@@ -1,0 +1,101 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <map>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+struct result 
+{
+    int idx;
+    int total = 0;
+    int score3 = 0;
+    int score2 = 0;
+};
+
+bool comperer(result& a, result& b)
+{
+    if (a.total != b.total)
+        return a.total > b.total;
+    else
+    {
+        if (a.score3 != b.score3)
+            return a.score3 > b.score3;
+        else
+        {
+            if (a.score2 != b.score2)
+                return a.score2 > b.score2;
+        }
+    }
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<int> total(4, 0);
+    vector<int> score3(4, 0);
+    vector<int> score2(4, 0);
+    for (int i = 0; i < n; i++)
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+
+        total[1] += a;
+        total[2] += b;
+        total[3] += c;
+
+        if (a == 3)
+            score3[1]++;
+        if (b == 3)
+            score3[2]++;
+        if (c == 3)
+            score3[3]++;
+
+        if (a == 2)
+            score2[1]++;
+        if (b == 2)
+            score2[2]++;
+        if (c == 2)
+            score2[3]++;
+    }
+
+    vector<result> sorted;
+    for (int i = 1; i < 4; i++)
+    {
+        result tmp;
+        tmp.idx = i;
+        tmp.total = total[i];
+        tmp.score2 = score2[i];
+        tmp.score3 = score3[i];
+        sorted.push_back(tmp);
+    }
+
+    sort(sorted.begin(), sorted.end(),comperer);
+    result ans = sorted[0];
+    bool isCheck = false;
+    for (int i = 1; i < 3; i++)
+    {
+        if (ans.total == sorted[i].total && ans.score3 == sorted[i].score3 && ans.score2 == sorted[i].score2)
+        {
+            isCheck = true;
+            break;
+        }
+    }
+
+    if (isCheck)
+    {
+        cout << 0 << ' ' << ans.total;
+    }
+    else
+    {
+        cout << ans.idx << ' ' << ans.total;
+    }
+
+
+    return 0;
+}
