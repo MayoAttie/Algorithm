@@ -1,0 +1,105 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+int TurnLeft(int a) 
+{
+    return (a % 1000) * 10 + (a / 1000);
+}
+
+int TurnRight(int a) 
+{
+    return (a / 10) + (a % 10) * 1000;
+}
+
+int DoubledNum(int a)
+{
+    return (a * 2) % 10000;
+}
+int SubNum(int a)
+{
+    if (a == 0)
+        return 9999;
+    else
+        return a - 1;;
+}
+
+string bfs(int a, int b)
+{
+
+    vector<bool> visited(10000, false);
+    queue<pair<int, string>> que;
+    que.push({ a,"" });
+    visited[a] = true;
+
+    while (!que.empty())
+    {
+        int cur = que.front().first;
+        string cmd = que.front().second;
+        que.pop();
+
+        if (cur == b)
+        {
+            return cmd;
+        }
+
+        int nD = DoubledNum(cur);
+        if (!visited[nD])
+        {
+            visited[nD] = true;
+            que.push({ nD,cmd + "D" });
+        }
+
+        int nS = SubNum(cur);
+        if (!visited[nS])
+        {
+            visited[nS] = true;
+            que.push({ nS,cmd + "S" });
+        }
+
+        int nL = TurnLeft(cur);
+        if (!visited[nL])
+        {
+            visited[nL] = true;
+            que.push({ nL, cmd + "L" });
+        }
+
+        int nR = TurnRight(cur);
+        if (!visited[nR])
+        {
+            visited[nR] = true;
+            que.push({ nR,cmd + "R" });
+        }
+
+    }
+    return "";
+}
+ 
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int a, b;
+        cin >> a >> b;
+
+        if (a == 1 && b == 0)
+            cout << "S";
+        else
+            cout << bfs(a, b) <<'\n';
+    }
+
+
+    return 0;
+}
