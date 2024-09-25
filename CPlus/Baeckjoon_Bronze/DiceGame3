@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int ga1, gb1, ga2, gb2;
+    int ea1, eb1, ea2, eb2;
+
+    cin >> ga1 >> gb1 >> ga2 >> gb2 >> ea1 >> eb1 >> ea2 >> eb2;
+
+    int emmaA = ea1 + ea2;
+    int emmaB = eb1 + eb2;
+
+    int gunnarA = ga1 + ga2;
+    int gunnarB = gb1 + gb2;
+
+    if (emmaA - gunnarA + emmaB - gunnarB == 0)
+        cout << "Tie";
+    else if (emmaA - gunnarA + emmaB - gunnarB > 0)
+        cout << "Emma";
+    else
+        cout << "Gunnar";
+
+
+    return 0;
+}
