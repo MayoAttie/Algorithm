@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    vector<int> hint = { 3, 2, 1, 2, 3, 3, 2, 3, 3, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 1, 1, 2, 2, 1 };
+
+    string A, B;
+    cin >> A >> B;
+
+    vector<int> arr;
+
+    for (int i = 0; i < A.size(); i++)
+    {
+        arr.push_back(hint[A[i] - 'A']);
+        arr.push_back(hint[B[i] - 'A']);
+    }
+
+    vector<int> tmp;
+    while (arr.size() != 2)
+    {
+        for (int i = 1; i < arr.size(); i++)
+        {
+            tmp.push_back((arr[i] + arr[i - 1]) % 10);
+        }
+
+        arr = tmp;
+        tmp.clear();
+    }
+
+    cout << arr[0] << arr[1];
+
+
+
+    return 0;
+}
