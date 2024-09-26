@@ -1,0 +1,32 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+long long roundN(long long c, long long k)
+{
+    long long tmp = pow(10, k);
+    long long n = round(static_cast<double>(c) / tmp) * tmp;
+    return n;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    long long c, k;
+    cin >> c >> k;
+
+    cout << roundN(c, k);
+
+
+
+    return 0;
+}
