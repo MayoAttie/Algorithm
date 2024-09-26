@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+bool checkBorek(vector<bool>& arr, int n)
+{
+    string str = to_string(n);
+    for (char ch : str)
+    {
+        if (arr[ch - '0'])
+            return false;
+    }
+    return true;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+    vector<bool>arr(10, false);
+    for (int i = 0; i < m; i++)
+    {
+        int a;
+        cin >> a;
+        arr[a] = true;
+    }
+
+
+    if (n == 100)
+    {
+        cout << 0;
+        return 0;
+    }
+
+    int answer = abs(n - 100);
+    for (int i = 0; i <= 1000000; i++)
+    {
+        if (checkBorek(arr, i))
+        {
+            int cnt = to_string(i).size();
+            cnt += abs(i - n);
+            answer = min(answer, cnt);
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
