@@ -1,0 +1,50 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, k;
+    cin >> n >> k;
+    
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int start = 0;
+    int end = 0;
+    int cnt = 0;
+    int answer = n + 1;
+    while (end < n)
+    {
+        if (arr[end] == 1)
+            cnt++;
+        while (cnt >= k)
+        {
+            answer = min(answer, end - start + 1);
+            if (arr[start] == 1)
+                cnt--;
+            start++;
+        }
+        end++;
+    }
+
+    if (answer == n + 1)
+        cout << -1;
+    else
+        cout << answer;
+
+    return 0;
+}
