@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, r, c;
+    cin >> n >> r >> c;
+
+    if ((r + c) % 2 == 0)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (i % 2 == 0)
+            {
+                for (int j = 0; j < n / 2; j++)
+                    cout << "v.";
+                if (n % 2 != 0)
+                    cout << "v";
+            }
+            else
+            {
+                for (int j = 0; j < n / 2; j++)
+                    cout << ".v";
+                if (n % 2 != 0)
+                    cout << ".";
+            }
+            cout << '\n';
+        }
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (i % 2 == 1)
+            {
+                for (int j = 0; j < n / 2; j++)
+                    cout << "v.";
+                if (n % 2 != 0)
+                    cout << "v";
+            }
+            else
+            {
+                for (int j = 0; j < n / 2; j++)
+                    cout << ".v";
+                if (n % 2 != 0)
+                    cout << ".";
+            }
+            cout << '\n';
+        }
+    }
+
+    return 0;
+}
