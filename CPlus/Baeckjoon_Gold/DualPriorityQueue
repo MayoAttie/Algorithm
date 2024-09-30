@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <set>
+
+using namespace std;
+
+class PriorityDeque
+{
+    multiset<int> que;
+
+public:
+    void Push(int n)
+    {
+        que.insert(n);
+    }
+    int Pop_front()
+    {
+        auto it = que.begin();
+        int val = *it;
+        que.erase(it);
+        return val;
+    }
+    int Pop_back()
+    {
+        auto it = prev(que.end());
+        int val = *it;
+        que.erase(it);
+        return val;
+    }
+    bool Empty()
+    {
+        return que.empty();
+    }
+    int Get_min()
+    {
+        return *que.begin();
+    }
+    int Get_max()
+    {
+        return *prev(que.end());
+    }
+};
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+        
+        PriorityDeque que;
+        for (int i = 0; i < n; i++)
+        {
+            char type;
+            int num;
+            cin >> type >> num;
+
+            if (type == 'I')
+            {
+                que.Push(num);
+            }
+            else
+            {
+                if (!que.Empty())
+                {
+                    if (num == 1)
+                        que.Pop_back();
+                    else
+                        que.Pop_front();
+                }
+            }
+        }
+
+        if (que.Empty())
+            cout << "EMPTY\n";
+        else
+            cout << que.Get_max() << ' ' << que.Get_min() << '\n';
+    }
+
+    return 0;
+}
