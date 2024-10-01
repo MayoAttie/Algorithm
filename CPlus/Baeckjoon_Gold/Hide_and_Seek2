@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <map>
+
+using namespace std;
+int n, k;
+map<int, int> result;
+int dist[100001];
+int cnts[100001];
+void bfs(int start)
+{
+    queue<int> que;
+    que.push(start);
+    dist[start] = 0;
+    cnts[start] = 1;
+    while (!que.empty())
+    {
+        int cur = que.front();
+        que.pop();
+
+        vector<int> next = { cur - 1, cur + 1, cur * 2 };
+
+        for (int n : next)
+        {
+            if (n < 0 || n>100000)
+                continue;
+
+            if (dist[n] == -1)
+            {
+                dist[n] = dist[cur] + 1;
+                cnts[n] = cnts[cur];
+                que.push(n);
+            }
+            else if (dist[n] == dist[cur] + 1)
+                cnts[n] += cnts[cur];
+        }
+    }
+    
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    fill(dist, dist + 100001, -1);
+    fill(cnts, cnts + 100001, 0);
+
+
+    cin >> n >> k;
+    bfs(n);
+    
+    cout << dist[k] << '\n' << cnts[k];
+
+    return 0;
+}
