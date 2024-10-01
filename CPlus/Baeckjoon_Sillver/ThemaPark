@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+int ToMin(string time, bool isStart) 
+{
+    int h = stoi(time.substr(0, 2));
+    int m = stoi(time.substr(2, 2));
+    int totalMinutes = h * 60 + m;
+
+    if (isStart)
+        return totalMinutes - 10; 
+    else
+        return totalMinutes + 10; 
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    vector<pair<int, int>> arr = { {600, 600}, {1320, 1320} };
+
+    int n;
+    cin >> n;
+    
+    for (int i = 0; i < n; i++) 
+    {
+        string a,b;
+        cin >> a >> b;
+      
+        int start = ToMin(a, true);  
+        int end = ToMin(b, false);   
+
+        arr.push_back({ start, end });
+    }
+
+    sort(arr.begin(), arr.end());
+
+    int answer = 0;
+    int last = 600;
+
+    for (const auto& r : arr) 
+    {
+        int run = r.first;
+        int stop = r.second;
+        answer = max(answer, run - last);
+        last = max(last, stop);
+    }
+
+    cout << answer << "\n";
+
+    return 0;
+}
