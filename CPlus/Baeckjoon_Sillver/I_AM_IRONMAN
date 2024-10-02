@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <map>
+
+using namespace std;
+
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, p;
+    cin >> n >> p;
+    int w, l, g;
+    cin >> w >> l >> g;
+
+    vector<string> wins;
+    vector<string> loses;
+
+    for(int i = 0; i < p; i++)
+    {
+        string a, b;
+        cin >> a >> b;
+        if (b == "W")
+            wins.push_back(a);
+        else
+            loses.push_back(a);
+    }
+
+    int score = 0;
+    bool isWin = false;
+    for (int i = 0; i < n; i++)
+    {
+        string name;
+        cin >> name;
+        auto it = find(wins.begin(), wins.end(), name);
+
+        if (it != wins.end())
+            score += w;
+        else
+        {
+            score -= l;
+            score = max(score, 0);
+        }
+        if (score >= g)
+            isWin = true;
+    }
+
+    if (isWin)
+        cout << "I AM NOT IRONMAN!!";
+    else
+        cout << "I AM IRONMAN!!";
+    
+
+    return 0;
+}
