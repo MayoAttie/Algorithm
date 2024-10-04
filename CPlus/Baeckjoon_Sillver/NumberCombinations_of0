@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+
+long long twoCount(long long n) 
+{
+    long long num = 0;
+    while (n != 0) 
+    {
+        n /= 2;
+        num += n;
+    }
+    return num;
+}
+
+long long fiveCount(long long n) 
+{
+    long long num = 0;
+    while (n != 0) 
+    {
+        n /= 5;
+        num += n;
+    }
+    return num;
+}
+
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    long long n, m;
+    cin >> n >> m;
+
+    long long twos = twoCount(n) - twoCount(n - m) - twoCount(m);
+    long long fives = fiveCount(n) - fiveCount(n - m) - fiveCount(m);
+
+    cout << min(twos, fives);
+
+
+    return 0;
+}
