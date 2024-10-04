@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N, B, H, W;
+    cin >> N >> B >> H >> W;
+
+    int answer = 987654321;
+
+    for (int h = 0; h < H; h++)
+    {
+        int cost;
+        cin >> cost;
+
+        vector<int> arr(W);
+        for (int w = 0; w < W; w++)
+        {
+            int n;
+            cin >> n;
+            if (n >= N && cost * N <= B)
+            {
+                answer = min(answer, cost * N);
+            }
+        }
+    }
+
+    if (answer != 987654321)
+        cout << answer;
+    else
+        cout << "stay home";
+
+    return 0;
+}
