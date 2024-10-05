@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    string str;
+    cin >> str;
+    
+    int n;
+    cin >> n;
+
+    vector<string> arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 1; j <= 26; j++)
+        {
+            for (char& ch : arr[i])
+            {
+                ch = (ch - 'a' + 1) % 26 + 'a';  
+            }
+
+            if (str.find(arr[i]) != string::npos)
+            {
+                for (char ch : str)
+                {
+                    cout << static_cast<char>(((ch - 'a') - j + 26) % 26 + 'a');
+                }
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
