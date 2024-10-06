@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string>
+using namespace std;
+
+const int INF = 10000;
+
+vector<int> sieve()
+{
+    vector<bool> isPrime(INF+1, true);
+    vector<int> result;
+
+    isPrime[0] = isPrime[1] = false;
+
+    for (int i = 2; i < INF; i++)
+    {
+        if (isPrime[i])
+        {
+            result.push_back(i);
+            for (int j = i * 2; j <= INF; j +=i)
+            {
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    return result;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    vector<int> primes = sieve();
+
+    for (int i = 0; i < primes.size(); i++)
+    {
+        int num = primes[i] * primes[i + 1];
+        if(num > n)
+        {
+            cout << num;
+            break;
+        }
+    }
+
+    return 0;
+}
