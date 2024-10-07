@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string>
+using namespace std;
+int timeToInt(string time)
+{
+    int hour = stoi(time.substr(0, 2));
+    int min = stoi(time.substr(3, 2));
+
+    int nTime = hour * 60 + min;  
+    return nTime;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    int answer = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        string t, len;
+        cin >> t >> len;
+
+        int curTime = timeToInt(t);  
+        int time = stoi(len);        
+
+        for (int j = 0; j < time; j++)
+        {
+            if (curTime >= 420 && curTime < 1140)
+                answer += 10;
+            else
+                answer += 5;
+
+            curTime += 1;
+
+            if (curTime == 1440)
+                curTime = 0;
+        }
+    }
+    cout << answer << endl; 
+}
