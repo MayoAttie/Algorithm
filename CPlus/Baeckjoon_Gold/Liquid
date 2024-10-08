@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <string>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+   
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int left = 0;
+    int right = n - 1;
+
+    pair<int, int> answer = { arr[left], arr[right] };  
+    int minVal = abs(arr[right] + arr[left]);  
+
+    while (left < right)
+    {
+        int val = arr[right] + arr[left];
+        if (abs(val) < minVal)
+        {
+            minVal = abs(val);
+            answer = { arr[left], arr[right] };
+        }
+
+        if (val < 0)
+        {
+            left++;  
+        }
+        else
+        {
+            right--;   
+        }
+    }
+
+    cout << answer.first << ' ' << answer.second;
+
+}
