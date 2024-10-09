@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <string>
+#include <climits>
+using namespace std;
+
+int n, k;
+vector<pair<int, int>> arr;
+int answer = INT_MAX;
+int getDist(pair<int, int> a, pair<int, int> b)
+{
+    int result = abs(a.first - b.first) + abs(a.second - b.second);
+    return result;
+}
+
+void backtracking(int start, vector<int>& select)
+{
+    if (select.size() == k)
+    {
+        int tmp = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            int minDist = INT_MAX;
+            for (int j : select)
+            {
+                int d = getDist(arr[i], arr[j]);
+                minDist = min(d, minDist);
+            }
+            tmp = max(tmp, minDist);
+        }
+
+        answer = min(answer, tmp);
+        return;
+    }
+
+    for (int i = start; i < n; i++)
+    {
+        select.push_back(i);
+        backtracking(i + 1, select);
+        select.pop_back();
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+   
+    cin >> n >> k;
+
+    arr.resize(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i].first >> arr[i].second;
+    }
+
+    vector<int> tmp;
+    backtracking(0, tmp);
+    cout << answer;
+
+
+
+}
