@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <string>
+#include <climits>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+   
+    int n, l;
+    cin >> n >> l;
+
+    vector<pair<int, int>> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        arr[i] = { a,b };
+    }
+    sort(arr.begin(), arr.end());
+
+    int answer = 0;
+    int cur = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        int start = arr[i].first;
+        int end = arr[i].second;
+
+        if (cur >= end)
+            continue;
+
+        if (cur < start)
+            cur = start;
+
+        int dist = end - cur;
+        int tmp = (dist + l - 1) / l;
+
+        answer += tmp;
+        cur += tmp * l;
+    }
+
+    cout << answer;
+}
