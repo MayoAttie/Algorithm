@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <stack>
+#include <string>
+#include <climits>
+using namespace std;
+
+int V, E;
+vector<vector<int>> graph;
+vector<int> indexs, low, visited;
+stack<int> stk;
+vector<vector<int>> answer;
+int idx = 0;
+
+void dfs(int n)
+{
+    indexs[n] = low[n] = idx++;
+    visited[n] = 1;
+    stk.push(n);
+
+    for (int node : graph[n])
+    {
+        if (indexs[node] == -1)
+        {
+            dfs(node);
+            low[n] = min(low[n], low[node]);
+        }
+        else if (visited[node] == 1)
+            low[n] = min(low[n], indexs[node]);
+    }
+
+    if (low[n] == indexs[n])
+    {
+        vector<int> scc;
+        int w = -1;
+        while (w != n)
+        {
+            w = stk.top();
+            stk.pop();
+            scc.push_back(w);
+            visited[w] = -1;
+        }
+
+        sort(scc.begin(), scc.end());
+        answer.push_back(scc);
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+   
+    cin >> V >> E;
+    graph.resize(V + 1);
+    indexs.assign(V + 1,-1);
+    low.assign(V + 1,-1);
+    visited.assign(V + 1,0);
+
+    for (int i = 0; i < E; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+    }
+
+    for (int i = 1; i <= V; i++)
+    {
+        if (indexs[i] == -1)
+            dfs(i);
+    }
+    
+    cout << answer.size() << '\n';
+    sort(answer.begin(), answer.end());
+
+    for (auto i : answer)
+    {
+        for (int j : i)
+        {
+            cout << j << ' ';
+        }
+        cout << "-1\n";
+    }
+}
