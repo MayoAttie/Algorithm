@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <string>
+#include <climits>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+   
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+
+    for (int i =0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int left = 0;
+    int right = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (left == right)
+            left += arr[i];
+        else if (left < right)
+            left += arr[i];
+        else
+            right += arr[i];
+    }
+
+    int cnt = 0;
+    int need = abs(left - right);
+
+    if (need > 0)
+    {
+        if (need >= 100)
+        {
+            cnt += (need / 100);
+            need %= 100;
+        }
+        if (need >= 50)
+        {
+            cnt += (need / 50);
+            need %= 50;
+        }
+        if (need >= 20)
+        {
+            cnt += (need / 20);
+            need %= 20;
+        }
+        if (need >= 10)
+        {
+            cnt += (need / 10);
+            need %= 10;
+        }
+        if (need >= 5)
+        {
+            cnt += (need / 5);
+            need %= 5;
+        }
+        if (need >= 2)
+        {
+            cnt += (need / 2);
+            need %= 2;
+        }
+        if (need >= 1)
+        {
+            cnt += need;
+            need = 0;
+        }
+    }
+
+    cout << cnt;
+}
