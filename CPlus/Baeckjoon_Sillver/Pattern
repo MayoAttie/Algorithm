@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <stack>
+#include <string>
+#include <climits>
+using namespace std;
+
+int board[3][3] = { {1,2,3},{4,5,6},{7,8,9} };
+vector<vector<bool>> visited(3, vector<bool>(3, false));
+
+bool checkPoint(int x1, int y1, int x2, int y2) 
+{
+    if ((x1 + x2) % 2 == 0 && (y1 + y2) % 2 == 0) 
+    {
+        int midx = (x1 + x2) / 2;
+        int midy = (y1 + y2) / 2;
+        if (!visited[midx][midy]) 
+            return true; 
+    }
+    return false;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int l;
+    cin >> l;
+    vector<int> arr(l);
+
+    for (int i = 0; i < l; i++)
+    {
+        cin >> arr[i];
+    }
+
+    pair<int, int> cur;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[i][j] == arr[0])
+            {
+                cur.first = i;
+                cur.second = j;
+                visited[i][j] = true;
+                break;
+            }
+        }
+    }
+    for (int i = 1; i < l; i++)
+    {
+        pair<int, int> next;
+
+        for (int x = 0; x < 3; x++) 
+        {
+            for (int y = 0; y < 3; y++) 
+            {
+                if (board[x][y] == arr[i]) 
+                {
+                    next.first = x;
+                    next.second = y;
+                    break;
+                }
+            }
+        }
+
+        if (visited[next.first][next.second]) 
+        {
+            cout << "NO";
+            return 0;
+        }
+
+        if (checkPoint(cur.first, cur.second, next.first, next.second))
+        {
+            cout << "NO";
+            return 0;
+        }
+
+        visited[next.first][next.second] = true;
+        cur = next;
+    }
+
+    cout << "YES";
+}
