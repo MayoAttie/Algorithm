@@ -1,0 +1,118 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <stack>
+#include <string>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+    vector<vector<char>> arr(n, vector<char>(m));
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    bool isFound = false;
+    pair<int, int> start;
+    pair<int, int> end;
+
+    for (int i = 0; i < n && !isFound; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (arr[i][j] == '#')
+            {
+                isFound = true;
+                start.first = i;
+                start.second = j;
+                break;
+            }
+        }
+    }
+    isFound = false;
+    for (int i = n - 1; i >= 0 && !isFound; i--)
+    {
+        for (int j = m - 1; j >= 0; j--)
+        {
+            if (arr[i][j] == '#')
+            {
+                isFound = true;
+                end.first = i;
+                end.second = j;
+                break;
+            }
+        }
+    }
+
+    int topLen = 0, bottomLen = 0, leftLen = 0, rightLen = 0;
+
+    for (int i = start.second; i < m; i++)
+    {
+        if (arr[start.first][i] == '.')
+            break;
+        topLen++;
+    }
+
+    for (int i = start.first; i < n; i++)
+    {
+        if (arr[i][start.second] == '.')
+            break;
+        leftLen++;
+    }
+
+    for (int i = end.second; i >= 0; i--)
+    {
+        if (arr[end.first][i] == '.')
+            break;
+        bottomLen++;
+    }
+
+    for (int i = end.first; i >= 0; i--)
+    {
+        if (arr[i][end.second] == '.')
+            break;
+        rightLen++;
+    }
+    //cout << topLen << ' ' << leftLen << ' ' << bottomLen << ' ' << rightLen;
+      
+    vector<int> result = { topLen, bottomLen, leftLen, rightLen };
+    for (int i = 0; i < 4; i++)
+    {
+        int my = result[i];
+        int same = 0;
+        for (int j = 0; j < 4; j++)
+        {
+            if (i == j)
+                continue;
+            if (my == result[j])
+                same++;
+        }
+        if (same == 0)
+        {
+            switch (i)
+            {
+            case 0: cout << "UP";
+                break;
+            case 1: cout << "DOWN";
+                break;
+            case 2: cout << "LEFT";
+                break;
+            case 3: cout << "RIGHT";
+                break;
+            }
+        }
+    }
+}
