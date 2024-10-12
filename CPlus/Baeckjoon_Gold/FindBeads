@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <stack>
+#include <string>
+#include <climits>
+using namespace std;
+
+const int INF = 100;
+int n, m;
+vector<vector<bool>> heavy(INF, vector<bool>(INF, false));
+vector<vector<bool>> light(INF, vector<bool>(INF, false));
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    cin >> n >> m;
+
+    for (int i = 0; i <m; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        heavy[a][b] = true;
+        light[b][a] = true;
+    }
+
+    for (int k = 1; k <= n; k++)
+    {
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                if (heavy[i][k] && heavy[k][j])
+                    heavy[i][j] = true;
+                if (light[i][k] && light[k][j])
+                    light[i][j] = true;
+            }
+        }
+    }
+
+    int answer = 0;
+    int mid = (n + 1) / 2;
+
+    for (int i = 1; i <= n; i++)
+    {
+        int hCnt = 0;
+        int lCnt = 0;
+
+        for (int j = 1; j <= n; j++)
+        {
+            if (heavy[i][j])
+                hCnt++;
+            if (light[i][j])
+                lCnt++;
+        }
+
+        if (hCnt >= mid || lCnt >= mid)
+            answer++;
+    }
+
+    cout << answer;
+}
