@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <stack>
+#include <string>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    if (n == 1)
+    {
+        cout << "*";
+        return 0;
+    }
+
+    vector<vector<char>> arr(n, vector<char>(n, ' '));
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            arr[0][i] = '*';
+            arr[i][0] = '*';
+            arr[n - 1][i] = '*';
+            arr[i][n - 1] = '*';
+        }
+        arr[i][i] = '*';
+        arr[i][n - i - 1] = '*';
+    }
+    
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << arr[i][j];
+        }
+        cout <<'\n';
+    }
+}
