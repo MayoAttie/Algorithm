@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <stack>
+#include <string>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int t, idx = 1;
+    cin >> t;
+
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+        }
+
+        while (n>2)
+        {
+            vector<int> tmp;
+            for (int i = 0; i < n / 2; i++)
+            {
+                int num = arr[i] + arr[n - i - 1];
+                tmp.push_back(num);
+            }
+            if (n % 2 != 0)
+            {
+                int num = arr[n / 2];
+                tmp.push_back((num + num));
+            }
+            n = tmp.size();
+            arr = tmp;
+        }
+        if (arr[0] > arr[1])
+            cout << "Case #" << idx << ": Alice\n";
+        else
+            cout << "Case #" << idx << ": Bob\n";
+        idx++;
+    }
+}
