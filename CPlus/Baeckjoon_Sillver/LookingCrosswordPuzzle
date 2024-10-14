@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <unordered_map>
+#include <string>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int r, c;
+    cin >> r >> c;
+
+    vector<vector<char>> arr(r, vector<char>(c));
+
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    vector<string> result;
+    for (int i = 0; i < r; i++)
+    {
+        string word = "";
+        for (int j = 0; j < c; j++)
+        {
+            if (arr[i][j] == '#')
+            {
+                if (word.size() >= 2)
+                    result.push_back(word);
+                word = "";
+            }
+            else
+                word += arr[i][j];
+        }
+        if (word.size() >= 2)
+            result.push_back(word);
+    }
+
+    for (int j = 0; j < c; j++)
+    {
+        string word = "";
+        for (int i = 0; i < r; i++)
+        {
+            if (arr[i][j] == '#')
+            {
+                if (word.size() >= 2)
+                    result.push_back(word);
+                word = "";
+            }
+            else
+                word += arr[i][j];
+        }
+        if (word.size() >= 2)
+            result.push_back(word);
+    }
+
+    sort(result.begin(), result.end());
+    cout << result[0];
+}
