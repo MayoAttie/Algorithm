@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int c, n;
+    cin >> c >> n;
+
+    vector<pair<int, int>> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i].first >> arr[i].second;
+    }
+
+    vector<int> dp(c+101, 987654321);
+    dp[0] = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        int cost, num;
+        cost = arr[i].first;
+        num = arr[i].second;
+
+        for (int j = num; j <= c+100; j++)
+        {
+            dp[j] = min(dp[j], dp[j - num] + cost);
+        }
+    }
+
+    int answer = *min_element(dp.begin() + c, dp.end());
+    cout << answer;
+    
+
+    return 0;
+}
