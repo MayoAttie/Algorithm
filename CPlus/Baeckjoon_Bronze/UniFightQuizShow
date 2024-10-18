@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n;
+    string name, str;
+    cin >> n >> name;
+
+    vector<pair<string, string>> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        string a, b;
+        cin >> a >> b;
+        arr[i] = { a,b };
+        if (a == name)
+            str = b;
+    }
+
+    int cnt = 0;
+    for (auto i : arr)
+    {
+        if (i.first == name)
+            break;
+
+        if (i.second == str)
+            cnt++;
+    }
+
+    cout << cnt;
+
+    return 0;
+}
