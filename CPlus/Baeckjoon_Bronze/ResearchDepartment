@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int P;
+    cin >> P;
+
+    int answer[4] = { 0, 0, 0, 0 }; 
+
+    for (int i = 0; i < P; ++i) 
+    {
+        int G_P, C_P, N_P;
+        cin >> G_P >> C_P >> N_P;
+
+
+        if (G_P == 1) 
+        {
+            answer[3]++;
+        }
+        else 
+        {
+            if (C_P == 1 || C_P == 2) 
+                answer[0]++;
+            else if (C_P == 3)
+                answer[1]++;
+            else 
+                answer[2]++;
+        }
+    }
+
+    for (int i = 0; i < 4; ++i) 
+        cout << answer[i] << '\n';
+
+
+    return 0;
+}
