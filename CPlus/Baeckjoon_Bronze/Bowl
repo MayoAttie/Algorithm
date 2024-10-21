@@ -1,0 +1,34 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    string str;
+    cin >> str;
+
+    char pre = str[0];
+    int answer = 10;
+    for (int i = 1; i < str.size(); i++)
+    {
+        if (pre == str[i])
+            answer += 5;
+        else
+        {
+            answer += 10;
+            pre = str[i];
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
