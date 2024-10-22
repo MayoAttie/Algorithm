@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        int n;
+        cin >> n;
+        vector<int> temp(n);
+        map<int, int> count; 
+
+
+        for (int i = 0; i < n; i++) 
+        {
+            cin >> temp[i];
+            count[temp[i]]++;
+        }
+
+        map<int, bool> dele;
+        for (auto i : count) 
+        {
+            if (i.second < 6) 
+            {
+                dele[i.first] = true;
+            }
+        }
+
+        map<int, pair<int, pair<int, int>>> team;
+        int idx = 1; 
+
+        for (int i = 0; i < n; i++) 
+        {
+            if (!dele[temp[i]]) 
+            {
+                if (team.find(temp[i]) != team.end()) 
+                {
+                    if (team[temp[i]].first < 4) 
+                    {
+                        team[temp[i]].first++;
+                        team[temp[i]].second.first += idx;
+                    }
+                    else if (team[temp[i]].first == 4) 
+                    {
+                        team[temp[i]].first++;
+                        team[temp[i]].second.second = idx;
+                    }
+                }
+                else 
+                    team[temp[i]] = { 1, {idx, 0} };
+                idx++;
+            }
+        }
+
+        auto result = min_element(
+            team.begin(),
+            team.end(),
+            [](const auto& a, const auto& b) 
+            {
+                if (a.second.second.first == b.second.second.first) 
+                    return a.second.second.second < b.second.second.second;
+                return a.second.second.first < b.second.second.first;
+            }
+        );
+
+        cout << result->first << '\n';
+    }
+
+    return 0;
+}
