@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) 
+    {
+        if (i == 1) 
+            cout << string(n, '*') + string(2 * (n - 1) - 1, ' ') + string(n, '*') << '\n';
+        else if (i != n) 
+        {
+            cout << string(i - 1, ' ') + "*" + string(n - 2, ' ') + "*"
+                + string(max(0, 2 * (n - i) - 1), ' ') + "*"
+                + string(n - 2, ' ') + "*" << '\n';
+        }
+        else 
+            cout << string(i - 1, ' ') + "*" + string(n - 2, ' ') + "*" + string(max(0, 2 * (n - i) - 1), ' ') + string(n - 2, ' ') + "*" << '\n';
+    }
+    for (int i = n; i > 0; i--) 
+    {
+        if (i == 1) 
+            cout << string(n, '*') + string(2 * (n - 1) - 1, ' ') + string(n, '*') << '\n';
+        else if (i != n) 
+            cout << string(i - 1, ' ') + "*" + string(n - 2, ' ') + "*" + string(max(0, 2 * (n - i) - 1), ' ') + "*" + string(n - 2, ' ') + "*" << '\n';
+    }
+
+    return 0;
+}
