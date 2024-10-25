@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int n;
+    cin >> n;
+    vector<int> query(n);
+    map<int, int> dict;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> query[i];
+        dict[query[i]] = i;
+    }
+
+    int m;
+    cin >> m;
+    priority_queue<int> que;
+    while (m--)
+    {
+        que = priority_queue<int>(); 
+        int l, r;
+        cin >> l >> r;
+
+        map<int, int> dic = dict; 
+        for (int j = l; j <= r; j++)
+        {
+            que.push(j); 
+        }
+
+        vector<int> arr = query; 
+        for (int j = n - 1; j >= 0; j--)
+        {
+            if (!que.empty() && que.top() > arr[j] && (arr[j] >= l && arr[j] <= r))
+            {
+                int tmp = arr[j];
+                arr[j] = que.top();
+                que.pop();
+
+                arr[dic[arr[j]]] = tmp;
+                dic[tmp] = dic[arr[j]];
+                dic[arr[j]] = j;
+            }
+            else if (!que.empty() && que.top() == arr[j])
+                que.pop();
+        }
+
+        for (int i : arr)
+        {
+            cout << i << ' ';
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
