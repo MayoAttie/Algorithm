@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int n;
+	cin >> n;
+	vector<vector<int>> arr(n, vector<int>(n));
+	vector<vector<int>> boolArr(n, vector<int>(n));
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> boolArr[i][j];
+		}
+	}
+
+	int answer = 0;
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			for (int k = 0; k < n; k++)
+			{
+				if (arr[i][k] && boolArr[k][j])
+				{
+					answer++;
+					break;
+				}
+			}
+		}
+	}
+
+	cout << answer;
+}
