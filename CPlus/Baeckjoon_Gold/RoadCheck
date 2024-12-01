@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+const int INF = 987654321;
+int n, m;
+vector<int> dist;
+
+int dijkstra(const vector<vector<pair<int, int>>>& graph)
+{
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> que;
+    que.push({ 0,1 });
+
+    dist[1] = 0;
+
+    while (!que.empty())
+    {
+        int curNode = que.top().second;
+        int curCost = que.top().first;
+        que.pop();
+
+        if (curNode == n)
+        {
+            return dist[curNode];
+        }
+
+        for (auto& i : graph[curNode])
+        {
+            int nextNode = i.first;    
+            int nextCost = i.second;
+
+            if (dist[nextNode] > dist[curNode] + nextCost)
+            {
+                dist[nextNode] = dist[curNode] + nextCost;
+                que.push({ dist[nextNode], nextNode });
+            }
+        }
+    }
+
+    return -1;
+}
+
+int main()
+{
+    cin >> n >> m;
+
+    vector<vector<pair<int, int>>> graph(n + 1);
+    dist.resize(n + 1, INF);
+    vector<tuple<int, int, int>> edges;
+    for (int i = 0; i < m; i++)
+    {
+        int a, b, c;
+        cin >> a >> b >> c;
+        graph[a].push_back({ b,c });
+        graph[b].push_back({ a,c });
+        edges.emplace_back( a,b,c );
+    }
+
+    int minCost = dijkstra(graph);
+    int answer = 0;
+
+    for (auto i : edges)
+    {
+        vector<vector<pair<int, int>>> tmp(graph);
+        dist.assign(n + 1, INF);
+
+        int a, b, c;
+        tie(a, b, c) = i;
+
+        tmp[a].erase(remove_if(tmp[a].begin(), tmp[a].end(),
+            [&](const pair<int, int>& e) { return e.first == b && e.second == c; }),
+            tmp[a].end());
+        tmp[b].erase(remove_if(tmp[b].begin(), tmp[b].end(),
+            [&](const pair<int, int>& e) { return e.first == a && e.second == c; }),
+            tmp[b].end());
+
+        int result = dijkstra(tmp);
+
+        if (result == -1)
+        {
+            cout << -1;
+            return 0;
+        }
+        else
+        {
+            int differ = result - minCost;
+            answer = max(differ, answer);
+        }
+    }
+
+    cout << answer;
+
+
+    return 0;
+}
+
