@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <limits>
+
+using namespace std;
+
+
+int main() 
+{
+
+    int C;
+    const long long MAX = 100000000;
+    long long N, T, L;
+    string S;
+
+    cin >> C;
+
+    while (C--)
+    {
+        cin >> S >> N >> T >> L;
+        if (S == "O(N)")
+        {
+            if (N * T <= (L * MAX))
+            {
+                cout << "May Pass.\n";
+            }
+            else
+            {
+                cout << "TLE!" << "\n";
+            }
+        }
+        else if (S == "O(N^2)")
+        {
+            if (N >= 31623) 
+            {
+                cout << "TLE!\n";
+            }
+            else
+            {
+                if (N * N * T <= (L * MAX))
+                {
+                    cout << "May Pass.\n";
+                }
+                else
+                {
+                    cout << "TLE!\n";
+                }
+            }
+        }
+        else if (S == "O(N^3)")
+        {
+            if (N >= 1001) 
+            {
+                cout << "TLE!\n";
+            }
+            else
+            {
+                if (N * N * N * T <= (L * MAX))
+                {
+                    cout << "May Pass.\n";
+                }
+                else
+                {
+                    cout << "TLE!\n";
+                }
+            }
+        }
+        else if (S == "O(2^N)")
+        {
+            if (N >= 30) 
+            {
+                cout << "TLE!\n";
+            }
+            else
+            {
+                long long result = 1;
+                for (int i = 0; i < N; i++)
+                {
+                    result *= 2;
+                }
+                if (result * T <= (L * MAX))
+                {
+                    cout << "May Pass.\n";
+                }
+                else
+                {
+                    cout << "TLE!\n";
+                }
+            }
+        }
+        else if (S == "O(N!)")
+        {
+            if (N >= 13) 
+            {
+                cout << "TLE!\n";
+            }
+            else
+            {
+                long long result = 1;
+                for (long long i = 1; i <= N; i++)
+                {
+                    result *= i;
+                }
+                if (result * T <= (L * MAX))
+                {
+                    cout << "May Pass.\n";
+                }
+                else
+                {
+                    cout << "TLE!\n";
+                }
+            }
+        }
+    }
+    return 0;
+}
