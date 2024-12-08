@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+using namespace std;
+
+int main()
+{
+	int t, idx=1;
+	cin >> t;
+	
+	while (t--)
+	{
+		vector<vector<char>> board(9, vector<char>(9));
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				cin >> board[i][j];
+			}
+		}
+
+		bool answer = true;
+		set<int> _set;
+		for (int i = 0; i < 9 && answer; i++)
+		{
+			_set.clear();
+			for (int j = 0; j < 9; j++)
+			{
+				int num = board[i][j];
+				if (_set.find(num) == _set.end())
+					_set.insert(num);
+				else
+				{
+					answer = false;
+					break;
+				}
+			}
+		}
+
+		for (int i = 0; i < 9 && answer; i++)
+		{
+			_set.clear();
+			for (int j = 0; j < 9; j++)
+			{
+				int num = board[j][i];
+				if (_set.find(num) == _set.end())
+					_set.insert(num);
+				else
+				{
+					answer = false;
+					break;
+				}
+			}
+		}
+
+		for (int x = 0; x < 3 && answer; x++)
+		{
+			for (int y = 0; y < 3 && answer; y++)
+			{
+				_set.clear();
+				for (int i = x*3; i < (x*3)+3 && answer; i++)
+				{
+					for (int j = y*3; j < (y*3)+3; j++)
+					{
+						int num = board[j][i];
+						if (_set.find(num) == _set.end())
+							_set.insert(num);
+						else
+						{
+							answer = false;
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+		if (answer)
+			cout << "Case " << idx << ": CORRECT\n";
+		else
+			cout << "Case " << idx << ": INCORRECT\n";
+
+		idx++;
+	}
+}
