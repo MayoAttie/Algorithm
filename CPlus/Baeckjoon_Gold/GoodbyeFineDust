@@ -1,0 +1,110 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+
+vector<vector<int>> arr;
+queue<pair<int, int>> que;
+vector<pair<int, int>> airCon;
+int dx[4] = { 1,0,-1,0 };
+int dy[4] = { 0,1,0,-1 };
+int r, c, t;
+
+void airConFunction(pair<int, int> air1, pair<int, int> air2)
+{
+	for (int i = air1.first - 1; i > 0; i--) 
+		arr[i][0] = arr[i - 1][0];
+	for (int i = 0; i < c - 1; i++) 
+		arr[0][i] = arr[0][i + 1];
+	for (int i = 0; i < air1.first; i++) 
+		arr[i][c - 1] = arr[i + 1][c - 1];
+	for (int i = c - 1; i > 1; i--) 
+		arr[air1.first][i] = arr[air1.first][i - 1];
+	arr[air1.first][1] = 0; 
+
+	for (int i = air2.first + 1; i < r - 1; i++) 
+		arr[i][0] = arr[i + 1][0];
+	for (int i = 0; i < c - 1; i++) 
+		arr[r - 1][i] = arr[r - 1][i + 1];
+	for (int i = r - 1; i > air2.first; i--) 
+		arr[i][c - 1] = arr[i - 1][c - 1];
+	for (int i = c - 1; i > 1; i--) 
+		arr[air2.first][i] = arr[air2.first][i - 1];
+	arr[air2.first][1] = 0; 
+}
+
+int main()
+{
+	cin >> r >> c >> t;
+
+	arr.resize(r, vector<int>(c));
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+		{
+			cin >> arr[i][j];
+			if (arr[i][j] > 0)
+				que.push({ i,j });
+			else if (arr[i][j] == -1)
+				airCon.push_back({ i,j });
+		}
+	}
+
+	pair<int, int> airPos1 = { airCon[0].first, airCon[0].second };
+	pair<int, int> airPos2 = { airCon[1].first, airCon[1].second };
+
+	while (t--)
+	{
+		vector<vector<int>> tmp = arr;
+		while (!que.empty())
+		{
+			int curX = que.front().first;
+			int curY = que.front().second;
+			que.pop();
+			int val = arr[curX][curY];
+			int divided = val / 5;
+			int cnt = 0;
+
+			for (int j = 0; j < 4; j++)
+			{
+				int nx = curX + dx[j];
+				int ny = curY + dy[j];
+				if (nx >= 0 && nx < r && ny >= 0 && ny < c)
+				{
+					if (arr[nx][ny] != -1)
+					{
+						tmp[nx][ny] += divided;
+						cnt++;
+					}
+				}
+			}
+			tmp[curX][curY] -= divided * cnt;
+		}
+		arr = tmp;
+		
+		airConFunction(airPos1, airPos2);
+
+		for (int i = 0; i < r; i++)
+		{
+			for (int j = 0; j < c; j++)
+			{
+				if (arr[i][j] > 0)
+					que.push({ i,j });
+			}
+		}
+	}
+
+	int answer = 0;
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+		{
+			if (arr[i][j] > 0)
+				answer += arr[i][j];
+		}
+	}
+	cout << answer;
+	
+}

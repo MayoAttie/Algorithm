@@ -172,6 +172,7 @@
         "xstddef": "c",
         "submit": "c",
         "n_and_m_12": "c",
-        "two_complement": "c"
+        "two_complement": "c",
+        "goodbyefinedust": "cpp"
     }
 }
