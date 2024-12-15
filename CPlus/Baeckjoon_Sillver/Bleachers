@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <array>
+#include <numeric>
+using namespace std;
+
+vector<vector<int>> arr;
+
+int solution(int d1, int d2)
+{
+	int result = 0;
+	for (int r = d1; r <= d2; r++)
+	{
+		for (int i = 1; i <= r; i++)
+		{
+			int g = gcd(r, i);
+			int x = r / g;
+			int y = i / g;
+
+			if (!arr[x - 1][y - 1])
+			{
+				arr[x - 1][y - 1] = 1;
+				result++;
+			}
+		}
+	}
+	return result;
+}
+
+int main()
+{
+	int d1, d2;
+	cin >> d1 >> d2;
+	arr.resize(d2, vector<int>(d2,0));
+	cout << solution(d1, d2);
+}
