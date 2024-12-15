@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <array>
+#include <queue>
+using namespace std;
+
+const int MAX = 101;
+vector<vector<int>> board;
+
+int dx[4] = { 1,0,-1,0 };
+int dy[4] = { 0,-1,0,1 };
+
+
+void Sumulation(int x, int y, int d, int g)
+{
+	vector<int> dir;
+	dir.push_back(d);
+	board[x][y] = 1;
+	int nx = x + dx[d];
+	int ny = y + dy[d];
+	board[nx][ny] = 1;
+
+	for (int i = 1; i <= g; i++)
+	{
+		int len = dir.size();
+		for (int j = len - 1; j >= 0; j--)
+		{
+			int next = (dir[j] + 1) % 4;
+			nx += dx[next];
+			ny += dy[next];
+			board[nx][ny] = 1;
+			dir.push_back(next);
+		}
+	}
+}
+
+
+int main()
+{
+	int n;
+	cin >> n;
+	vector<array<int,4>> inputs;
+	inputs.resize(n);
+	board.resize(MAX, vector<int>(MAX,0));
+	for (int i = 0; i < n; i++)
+	{
+		int x, y, d, g;
+		cin >> x >> y >> d >> g;
+		inputs[i] = { x,y,d,g };
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		int x = inputs[i][0];
+		int y = inputs[i][1];
+		int d = inputs[i][2];
+		int g = inputs[i][3];
+
+		Sumulation(x, y, d, g);
+	}
+
+	int answer = 0;
+	for (int i = 0; i < MAX-1; i++)
+	{
+		for (int j = 0; j < MAX - 1; j++)
+		{
+			if (board[i][j] && board[i + 1][j] && board[i][j + 1] && board[i + 1][j + 1])
+			{
+				answer++;
+			}
+		}
+	}
+
+	cout << answer;
+}
