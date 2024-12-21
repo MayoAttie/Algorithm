@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <array>
+using namespace std;
+
+int day, target;
+vector<vector<int>> scores(2,vector<int>(3));
+int answer = 0;
+
+void SpyProcess(int cnt, int score, int last)
+{
+	if (cnt == day)
+	{
+		if (score >= target)
+			answer++;
+		return;
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			int tmpScore = 0;
+			tmpScore = scores[i][j];
+			if (last == j)
+			{
+				tmpScore /= 2;
+			}
+
+			SpyProcess(cnt + 1, score+tmpScore, j);
+		}
+	}
+	
+}
+
+int main()
+{
+	cin >> day >> target;
+
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		cin >> scores[0][i];
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		cin >> scores[1][i];
+	}
+
+	
+	SpyProcess(0, 0, -1);
+
+	cout << answer;
+}
