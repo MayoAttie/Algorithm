@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <array>
+#include <stack>
+using namespace std;
+
+int main()
+{
+	stack<char> stk;
+
+	int mul = 1;
+	string str;
+	cin >> str;
+	int answer = 0;
+
+	for (int i = 0; i < str.size(); i++)
+	{
+		char ch = str[i];
+
+		if (ch == '(')
+		{
+			mul *= 2;
+			stk.push(ch);
+		}
+		else if (ch == '[')
+		{
+			mul *= 3;
+			stk.push(ch);
+		}
+		else if(ch == ')')
+		{
+			if (stk.empty() || stk.top() != '(')
+			{
+				answer = 0;
+				break;
+			}
+			if(str[i-1] == '(')
+				answer += mul;
+			mul /= 2;
+			stk.pop();
+		}
+		else
+		{
+			if (stk.empty() || stk.top() != '[')
+			{
+				answer = 0;
+				break;
+			}
+			if(str[i-1] == '[')
+				answer += mul;
+			mul /= 3;
+			stk.pop();
+		}
+	}
+		
+	if (!stk.empty())
+	{
+		cout << 0;
+		return 0;
+	}
+
+	cout << answer;
+}
