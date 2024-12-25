@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <climits>
+#include <numeric>
+using namespace std;
+
+int minVal = INT_MAX;
+int maxVal = INT_MIN;
+
+void backtracking(string now, int odd)
+{
+	int cnt = 0;
+	for (char ch : now)
+		if ((ch - '0') % 2 != 0)
+			cnt++;
+	odd += cnt;
+
+	if (now.size() == 1)
+	{
+		minVal = min(odd, minVal);
+		maxVal = max(odd, maxVal);
+		return;
+	}
+
+	if (now.size() == 2)
+	{
+		int sum = (now[0] - '0') + (now[1] - '0');
+		backtracking(to_string(sum), odd);
+		return;
+	}
+
+	for (int i = 1; i < now.size(); i++)
+	{
+		for (int j = i + 1; j < now.size(); j++)
+		{
+			string s1 = now.substr(0, i);
+			string s2 = now.substr(i, j - i);
+			string s3 = now.substr(j);
+
+			int sum = stoi(s1) + stoi(s2) + stoi(s3);
+			backtracking(to_string(sum), odd);
+		}
+	}
+
+}
+
+int main()
+{
+	string str;
+	cin >> str;
+
+	backtracking(str, 0);
+
+	cout << minVal << ' ' << maxVal;
+}
