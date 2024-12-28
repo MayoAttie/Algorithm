@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <climits>
+#include <queue>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	string S;
+	cin >> S;
+
+	int zeroNum = 0;
+	int oneNum = 0;
+	for (int i = 0; i < S.size(); i++)
+	{
+		if (S[i] == '0')
+			zeroNum++;
+		else
+			oneNum++;
+	}
+
+	oneNum /= 2; zeroNum /= 2;
+
+	while (zeroNum)
+	{
+		for (int i = S.size()-1; i>=0; i--)
+		{
+			if (S[i] == '0')
+			{
+				S.erase(S.begin() + i);
+				break;
+			}
+		}
+		zeroNum--;
+	}
+	while (oneNum)
+	{
+		for (int i = 0; i < S.size(); i++)
+		{
+			if (S[i] == '1')
+			{
+				S.erase(S.begin() + i);
+				break;
+			}
+		}
+		oneNum--;
+	}
+
+	cout <<S;
+}
