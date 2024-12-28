@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <climits>
+#include <queue>
+using namespace std;
+
+vector<vector<pair<int, int>>>graph;
+vector<int> dist;
+int n, m, t;
+const int MAX = 987654321;
+
+void djikstra(int s, int e)
+{
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> que;
+	dist = vector<int>(n + 1, MAX);
+
+	dist[s] = 0;
+	que.push({ 0,s });
+
+	while (!que.empty())
+	{
+		int curNode = que.top().second;
+		int curCost = que.top().first;
+		que.pop();
+		
+		if (dist[curNode] < curCost)
+			continue;
+
+		if (curNode == e)
+			break;
+
+		for (pair<int,int>& i : graph[curNode])
+		{
+			int nNode = i.first;
+			int nCost = max(i.second, curCost);
+
+			if (dist[nNode] > nCost)
+			{
+				dist[nNode] = nCost;
+				que.push({ nCost, nNode });
+			}
+		}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	cin >> n >> m >> t;
+
+	graph.resize(n+1);
+
+	for (int i = 0; i < m; i++)
+	{
+		int u, v, h;
+		cin >> u >> v >> h;
+		graph[u].push_back({ v,h });
+	}
+
+	for (int i = 0; i < t; i++)
+	{
+		int s, e;
+		cin >> s >> e;
+		djikstra(s, e);
+
+		if (dist[e] == MAX) 
+			cout << -1 << "\n";
+		else 
+			cout << dist[e] << "\n";
+	}
+}
