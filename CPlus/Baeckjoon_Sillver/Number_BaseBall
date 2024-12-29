@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <climits>
+#include <map>
+using namespace std;
+
+vector<tuple<string, int, int>> query;
+
+pair<int, int> calculate(const string& a, const string& b)
+{
+	int strike = 0;
+	int ball = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (a[i] == b[i])
+			strike++;
+		else if (b.find(a[i]) != string::npos)
+			ball++;
+	}
+	return { strike, ball };
+}
+
+int play(int n)
+{
+	vector<string> arr;
+	for (int i = 1; i <= 9; i++)
+	{
+		for (int j = 1; j <= 9; j++)
+		{
+			if (i == j)
+				continue;
+
+			for (int k = 1; k <= 9; k++)
+			{
+				if (i == k || j == k)
+					continue;
+				arr.push_back(to_string(i * 100 + j * 10 + k));
+			}
+		}
+	}
+
+	for (auto& i : query)
+	{
+		vector<string> tmp;
+		for (string& str : arr)
+		{
+			string now = get<0>(i);
+			int s = get<1>(i);
+			int b = get<2>(i);
+			pair<int, int> value = calculate(now, str);
+			if (value.first == s && value.second == b)
+				tmp.push_back(str);
+		}
+		arr = tmp;
+	}
+	return arr.size();
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		string answer;
+		int strike, ball;
+		cin >> answer >> strike >> ball;
+
+		query.emplace_back(answer, strike, ball);
+	}
+
+	cout << play(n);
+}
