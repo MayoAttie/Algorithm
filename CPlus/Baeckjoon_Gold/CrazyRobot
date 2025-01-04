@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <climits>
+#include <iomanip>
+using namespace std;
+
+int cmd;
+double per[4];	// e,w,s,n
+int dx[4] = { -1,1,0,0 };
+int dy[4] = { 0,0,1,-1 };
+bool visited[31][31];
+
+double dfs(int x, int y, int depth, double percent)
+{
+	if (depth == cmd)
+	{
+		return percent;
+	}
+
+	double value = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+
+		if (!visited[nx][ny])
+		{
+			visited[nx][ny] = true;
+			value += dfs(nx, ny, depth + 1, percent * per[i]);
+			visited[nx][ny] = false;
+		}
+	}
+	return value;
+}
+
+int main()
+{
+	cin >> cmd;
+	for (int i = 0; i < 4; i++)
+	{
+		int p;
+		cin >> p;
+		per[i] = p / 100.0;
+	}
+	fill(&visited[0][0], &visited[30][0], false);
+	visited[15][15] = true;
+
+	double answer = dfs(15, 15, 0, 1.0);
+	cout << setprecision(9) << answer;
+}
