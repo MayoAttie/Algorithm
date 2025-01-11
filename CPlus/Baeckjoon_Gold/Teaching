@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int n, k;
+vector<int> word;
+int answer = 0;
+
+int toBit(const string& str)
+{
+	int result = 0;
+	for (const char& ch: str)
+	{
+		result |= (1 << ch - 'a');
+	}
+
+	return result;
+}
+
+int countFunc(int val)
+{
+	int cnt = 0;
+	for (int i : word)
+	{
+		if ((i & val) == i)
+			cnt++;
+	}
+	return cnt;
+}
+
+void dfs(int idx, int now, int fix)
+{
+	if (now == k)
+	{
+		answer = max(answer, countFunc(fix));
+		return;
+	}
+
+	for (int i = idx; i < 26; i++)
+	{
+		if (!(fix & (1 << i)))
+		{
+			dfs(i + 1, now + 1, fix | (1 << i));
+		}
+	}
+}
+
+int main()
+{
+	cin >> n >> k;
+	
+	if (k < 5)
+	{
+		cout << 0;
+		return 0;
+	}
+
+	word.resize(n);
+	for (int i = 0; i < n; i++)
+	{
+		string str;
+		cin >> str;
+		string tmp = str.substr(4, str.size() - 8);
+		word[i] = toBit(tmp);
+	}
+
+	int fix = toBit("antic");
+	k -= 5;
+
+	dfs(0, 0, fix);
+	cout << answer;
+}
