@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    vector<char> top = {'Q','W','E','R','T','Y','U','I','O','P','[',']','\\'};
+    vector<char> mid = {'A','S','D','F','G','H','J','K','L',';','\''};
+    vector<char> bottom = {'Z','X','C','V','B','N','M',',','.','/'};
+    vector<char> nums = { '`','1','2','3','4','5','6','7','8','9','0','-','='};
+
+    unordered_map<char, char> map;
+    for (int i = 0; i < top.size()-1; i++)
+    {
+        map[top[i + 1]] = top[i];
+    }
+    for (int i = 0; i < mid.size() - 1; i++)
+    {
+        map[mid[i + 1]] = mid[i];
+    }
+    for (int i = 0; i < bottom.size() - 1; i++)
+    {
+        map[bottom[i + 1]] = bottom[i];
+    }
+    for (int i = 0; i < nums.size() - 1; i++)
+    {
+        map[nums[i + 1]] = nums[i];
+    }
+
+    string str;
+    while (getline(cin, str)) 
+    {
+        string answer = "";
+        for (char c : str) 
+        {
+            if (c == ' ') 
+                answer += ' ';
+            else 
+                answer += map[c];
+        }
+        cout << answer << '\n';
+    }
+    
+    return 0;
+}
