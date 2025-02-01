@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    std::cout.tie(NULL);
+    
+    int n;
+    cin >> n;
+
+    vector<pair<int, vector<int>>> arr(n);
+
+
+    for (int i = 0; i < n; i++)
+    {
+        int num, a, b, c, d;
+        cin >> num >> a >> b >> c >> d;
+        arr[i] = { num, {a, b, c, d} };
+    }
+
+    vector<int> answer(4, 0);
+    unordered_set<int> set;
+
+    for (int i = 0; i < 4; i++)
+    {
+        sort(arr.begin(), arr.end(), [i](const auto& a, const auto& b) 
+            {
+                if (a.second[i] != b.second[i])
+                    return a.second[i] > b.second[i];
+                return a.first < b.first;
+            });
+
+        for (const auto& j : arr)
+        {
+            if (set.find(j.first) == set.end())
+            {
+                answer[i] = j.first;
+                set.insert(j.first);
+                break;
+            }
+        }
+    }
+
+
+    std::cout << answer[0] << ' ' << answer[1] << ' ' << answer[2] << ' ' << answer[3];
+ 
+    return 0;
+}
