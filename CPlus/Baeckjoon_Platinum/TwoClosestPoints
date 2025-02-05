@@ -1,0 +1,79 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <algorithm>
+using namespace std;
+vector<pair<int, int>> arr;
+
+int getDist(pair<int, int>& a, pair<int, int>& b)
+{
+    return (a.first - b.first) * (a.first - b.first) + (a.second - b.second) * (a.second - b.second);
+}
+
+int findClose(vector<pair<int, int>>& tmp, int d)
+{
+    int minDist = d;
+    int len = tmp.size();
+
+    sort(tmp.begin(), tmp.end(), [](const auto& a, const auto& b) {
+        return a.second < b.second;
+        });
+
+    for (int i = 0; i < len; i++)
+    {
+        for (int j = i + 1; j < len && (tmp[j].second - tmp[i].second) * (tmp[j].second - tmp[i].second) < minDist; j++)
+        {
+            minDist = min(minDist, getDist(tmp[i], tmp[j]));
+        }
+    }
+
+    return minDist;
+}
+
+int divideFunc(int left, int right)
+{
+    if (right - left <= 3)
+    {
+        int minVal = 1e9;
+        for (int i = left; i < right; i++)
+        {
+            for (int j = i + 1; j <= right; j++)
+            {
+                minVal = min(minVal, getDist(arr[i], arr[j]));
+            }
+        }
+        return minVal;
+    }
+
+    int mid = (left + right) / 2;
+    int d = min(divideFunc(left, mid), divideFunc(mid + 1, right));
+    vector<pair<int, int>> vec;
+
+    for (int i = left; i <= right; i++)
+    {
+        if ((arr[i].first - arr[mid].first) * (arr[i].first - arr[mid].first) < d)
+            vec.push_back(arr[i]);
+    }
+
+    return min(d, findClose(vec, d));
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    arr.resize(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i].first >> arr[i].second;
+    }
+    
+    sort(arr.begin(), arr.end());
+    int answer = divideFunc(0, n - 1);
+    cout << answer;
+    return 0;
+}
