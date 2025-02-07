@@ -1,0 +1,56 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+int RomToNum(string num)
+{
+    unordered_map<char, int> map = { {'I',1}, {'V',5}, {'X',10},{'L',50},{'C',100},{'D',500},{'M',1000} };
+    int result = 0;
+    int prev = 0;
+
+    for (int i = num.size() - 1; i >= 0; i--)
+    {
+        int val = map[num[i]];
+        if (val < prev)
+            result -= val;
+        else
+            result += val;
+        prev = val;
+    }
+    return result;
+}
+string NumToRom(int num)
+{
+    vector<pair<string, int>> rom = { {"M",1000},{"CM",900},{"D",500},{"CD",400},{"C",100},{"XC",90},{"L",50},{"XL",40},{"X",10},{"IX",9},{"V",5},{"IV",4},{"I",1} };
+    string result = "";
+    for(auto i :rom)
+    {
+        while (num>=i.second)
+        {
+            result += i.first;
+            num -= i.second;
+        }
+    }
+
+    return result;
+}
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    string num1, num2;
+    cin >> num1 >> num2;
+
+    int nNum1 = RomToNum(num1);
+    int nNum2 = RomToNum(num2);
+
+    int nResult = nNum1 + nNum2;
+    string sResult = NumToRom(nResult);
+
+    cout << nResult << '\n' << sResult;
+}
