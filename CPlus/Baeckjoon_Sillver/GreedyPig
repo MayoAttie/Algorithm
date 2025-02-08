@@ -1,0 +1,53 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+        vector<int> arr(6);
+        for (int i = 0; i < 6; i++)
+        {
+            cin >> arr[i];
+        }
+        
+        int day = 1;
+        while (n > 0)
+        {
+
+            int total = 0;
+            for (int i : arr)
+            {
+                total += i;
+            }
+
+            if (total > n)
+                break;
+
+            vector<int> tmp = arr;
+            for (int i = 0; i < 6; i++)
+            {
+                if (i == 0)
+                    arr[i] += tmp[5] + tmp[i + 1] + tmp[i + 3];
+                else
+                    arr[i] += tmp[i - 1] + tmp[(i + 1) % 6] + tmp[(i + 3) % 6];
+            }
+            day++;
+        }
+
+        cout << day << '\n';
+    }
+}
