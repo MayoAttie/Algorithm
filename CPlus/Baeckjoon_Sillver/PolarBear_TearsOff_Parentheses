@@ -1,0 +1,39 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <stack>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    string str;
+    cin >> n >> str;
+
+    stack<char> stk;
+    int answer = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (stk.empty() || str[i] == stk.top())
+            stk.push(str[i]);
+        else
+            stk.pop();
+
+        answer = max(answer, (int)stk.size());
+    }
+
+    if (!stk.empty())
+        answer = -1;
+
+    cout << answer;
+
+    
+    return 0;
+}
