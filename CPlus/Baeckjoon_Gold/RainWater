@@ -1,0 +1,46 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int h, w;
+    cin >> h >> w;
+    vector<int> world(w);
+
+    for (int i = 0; i < w; i++)
+    {
+        cin >> world[i];
+    }
+
+    int answer = 0;
+    vector<int> leftMax(w);
+    vector<int> rightMax(w);
+
+    leftMax[0] = world[0];
+    rightMax[w - 1] = world[w - 1];
+
+    for (int i = 1; i < w; i++)
+    {
+        leftMax[i] = max(leftMax[i - 1], world[i]);
+    }
+    for (int i = w - 2; i >= 0; i--)
+    {
+        rightMax[i] = max(rightMax[i + 1], world[i]);
+    }
+
+    for (int i = 0; i < w; i++)
+    {
+        answer += min(leftMax[i], rightMax[i]) - world[i];
+    }
+
+    cout << answer << "\n";
+    return 0;
+}
