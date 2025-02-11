@@ -1,0 +1,74 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <map>
+#include <iomanip>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int a, t, target;
+    cin >> a >> t >> target;
+
+    int idx = 0;
+    int repeat = 2;
+    int b = 1;
+    int d = 1;
+
+    while (true)
+    {
+        int num = b;
+
+        for (int i = 0; i < 2; i++)
+        {
+            if (b == t && target == 0)
+            {
+                cout << idx;
+                return 0;
+            }
+            b++;
+            idx = (idx + 1) % a;
+
+            if (d == t && target == 1)
+            {
+                cout << idx;
+                return 0;
+            }
+            d++;
+            idx = (idx + 1) % a;
+        }
+
+        for (int i = 0; i < repeat; i++)
+        {
+            if (b == t && target == 0)
+            {
+                cout << idx;
+                return 0;
+            }
+            b++;
+            idx = (idx + 1) % a;
+        }
+        for (int i = 0; i < repeat; i++)
+        {
+            if (d == t && target == 1)
+            {
+                cout << idx;
+                return 0;
+            }
+            d++;
+            idx = (idx + 1) % a;
+        }
+        repeat++;
+    }
+    
+
+
+    return 0;
+}
