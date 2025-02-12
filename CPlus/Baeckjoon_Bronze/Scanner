@@ -1,0 +1,49 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <map>
+#include <stack>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+   
+    int r, c, zr, zc;
+    cin >> r >> c >> zr >> zc;
+    vector<vector<char>> arr(r, vector<char>(c));
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    vector<vector<char>> answer(r*zr, vector<char>(c*zc));
+    for (int i = 0; i < r * zr; i++)
+    {
+        for (int j = 0; j < c * zc; j++)
+        {
+            int x = i/zr;
+            int y = j/zc;
+            answer[i][j] = arr[x][y];
+        }
+    }
+
+    for (int i = 0; i < r*zr; i++)
+    {
+        for (int j = 0; j < c*zc; j++)
+        {
+            cout << answer[i][j];
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
