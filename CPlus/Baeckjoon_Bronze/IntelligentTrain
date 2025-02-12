@@ -1,0 +1,33 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <map>
+#include <stack>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+   
+    int num = 0;
+    int answer = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        int minus, plus;
+        cin >> minus >> plus;
+
+        num -= minus;
+        num += plus;
+        answer = max(answer, num);
+    }
+
+    cout << answer;
+
+
+    return 0;
+}
