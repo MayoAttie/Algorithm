@@ -1,0 +1,103 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <sstream>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+    cin.ignore();
+
+    string str;
+    set<char> s;
+
+    for (int t = 0; t < n; t++)
+    {
+        if (!getline(cin, str))
+            break;
+
+        vector<string> words;
+        stringstream ss(str);
+        string word;
+
+        while (ss >> word)
+        {
+            words.push_back(word);
+        }
+
+        bool isFound = false;
+        int wordIndex = -1, charIndex = -1;
+
+        for (int i = 0; i < words.size(); i++)
+        {
+            if (s.find(tolower(words[i][0])) == s.end())
+            {
+                s.insert(tolower(words[i][0]));
+                wordIndex = i;
+                charIndex = 0;
+                isFound = true;
+                break;
+            }
+        }
+
+        if (!isFound)
+        {
+            for (int i = 0; i < str.size(); i++)
+            {
+                if (str[i] == ' ')
+                    continue;
+
+                if (s.find(tolower(str[i])) == s.end())
+                {
+                    s.insert(tolower(str[i]));
+                    charIndex = i;
+                    isFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (wordIndex != -1) 
+        {
+            for (int i = 0; i < words.size(); i++)
+            {
+                if (i == wordIndex)
+                {
+                    cout << "[" << words[i][0] << "]" << words[i].substr(1);
+                }
+                else
+                {
+                    cout << words[i];
+                }
+                if (i != words.size() - 1)
+                    cout << " ";
+            }
+        }
+        else if (charIndex != -1) 
+        {
+            for (int i = 0; i < str.size(); i++)
+            {
+                if (i == charIndex)
+                    cout << "[" << str[i] << "]";
+                else
+                    cout << str[i];
+            }
+        }
+        else 
+        {
+            cout << str;
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
