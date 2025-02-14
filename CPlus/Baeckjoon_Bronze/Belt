@@ -1,0 +1,49 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <sstream>
+using namespace std;
+
+struct node
+{
+    long long a;
+    long long b;
+    long long c;
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int m;
+    cin >> m;
+    vector<node> arr(m);
+    for (int i = 0; i < m; i++)
+    {
+        long long a, b, c;
+        cin >> arr[i].a >> arr[i].b >> arr[i].c;
+    }
+
+
+    bool rotate = false;
+    long long mul = 1;
+    for (int i = 0; i < m; i++)
+    {
+        if (arr[i].c == 1)
+            rotate = !rotate;
+
+        mul *= arr[i].b;
+        mul /= arr[i].a;
+    }
+
+    if (rotate)
+        cout << 1 << ' ' << mul;
+    else
+        cout << 0 << ' ' << mul;
+
+    return 0;
+}
