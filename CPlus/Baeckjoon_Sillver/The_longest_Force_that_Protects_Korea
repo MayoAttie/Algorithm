@@ -1,0 +1,45 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+const int MAX = 641;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    string s;
+    cin >> n >> s;
+
+    vector<int> dp(n+1, 1e+10);
+    dp[0] = 0;
+
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = max(0, i - 3); j < i; j++)
+        {
+            string num = s.substr(j, i - j);
+
+            if (num.size() > 1 && num[0] == '0')
+                continue;
+
+            int nNum = stoi(num);
+
+            if (nNum >= 1 && nNum <= MAX)
+                dp[i] = min(dp[i], dp[j] + 1);
+        }
+    }
+
+    cout << dp[n];
+
+
+
+    return 0;
+}
