@@ -1,0 +1,76 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    string now, next;
+    cin >> now >> next;
+
+    int cH, cM, cS;
+    int nH, nM, nS;
+
+    cH = stoi(now.substr(0, 2));
+    cM = stoi(now.substr(3, 2));
+    cS = stoi(now.substr(6, 2));
+
+    nH = stoi(next.substr(0, 2));
+    nM = stoi(next.substr(3, 2));
+    nS = stoi(next.substr(6, 2));
+
+    int aH, aM, aS;
+
+
+
+    if (cS > nS)
+    {
+        nS += 60;
+        nM--;
+    }
+    aS = nS - cS;
+
+    if (cM > nM)
+    {
+        nM += 60;
+        nH--;
+    }
+    aM = nM - cM;
+
+    if (cH > nH)
+    {
+        nH += 24;
+    }
+    aH = nH - cH;
+
+    if (aH == 0 && aM ==0 && aS ==0)
+    {
+        cout << "24:00:00";
+        return 0;
+    }
+
+    if (aH < 10)
+        cout << "0" << aH << ":";
+    else
+        cout << aH << ":";
+
+    if (aM < 10)
+        cout << "0" << aM << ":";
+    else
+        cout << aM << ":";
+
+    if (aS < 10)
+        cout << "0" << aS;
+    else
+        cout << aS;
+
+    return 0;
+}
