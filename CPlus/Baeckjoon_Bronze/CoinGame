@@ -1,0 +1,41 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+vector<string> seq = { "TTT", "TTH", "THT", "THH", "HTT", "HTH", "HHT", "HHH" };
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
+    {
+        string str;
+        cin >> str;
+
+
+        unordered_map<string, int> map;
+        for (int j = 0; j <= 37; j++)
+        {
+            string tmp = str.substr(j, 3);
+            map[tmp]++;
+        }
+
+        for (string s : seq)
+        {
+            cout << map[s] << " ";
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
