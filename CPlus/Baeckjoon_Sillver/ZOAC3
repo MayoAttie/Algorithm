@@ -1,0 +1,91 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+vector<vector<char>> arr = 
+{
+    {'q','w','e','r','t','y','u','i','o','p'},
+    {'a','s','d','f','g','h','j','k','l'},
+    {'z','x','c','v','b','n','m'} };
+
+bool ifRight(pair<int,int> pos)
+{
+    if (pos.first == 0 || pos.first == 1)
+    {
+        if (pos.second > 4)
+            return true;
+    }
+    else
+    {
+        if (pos.second > 3)
+            return true;
+    }
+    return false;
+}
+
+pair<int, int> findIndex(char target) 
+{
+    for (int i = 0; i < arr.size(); i++) 
+    {
+        for (int j = 0; j < arr[i].size(); j++) 
+        {
+            if (arr[i][j] == target) 
+                return { i, j };  
+        }
+    }
+    return { -1, -1 };
+}
+
+int getDiffer(const pair<int, int>& from, const pair<int, int>& to)
+{
+    int a = abs(from.first - to.first);
+    int b = abs(from.second - to.second);
+    return a + b;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    char left, right;
+    cin >> left >> right;
+
+    string str;
+    cin >> str;
+
+    pair<int,int> posL = findIndex(left);
+    pair<int, int> posR = findIndex(right);
+
+    int answer = 0;
+
+    for (int i = 0; i < str.size(); i++)
+    {
+        char ch = str[i];
+
+        pair<int, int> posCh = findIndex(ch);
+
+        int dif_LtoCh = getDiffer(posL, posCh);
+        int dif_RtoCh = getDiffer(posR, posCh);
+
+        if (!ifRight(posCh))
+        {
+            answer += dif_LtoCh+1;
+            posL = posCh;
+        }
+        else
+        {
+            answer += dif_RtoCh+1;
+            posR = posCh;
+        }
+    }
+
+    cout << answer;   
+
+    return 0;
+}
