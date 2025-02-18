@@ -1,0 +1,48 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    cin >> t;
+
+    const string winChaewan = "amsminn\n";
+    const string winHuiwon = "heeda0528\n";
+
+    while (t--)
+    {
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+
+        int oddNum = 0;
+        int evenNum = 0;
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+            if (arr[i] % 2 == 0)
+                evenNum++;
+            else
+                oddNum++;
+        }
+
+        
+        if (max(evenNum, oddNum) % 2 && min(evenNum, oddNum) != max(evenNum, oddNum))
+            cout << winChaewan;
+        else
+            cout << winHuiwon;
+
+    }
+
+    return 0;
+}
