@@ -1,0 +1,81 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int r, c;
+    cin >> r >> c;
+
+    vector<vector<char>> arr(r, vector<char>(c));
+
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<char>> answer(r * 2, vector<char>(c * 2));
+
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            answer[i][j] = arr[i][j];
+        }
+    }
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            answer[i][(c*2-1)-j] = arr[i][j];
+        }
+    }
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            answer[(r*2 - 1) - i][j] = arr[i][j];
+        }
+    }
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            answer[(r * 2 - 1) - i][(c * 2 - 1) - j] = arr[i][j];
+        }
+    }
+
+    if(answer[n - 1][m - 1] == '.')
+        answer[n - 1][m - 1] = '#';
+    else
+        answer[n - 1][m - 1] = '.';
+
+
+    for (int i = 0; i < r * 2; i++)
+    {
+        for (int j = 0; j < c * 2; j++)
+        {
+            cout << answer[i][j];
+        }
+
+        cout << '\n';
+    }
+
+
+    return 0;
+}
