@@ -1,0 +1,63 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+struct callage
+{
+    string name;
+    string team;
+    int cnt;
+    int penalty;
+};
+
+bool comparer(const callage& a, const callage& b)
+{
+    if (a.cnt != b.cnt)
+        return a.cnt > b.cnt;
+    return a.penalty < b.penalty;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, k;
+    cin >> n >> k;
+
+    vector<callage> arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i].name >> arr[i].team >> arr[i].cnt >> arr[i].penalty;
+    }
+
+    sort(arr.begin(), arr.end(), comparer);
+
+    set<string> s;
+    vector<string> answer;
+    for (int i = 0; i < n; i++)
+    {
+        if (s.find(arr[i].name) == s.end())
+        {
+            s.insert(arr[i].name);
+            answer.push_back(arr[i].team);
+        }
+
+        if (answer.size() == k)
+            break;
+    }
+    
+    for (string i : answer)
+    {
+        cout << i << '\n';
+    }
+
+
+    return 0;
+}
