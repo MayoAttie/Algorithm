@@ -1,0 +1,42 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    int cur = 1;
+    for (int i = 1; i <= m; i++)
+    {
+        int a;
+        cin >> a;
+        cur += a;
+        if (cur > n)
+        {
+            cout << i;
+            break;
+        }
+        cur += arr[cur - 1];
+        if (cur >= n)
+        {
+            cout << i;
+            break;
+        }
+    }
+
+    return 0;
+}
