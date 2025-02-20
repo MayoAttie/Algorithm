@@ -1,0 +1,60 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        string str;
+        cin >> str;
+
+        if (str.size() != 7)
+        {
+            cout << 0 << '\n';
+            continue;
+        }
+
+        unordered_map<char,int> map;
+        int orders[7] = { 0,0,1,1,0,1,1 };
+        int idx = 0;
+        bool isLike = true;
+        for (int i = 0; i < 7; i++)
+        {
+            if (map.find(str[i]) == map.end())
+            {
+                map[str[i]]= idx;
+                idx++;
+            }
+            if (map.size() > 2)
+            {
+                isLike = false;
+                break;
+            }
+
+            if (orders[i] != map[str[i]])
+            {
+                isLike = false;
+                break;
+            }
+
+        }
+
+        if (isLike)
+            cout << 1 << '\n';
+        else
+            cout << 0 << '\n';
+    }
+
+    return 0;
+}
