@@ -1,0 +1,32 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cctype>
+using namespace std;
+
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    map<char, char> dic = { {'E','I'}, {'S','N'},{'T','F'},{'J','P'}, {'I','E'}, {'N','S'},{'F','T'},{'P','J'} };
+
+    string str;
+    cin >> str;
+
+    string answer;
+    for (char ch : str)
+    {
+        answer += dic[ch];
+    }
+
+    cout << answer;
+
+
+    return 0;
+}
