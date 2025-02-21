@@ -1,0 +1,35 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <deque>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    double n, b, m;
+
+    while (cin >> n)
+    {
+        cin >> b >> m;
+        int year = 0;
+        while (n < m)
+        {
+            double ratio = b * 0.01;
+            double tmp = n * ratio; 
+
+            n += tmp;
+            year++;
+        }
+
+        cout << year <<'\n';
+    }
+    
+
+
+    return 0;
+}
