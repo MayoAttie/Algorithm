@@ -1,0 +1,64 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+struct node
+{
+    map<string, node*> child;
+};
+
+void insert(node* root, const string& path)
+{
+    stringstream ss(path);
+    string dir;
+    node* cur = root;
+
+    while (getline(ss, dir,'\\'))
+    {
+        if (cur->child.find(dir) == cur->child.end())
+        {
+            cur->child[dir] = new node();
+        }
+        cur = cur->child[dir];
+    }
+}
+
+void dfs(node* cur, int depth)
+{
+    for (auto& i : cur->child)
+    {
+        cout << string(depth, ' ') << i.first << '\n';
+        dfs(i.second, depth + 1);
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+    cin.ignore();
+    vector<string> arr(n);
+
+    node* root = new node();
+
+    for (int i = 0; i < n; i++)
+    {
+        string str;
+        getline(cin, str);
+        insert(root, str);
+    }
+
+
+    dfs(root, 0);
+
+
+
+    return 0;
+}
