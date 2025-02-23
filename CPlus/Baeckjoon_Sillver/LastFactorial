@@ -1,0 +1,34 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    long long n;
+    cin >> n;
+
+    long long answer = 1;
+    const long long INF = 1e10;
+
+    for (long long i = 1; i <= n; i++)
+    {
+        answer *= i;
+        answer %= INF;
+        while (answer % 10 == 0)
+        {
+            answer /= 10;
+        }
+    }
+
+    cout << answer%10;
+
+    return 0;
+}
