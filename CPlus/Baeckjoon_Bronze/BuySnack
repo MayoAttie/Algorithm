@@ -1,0 +1,51 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    vector<pair<int,int>> arr(3);
+    for (int i = 0; i < 3; i++)
+    {
+        cin >> arr[i].first >> arr[i].second;
+    }
+
+    double maxVal = 0;
+    int idx = 0;
+
+    for (int i = 0; i < 3; i++)
+    {
+        double cost = arr[i].first;
+        double weight = arr[i].second;
+
+        weight *= 10;
+        cost *= 10;
+
+        if (cost >= 5000)
+            cost -= 500;
+
+        double val = weight / cost;
+        if (maxVal < val)
+        {
+            maxVal = val;
+            idx = i;
+        }
+    }
+
+    if (idx == 0)
+        cout << 'S';
+    else if (idx == 1)
+        cout << 'N';
+    else
+        cout << 'U';
+
+    return 0;
+}
