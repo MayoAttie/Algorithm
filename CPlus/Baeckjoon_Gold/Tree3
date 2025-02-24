@@ -1,0 +1,85 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+int n, m;
+bool dfs(vector<bool>& visited, vector<vector<int>>& arr, int node, int parent)
+{
+    visited[node] = true;
+
+    for (int next : arr[node]) 
+    {
+        if (!visited[next])
+        {
+            if (dfs(visited, arr, next, node))
+                return true;
+        }
+        else if (next != parent)
+            return true; 
+    }
+
+    return false;
+}
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    cin >> t;
+
+    string strG = "graph\n";
+    string strT = "tree\n";
+
+    while (t--)
+    {
+        cin >> n >> m;
+
+        vector<vector<int>> arr(n + 1);
+        for (int i = 0; i < m; i++)
+        {
+            int a, b;
+            cin >> a >> b;
+            arr[a].push_back(b);
+            arr[b].push_back(a);
+        }
+
+        if (m != n - 1)
+        {
+            cout << strG;
+            continue;
+        }
+
+        vector<bool> visited(n + 1, false);
+        if (dfs(visited, arr, 1, -1))
+        {
+            cout << strG;
+            continue;
+        }
+
+        bool isTree = true;
+        for (int i = 1; i <= n; i++)
+        {
+            if (!visited[i])
+            {
+                cout << strG;
+                isTree = false;
+                break;
+            }
+        }
+
+        if (isTree)
+        {
+            cout << strT;
+        }
+    }
+
+
+    return 0;
+}
