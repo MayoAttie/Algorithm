@@ -1,0 +1,38 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int k;
+    cin >> k;
+
+    int answer = 1;
+    while (answer <k)
+    {
+        answer *= 2;
+    }
+
+    int cut = 0;
+    int tmp = answer;
+    while (tmp > k)
+    {
+        tmp /= 2;
+        cut++;
+        if (tmp < k)
+            k -= tmp;
+    }
+
+    cout << answer << ' ' << cut;
+
+
+    return 0;
+}
