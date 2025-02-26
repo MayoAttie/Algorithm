@@ -1,0 +1,78 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+int n, m;
+vector<vector<char>> arr;
+int getDist()
+{
+    int result = n;
+    for (int i = 0; i < m; i++)
+    {
+        int tmp = -987654321;
+        for (int j = 0; j < n; j++)
+        {
+            if (arr[j][i] == 'X')
+                tmp = j;
+            else if (arr[j][i] == '#')
+            {
+                result = min(j - tmp - 1, result);
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n >> m;
+    arr.resize(n, vector<char>(m));
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+    int dist = getDist();
+    
+    for (int i = 0; i < dist; i++)
+    {
+        string tmp = "";
+        for (int j = 0; j < m; j++)
+        {
+            if (arr[i][j] == '#')
+                tmp += '#';
+            else
+                tmp += '.';
+        }
+        cout << tmp << '\n';
+    }
+
+    for (int i = dist; i < n; i++)
+    {
+        string tmp = "";
+        for (int j = 0; j < m; j++)
+        {
+            if (arr[i - dist][j] == 'X')
+                tmp += 'X';
+            else if (arr[i][j] == '#')
+                tmp += '#';
+            else
+                tmp += '.';
+        }
+
+        cout << tmp << '\n';
+    }
+
+
+    return 0;
+}
