@@ -1,0 +1,61 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+string Solution(int n, int m)
+{
+    string result = "1\n";
+    bool flag = false;
+
+    for (int i = 0; i < n; i++)
+    {
+        if(!flag)
+        {
+            for (int j = 1; j < m; j++)
+            {
+                result += "(" + to_string(i) + "," + to_string(j) + ")\n";
+            }
+        }
+        else
+        {
+            for (int j = m - 1; j >= 1; j--)
+            {
+                result += "(" + to_string(i) + "," + to_string(j) + ")\n";
+            }
+        }
+
+        flag = !flag;
+    }
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        result += "(" + to_string(i) + ",0)\n";
+    }
+
+    return result;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    cin >> t;
+
+
+    while (t--)
+    {
+        int n, m;
+        cin >> n >> m;
+
+        cout << Solution(n, m);
+    }
+
+
+    return 0;
+}
