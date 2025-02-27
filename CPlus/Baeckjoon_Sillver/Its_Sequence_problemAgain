@@ -1,0 +1,31 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    vector<int> arr;
+    arr.push_back(1);
+    for (int i = 0; i < n-1; i++)
+    {
+        int num = arr.back() + 2;
+        arr.push_back(num);
+    }
+
+    for (int i : arr)
+    {
+        cout << i << ' ';
+    }
+
+    return 0;
+}
