@@ -1,0 +1,44 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    while (true)
+    {
+        cin >> n;
+
+        if (n == 0)
+            break;
+
+        vector<pair<float, string>> arr(n);
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i].second >> arr[i].first;
+        }
+
+        vector<pair<float, string>> sorted_arr = arr;
+        sort(sorted_arr.begin(), sorted_arr.end());
+
+        float maxVal = sorted_arr[n - 1].first;
+
+        for (int i = 0; i < n; i++)
+        {
+            if (maxVal == arr[i].first)
+                cout << arr[i].second << ' ';
+        }
+
+        cout << '\n';
+    }
+
+    return 0;
+}
