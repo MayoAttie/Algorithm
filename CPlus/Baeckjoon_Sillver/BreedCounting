@@ -1,0 +1,54 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, q;
+    cin >> n >> q;
+
+    vector<int> cows(n+1);
+    vector<pair<int, int>> query(q);
+
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> cows[i];
+    }
+
+    for (int i = 0; i < q; i++)
+    {
+        cin >> query[i].first >> query[i].second;
+    }
+
+    vector<vector<int>> prefix(n + 1, vector<int>(3));
+    for (int i = 1; i <= n; i++)
+    {
+        int num = cows[i];
+        for (int j = 0; j < 3; j++)
+        {
+            prefix[i][j] = prefix[i - 1][j];
+        }
+
+        prefix[i][num - 1]++;
+    }
+
+    for (auto i : query)
+    {
+        int a = prefix[i.second][0] - prefix[i.first - 1][0];
+        int b = prefix[i.second][1] - prefix[i.first - 1][1];
+        int c = prefix[i.second][2] - prefix[i.first - 1][2];
+
+        cout << a << " " << b << " " << c << '\n';
+    }
+
+
+    return 0;
+}
