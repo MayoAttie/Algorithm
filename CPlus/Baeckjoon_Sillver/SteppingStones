@@ -1,0 +1,46 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+#define ll long long
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        ll n;
+        cin >> n;
+
+        ll left = 1; 
+        ll right = 2e8;
+        ll answer = 1;
+
+        while (left <= right)
+        {
+            ll mid = (left + right) / 2;
+            ll sum = mid * (mid - 1) / 2;
+
+            if (sum <= n)
+            {
+                answer = mid;
+                left = mid + 1;
+            }
+            else
+                right = mid - 1;
+        }
+
+        cout << --answer << '\n';
+    }
+
+    return 0;
+}
