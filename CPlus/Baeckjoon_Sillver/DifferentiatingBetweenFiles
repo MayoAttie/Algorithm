@@ -1,0 +1,60 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+#define ll long long
+
+int n;
+vector<vector<int>> arr;
+
+bool solve(int k)
+{
+    set<vector<int>> s;
+    for (const auto& i : arr)
+    {
+        vector<int> tmp(i.begin(), i.begin() + min(k, (int)i.size()));
+        s.insert(tmp);
+    }
+
+    return s.size() == n;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n;
+    arr.resize(n);
+    
+    int maxLength = 0;
+    for (int i = 0; i < n; i++)
+    {
+        while (true)
+        {
+            int num;
+            cin >> num;
+            
+            if (num == -1)
+                break;
+            arr[i].push_back(num);
+        }
+        maxLength = max(maxLength, (int)arr[i].size());
+    }
+
+    for (int k = 1; k <= maxLength; k++) 
+    {
+        if (solve(k)) 
+        {
+            cout << k << '\n';
+            break;
+        }
+    }
+
+
+    return 0;
+}
