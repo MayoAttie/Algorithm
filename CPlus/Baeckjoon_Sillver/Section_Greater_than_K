@@ -1,0 +1,47 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+#define ll long long
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, k;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    cin >> k;
+
+    ll answer = 0;
+
+    int left = 0;
+    ll sum = 0;
+
+    for (int right = 0; right < n; right++)
+    {
+        sum += arr[right];
+
+        while (sum > k)
+        {
+            answer += (n - right);
+            sum -= arr[left];
+            left++;
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
