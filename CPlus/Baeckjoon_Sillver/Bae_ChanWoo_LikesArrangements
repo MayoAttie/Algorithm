@@ -1,0 +1,64 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+#define ll long long
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m, q;
+    cin >> n >> m >> q;
+
+    vector<vector<int>> arr(n, vector<int>(m));
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+
+    for (int t = 0; t < q; t++)
+    {
+        int type;
+        cin >> type;
+
+        if (type == 0)
+        {
+            int x,y,k;
+            cin >> x >> y >> k;
+
+            arr[x][y] = k;
+
+        }
+        else
+        {
+            int a, b;
+            cin >> a >> b;
+
+            swap(arr[a], arr[b]);
+        }
+
+    }
+
+
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cout << arr[i][j] << ' ';
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
