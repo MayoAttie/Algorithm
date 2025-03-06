@@ -1,0 +1,44 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+#define ll long long
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    while (true)
+    {
+        string pos;
+        cin >> pos;
+
+        int rPos, cPos;
+        size_t cIdx = pos.find('C');
+        rPos = stoi(pos.substr(1, cIdx - 0 - 1));
+        cPos = stoi(pos.substr(cIdx + 1));
+
+
+        if (cPos == 0 && rPos == 0)
+            break;
+
+        string tmp = "";
+        while (cPos >0)
+        {
+            cPos--;
+            tmp += ('A' + (cPos % 26));
+            cPos /= 26;
+        }
+        reverse(tmp.begin(), tmp.end());
+
+        cout << tmp << rPos << '\n';
+    }
+
+    return 0;
+}
