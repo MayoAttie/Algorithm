@@ -1,0 +1,111 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+
+#define ll long long
+
+char find_Char(char ch, bool isGather, bool isBig)
+{
+    string consonant = "bkxznhdcwgpvjqtsrlmf";
+    string gather = "aiyeou";
+
+    char result;
+    if (isGather)
+    {
+        if (isBig)
+        {
+            char tmp = tolower(ch);
+            size_t idx = gather.find(tmp);
+            idx += 3;
+            idx %= gather.size();
+
+            result = toupper(gather[idx]);
+        }
+        else
+        {
+            size_t idx = gather.find(ch);
+            idx += 3;
+            idx %= gather.size();
+
+            result = gather[idx];
+        }
+    }
+    else
+    {
+        if (isBig)
+        {
+            char tmp = tolower(ch);
+            size_t idx = consonant.find(tmp);
+            idx += 10;
+            idx %= consonant.size();
+
+            result = toupper(consonant[idx]);
+        }
+        else
+        {
+            size_t idx = consonant.find(ch);
+            idx += 10;
+            idx %= consonant.size();
+
+            result = consonant[idx];
+        }
+    }
+
+    return result;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    string str;
+
+    while (getline(cin, str))
+    {
+        string answer = "";
+        for (char ch : str)
+        {
+            if (ch >= 'a' && ch <= 'z')
+            {
+                if (ch == 'a' || ch == 'i' || ch == 'y' || ch == 'e' || ch == 'o' || ch == 'u')
+                {
+                    char tmp = find_Char(ch, true, false);
+                    answer += tmp;
+                }
+                else
+                {
+                    char tmp = find_Char(ch, false, false);
+                    answer += tmp;
+                }
+            }
+            else if (ch >= 'A' && ch <= 'Z')
+            {
+                if (ch == 'A' || ch == 'I' || ch == 'Y' || ch == 'E' || ch == 'O' || ch == 'U')
+                {
+                    char tmp = find_Char(ch, true, true);
+                    answer += tmp;
+                }
+                else
+                {
+                    char tmp = find_Char(ch, false, true);
+                    answer += tmp;
+
+                }
+            }
+            else
+            {
+                answer += ch;
+            }
+        }
+
+        cout << answer <<'\n';
+    }
+
+
+    return 0;
+}
