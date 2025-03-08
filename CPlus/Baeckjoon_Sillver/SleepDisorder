@@ -1,0 +1,37 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+
+#define ll long long
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    int cnt = 0;
+    int answer = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        string tmp = to_string(i);
+        if (cnt + tmp.size() >= n)
+        {
+            int idx = (cnt + tmp.size()) - n;
+            reverse(tmp.begin(), tmp.end());
+            answer = (tmp[idx]) - '0';
+            break;
+        }
+        cnt += tmp.size();
+    }
+
+    cout << answer;
+
+    return 0;
+}
