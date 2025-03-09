@@ -1,0 +1,72 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+
+#define ll long long
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int m, n;
+    cin >> m >> n;
+    int u, l, r, d;
+    cin >> u >> l >> r >> d;
+
+    vector<string> arr(m);
+    for (int i = 0; i < m; i++)
+    {
+        cin >> arr[i];
+    }
+    
+    int col = u + d + m;
+    int row = l + r + n;
+    vector<vector<char>> answer(col, vector<char>(row));
+
+    for(int i=0; i<col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            if (i % 2 == 0)
+            {
+                if (j % 2 == 0)
+                    answer[i][j] = '#';
+                else
+                    answer[i][j] = '.';
+            }
+            else
+            {
+                if (j % 2 == 0)
+                    answer[i][j] = '.';
+                else
+                    answer[i][j] = '#';
+            }
+        }
+    }
+
+    for (int i = 0; i < m; i++)
+    {
+        string str = arr[i];
+        for (int j = 0; j < n; j++)
+        {
+            answer[u + i][l + j] = str[j];
+        }
+    }
+
+
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            cout << answer[i][j];
+        }
+        cout << '\n';
+    }
+
+    return 0;
+}
