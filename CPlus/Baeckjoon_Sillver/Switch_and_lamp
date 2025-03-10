@@ -1,0 +1,57 @@
+#include <iostream>
+#include <deque>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> lamps(m + 1, 0);
+    vector<vector<int>> switchs(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        int cnt;
+        cin >> cnt;
+        for (int j = 0; j < cnt; j++)
+        {
+            int num;
+            cin >> num;
+            switchs[i].push_back(num);
+            lamps[num]++;
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        bool isOn = true;
+
+        for (int j : switchs[i])
+        {
+            if (lamps[j] == 1)
+            {
+                isOn = false;
+                break;
+            }
+        }
+
+        if (isOn)
+        {
+            cout << 1;
+            return 0;
+        }
+    }
+
+    cout << 0;
+
+
+    return 0;
+}
