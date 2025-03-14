@@ -1,0 +1,42 @@
+#include <iostream>
+#include <deque>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+#define ll long long
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    vector<int> board(n + 1);
+
+    int answer = 0;
+    int cnt = 0;
+    for (int i = 0; i < 2 * n; i++)
+    {
+        int num;
+        cin >> num;
+        if (board[num] == 0)
+        {
+            board[num] = 1;
+            cnt++;
+        }
+        else if (board[num] == 1)
+        {
+            board[num] = 2;
+            cnt--;
+        }
+        answer = max(answer, cnt);
+    }
+    cout << answer;
+
+    return 0;
+}
