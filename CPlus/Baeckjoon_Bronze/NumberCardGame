@@ -1,0 +1,40 @@
+#include <iostream>
+#include <deque>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+#define ll long long
+
+using namespace std;
+
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string str;
+    while (true)
+    {
+        cin >> str;
+        if (str == "0")
+        {
+            break;
+        }
+        while (str.size() > 1)
+        {
+            int tmp = str[0] - '0';
+            for (int i = 1; i < str.size(); i++)
+            {
+                tmp *= str[i] - '0';
+            }
+            cout << str <<' ';
+            str = to_string(tmp);
+        }
+        cout << str << '\n';
+    }
+
+    return 0;
+}
