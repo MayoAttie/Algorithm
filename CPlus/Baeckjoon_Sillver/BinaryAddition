@@ -1,0 +1,48 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+int main() 
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        ll n,x;
+        cin >> n >> x;
+        vector <ll> arr(n);
+        dic<ll, int> m_d;
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+            m_d[arr[i]]++;
+        }
+
+        ll cnt = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            ll cur = arr[i] ^ x;
+            if (m_d.count(cur))
+                cnt += m_d[cur];
+            if (cur == arr[i])
+                cnt--;
+        }
+
+        cout << cnt / 2 << '\n';
+    }
+
+    return 0;
+}
