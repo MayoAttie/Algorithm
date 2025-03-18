@@ -1,0 +1,34 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) 
+    {
+        double price;
+        cin >> price;
+
+        double answer = price * 0.8;
+
+        cout << "$" << fixed << setprecision(2) << answer << "\n";
+    }
+
+
+    return 0;
+}
