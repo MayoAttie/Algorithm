@@ -1,0 +1,107 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+char getWinner(char a, char b)
+{
+    if (a == b) return a;
+    if ((a == 'R' && b == 'S') || (a == 'S' && b == 'P') || (a == 'P' && b == 'R'))
+        return a;
+    return b;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        vector<string> arr(n);
+        vector<bool> isWinCheck(n, true);
+        int remaining = n;
+
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+        }
+
+        int k = arr[0].size();
+
+        for (int i = 0; i < k; i++)
+        {
+            vector<bool> failer(n, false);
+            dic<char, bool> map;
+
+            for (int j = 0; j < n; j++)
+            {
+                if (isWinCheck[j])
+                    map[arr[j][i]] = true;
+            }
+
+            if (map.size() == 3)
+                continue; 
+
+            char winGet = ' ';
+            if (map.count('R') && map.count('P'))
+                winGet = 'P';
+            else if (map.count('P') && map.count('S'))
+                winGet = 'S';
+            else if (map.count('S') && map.count('R'))
+                winGet = 'R';
+            else 
+                continue; 
+
+            for (int j = 0; j < n; j++)
+            {
+                if (isWinCheck[j] && arr[j][i] != winGet)
+                    failer[j] = true;
+            }
+
+            for (int j = 0; j < n; j++)
+            {
+                if (failer[j] && isWinCheck[j])
+                {
+                    isWinCheck[j] = false;
+                    remaining--;
+                }
+            }
+
+            if (remaining == 1)
+                break;
+        }
+
+        int winner = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (isWinCheck[i])
+            {
+                if (winner == 0)
+                    winner = i + 1;
+                else
+                {
+                    winner = 0;
+                    break;
+                }
+            }
+        }
+
+        cout << winner << "\n";
+    }
+
+    return 0;
+}
