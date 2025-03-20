@@ -1,0 +1,36 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    int cnt = 1;
+    while (n >= cnt)
+    {
+        n -= cnt;
+        cnt++;
+    }
+
+    if (cnt & 1)
+        cout << cnt - n;
+    else
+        cout << 0;
+
+    return 0;
+}
