@@ -1,0 +1,65 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+#include <set>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+    
+    int idx = 1;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        set<int> s;
+        string answer = "";
+
+        if (n == 0)
+        {
+            answer = "INSOMNIA";
+        }
+        else
+        {
+            int mul = 1;
+            int num = n;
+            while (true)
+            {
+                string sN = to_string(num);
+
+                for (char ch : sN)
+                    s.insert((ch - '0'));
+
+                if (s.size() >= 10)
+                {
+                    answer = sN;
+                    break;
+                }
+                num = ++mul * n;
+            }
+        }
+
+
+
+
+        cout << "Case #" << idx << ": " << answer << '\n';
+        idx++;
+    }
+
+    return 0;
+}
