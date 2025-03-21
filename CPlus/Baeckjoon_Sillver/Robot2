@@ -1,0 +1,79 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+int r, c, k;
+pair<int, int> pos;
+int commands[4];
+vector<vector<int>> board;
+
+int dx[4] = { -1,1,0,0 };
+int dy[4] = { 0,0,-1,1 };
+
+void simulation()
+{
+    int idx = 0;
+    bool moved = true;
+
+    while (moved)
+    {
+        moved = false;
+        for (int d = 0; d < 4; d++)
+        {
+            int nowD = (idx + d)%4;
+            int nx = pos.first + dx[commands[nowD]];
+            int ny = pos.second + dy[commands[nowD]];
+
+            if (nx >= 0 && nx < r && ny >= 0 && ny < c && board[nx][ny] == 0)
+            {
+                board[nx][ny] = 1;
+                pos.first = nx;
+                pos.second = ny;
+                idx = nowD;
+                moved = true;
+                break;
+            }
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> r >> c >> k;
+    board.resize(r, vector<int>(c, 0));
+
+    for (int i = 0; i < k; i++) 
+    {
+        int br, bc;
+        cin >> br >> bc;
+        board[br][bc] = -1;  
+    }
+
+    cin >> pos.first >> pos.second;
+    for (int i = 0; i < 4; i++) 
+    {
+        cin >> commands[i];
+        commands[i]--;
+    }
+
+
+    board[pos.first][pos.second] = 1;
+    simulation();
+    cout << pos.first << ' ' << pos.second;
+
+
+
+    return 0;
+}
