@@ -1,0 +1,59 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+#include <set>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    double right;
+    double left = 0;
+    cin >> right;
+
+    vector<vector<double>> arr(3, vector<double>(2));
+
+    for (int i = 0; i < 3; i++)
+    {
+        cin >> arr[i][0] >> arr[i][1];
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        double a = arr[i][0];
+        double b = arr[i][1];
+        
+        if (a == b)
+            continue;
+
+        double mid = (a + b) / 2;
+
+        left = min(left, mid * 2 - right);
+        right = mid;
+
+        for (int j = i + 1; j < 3; j++)
+        {
+            for (int m = 0; m < 2; m++)
+            {
+                if (arr[j][m] > mid)
+                    arr[j][m] = mid * 2 - arr[j][m];
+            }
+        }
+    }
+
+    cout << fixed << setprecision(1) << right - left;
+    
+
+    return 0;
+}
