@@ -1,0 +1,42 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+#include <set>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+ll n, p, q, x, y;
+dic<ll, ll> dp;
+
+ll dfs(ll num)
+{
+    if (num <= 0)
+        return 1;
+    if (dp.find(num) != dp.end())
+        return dp[num];
+
+    return dp[num] = dfs(num / p - x) + dfs(num / q - y);
+}
+
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    cin >> n >> p >> q >> x >> y;
+
+    if (n <= 0)
+        cout << 1;
+    else
+        cout << dfs(n);
+
+    return 0;
+}
