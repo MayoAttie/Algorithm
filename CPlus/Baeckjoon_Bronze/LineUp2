@@ -1,0 +1,46 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+#include <set>
+#include <bitset>
+
+#define ll long long
+#define dic unordered_map
+
+using namespace std;
+
+bool solve(int num, char L) 
+{
+    string str = to_string(num);
+    return str.find(L) != string::npos;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    int N, L;
+    cin >> N >> L;
+
+    int cnt = 0;
+    int label = 0;
+    char ch = L + '0'; 
+
+    while (cnt < N)
+    {
+        label++;
+        if (!solve(label, ch))
+        {
+            cnt++;
+        }
+    }
+
+    cout << label;
+
+    return 0;
+}
